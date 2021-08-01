@@ -1,0 +1,13 @@
+.vs
+.vscode 
+
+*/*/obj 
+*/*/bin 
+
+SqlViewer/Tests
+SqlViewer.sln
+
+Docs/ProcessDocs 
+
+Databases
+sqlite3.exe
