@@ -20,6 +20,8 @@ namespace SqlViewer.ViewModels
 
         private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
 
+        private string path = "C:\\Users\\User\\Desktop\\projects\\sqlviewer\\Databases\\TestDb.sqlite3";
+
         public MainVM(MainWindow mainWindow)
         {
             this.MainWindow = mainWindow; 
@@ -27,6 +29,8 @@ namespace SqlViewer.ViewModels
             this.SendSqlCommand = new SendSqlCommand(this); 
             this.DbCommand = new DbCommand(this); 
             this.HelpCommand = new HelpCommand(this); 
+
+
         }
 
         public void SendSqlRequest()
@@ -34,10 +38,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 this.MainWindow.richTextBox1.Document.Blocks.Clear();
-                
-                SqliteDbHelper.Instance.SetPathToDb("C:\\Users\\User\\Desktop\\projects\\sqlviewer\\TestDatabases\\TestDb.sqlite3");
                 string result = SqliteDbHelper.Instance.ExecuteSqlCommand(this.MainWindow.tbMultiLine.Text);
-                
                 this.MainWindow.richTextBox1.Document.Blocks.Add(new Paragraph(new Run($"{result}"))); 
             }
             catch (System.Exception e)
@@ -71,6 +72,10 @@ namespace SqlViewer.ViewModels
                 {
                     
                 }
+
+                path = ofd.FileName; 
+                SqliteDbHelper.Instance.SetPathToDb(path);
+                this.MainWindow.PathTextBlock.Text = path;
             }
             catch (System.Exception ex)
             {

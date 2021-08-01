@@ -47,7 +47,7 @@
                         <TextBlock>
                             <Bold>Path:</Bold>
                         </TextBlock>
-                        <TextBlock Text="C:\SomePathToDb\DB.sqlite3" Margin="5,0,0,0" />
+                        <TextBlock Name="PathTextBlock" Margin="5,0,0,0" />
                     </StackPanel>
                     
                     <RichTextBox Name="richTextBox1" Height="160" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

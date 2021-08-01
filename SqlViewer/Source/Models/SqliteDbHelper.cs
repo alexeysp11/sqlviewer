@@ -43,11 +43,17 @@ namespace SqlViewer.Models.Database
             try
             {
                 DataTable table = GetDataTable(sqlRequest);
+                foreach (DataColumn column in table.Columns)
+                {
+                    result += $"{column.ColumnName.ToString()}\t";
+                }
+                result += "\n"; 
+
                 foreach (DataRow row in table.Rows)
                 {
                     foreach (DataColumn column in table.Columns)
                     {
-                        result += $"{row[column].ToString()} "; 
+                        result += $"{row[column].ToString()}\t"; 
                     }
                     result += "\n"; 
                 }
