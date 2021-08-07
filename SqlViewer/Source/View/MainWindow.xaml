@@ -49,7 +49,7 @@
                     </StackPanel>
                     
                     <RichTextBox Name="richTextBox1" Height="160" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                        <FlowDocument PageHeight="Auto" PageWidth="380" />
+                        <FlowDocument FontFamily="Courier New" FontSize="12" PageHeight="Auto" PageWidth="380" />
                     </RichTextBox>
                 </StackPanel>
             </Grid>
@@ -71,6 +71,7 @@
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="0,5,0,0">
                     <Border BorderBrush="Black" BorderThickness="0.5">
                         <TextBox Name="tbMultiLine" TextWrapping="Wrap" 
+                            FontFamily="Courier New" FontSize="14"
                             AcceptsReturn="True" AcceptsTab="True"
                             VerticalScrollBarVisibility="Visible" 
                             MinHeight="140" MaxHeight="140" >
