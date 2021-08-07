@@ -44,9 +44,7 @@
                 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock>
-                            <Bold>Path:</Bold>
-                        </TextBlock>
+                        <TextBlock Text="Path:" FontWeight="Bold" />
                         <TextBlock Name="PathTextBlock" Margin="5,0,0,0" />
                     </StackPanel>
                     
