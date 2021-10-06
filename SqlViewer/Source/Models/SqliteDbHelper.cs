@@ -39,22 +39,18 @@ namespace SqlViewer.Models.Database
             }
         }
 
-        public string ExecuteSqlCommand(string sqlRequest)
+        public DataTable ExecuteSqlCommand(string sqlRequest)
         {
-            string result = string.Empty; 
+            DataTable table = new DataTable(); 
             try
             {
-                DataTable table = GetDataTable(sqlRequest);
-                GetMaxSizeOfColumns(table); 
-                SetColumnNames(ref table, ref result); 
-                SetSeparator(table, ref result); 
-                SetTableContent(ref table, ref result); 
+                table = GetDataTable(sqlRequest);
             }
             catch (System.Exception e)
             {
                 throw e; 
             }
-            return result; 
+            return table; 
         }
 
         private DataTable GetDataTable(string sql)

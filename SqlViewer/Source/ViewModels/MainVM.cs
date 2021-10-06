@@ -1,4 +1,6 @@
+using System.Data; 
 using System.Windows.Input; 
+using System.Windows;
 using System.Windows.Documents; 
 using Microsoft.Win32;
 using SqlViewer.View; 
@@ -18,6 +20,8 @@ namespace SqlViewer.ViewModels
         private SaveFileDialog sfd = new SaveFileDialog();
         private OpenFileDialog ofd = new OpenFileDialog(); 
 
+        public DataTable ResultCollection { get; private set; }
+
         private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
 
         private string path = "C:\\Users\\User\\Desktop\\projects\\sqlviewer\\Databases\\TestDb.sqlite3";
@@ -30,20 +34,23 @@ namespace SqlViewer.ViewModels
             this.DbCommand = new DbCommand(this); 
             this.HelpCommand = new HelpCommand(this); 
 
-
+            this.MainWindow.ResultDataGrid.Visibility = Visibility.Collapsed; 
+            this.MainWindow.ResultDataGrid.IsEnabled = false;
         }
 
         public void SendSqlRequest()
         {
             try
             {
-                this.MainWindow.richTextBox1.Document.Blocks.Clear();
-                string result = SqliteDbHelper.Instance.ExecuteSqlCommand(this.MainWindow.tbMultiLine.Text);
-                this.MainWindow.richTextBox1.Document.Blocks.Add(new Paragraph(new Run($"{result}"))); 
+                ResultCollection = SqliteDbHelper.Instance.ExecuteSqlCommand(this.MainWindow.tbMultiLine.Text);
+                this.MainWindow.ResultDataGrid.ItemsSource = ResultCollection.DefaultView;
+
+                this.MainWindow.ResultDataGrid.Visibility = Visibility.Visible; 
+                this.MainWindow.ResultDataGrid.IsEnabled = true; 
             }
             catch (System.Exception e)
             {
-                this.MainWindow.richTextBox1.Document.Blocks.Add(new Paragraph(new Run($"Exception: {e}")));
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
             }
         }
 

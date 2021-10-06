@@ -48,9 +48,19 @@
                         <TextBlock Name="PathTextBlock" Margin="5,0,0,0" />
                     </StackPanel>
                     
-                    <RichTextBox Name="richTextBox1" Height="160" IsReadOnly="True" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                        <FlowDocument FontFamily="Courier New" FontSize="12" PageHeight="Auto" PageWidth="380" />
-                    </RichTextBox>
+                    <!--DataTable-->
+                    <Grid Name="ResultGrid" Height="160" Background="Gray">
+                        <ScrollViewer ScrollViewer.CanContentScroll="True" 
+                                ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                            <DataGrid Name="ResultDataGrid" 
+                                    Background="Transparent"
+                                    IsReadOnly="True"
+                                    AutoGenerateColumns="True"
+                                    HorizontalAlignment="Left"
+                                    ItemsSource="{Binding ResultCollection}" />
+                        </ScrollViewer>
+                    </Grid>
                 </StackPanel>
             </Grid>
         </Border>
