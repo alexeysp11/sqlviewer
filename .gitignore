@@ -1,10 +1,10 @@
 .vs
 .vscode 
 
-*/*/obj 
-*/*/bin 
+*/obj 
+*/bin 
 
-SqlViewer/Tests
+Tests
 SqlViewer.sln
 
 Docs/ProcessDocs 
