@@ -14,9 +14,7 @@ namespace SqlViewer.Models.Database
             get { return absolutePathToDb; }
             set { absolutePathToDb = value; }
         }
-
-        private int[] MaxSizeOfColumns; 
-
+        
         static SqliteDbHelper()
         {
             Instance = new SqliteDbHelper(); 

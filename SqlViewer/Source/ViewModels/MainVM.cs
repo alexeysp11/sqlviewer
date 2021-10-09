@@ -1,11 +1,11 @@
 using System.Data; 
-using System.Windows.Input; 
-using System.Windows;
+using System.Windows; 
 using System.Windows.Documents; 
+using System.Windows.Input; 
 using Microsoft.Win32;
-using SqlViewer.View; 
 using SqlViewer.Commands; 
 using SqlViewer.Models.Database; 
+using SqlViewer.View; 
 
 namespace SqlViewer.ViewModels
 {
@@ -66,7 +66,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show($"Exception: {ex}", "Exception");
+                System.Windows.MessageBox.Show($"{ex.Message}", "Exception");
             }
         }
 
@@ -86,13 +86,13 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show($"Exception: {ex}", "Exception");
+                System.Windows.MessageBox.Show($"{ex.Message}", "Exception");
             }
         }
 
         public void ShowHelpWindow()
         {
-            System.Windows.MessageBox.Show("ShowHelpWindow");
+            System.Windows.MessageBox.Show("ShowHelpWindow", "Help");
         }
     }
 }

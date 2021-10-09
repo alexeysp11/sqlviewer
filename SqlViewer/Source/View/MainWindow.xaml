@@ -58,7 +58,8 @@
                                     IsReadOnly="True"
                                     AutoGenerateColumns="True"
                                     HorizontalAlignment="Left"
-                                    ItemsSource="{Binding ResultCollection}" />
+                                    ItemsSource="{Binding ResultCollection}"
+                                    AutoGeneratingColumn="ResultDataGrid_AutoGeneratingColumn" />
                         </ScrollViewer>
                     </Grid>
                 </StackPanel>
