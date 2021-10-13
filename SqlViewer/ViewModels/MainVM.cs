@@ -92,7 +92,21 @@ namespace SqlViewer.ViewModels
 
         public void ShowHelpWindow()
         {
-            System.Windows.MessageBox.Show("ShowHelpWindow", "Help");
+            string msg = "Do you want to open documentation in your browser?"; 
+            if (System.Windows.MessageBox.Show(msg, "Help", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            {
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                try 
+                {
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.FileName = "Docs\\About.html";
+                    process.Start();
+                }
+                catch (System.Exception e)
+                {
+                    System.Windows.MessageBox.Show($"{e.Message}", "Exception"); 
+                }
+            }
         }
     }
 }
