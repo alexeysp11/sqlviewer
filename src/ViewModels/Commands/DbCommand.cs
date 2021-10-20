@@ -31,7 +31,7 @@ namespace SqlViewer.Commands
             }
             else
             {
-                System.Windows.MessageBox.Show($"Incorrect CommandParameter: {parameterString} inside SendMsgCommand", "Exception"); 
+                System.Windows.MessageBox.Show($"Incorrect CommandParameter: {parameterString} inside DbCommand", "Exception"); 
             }
         }
     }

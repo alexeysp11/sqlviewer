@@ -1,13 +1,19 @@
 .vs
 .vscode 
 
+SqlViewer.lnk
 */obj 
 */bin 
 
-Tests
+tests
 SqlViewer.sln
 
-Docs/ProcessDocs 
+install.cmd
 
-Databases
+src/Models/Config.cs
+src/SQL
+
+docs/ProcessDocs 
+
+data
 sqlite3.exe

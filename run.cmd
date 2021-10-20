@@ -1,3 +1,3 @@
 @echo off 
 
-dotnet run --project ./SqlViewer/SqlViewer.csproj
+dotnet run --project ./src/SqlViewer.csproj

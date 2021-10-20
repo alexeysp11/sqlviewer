@@ -16,6 +16,7 @@ namespace SqlViewer.ViewModels
         public ICommand SendSqlCommand { get; private set; } 
         public ICommand DbCommand { get; private set; } 
         public ICommand HelpCommand { get; private set; } 
+        public ICommand RedirectCommand { get; private set; } 
 
         private SaveFileDialog sfd = new SaveFileDialog();
         private OpenFileDialog ofd = new OpenFileDialog(); 
@@ -33,6 +34,7 @@ namespace SqlViewer.ViewModels
             this.SendSqlCommand = new SendSqlCommand(this); 
             this.DbCommand = new DbCommand(this); 
             this.HelpCommand = new HelpCommand(this); 
+            this.RedirectCommand = new RedirectCommand(this); 
 
             this.MainWindow.ResultDataGrid.Visibility = Visibility.Collapsed; 
             this.MainWindow.ResultDataGrid.IsEnabled = false;
@@ -107,6 +109,36 @@ namespace SqlViewer.ViewModels
                     System.Windows.MessageBox.Show($"{e.Message}", "Exception"); 
                 }
             }
+        }
+
+        public void RedirectToSqlQuery()
+        {
+            HideAllPages();
+            DisableAllPages();
+
+            this.MainWindow.SqlQueryGrid.Visibility = Visibility.Visible; 
+            this.MainWindow.SqlQueryGrid.IsEnabled = true; 
+        }
+
+        public void RedirectToTables()
+        {
+            HideAllPages();
+            DisableAllPages();
+
+            this.MainWindow.TablesGrid.Visibility = Visibility.Visible; 
+            this.MainWindow.TablesGrid.IsEnabled = true; 
+        }
+
+        private void HideAllPages()
+        {
+            this.MainWindow.SqlQueryGrid.Visibility = Visibility.Collapsed; 
+            this.MainWindow.TablesGrid.Visibility = Visibility.Collapsed; 
+        }
+
+        private void DisableAllPages()
+        {
+            this.MainWindow.TablesGrid.IsEnabled = false; 
+            this.MainWindow.TablesGrid.IsEnabled = false; 
         }
     }
 }
