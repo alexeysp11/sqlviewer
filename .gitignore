@@ -14,7 +14,6 @@ src/Models/Config.cs
 src/SQL
 
 docs/ProcessDocs 
-documents/ProcessDocs 
 
 data
 sqlite3.exe

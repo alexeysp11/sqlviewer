@@ -102,7 +102,7 @@ namespace SqlViewer.ViewModels
                 try 
                 {
                     process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = "Docs\\About.html";
+                    process.StartInfo.FileName = "docs\\About.html";
                     process.Start();
                 }
                 catch (System.Exception e)
