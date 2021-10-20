@@ -84,7 +84,8 @@ namespace SqlViewer.ViewModels
 
                 path = ofd.FileName; 
                 SqliteDbHelper.Instance.SetPathToDb(path);
-                this.MainWindow.PathTextBlock.Text = path;
+                this.MainWindow.tblSqlQueryGridPath.Text = path;
+                this.MainWindow.tblTablesGridPath.Text = path;
             }
             catch (System.Exception ex)
             {
