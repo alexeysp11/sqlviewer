@@ -11,7 +11,7 @@ SqlViewer.sln
 install.cmd
 
 src/Models/Config.cs
-src/SQL
+src/SQL/InitDb.sql
 
 docs/ProcessDocs 
 
