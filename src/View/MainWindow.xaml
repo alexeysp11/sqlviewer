@@ -132,8 +132,13 @@
             </StackPanel>
             
             <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">
-                <Grid Name="Tables">
-                </Grid>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Tables:" />
+                    <Grid>
+                        <TreeView Name="tvTalbes" Height="372" Width="200"
+                                IsEnabled="False" Visibility="Collapsed" />
+                    </Grid>
+                </StackPanel>
             </Border>
 
             <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="0.5">

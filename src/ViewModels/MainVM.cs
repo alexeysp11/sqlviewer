@@ -1,5 +1,7 @@
+using System.Collections.Generic; 
 using System.Data; 
 using System.Windows; 
+using System.Windows.Controls; 
 using System.Windows.Documents; 
 using System.Windows.Input; 
 using Microsoft.Win32;
@@ -25,8 +27,6 @@ namespace SqlViewer.ViewModels
 
         private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
 
-        private string path = "C:\\Users\\User\\Desktop\\projects\\sqlviewer\\Databases\\TestDb.sqlite3";
-
         public MainVM(MainWindow mainWindow)
         {
             this.MainWindow = mainWindow; 
@@ -49,6 +49,31 @@ namespace SqlViewer.ViewModels
 
                 this.MainWindow.ResultDataGrid.Visibility = Visibility.Visible; 
                 this.MainWindow.ResultDataGrid.IsEnabled = true; 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        private void DisplayTablesInDb()
+        {
+            try
+            {
+                string sqlRequest = System.IO.File.ReadAllText("src/SQL/ShowTablesInDb.sql"); 
+                DataTable resultCollection = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+
+                this.MainWindow.tvTalbes.Items.Clear();
+
+                foreach (DataRow row in resultCollection.Rows)
+                {
+                    TreeViewItem item = new TreeViewItem(); 
+                    item.Header = row["name"].ToString();
+                    this.MainWindow.tvTalbes.Items.Add(item); 
+                }
+
+                this.MainWindow.tvTalbes.IsEnabled = true; 
+                this.MainWindow.tvTalbes.Visibility = Visibility.Visible; 
             }
             catch (System.Exception e)
             {
@@ -82,10 +107,12 @@ namespace SqlViewer.ViewModels
                     
                 }
 
-                path = ofd.FileName; 
+                string path = ofd.FileName; 
                 SqliteDbHelper.Instance.SetPathToDb(path);
                 this.MainWindow.tblSqlQueryGridPath.Text = path;
                 this.MainWindow.tblTablesGridPath.Text = path;
+
+                DisplayTablesInDb();
             }
             catch (System.Exception ex)
             {
