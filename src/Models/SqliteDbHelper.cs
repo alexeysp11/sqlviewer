@@ -20,10 +20,7 @@ namespace SqlViewer.Models.Database
             Instance = new SqliteDbHelper(); 
         }
 
-        private SqliteDbHelper() 
-        { 
-
-        }
+        private SqliteDbHelper() {}
 
         public void SetPathToDb(string path)
         {

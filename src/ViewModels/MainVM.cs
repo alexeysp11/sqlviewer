@@ -27,6 +27,8 @@ namespace SqlViewer.ViewModels
 
         private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
 
+        private string[] PathsToSqlFolder = new string[] { "src/SQL/", "../../../SQL/" }; 
+        
         public MainVM(MainWindow mainWindow)
         {
             this.MainWindow = mainWindow; 
@@ -60,7 +62,7 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                string sqlRequest = System.IO.File.ReadAllText("src/SQL/ShowTablesInDb.sql"); 
+                string sqlRequest = GetSqlRequest("ShowTablesInDb.sql"); 
                 DataTable resultCollection = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
 
                 this.MainWindow.tvTalbes.Items.Clear();
@@ -81,6 +83,25 @@ namespace SqlViewer.ViewModels
             }
         }
 
+        private string GetSqlRequest(string filename)
+        {
+            string sqlRequest = string.Empty; 
+            foreach (string path in PathsToSqlFolder)
+            {
+                try
+                {
+                    sqlRequest = System.IO.File.ReadAllText(path + filename); 
+                    break; 
+                }
+                catch (System.Exception) {}
+            }
+            if (sqlRequest == string.Empty)
+            {
+                throw new System.Exception("Unable to display tables located in the database"); 
+            }
+            return sqlRequest; 
+        }
+
         public void CreateNewDb()
         {
             try
@@ -93,7 +114,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show($"{ex.Message}", "Exception");
+                System.Windows.MessageBox.Show(ex.Message, "Exception");
             }
         }
 
@@ -102,10 +123,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 ofd.Filter = filter;
-                if (ofd.ShowDialog() == true)
-                {
-                    
-                }
+                if (ofd.ShowDialog() == true) {}
 
                 string path = ofd.FileName; 
                 SqliteDbHelper.Instance.SetPathToDb(path);
@@ -116,7 +134,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show($"{ex.Message}", "Exception");
+                System.Windows.MessageBox.Show(ex.Message, "Exception");
             }
         }
 
@@ -134,7 +152,7 @@ namespace SqlViewer.ViewModels
                 }
                 catch (System.Exception e)
                 {
-                    System.Windows.MessageBox.Show($"{e.Message}", "Exception"); 
+                    System.Windows.MessageBox.Show(e.Message, "Exception"); 
                 }
             }
         }
