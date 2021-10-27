@@ -20,7 +20,11 @@ namespace SqlViewer.Commands
 
         public void Execute(object parameter)
         {
-            this.MainVM.ShowHelpWindow(); 
+            string parameterString = parameter as string; 
+            if (parameterString == "About")
+            {
+                this.MainVM.ShowUserGuide("About"); 
+            }
         }
     }
 }

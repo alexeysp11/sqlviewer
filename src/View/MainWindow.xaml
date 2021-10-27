@@ -28,12 +28,59 @@
         
         <Menu Grid.Row="0">
             <MenuItem Header="File">
-                <MenuItem Header="SQL query (Ctrl+Q)" Command="{Binding RedirectCommand}" CommandParameter="SqlQuery" />
-                <MenuItem Header="Tables (Ctrl+T)" Command="{Binding RedirectCommand}" CommandParameter="Tables" />
+                <MenuItem Header="New">
+                    <MenuItem Header="SQL file" />
+                    <MenuItem Header="Function" />
+                    <MenuItem Header="Procedure" />
+                    <MenuItem Header="Test" />
+                    <Separator/>
+                    <MenuItem Header="Database" Command="{Binding DbCommand}" CommandParameter="New" />
+                    <MenuItem Header="Table" />
+                    <MenuItem Header="Sequence" />
+                    <MenuItem Header="View" />
+                    <MenuItem Header="Trigger" />
+                    <Separator/>
+                    <MenuItem Header="Command line" />
+                </MenuItem>
+                <MenuItem Header="Open">
+                    <MenuItem Header="SQL file" />
+                    <MenuItem Header="Function" />
+                    <MenuItem Header="Procedure" />
+                    <MenuItem Header="Test" />
+                    <Separator/>
+                    <MenuItem Header="Database" Command="{Binding DbCommand}" CommandParameter="Open" />
+                    <MenuItem Header="Table" />
+                    <MenuItem Header="Sequence" />
+                    <MenuItem Header="View" />
+                    <MenuItem Header="Trigger" />
+                </MenuItem>
+                <MenuItem Header="Reopen" />
+                <Separator/>
+                <MenuItem Header="Save" />
+                <MenuItem Header="Save All" />
+                <Separator/>
+                <MenuItem Header="Close" />
+                <MenuItem Header="Close All" />
+                <Separator/>
+                <MenuItem Header="Exit" />
             </MenuItem>
-            <MenuItem Header="New Database" Command="{Binding DbCommand}" CommandParameter="New" />
-            <MenuItem Header="Open Database" Command="{Binding DbCommand}" CommandParameter="Open" />
-            <MenuItem Header="Help" Command="{Binding HelpCommand}" />
+            <MenuItem Header="View">
+                <MenuItem Header="SQL query" Command="{Binding RedirectCommand}" CommandParameter="SqlQuery" />
+                <MenuItem Header="Tables" Command="{Binding RedirectCommand}" CommandParameter="Tables" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Header="Options" />
+                <MenuItem Header="Toolbars" />
+                <MenuItem Header="Connections" />
+            </MenuItem>
+            <MenuItem Header="Help">
+                <MenuItem Header="SQLite docs" />
+                <MenuItem Header="User's guide">
+                    <MenuItem Header="About" Command="{Binding HelpCommand}" CommandParameter="About" />
+                </MenuItem>
+                <MenuItem Header="GitHub repository" />
+                <MenuItem Header="Report" />
+            </MenuItem>
         </Menu>
 
         <Grid Name="SqlQueryGrid" Grid.Row="1">

@@ -138,16 +138,16 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void ShowHelpWindow()
+        public void ShowUserGuide(string filename)
         {
             string msg = "Do you want to open documentation in your browser?"; 
-            if (System.Windows.MessageBox.Show(msg, "Help", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (System.Windows.MessageBox.Show(msg, "User's guide", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
                 try 
                 {
                     process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = "docs\\About.html";
+                    process.StartInfo.FileName = $"docs\\{filename}.html";
                     process.Start();
                 }
                 catch (System.Exception e)
