@@ -1,4 +1,3 @@
-using System.Collections.Generic; 
 using System.Data; 
 using Microsoft.Data.Sqlite;
 
@@ -37,20 +36,6 @@ namespace SqlViewer.Models.Database
         public DataTable ExecuteSqlCommand(string sqlRequest)
         {
             DataTable table = new DataTable(); 
-            try
-            {
-                table = GetDataTable(sqlRequest);
-            }
-            catch (System.Exception e)
-            {
-                throw e; 
-            }
-            return table; 
-        }
-
-        private DataTable GetDataTable(string sql)
-        {
-            DataTable dt = new DataTable();
             var connectionStringBuilder = new SqliteConnectionStringBuilder();
             connectionStringBuilder.DataSource = AbsolutePathToDb;
             using (var connection = new SqliteConnection(connectionStringBuilder.ConnectionString))
@@ -59,11 +44,10 @@ namespace SqlViewer.Models.Database
                 {
                     connection.Open();
                     var selectCmd = connection.CreateCommand();
-                    selectCmd.CommandText = sql; 
+                    selectCmd.CommandText = sqlRequest; 
                     using (var reader = selectCmd.ExecuteReader())
                     {
-                        dt.Load(reader);
-                        return dt;
+                        table.Load(reader);
                     }
                 }
                 catch (System.Exception e)
@@ -71,6 +55,7 @@ namespace SqlViewer.Models.Database
                     throw e; 
                 }
             }
+            return table; 
         }
     }
 }

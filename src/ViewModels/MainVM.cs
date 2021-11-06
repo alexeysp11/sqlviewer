@@ -168,6 +168,8 @@ namespace SqlViewer.ViewModels
 
         public void RedirectToTables()
         {
+            DisplayTablesInDb();
+
             HideAllPages();
             DisableAllPages();
 

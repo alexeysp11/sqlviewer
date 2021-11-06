@@ -33,7 +33,8 @@
                     <MenuItem Header="Procedure" />
                     <MenuItem Header="Test" />
                     <Separator/>
-                    <MenuItem Header="Database" Command="{Binding DbCommand}" CommandParameter="New" />
+                    <MenuItem Header="Database" Command="{Binding DbCommand}" 
+                            CommandParameter="New" />
                     <MenuItem Header="Table" />
                     <MenuItem Header="Sequence" />
                     <MenuItem Header="View" />
@@ -47,7 +48,8 @@
                     <MenuItem Header="Procedure" />
                     <MenuItem Header="Test" />
                     <Separator/>
-                    <MenuItem Header="Database" Command="{Binding DbCommand}" CommandParameter="Open" />
+                    <MenuItem Header="Database" Command="{Binding DbCommand}" 
+                            CommandParameter="Open" />
                     <MenuItem Header="Table" />
                     <MenuItem Header="Sequence" />
                     <MenuItem Header="View" />
@@ -63,9 +65,17 @@
                 <Separator/>
                 <MenuItem Header="Exit" />
             </MenuItem>
+            <MenuItem Header="Edit">
+                <MenuItem Header="Undo" />
+                <MenuItem Header="Redo" />
+                <Separator/>
+                <MenuItem Header="Settings" />
+            </MenuItem>
             <MenuItem Header="View">
-                <MenuItem Header="SQL query" Command="{Binding RedirectCommand}" CommandParameter="SqlQuery" />
-                <MenuItem Header="Tables" Command="{Binding RedirectCommand}" CommandParameter="Tables" />
+                <MenuItem Header="SQL query" Command="{Binding RedirectCommand}" 
+                        CommandParameter="SqlQuery" />
+                <MenuItem Header="Tables" Command="{Binding RedirectCommand}" 
+                        CommandParameter="Tables" />
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem Header="Options" />
@@ -75,7 +85,8 @@
             <MenuItem Header="Help">
                 <MenuItem Header="SQLite docs" />
                 <MenuItem Header="User's guide">
-                    <MenuItem Header="About" Command="{Binding HelpCommand}" CommandParameter="About" />
+                    <MenuItem Header="About" Command="{Binding HelpCommand}" 
+                            CommandParameter="About" />
                 </MenuItem>
                 <MenuItem Header="GitHub repository" />
                 <MenuItem Header="Report" />
