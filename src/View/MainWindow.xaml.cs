@@ -21,12 +21,15 @@ namespace SqlViewer.View
     /// </summary>
     public partial class MainWindow : Window
     {
+        private MainVM MainVM { get; set; }
+
         public MainWindow()
         {
             try
             {
                 InitializeComponent();
-                DataContext = new MainVM(this); 
+                this.MainVM = new MainVM(this); 
+                DataContext = this.MainVM;
             }
             catch (System.Exception e)
             {
@@ -38,6 +41,34 @@ namespace SqlViewer.View
         {
             string header = e.Column.Header.ToString();
             e.Column.Header = header.Replace("_", "__");
+        }
+
+        private void SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            try
+            {
+                if (e.NewValue == null) 
+                    return; 
+                string selectedItem = (e.NewValue).ToString(); 
+                foreach (TreeViewItem tableName in this.tvTables.Items)
+                {
+                    if (tableName.ToString() == selectedItem)
+                    {
+                        this.tbTableName.Text = tableName.Header.ToString(); 
+                        
+                        this.MainVM.GetAllDataFromTable(tableName.Header.ToString()); 
+                        this.MainVM.GetColumnsOfTable(tableName.Header.ToString()); 
+                        this.MainVM.GetForeignKeys(tableName.Header.ToString()); 
+                        this.MainVM.GetTriggers(tableName.Header.ToString()); 
+                        this.MainVM.GetSqlDefinition(tableName.Header.ToString()); 
+                        break; 
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.ToString(), "Exception"); 
+            }
         }
     }
 }

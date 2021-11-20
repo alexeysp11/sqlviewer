@@ -4,7 +4,15 @@
 
 **sqlviewer** is an open source project for working with SQLite databases on Windows. 
 
-![Example (songs and artists)](img/SongsArtists.png)
+Using this app, you can do the following things: 
+
+- write SQL queries
+
+![Example (UI, query)](img/ui_query.png)
+
+- watch information about all tables inside your database 
+
+![Example (UI, tables)](img/ui_tables.png)
 
 [Here](https://github.com/alexeysp11/sqlviewer) you can get source code and information about classes.
 

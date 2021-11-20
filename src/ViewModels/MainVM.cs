@@ -24,6 +24,7 @@ namespace SqlViewer.ViewModels
         private OpenFileDialog ofd = new OpenFileDialog(); 
 
         public DataTable ResultCollection { get; private set; }
+        public List<string> TablesCollection { get; private set; }
 
         private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
 
@@ -62,20 +63,95 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                string sqlRequest = GetSqlRequest("ShowTablesInDb.sql"); 
-                DataTable resultCollection = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
-
-                this.MainWindow.tvTalbes.Items.Clear();
-
-                foreach (DataRow row in resultCollection.Rows)
+                string sqlRequest = GetSqlRequest("DisplayTablesInDb.sql"); 
+                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                this.MainWindow.tvTables.Items.Clear();
+                foreach (DataRow row in dt.Rows)
                 {
                     TreeViewItem item = new TreeViewItem(); 
                     item.Header = row["name"].ToString();
-                    this.MainWindow.tvTalbes.Items.Add(item); 
+                    this.MainWindow.tvTables.Items.Add(item); 
                 }
+                this.MainWindow.tvTables.IsEnabled = true; 
+                this.MainWindow.tvTables.Visibility = Visibility.Visible; 
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
 
-                this.MainWindow.tvTalbes.IsEnabled = true; 
-                this.MainWindow.tvTalbes.Visibility = Visibility.Visible; 
+        public void GetAllDataFromTable(string tableName)
+        {
+            try
+            {
+                string sqlRequest = $"SELECT * FROM {tableName}"; 
+                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                this.MainWindow.dgrAllData.ItemsSource = dt.DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void GetColumnsOfTable(string tableName)
+        {
+            try
+            {
+                string sqlRequest = $"PRAGMA table_info({tableName});"; 
+                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                this.MainWindow.dgrColumns.ItemsSource = dt.DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void GetForeignKeys(string tableName)
+        {
+            try
+            {
+                string sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
+                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                this.MainWindow.dgrForeignKeys.ItemsSource = dt.DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void GetTriggers(string tableName)
+        {
+            try
+            {
+                string sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
+                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                this.MainWindow.dgrTriggers.ItemsSource = dt.DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void GetSqlDefinition(string tableName)
+        {
+            try
+            {
+                string sqlRequest = string.Format(GetSqlRequest("GetSqlDefinition.sql"), tableName);
+                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                if (dt.Rows.Count > 0) 
+                {
+                    DataRow row = dt.Rows[0];
+                    this.MainWindow.tbSqlTableDefinition.Text = row["sql"].ToString();
+                }
+                else 
+                {
+                    this.MainWindow.tbSqlTableDefinition.Text = string.Empty;
+                }
             }
             catch (System.Exception e)
             {

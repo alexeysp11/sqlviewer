@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" 
         Title="sqlviewer: SQLite Database Viewer (for Windows)" 
-        MinHeight="475" MaxHeight="475" MinWidth="800" MaxWidth="800">
+        MinHeight="525" MaxHeight="525" MinWidth="800" MaxWidth="800">
     <Window.InputBindings>
         <KeyBinding Command="{Binding SendSqlCommand}" Key="Enter" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DbCommand}" CommandParameter="New" Key="N" Modifiers="Ctrl" />
@@ -22,7 +22,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
-            <RowDefinition Height="450" />
+            <RowDefinition Height="500" />
         </Grid.RowDefinitions>
         
         <Menu Grid.Row="0">
@@ -76,6 +76,11 @@
                         CommandParameter="SqlQuery" />
                 <MenuItem Header="Tables" Command="{Binding RedirectCommand}" 
                         CommandParameter="Tables" />
+                <Separator/>
+                <MenuItem Header="Functions" />
+                <MenuItem Header="Procedures" />
+                <Separator/>
+                <MenuItem Header="Databases" />
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem Header="Options" />
@@ -89,14 +94,15 @@
                             CommandParameter="About" />
                 </MenuItem>
                 <MenuItem Header="GitHub repository" />
+                <Separator/>
                 <MenuItem Header="Report" />
             </MenuItem>
         </Menu>
 
         <Grid Name="SqlQueryGrid" Grid.Row="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="225" />
-                <RowDefinition Height="225" />
+                <RowDefinition Height="250" />
+                <RowDefinition Height="250" />
             </Grid.RowDefinitions>
 
             <Border Grid.Row="0" BorderBrush="Black" BorderThickness="0.5">
@@ -118,7 +124,7 @@
                             <TextBlock Name="tblSqlQueryGridPath" Margin="5,0,0,0" />
                         </StackPanel>
                         
-                        <Grid Name="ResultGrid" Height="185" Background="Gray">
+                        <Grid Name="ResultGrid" Height="215" Background="Gray">
                             <ScrollViewer ScrollViewer.CanContentScroll="True" 
                                     ScrollViewer.VerticalScrollBarVisibility="Auto"
                                     ScrollViewer.HorizontalScrollBarVisibility="Auto">
@@ -154,7 +160,7 @@
                                 FontFamily="Courier New" FontSize="14"
                                 AcceptsReturn="True" AcceptsTab="True"
                                 VerticalScrollBarVisibility="Visible" 
-                                MinHeight="140" MaxHeight="140" >
+                                MinHeight="165" MaxHeight="165" >
                             </TextBox>
                         </Border>
                         <Grid>
@@ -175,7 +181,7 @@
         <Grid Name="TablesGrid" Grid.Row="1" IsEnabled="False" Visibility="Collapsed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="25" />
-                <RowDefinition Height="450" />
+                <RowDefinition Height="500" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200" />
@@ -192,8 +198,9 @@
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="Tables:" />
                     <Grid>
-                        <TreeView Name="tvTalbes" Height="372" Width="200"
-                                IsEnabled="False" Visibility="Collapsed" />
+                        <TreeView Name="tvTables" Height="422" Width="200"
+                                IsEnabled="False" Visibility="Collapsed"
+                                SelectedItemChanged="SelectionChanged" />
                     </Grid>
                 </StackPanel>
             </Border>
@@ -201,8 +208,8 @@
             <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="0.5">
                 <Grid Name="TableInfo">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="200" />
-                        <RowDefinition Height="200" />
+                        <RowDefinition Height="225" />
+                        <RowDefinition Height="225" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300" />
@@ -210,19 +217,113 @@
                     </Grid.ColumnDefinitions>
 
                     <Border Grid.Row="0" Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">
-                        <TextBlock Text="View" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ScrollViewer ScrollViewer.CanContentScroll="False"
+                                VerticalScrollBarVisibility="Auto" 
+                                HorizontalScrollBarVisibility="Auto"
+                                VerticalAlignment="Top" HorizontalAlignment="Left"
+                                Width="280">
+                            <StackPanel Orientation="Vertical" Margin="0,0,0,10">
+                                <Label Content="General info" />
+                                <StackPanel Orientation="Horizontal" Margin="25,5,0,0">
+                                    <Label Content="Name:" Width="50" />
+                                    <TextBox Name="tbTableName" Width="150" IsReadOnly="True" />
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" Margin="25,5,0,0">
+                                    <Label Content="Owner:" Width="50" />
+                                    <TextBox Name="tbTableOwner" Width="150" IsReadOnly="True" />
+                                </StackPanel>
+
+                                <Label Content="SQL" />
+                                <Border BorderBrush="Black" BorderThickness="0.5">
+                                    <TextBox Name="tbSqlTableDefinition" 
+                                        TextWrapping="Wrap" IsReadOnly="True"
+                                        FontFamily="Courier New" FontSize="12"
+                                        AcceptsReturn="True" AcceptsTab="True"
+                                        VerticalScrollBarVisibility="Visible" 
+                                        HorizontalScrollBarVisibility="Auto" 
+                                        MinHeight="165" MaxHeight="165" >
+                                    </TextBox>
+                                </Border>
+                            </StackPanel>
+                        </ScrollViewer>
                     </Border>
 
                     <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">
-                        <TextBlock Text="Columns" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="Columns" />
+                            <Grid Name="grColumns" Height="175" Width="283" Background="Gray" 
+                                    HorizontalAlignment="Left">
+                                <ScrollViewer ScrollViewer.CanContentScroll="True" 
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                    <DataGrid Name="dgrColumns" 
+                                            Background="Transparent"
+                                            IsReadOnly="True"
+                                            AutoGenerateColumns="True"
+                                            HorizontalAlignment="Left"
+                                            AutoGeneratingColumn="ResultDataGrid_AutoGeneratingColumn" />
+                                </ScrollViewer>
+                            </Grid>
+                        </StackPanel>
                     </Border>
 
                     <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="0.5">
-                        <TextBlock Text="Triggers" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <ScrollViewer ScrollViewer.CanContentScroll="False"
+                                VerticalScrollBarVisibility="Auto" 
+                                HorizontalScrollBarVisibility="Auto"
+                                VerticalAlignment="Top" HorizontalAlignment="Left"
+                                Width="280">
+                            <StackPanel Orientation="Vertical">
+                                <Label Content="Foreign keys" />
+                                <Grid Name="grForeignKeys" Height="125" Width="263" Background="Gray" 
+                                        HorizontalAlignment="Left">
+                                    <ScrollViewer ScrollViewer.CanContentScroll="True" 
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                        <DataGrid Name="dgrForeignKeys" 
+                                                Background="Transparent"
+                                                IsReadOnly="True"
+                                                AutoGenerateColumns="True"
+                                                HorizontalAlignment="Left"
+                                                AutoGeneratingColumn="ResultDataGrid_AutoGeneratingColumn" />
+                                    </ScrollViewer>
+                                </Grid>
+                                <Label Content="Triggers" />
+                                <Grid Name="grTriggers" Height="150" Width="263" Background="Gray" 
+                                        HorizontalAlignment="Left" Margin="0,0,0,10">
+                                    <ScrollViewer ScrollViewer.CanContentScroll="True" 
+                                            ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                            ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                        <DataGrid Name="dgrTriggers" 
+                                                Background="Transparent"
+                                                IsReadOnly="True"
+                                                AutoGenerateColumns="True"
+                                                HorizontalAlignment="Left"
+                                                AutoGeneratingColumn="ResultDataGrid_AutoGeneratingColumn" />
+                                    </ScrollViewer>
+                                </Grid>
+                            </StackPanel>
+                        </ScrollViewer>
                     </Border>
 
                     <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="0.5">
-                        <TextBlock Text="Data" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <StackPanel Orientation="Vertical">
+                            <Label Content="Data" />
+                            <Grid Name="grAllData" Height="175" Width="283" Background="Gray" 
+                                    HorizontalAlignment="Left">
+                                <ScrollViewer ScrollViewer.CanContentScroll="True" 
+                                        ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                        ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                                    <DataGrid Name="dgrAllData" 
+                                            Background="Transparent"
+                                            IsReadOnly="True"
+                                            AutoGenerateColumns="True"
+                                            HorizontalAlignment="Left"
+                                            AutoGeneratingColumn="ResultDataGrid_AutoGeneratingColumn" />
+                                </ScrollViewer>
+                            </Grid>
+                        </StackPanel>
                     </Border>
                 </Grid>
             </Border>
