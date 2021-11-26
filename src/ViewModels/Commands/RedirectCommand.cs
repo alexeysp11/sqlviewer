@@ -29,6 +29,14 @@ namespace SqlViewer.Commands
             {
                 this.MainVM.RedirectToTables(); 
             }
+            else if (parameterString == "Settings")
+            {
+                this.MainVM.OpenSettingsWindow(); 
+            }
+            else if (parameterString == "Options")
+            {
+                this.MainVM.OpenOptionsWindow(); 
+            }
             else
             {
                 System.Windows.MessageBox.Show($"Incorrect CommandParameter: {parameterString} inside RedirectCommand", "Exception"); 

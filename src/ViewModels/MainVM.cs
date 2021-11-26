@@ -7,7 +7,7 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using SqlViewer.Commands; 
 using SqlViewer.Models.Database; 
-using SqlViewer.View; 
+using SqlViewer.Views; 
 
 namespace SqlViewer.ViewModels
 {
@@ -38,20 +38,17 @@ namespace SqlViewer.ViewModels
             this.DbCommand = new DbCommand(this); 
             this.HelpCommand = new HelpCommand(this); 
             this.RedirectCommand = new RedirectCommand(this); 
-
-            this.MainWindow.ResultDataGrid.Visibility = Visibility.Collapsed; 
-            this.MainWindow.ResultDataGrid.IsEnabled = false;
         }
 
         public void SendSqlRequest()
         {
             try
             {
-                ResultCollection = SqliteDbHelper.Instance.ExecuteSqlCommand(this.MainWindow.tbMultiLine.Text);
-                this.MainWindow.ResultDataGrid.ItemsSource = ResultCollection.DefaultView;
+                ResultCollection = SqliteDbHelper.Instance.ExecuteSqlCommand(this.MainWindow.SqlPage.mtbSqlRequest.Text);
+                this.MainWindow.SqlPage.dbgSqlResult.ItemsSource = ResultCollection.DefaultView;
 
-                this.MainWindow.ResultDataGrid.Visibility = Visibility.Visible; 
-                this.MainWindow.ResultDataGrid.IsEnabled = true; 
+                this.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
+                this.MainWindow.SqlPage.dbgSqlResult.IsEnabled = true; 
             }
             catch (System.Exception e)
             {
@@ -65,15 +62,15 @@ namespace SqlViewer.ViewModels
             {
                 string sqlRequest = GetSqlRequest("DisplayTablesInDb.sql"); 
                 DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
-                this.MainWindow.tvTables.Items.Clear();
+                this.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
                 {
                     TreeViewItem item = new TreeViewItem(); 
                     item.Header = row["name"].ToString();
-                    this.MainWindow.tvTables.Items.Add(item); 
+                    this.MainWindow.TablesPage.tvTables.Items.Add(item); 
                 }
-                this.MainWindow.tvTables.IsEnabled = true; 
-                this.MainWindow.tvTables.Visibility = Visibility.Visible; 
+                this.MainWindow.TablesPage.tvTables.IsEnabled = true; 
+                this.MainWindow.TablesPage.tvTables.Visibility = Visibility.Visible; 
             }
             catch (System.Exception e)
             {
@@ -87,7 +84,7 @@ namespace SqlViewer.ViewModels
             {
                 string sqlRequest = $"SELECT * FROM {tableName}"; 
                 DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
-                this.MainWindow.dgrAllData.ItemsSource = dt.DefaultView;
+                this.MainWindow.TablesPage.dgrAllData.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
@@ -101,7 +98,7 @@ namespace SqlViewer.ViewModels
             {
                 string sqlRequest = $"PRAGMA table_info({tableName});"; 
                 DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
-                this.MainWindow.dgrColumns.ItemsSource = dt.DefaultView;
+                this.MainWindow.TablesPage.dgrColumns.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
@@ -115,7 +112,7 @@ namespace SqlViewer.ViewModels
             {
                 string sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
                 DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
-                this.MainWindow.dgrForeignKeys.ItemsSource = dt.DefaultView;
+                this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
@@ -129,7 +126,7 @@ namespace SqlViewer.ViewModels
             {
                 string sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
                 DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
-                this.MainWindow.dgrTriggers.ItemsSource = dt.DefaultView;
+                this.MainWindow.TablesPage.dgrTriggers.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
@@ -146,11 +143,11 @@ namespace SqlViewer.ViewModels
                 if (dt.Rows.Count > 0) 
                 {
                     DataRow row = dt.Rows[0];
-                    this.MainWindow.tbSqlTableDefinition.Text = row["sql"].ToString();
+                    this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
                 }
                 else 
                 {
-                    this.MainWindow.tbSqlTableDefinition.Text = string.Empty;
+                    this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
                 }
             }
             catch (System.Exception e)
@@ -203,8 +200,8 @@ namespace SqlViewer.ViewModels
 
                 string path = ofd.FileName; 
                 SqliteDbHelper.Instance.SetPathToDb(path);
-                this.MainWindow.tblSqlQueryGridPath.Text = path;
-                this.MainWindow.tblTablesGridPath.Text = path;
+                this.MainWindow.SqlPage.tblSqlPagePath.Text = path;
+                this.MainWindow.TablesPage.tblTablesPagePath.Text = path;
 
                 DisplayTablesInDb();
             }
@@ -238,8 +235,8 @@ namespace SqlViewer.ViewModels
             HideAllPages();
             DisableAllPages();
 
-            this.MainWindow.SqlQueryGrid.Visibility = Visibility.Visible; 
-            this.MainWindow.SqlQueryGrid.IsEnabled = true; 
+            this.MainWindow.SqlPage.Visibility = Visibility.Visible; 
+            this.MainWindow.SqlPage.IsEnabled = true; 
         }
 
         public void RedirectToTables()
@@ -249,20 +246,48 @@ namespace SqlViewer.ViewModels
             HideAllPages();
             DisableAllPages();
 
-            this.MainWindow.TablesGrid.Visibility = Visibility.Visible; 
-            this.MainWindow.TablesGrid.IsEnabled = true; 
+            this.MainWindow.TablesPage.Visibility = Visibility.Visible; 
+            this.MainWindow.TablesPage.IsEnabled = true; 
+        }
+
+        public void OpenSettingsWindow()
+        {
+            try
+            {
+                var win = new SettingsWindow();
+                win.DataContext = this;
+                win.Show();
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
+        }
+
+        public void OpenOptionsWindow()
+        {
+            try
+            {
+                var win = new OptionsWindow();
+                win.DataContext = this;
+                win.Show();
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+            }
         }
 
         private void HideAllPages()
         {
-            this.MainWindow.SqlQueryGrid.Visibility = Visibility.Collapsed; 
-            this.MainWindow.TablesGrid.Visibility = Visibility.Collapsed; 
+            this.MainWindow.SqlPage.Visibility = Visibility.Collapsed; 
+            this.MainWindow.TablesPage.Visibility = Visibility.Collapsed; 
         }
 
         private void DisableAllPages()
         {
-            this.MainWindow.TablesGrid.IsEnabled = false; 
-            this.MainWindow.TablesGrid.IsEnabled = false; 
+            this.MainWindow.TablesPage.IsEnabled = false; 
+            this.MainWindow.TablesPage.IsEnabled = false; 
         }
     }
 }

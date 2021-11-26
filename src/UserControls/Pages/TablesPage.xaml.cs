@@ -1,40 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes; 
 using SqlViewer.ViewModels;
 
-namespace SqlViewer.View
+namespace SqlViewer.UserControls.Pages
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for TablesPage.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class TablesPage : UserControl
     {
         private MainVM MainVM { get; set; }
 
-        public MainWindow()
+        public TablesPage()
         {
-            try
-            {
-                InitializeComponent();
-                this.MainVM = new MainVM(this); 
-                DataContext = this.MainVM;
-            }
-            catch (System.Exception e)
-            {
-                System.Windows.MessageBox.Show($"Exception: {e}", "Exception"); 
-            }
+            InitializeComponent();
+            
+            Loaded += (o, e) => this.MainVM = (MainVM)(this.DataContext); 
         }
 
         private void ResultDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -67,7 +48,7 @@ namespace SqlViewer.View
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception"); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception"); 
             }
         }
     }

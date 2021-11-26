@@ -17,3 +17,8 @@ docs/ProcessDocs
 
 data
 sqlite3.exe
+
+src/Views/New
+src/ViewModels/New
+src/UserControls/Pages/New
+src/UserControls/NewElements
