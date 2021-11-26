@@ -44,7 +44,7 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                ResultCollection = SqliteDbHelper.Instance.ExecuteSqlCommand(this.MainWindow.SqlPage.mtbSqlRequest.Text);
+                ResultCollection = SqliteDbConnection.Instance.ExecuteSqlCommand(this.MainWindow.SqlPage.mtbSqlRequest.Text);
                 this.MainWindow.SqlPage.dbgSqlResult.ItemsSource = ResultCollection.DefaultView;
 
                 this.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
@@ -61,7 +61,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = GetSqlRequest("DisplayTablesInDb.sql"); 
-                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
                 {
@@ -83,7 +83,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"SELECT * FROM {tableName}"; 
-                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrAllData.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
@@ -97,7 +97,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"PRAGMA table_info({tableName});"; 
-                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrColumns.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
@@ -111,7 +111,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
-                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
@@ -125,7 +125,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
-                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrTriggers.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
@@ -139,7 +139,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = string.Format(GetSqlRequest("GetSqlDefinition.sql"), tableName);
-                DataTable dt = SqliteDbHelper.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
                     DataRow row = dt.Rows[0];
@@ -199,7 +199,7 @@ namespace SqlViewer.ViewModels
                 if (ofd.ShowDialog() == true) {}
 
                 string path = ofd.FileName; 
-                SqliteDbHelper.Instance.SetPathToDb(path);
+                SqliteDbConnection.Instance.SetPathToDb(path);
                 this.MainWindow.SqlPage.tblSqlPagePath.Text = path;
                 this.MainWindow.TablesPage.tblTablesPagePath.Text = path;
 
