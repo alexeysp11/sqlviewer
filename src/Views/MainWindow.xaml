@@ -10,6 +10,7 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" 
         Title="sqlviewer: SQLite Database Viewer (for Windows)" 
+        Icon="../Resources/icon.ico"
         MinHeight="525" MaxHeight="525" MinWidth="800" MaxWidth="800">
     <Window.InputBindings>
         <KeyBinding Command="{Binding SendSqlCommand}" 

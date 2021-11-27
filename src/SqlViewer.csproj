@@ -10,4 +10,11 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Resources/icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources/icon.ico" />
+  </ItemGroup>
+
 </Project>
