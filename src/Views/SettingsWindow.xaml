@@ -10,7 +10,40 @@
         WindowStartupLocation="CenterScreen" 
         Title="sqlviewer: SQLite Database Viewer (for Windows) [Settings]" 
         Icon="../Resources/icon.ico"
-        MinHeight="525" MaxHeight="525" MinWidth="800" MaxWidth="800">
+        MinHeight="475" MaxHeight="475" MinWidth="600" MaxWidth="600">
     <Grid>
+        <StackPanel Orientation="Horizontal">
+            <!--Menu-->
+            <StackPanel Orientation="Vertical">
+                <Label Content="Editor" />
+                <Label Content="Database connections" />
+                <Label Content="Paths" />
+            </StackPanel>
+
+            <!--List of preferences-->
+            <StackPanel Orientation="Vertical">
+                <Label Content="Editor" />
+                <Label Content="Language:" />
+                <Label Content="Auto save:" />
+                <Label Content="Font size:" />
+                <Label Content="Font family:" />
+                <Label Content="Tab size:" />
+                <Label Content="Word wrap:" />
+
+                <Label Content="Database connections" />
+                <Label Content="Default DB provider:" />
+                <Label Content="Active DB provider:" />
+                <Label Content="Database:" />
+                <Label Content="Schema:" />
+                <Label Content="Password:" />
+                <Label Content="Active user:" />
+
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Content="Recover" />
+                    <Button Content="Save" />
+                    <Button Content="Cancel" />
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </Grid>
 </Window>

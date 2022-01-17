@@ -13,8 +13,8 @@
         Icon="../Resources/icon.ico"
         MinHeight="525" MaxHeight="525" MinWidth="800" MaxWidth="800">
     <Window.InputBindings>
-        <KeyBinding Command="{Binding SendSqlCommand}" 
-            Key="Enter" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding DbCommand}" 
+            CommandParameter="SendSql" Key="Enter" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DbCommand}" 
             CommandParameter="New" Key="N" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding DbCommand}" 

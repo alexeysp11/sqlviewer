@@ -25,6 +25,22 @@ namespace SqlViewer.Commands
             {
                 this.MainVM.ShowUserGuide("About"); 
             }
+            else if (parameterString == "SqliteDocs")
+            {
+                this.MainVM.ShowSqliteDocs(); 
+            }
+            else if (parameterString == "PosgresDocs")
+            {
+                this.MainVM.ShowPosgresDocs(); 
+            }
+            else if (parameterString == "MySqlDocs")
+            {
+                this.MainVM.ShowMySqlDocs(); 
+            }
+            else 
+            {
+                System.Windows.MessageBox.Show($"Incorrect parameter: {parameterString}", "Error"); 
+            }
         }
     }
 }

@@ -1,35 +1,35 @@
 using System.Data; 
 using Microsoft.Data.Sqlite;
 
-namespace SqlViewer.Models.Database
+namespace SqlViewer.Models.DbConnections
 {
-    public class SqliteDbConnection
+    public class SqliteDbConnection : SqlViewer.Models.DbConnections.IDbConnection 
     {
-        public static SqliteDbConnection Instance { get; private set; } 
+        //public string ProviderName { get; private set; } // For debugging purposes
 
-        private string absolutePathToDb;
-        public string AbsolutePathToDb
-        {
-            get { return absolutePathToDb; }
-            set { absolutePathToDb = value; }
-        }
-        
-        static SqliteDbConnection()
-        {
-            Instance = new SqliteDbConnection(); 
-        }
+        private string AbsolutePathToDb; 
 
-        private SqliteDbConnection() {}
-
-        public void SetPathToDb(string path)
+        public SqliteDbConnection(string path)
         {
             try
             {
-                this.AbsolutePathToDb = path; 
+                SetPathToDb(path); 
             }
             catch (System.Exception e)
             {
-                throw e;
+                throw e; 
+            }
+        }
+
+        public void SetPathToDb(string path)
+        {
+            if ( System.IO.File.Exists(path) )
+            {
+                this.AbsolutePathToDb = path; 
+            }
+            else
+            {
+                throw new System.Exception($"Database file '{path}' does not exists");
             }
         }
 

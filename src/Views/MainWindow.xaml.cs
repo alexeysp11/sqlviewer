@@ -19,15 +19,16 @@ namespace SqlViewer.Views
                 InitializeComponent();
 
                 this.MainVM = new MainVM(this); 
-
                 this.DataContext = this.MainVM;
                 this.Menu.DataContext = this.MainVM; 
                 this.SqlPage.DataContext = this.MainVM; 
                 this.TablesPage.DataContext = this.MainVM; 
+                
+                this.MainVM.Config.Initialize(); 
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
     }

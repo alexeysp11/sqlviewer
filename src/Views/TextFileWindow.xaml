@@ -1,0 +1,15 @@
+<Window x:Class="SqlViewer.Views.TextFileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlViewer.Views"
+        xmlns:vm="clr-namespace:SqlViewer.ViewModels"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" 
+        Title="sqlviewer: SQLite Database Viewer (for Windows) [Text File]" 
+        Icon="../Resources/icon.ico"
+        MinHeight="525" MaxHeight="525" MinWidth="800" MaxWidth="800">
+    <Grid>
+    </Grid>
+</Window>

@@ -37,6 +37,10 @@ namespace SqlViewer.Commands
             {
                 this.MainVM.OpenOptionsWindow(); 
             }
+            else if (parameterString == "Connections")
+            {
+                this.MainVM.OpenConnectionsWindow(); 
+            }
             else
             {
                 System.Windows.MessageBox.Show($"Incorrect CommandParameter: {parameterString} inside RedirectCommand", "Exception"); 

@@ -48,7 +48,7 @@ namespace SqlViewer.UserControls.Pages
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception"); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
     }

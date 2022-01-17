@@ -60,7 +60,8 @@
                             <ColumnDefinition Width="50" />
                         </Grid.ColumnDefinitions>
 
-                        <Button Content="Execute" Grid.Column="0" Margin="0,5,0,0" Command="{Binding SendSqlCommand}" />
+                        <Button Content="Execute" Grid.Column="0" Margin="0,5,0,0" 
+                                Command="{Binding DbCommand}" CommandParameter="SendSql" />
                         <TextBlock Text="UTF-8" Grid.Column="2" Margin="0,5,0,0" />
                     </Grid>
                 </StackPanel>

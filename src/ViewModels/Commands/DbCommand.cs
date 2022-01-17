@@ -21,7 +21,11 @@ namespace SqlViewer.Commands
         public void Execute(object parameter)
         {
             string parameterString = parameter as string; 
-            if (parameterString == "New")
+            if (parameterString == "SendSql")
+            {
+                this.MainVM.SendSqlRequest(); 
+            }
+            else if (parameterString == "New")
             {
                 this.MainVM.CreateNewDb(); 
             }

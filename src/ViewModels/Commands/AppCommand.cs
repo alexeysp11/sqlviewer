@@ -2,11 +2,11 @@ using SqlViewer.ViewModels;
 
 namespace SqlViewer.Commands
 {
-    public class SendSqlCommand : System.Windows.Input.ICommand 
+    public class AppCommand : System.Windows.Input.ICommand
     {
         private MainVM MainVM; 
 
-        public SendSqlCommand(MainVM mainVm)
+        public AppCommand(MainVM mainVm)
         {
             this.MainVM = mainVm; 
         }
@@ -20,7 +20,11 @@ namespace SqlViewer.Commands
 
         public void Execute(object parameter)
         {
-            this.MainVM.SendSqlRequest(); 
+            string parameterString = parameter as string; 
+            if (parameterString == "Exit")
+            {
+                this.MainVM.ExitApplication(); 
+            }
         }
     }
 }

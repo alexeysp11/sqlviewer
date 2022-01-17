@@ -42,7 +42,8 @@
                 <MenuItem Header="Close" />
                 <MenuItem Header="Close All" />
                 <Separator/>
-                <MenuItem Header="Exit" />
+                <MenuItem Header="Exit" Command="{Binding AppCommand}" 
+                        CommandParameter="Exit" />
             </MenuItem>
 
             <MenuItem Header="Edit">
@@ -70,12 +71,20 @@
                 <MenuItem Header="Options" Command="{Binding RedirectCommand}"
                         CommandParameter="Options" />
                 <MenuItem Header="Toolbars" />
-                <MenuItem Header="Connections" />
+                <MenuItem Header="Connections" Command="{Binding RedirectCommand}"
+                        CommandParameter="Connections" />
             </MenuItem>
 
             <MenuItem Header="Help">
-                <MenuItem Header="SQLite docs" />
-                <MenuItem Header="User's guide">
+                <MenuItem Header="Common SQL docs">
+                    <MenuItem Header="SQLite" Command="{Binding HelpCommand}" 
+                            CommandParameter="SqliteDocs" />
+                    <MenuItem Header="PostgreSQL" Command="{Binding HelpCommand}" 
+                            CommandParameter="PosgresDocs" />
+                    <MenuItem Header="MySQL" Command="{Binding HelpCommand}" 
+                            CommandParameter="MySqlDocs" />
+                </MenuItem>
+                <MenuItem Header="User guide">
                     <MenuItem Header="About" Command="{Binding HelpCommand}" 
                             CommandParameter="About" />
                 </MenuItem>

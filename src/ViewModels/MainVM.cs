@@ -6,7 +6,8 @@ using System.Windows.Documents;
 using System.Windows.Input; 
 using Microsoft.Win32;
 using SqlViewer.Commands; 
-using SqlViewer.Models.Database; 
+using SqlViewer.Models; 
+using SqlViewer.Models.DbConnections; 
 using SqlViewer.Views; 
 
 namespace SqlViewer.ViewModels
@@ -15,10 +16,15 @@ namespace SqlViewer.ViewModels
     {
         private MainWindow MainWindow; 
 
-        public ICommand SendSqlCommand { get; private set; } 
+        public Config Config { get; private set; } 
+
+        public SqliteDbConnection AppDbConnection { get; private set; }
+        public SqlViewer.Models.DbConnections.IDbConnection UserDbConnection { get; private set; }
+
         public ICommand DbCommand { get; private set; } 
         public ICommand HelpCommand { get; private set; } 
         public ICommand RedirectCommand { get; private set; } 
+        public ICommand AppCommand { get; private set; } 
 
         private SaveFileDialog sfd = new SaveFileDialog();
         private OpenFileDialog ofd = new OpenFileDialog(); 
@@ -27,24 +33,33 @@ namespace SqlViewer.ViewModels
         public List<string> TablesCollection { get; private set; }
 
         private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
-
-        private string[] PathsToSqlFolder = new string[] { "src/SQL/", "../../../SQL/" }; 
+        private string RootFolder = System.AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\.."; 
         
         public MainVM(MainWindow mainWindow)
         {
             this.MainWindow = mainWindow; 
 
-            this.SendSqlCommand = new SendSqlCommand(this); 
+            string rootFolder = this.RootFolder; 
+            this.Config = new Config(this, rootFolder); 
+
+            this.AppDbConnection = new SqliteDbConnection($"{RootFolder}\\data\\app.db"); 
+            
             this.DbCommand = new DbCommand(this); 
             this.HelpCommand = new HelpCommand(this); 
             this.RedirectCommand = new RedirectCommand(this); 
+            this.AppCommand = new AppCommand(this); 
         }
 
         public void SendSqlRequest()
         {
             try
             {
-                ResultCollection = SqliteDbConnection.Instance.ExecuteSqlCommand(this.MainWindow.SqlPage.mtbSqlRequest.Text);
+                if (this.UserDbConnection == null)
+                {
+                    throw new System.Exception("Database is not opened."); 
+                }
+
+                ResultCollection = this.UserDbConnection.ExecuteSqlCommand(this.MainWindow.SqlPage.mtbSqlRequest.Text);
                 this.MainWindow.SqlPage.dbgSqlResult.ItemsSource = ResultCollection.DefaultView;
 
                 this.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
@@ -52,16 +67,21 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
         private void DisplayTablesInDb()
         {
+            if (this.UserDbConnection == null)
+            {
+                return; 
+            }
+            
             try
             {
-                string sqlRequest = GetSqlRequest("DisplayTablesInDb.sql"); 
-                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
+                string sqlRequest = GetSqlRequest("TableInfo\\DisplayTablesInDb.sql"); 
+                DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
                 {
@@ -74,7 +94,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -83,12 +103,12 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"SELECT * FROM {tableName}"; 
-                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrAllData.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -97,12 +117,12 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"PRAGMA table_info({tableName});"; 
-                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrColumns.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -111,12 +131,12 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
-                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -125,12 +145,12 @@ namespace SqlViewer.ViewModels
             try
             {
                 string sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
-                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrTriggers.ItemsSource = dt.DefaultView;
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -138,8 +158,8 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                string sqlRequest = string.Format(GetSqlRequest("GetSqlDefinition.sql"), tableName);
-                DataTable dt = SqliteDbConnection.Instance.ExecuteSqlCommand(sqlRequest);
+                string sqlRequest = string.Format(GetSqlRequest("TableInfo\\GetSqlDefinition.sql"), tableName);
+                DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
                     DataRow row = dt.Rows[0];
@@ -152,25 +172,20 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
-        private string GetSqlRequest(string filename)
+        public string GetSqlRequest(string filename)
         {
             string sqlRequest = string.Empty; 
-            foreach (string path in PathsToSqlFolder)
+            try
             {
-                try
-                {
-                    sqlRequest = System.IO.File.ReadAllText(path + filename); 
-                    break; 
-                }
-                catch (System.Exception) {}
+                sqlRequest = System.IO.File.ReadAllText($"{RootFolder}\\src\\SQL\\{filename}"); 
             }
-            if (sqlRequest == string.Empty)
+            catch (System.Exception e) 
             {
-                throw new System.Exception("Unable to display tables located in the database"); 
+                throw e; 
             }
             return sqlRequest; 
         }
@@ -187,7 +202,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception");
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -199,7 +214,7 @@ namespace SqlViewer.ViewModels
                 if (ofd.ShowDialog() == true) {}
 
                 string path = ofd.FileName; 
-                SqliteDbConnection.Instance.SetPathToDb(path);
+                this.UserDbConnection = new SqliteDbConnection(path);
                 this.MainWindow.SqlPage.tblSqlPagePath.Text = path;
                 this.MainWindow.TablesPage.tblTablesPagePath.Text = path;
 
@@ -207,25 +222,82 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception");
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         public void ShowUserGuide(string filename)
         {
             string msg = "Do you want to open documentation in your browser?"; 
-            if (System.Windows.MessageBox.Show(msg, "User's guide", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (System.Windows.MessageBox.Show(msg, "User's guide", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
                 try 
                 {
                     process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = $"docs\\{filename}.html";
+                    process.StartInfo.FileName = $"{RootFolder}\\docs\\{filename}.html";
                     process.Start();
                 }
                 catch (System.Exception e)
                 {
-                    System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                }
+            }
+        }
+
+        public void ShowSqliteDocs()
+        {
+            string msg = "Do you want to open SQLite documentation in your browser?"; 
+            if (System.Windows.MessageBox.Show(msg, "Common SQL docs", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                try 
+                {
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.FileName = $"https://www.sqlite.org/index.html";
+                    process.Start();
+                }
+                catch (System.Exception e)
+                {
+                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                }
+            }
+        }
+
+        public void ShowPosgresDocs()
+        {
+            string msg = "Do you want to open PostgreSQL documentation in your browser?"; 
+            if (System.Windows.MessageBox.Show(msg, "Common SQL docs", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                try 
+                {
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.FileName = $"https://www.postgresql.org/";
+                    process.Start();
+                }
+                catch (System.Exception e)
+                {
+                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                }
+            }
+        }
+
+        public void ShowMySqlDocs()
+        {
+            string msg = "Do you want to open MySQL documentation in your browser?"; 
+            if (System.Windows.MessageBox.Show(msg, "Common SQL docs", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                System.Diagnostics.Process process = new System.Diagnostics.Process();
+                try 
+                {
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.FileName = $"https://dev.mysql.com/doc/";
+                    process.Start();
+                }
+                catch (System.Exception e)
+                {
+                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
                 }
             }
         }
@@ -260,7 +332,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -274,7 +346,21 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception e)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception"); 
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+            }
+        }
+
+        public void OpenConnectionsWindow()
+        {
+            try
+            {
+                var win = new ConnectionsWindow();
+                win.DataContext = this;
+                win.Show();
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -288,6 +374,15 @@ namespace SqlViewer.ViewModels
         {
             this.MainWindow.TablesPage.IsEnabled = false; 
             this.MainWindow.TablesPage.IsEnabled = false; 
+        }
+
+        public void ExitApplication()
+        {
+            string msg = "Are you sure to close the application?"; 
+            if (System.Windows.MessageBox.Show(msg, "Exit the application", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                System.Windows.Application.Current.Shutdown();
+            }
         }
     }
 }

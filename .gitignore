@@ -1,24 +1,14 @@
 .vs
 .vscode 
 
-SqlViewer.lnk
-*/obj 
-*/bin 
+obj 
+bin 
 
 tests
-SqlViewer.sln
+test.cmd 
 
-install.cmd
-
-src/Models/Config.cs
-src/SQL/InitDb.sql
+SqlViewer.lnk 
 
 docs/ProcessDocs 
-
-data
-sqlite3.exe
-
-src/Views/New
-src/ViewModels/New
-src/UserControls/Pages/New
-src/UserControls/NewElements
+data 
+whatsnew.txt 
