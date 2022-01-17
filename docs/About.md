@@ -1,4 +1,4 @@
-# sqlviewer: SQLite Database Viewer
+# sqlviewer: SQL Database Viewer
 
 ## About 
 

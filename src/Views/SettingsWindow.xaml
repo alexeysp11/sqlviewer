@@ -8,7 +8,7 @@
         xmlns:uc="clr-namespace:SqlViewer.UserControls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" 
-        Title="sqlviewer: SQLite Database Viewer (for Windows) [Settings]" 
+        Title="sqlviewer: SQL Database Viewer (for Windows) [Settings]" 
         Icon="../Resources/icon.ico"
         MinHeight="475" MaxHeight="475" MinWidth="600" MaxWidth="600">
     <Grid>
