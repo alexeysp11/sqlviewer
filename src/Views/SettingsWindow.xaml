@@ -11,39 +11,73 @@
         Title="sqlviewer: SQL Database Viewer (for Windows) [Settings]" 
         Icon="../Resources/icon.ico"
         MinHeight="475" MaxHeight="475" MinWidth="600" MaxWidth="600">
+    <!--Add Style-->
+    
     <Grid>
-        <StackPanel Orientation="Horizontal">
-            <!--Menu-->
-            <StackPanel Orientation="Vertical">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="400" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <Grid Name="grMain" Grid.Row="0">
+            <StackPanel Name="spPreferences" Orientation="Vertical" Margin="5,5,0,0">
+                <!--StackPanels and ScrollBar-->
                 <Label Content="Editor" />
-                <Label Content="Database connections" />
-                <Label Content="Paths" />
-            </StackPanel>
+                <StackPanel Name="spPreferencesLanguage" Orientation="Horizontal">
+                    <Label Content="Language:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesAutoSave" Orientation="Horizontal">
+                    <Label Content="Auto save:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesFontSize" Orientation="Horizontal">
+                    <Label Content="Font size:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesFontFamily" Orientation="Horizontal">
+                    <Label Content="Font family:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesTabSize" Orientation="Horizontal">
+                    <Label Content="Tab size:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesWordWrap" Orientation="Horizontal">
+                    <Label Content="Word wrap:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
 
-            <!--List of preferences-->
-            <StackPanel Orientation="Vertical">
-                <Label Content="Editor" />
-                <Label Content="Language:" />
-                <Label Content="Auto save:" />
-                <Label Content="Font size:" />
-                <Label Content="Font family:" />
-                <Label Content="Tab size:" />
-                <Label Content="Word wrap:" />
-
-                <Label Content="Database connections" />
-                <Label Content="Default DB provider:" />
-                <Label Content="Active DB provider:" />
-                <Label Content="Database:" />
-                <Label Content="Schema:" />
-                <Label Content="Password:" />
-                <Label Content="Active user:" />
-
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <Button Content="Recover" />
-                    <Button Content="Save" />
-                    <Button Content="Cancel" />
+                <Label Content="DB" />
+                <StackPanel Name="spPreferencesDefaultDbProvider" Orientation="Horizontal">
+                    <Label Content="Default DB provider:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesActiveDbProvider" Orientation="Horizontal">
+                    <Label Content="Active DB provider:" Width="110" />
+                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesDatabase" Orientation="Horizontal">
+                    <Label Content="Database:" Width="110" />
+                    <TextBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesSchema" Orientation="Horizontal">
+                    <Label Content="Schema:" Width="110" />
+                    <TextBox Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesPassword" Orientation="Horizontal">
+                    <Label Content="Password:" Width="110" />
+                    <TextBox Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
             </StackPanel>
-        </StackPanel>
+        </Grid>
+
+        <Grid Name="grButtons" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
+                <Button Content="Recover" Width="75" Height="25" />
+                <Button Content="Save" Width="75" Height="25" />
+                <Button Content="Cancel" Width="75" Height="25" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </Window>
