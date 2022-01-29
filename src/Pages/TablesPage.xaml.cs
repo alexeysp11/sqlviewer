@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
 
-namespace SqlViewer.UserControls.Pages
+namespace SqlViewer.Pages
 {
     /// <summary>
     /// Interaction logic for TablesPage.xaml

@@ -5,13 +5,11 @@ using SqlViewer.ViewModels;
 namespace SqlViewer.Views
 {
     /// <summary>
-    /// Interaction logic for TextFileWindow.xaml
+    /// Interaction logic for OptionsView.xaml
     /// </summary>
-    public partial class TextFileWindow : Window
+    public partial class OptionsView : Window
     {
-        private MainVM MainVM { get; set; }
-
-        public TextFileWindow()
+        public OptionsView()
         {
             InitializeComponent();
         }

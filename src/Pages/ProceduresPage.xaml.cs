@@ -2,16 +2,16 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
 
-namespace SqlViewer.UserControls.NewElements
+namespace SqlViewer.Pages
 {
     /// <summary>
-    /// Interaction logic for NewTable.xaml
+    /// Interaction logic for ProceduresPage.xaml
     /// </summary>
-    public partial class NewTable : UserControl
+    public partial class ProceduresPage : UserControl
     {
         private MainVM MainVM { get; set; }
 
-        public NewTable()
+        public ProceduresPage()
         {
             InitializeComponent();
         }

@@ -2,16 +2,16 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
 
-namespace SqlViewer.UserControls.Pages
+namespace SqlViewer.Views
 {
     /// <summary>
-    /// Interaction logic for DatabasesPage.xaml
+    /// Interaction logic for TextFileView.xaml
     /// </summary>
-    public partial class DatabasesPage : UserControl
+    public partial class TextFileView : Window
     {
         private MainVM MainVM { get; set; }
 
-        public DatabasesPage()
+        public TextFileView()
         {
             InitializeComponent();
         }

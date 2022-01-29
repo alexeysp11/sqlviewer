@@ -31,15 +31,15 @@ namespace SqlViewer.Commands
             }
             else if (parameterString == "Settings")
             {
-                this.MainVM.OpenSettingsWindow(); 
+                this.MainVM.OpenSettingsView(); 
             }
             else if (parameterString == "Options")
             {
-                this.MainVM.OpenOptionsWindow(); 
+                this.MainVM.OpenOptionsView(); 
             }
             else if (parameterString == "Connections")
             {
-                this.MainVM.OpenConnectionsWindow(); 
+                this.MainVM.OpenConnectionsView(); 
             }
             else
             {

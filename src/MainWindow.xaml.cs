@@ -3,7 +3,7 @@ using System.Windows.Controls;
 using SqlViewer.ViewModels;
 using SqlViewer.UserControls; 
 
-namespace SqlViewer.Views
+namespace SqlViewer
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

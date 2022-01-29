@@ -181,7 +181,7 @@ namespace SqlViewer.ViewModels
             string sqlRequest = string.Empty; 
             try
             {
-                sqlRequest = System.IO.File.ReadAllText($"{RootFolder}\\src\\SQL\\{filename}"); 
+                sqlRequest = System.IO.File.ReadAllText($"{RootFolder}\\src\\Queries\\{filename}"); 
             }
             catch (System.Exception e) 
             {
@@ -322,11 +322,11 @@ namespace SqlViewer.ViewModels
             this.MainWindow.TablesPage.IsEnabled = true; 
         }
 
-        public void OpenSettingsWindow()
+        public void OpenSettingsView()
         {
             try
             {
-                var win = new SettingsWindow();
+                var win = new SettingsView();
                 win.DataContext = this;
                 win.Show();
             }
@@ -336,11 +336,11 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void OpenOptionsWindow()
+        public void OpenOptionsView()
         {
             try
             {
-                var win = new OptionsWindow();
+                var win = new OptionsView();
                 win.DataContext = this;
                 win.Show();
             }
@@ -350,11 +350,11 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void OpenConnectionsWindow()
+        public void OpenConnectionsView()
         {
             try
             {
-                var win = new ConnectionsWindow();
+                var win = new ConnectionsView();
                 win.DataContext = this;
                 win.Show();
             }

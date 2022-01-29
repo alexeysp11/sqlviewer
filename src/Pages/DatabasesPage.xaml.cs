@@ -2,16 +2,16 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
 
-namespace SqlViewer.Views
+namespace SqlViewer.Pages
 {
     /// <summary>
-    /// Interaction logic for ConnectionsWindow.xaml
+    /// Interaction logic for DatabasesPage.xaml
     /// </summary>
-    public partial class ConnectionsWindow : Window
+    public partial class DatabasesPage : UserControl
     {
         private MainVM MainVM { get; set; }
 
-        public ConnectionsWindow()
+        public DatabasesPage()
         {
             InitializeComponent();
         }

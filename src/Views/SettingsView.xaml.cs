@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
@@ -5,13 +6,11 @@ using SqlViewer.ViewModels;
 namespace SqlViewer.Views
 {
     /// <summary>
-    /// Interaction logic for NewWindow.xaml
+    /// Interaction logic for SettingsView.xaml
     /// </summary>
-    public partial class NewWindow : Window
+    public partial class SettingsView : Window
     {
-        private MainVM MainVM { get; set; }
-
-        public NewWindow()
+        public SettingsView()
         {
             InitializeComponent();
         }
