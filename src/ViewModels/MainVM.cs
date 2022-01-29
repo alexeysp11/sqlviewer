@@ -32,8 +32,9 @@ namespace SqlViewer.ViewModels
         public DataTable ResultCollection { get; private set; }
         public List<string> TablesCollection { get; private set; }
 
+        public string RootFolder { get; private set; } = System.AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\.."; 
+        
         private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
-        private string RootFolder = System.AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\.."; 
         
         public MainVM(MainWindow mainWindow)
         {
@@ -190,7 +191,7 @@ namespace SqlViewer.ViewModels
             return sqlRequest; 
         }
 
-        public void CreateNewDb()
+        public void CreateLocalDb()
         {
             try
             {
@@ -206,7 +207,7 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void OpenExistingDb()
+        public void OpenLocalDb()
         {
             try
             {
@@ -214,6 +215,10 @@ namespace SqlViewer.ViewModels
                 if (ofd.ShowDialog() == true) {}
 
                 string path = ofd.FileName; 
+                if (path == string.Empty)
+                {
+                    return; 
+                }
                 this.UserDbConnection = new SqliteDbConnection(path);
                 this.MainWindow.SqlPage.tblSqlPagePath.Text = path;
                 this.MainWindow.TablesPage.tblTablesPagePath.Text = path;
@@ -225,74 +230,32 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        public void ShowUserGuide(string filename)
+        
+        public void OpenView(string viewName)
         {
-            string msg = "Do you want to open documentation in your browser?"; 
-            if (System.Windows.MessageBox.Show(msg, "User's guide", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            try
             {
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                try 
-                {
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = $"{RootFolder}\\docs\\{filename}.html";
-                    process.Start();
-                }
-                catch (System.Exception e)
-                {
-                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
-                }
+                var type = System.Type.GetType("SqlViewer.Views." + viewName); 
+                var win = System.Activator.CreateInstance(type) as System.Windows.Window; 
+                win.DataContext = this;
+                win.Show();
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
-        public void ShowSqliteDocs()
+        public void OpenDocsInBrowser(string docName, string title, string filePath)
         {
-            string msg = "Do you want to open SQLite documentation in your browser?"; 
-            if (System.Windows.MessageBox.Show(msg, "Common SQL docs", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            string msg = "Do you want to open " + docName + " in your browser?"; 
+            if (System.Windows.MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
                 try 
                 {
                     process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = $"https://www.sqlite.org/index.html";
-                    process.Start();
-                }
-                catch (System.Exception e)
-                {
-                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
-                }
-            }
-        }
-
-        public void ShowPosgresDocs()
-        {
-            string msg = "Do you want to open PostgreSQL documentation in your browser?"; 
-            if (System.Windows.MessageBox.Show(msg, "Common SQL docs", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                try 
-                {
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = $"https://www.postgresql.org/";
-                    process.Start();
-                }
-                catch (System.Exception e)
-                {
-                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
-                }
-            }
-        }
-
-        public void ShowMySqlDocs()
-        {
-            string msg = "Do you want to open MySQL documentation in your browser?"; 
-            if (System.Windows.MessageBox.Show(msg, "Common SQL docs", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                try 
-                {
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = $"https://dev.mysql.com/doc/";
+                    process.StartInfo.FileName = filePath;
                     process.Start();
                 }
                 catch (System.Exception e)
@@ -320,48 +283,6 @@ namespace SqlViewer.ViewModels
 
             this.MainWindow.TablesPage.Visibility = Visibility.Visible; 
             this.MainWindow.TablesPage.IsEnabled = true; 
-        }
-
-        public void OpenSettingsView()
-        {
-            try
-            {
-                var win = new SettingsView();
-                win.DataContext = this;
-                win.Show();
-            }
-            catch (System.Exception e)
-            {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
-            }
-        }
-
-        public void OpenOptionsView()
-        {
-            try
-            {
-                var win = new OptionsView();
-                win.DataContext = this;
-                win.Show();
-            }
-            catch (System.Exception e)
-            {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
-            }
-        }
-
-        public void OpenConnectionsView()
-        {
-            try
-            {
-                var win = new ConnectionsView();
-                win.DataContext = this;
-                win.Show();
-            }
-            catch (System.Exception e)
-            {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
-            }
         }
 
         private void HideAllPages()

@@ -23,19 +23,27 @@ namespace SqlViewer.Commands
             string parameterString = parameter as string; 
             if (parameterString == "About")
             {
-                this.MainVM.ShowUserGuide("About"); 
+                this.MainVM.OpenDocsInBrowser("About page", 
+                                            "User guide", 
+                                            $"{this.MainVM.RootFolder}\\docs\\About.html"); 
             }
             else if (parameterString == "SqliteDocs")
             {
-                this.MainVM.ShowSqliteDocs(); 
+                this.MainVM.OpenDocsInBrowser("SQLite documentation", 
+                                            "Common SQL docs", 
+                                            "https://www.sqlite.org/index.html"); 
             }
             else if (parameterString == "PosgresDocs")
             {
-                this.MainVM.ShowPosgresDocs(); 
+                this.MainVM.OpenDocsInBrowser("PosgresSQL documentation", 
+                                            "Common SQL docs", 
+                                            "https://www.postgresql.org/"); 
             }
             else if (parameterString == "MySqlDocs")
             {
-                this.MainVM.ShowMySqlDocs(); 
+                this.MainVM.OpenDocsInBrowser("MySQL documentation", 
+                                            "Common SQL docs", 
+                                            "https://dev.mysql.com/doc/"); 
             }
             else 
             {

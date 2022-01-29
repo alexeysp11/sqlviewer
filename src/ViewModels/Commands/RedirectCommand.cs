@@ -1,3 +1,4 @@
+using SqlViewer.Views; 
 using SqlViewer.ViewModels; 
 
 namespace SqlViewer.Commands
@@ -31,15 +32,15 @@ namespace SqlViewer.Commands
             }
             else if (parameterString == "Settings")
             {
-                this.MainVM.OpenSettingsView(); 
+                this.MainVM.OpenView("SettingsView"); 
             }
             else if (parameterString == "Options")
             {
-                this.MainVM.OpenOptionsView(); 
+                this.MainVM.OpenView("OptionsView"); 
             }
             else if (parameterString == "Connections")
             {
-                this.MainVM.OpenConnectionsView(); 
+                this.MainVM.OpenView("ConnectionsView"); 
             }
             else
             {

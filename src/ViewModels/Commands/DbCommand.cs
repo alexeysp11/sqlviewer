@@ -27,11 +27,13 @@ namespace SqlViewer.Commands
             }
             else if (parameterString == "New")
             {
-                this.MainVM.CreateNewDb(); 
+                // If SQLite 
+                this.MainVM.CreateLocalDb(); 
             }
             else if (parameterString == "Open")
             {
-                this.MainVM.OpenExistingDb(); 
+                // If SQLite 
+                this.MainVM.OpenLocalDb(); 
             }
             else
             {
