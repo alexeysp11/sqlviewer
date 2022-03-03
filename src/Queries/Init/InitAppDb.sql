@@ -12,7 +12,7 @@ CREATE TABLE sys_sql
 (
     sys_sql_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     name VARCHAR(50) NOT NULL, 
-    sql VARCHAR(255) NOT NULL
+    sql TEXT NOT NULL
 ); 
 
 CREATE TABLE command 
@@ -62,18 +62,11 @@ CREATE TABLE role
     f_delete NUMERIC(1) 
 ); 
 
-CREATE TABLE settings 
-(
-    settings_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    name VARCHAR(25) NOT NULL, 
-    description VARCHAR(100) 
-); 
-
 CREATE TABLE user_settings 
 (
-    user_id NOT NULL, 
-    settings_id NOT NULL, 
-    value NOT NULL
+    user_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
+    settings_id INTEGER NOT NULL, 
+    value INTEGER NOT NULL
 ); 
 
 /*
@@ -82,5 +75,3 @@ Necessary tables:
 - Parameters (parameter_id, name, short_name, value): 
     - Filters for opening/creating files. 
 */
-
--- Insert data 

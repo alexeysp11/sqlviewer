@@ -1,6 +1,6 @@
 # sqlviewer 
 
-`sqlviewer` is a C# implementation of a GUI for **SQLite**. 
+`sqlviewer` is a C# implementation of a GUI for **SQLite**, **PostgreSQL** and **MySQL**. 
 This application is written with **WPF** using **MVVM** pattern. 
 
 Using this app, you can do the following things: 

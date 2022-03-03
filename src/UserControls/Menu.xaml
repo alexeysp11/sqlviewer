@@ -7,90 +7,91 @@
         xmlns:vm="clr-namespace:SqlViewer.ViewModels">
     <Grid>
         <Menu>
-            <MenuItem Header="File">
-                <MenuItem Header="New">
-                    <MenuItem Header="SQL file" />
-                    <MenuItem Header="Function" />
-                    <MenuItem Header="Procedure" />
-                    <MenuItem Header="Test" />
+            <MenuItem Name="miFile" Header="File">
+                <MenuItem Name="miFileNew" Header="New">
+                    <MenuItem Name="miFileNewSQL" Header="SQL file" />
+                    <MenuItem Name="miFileNewFunction" Header="Function" />
+                    <MenuItem Name="miFileNewProcedure" Header="Procedure" />
+                    <MenuItem Name="miFileNewTest" Header="Test" />
                     <Separator/>
-                    <MenuItem Header="Database" Command="{Binding DbCommand}" 
+                    <MenuItem Name="miFileNewDatabase" Header="Database" Command="{Binding DbCommand}" 
                             CommandParameter="New" />
-                    <MenuItem Header="Table" />
-                    <MenuItem Header="Sequence" />
-                    <MenuItem Header="View" />
-                    <MenuItem Header="Trigger" />
+                    <MenuItem Name="miFileNewTable" Header="Table" />
+                    <MenuItem Name="miFileNewSequence" Header="Sequence" />
+                    <MenuItem Name="miFileNewView" Header="View" />
+                    <MenuItem Name="miFileNewTrigger" Header="Trigger" />
                 </MenuItem>
-                <MenuItem Header="Open">
-                    <MenuItem Header="SQL file" />
-                    <MenuItem Header="Function" />
-                    <MenuItem Header="Procedure" />
-                    <MenuItem Header="Test" />
+                <MenuItem Name="miFileOpen" Header="Open">
+                    <MenuItem Name="miFileOpenSQL" Header="SQL file" />
+                    <MenuItem Name="miFileOpenFunction" Header="Function" />
+                    <MenuItem Name="miFileOpenProcedure" Header="Procedure" />
+                    <MenuItem Name="miFileOpenTest" Header="Test" />
                     <Separator/>
-                    <MenuItem Header="Database" Command="{Binding DbCommand}" 
+                    <MenuItem Name="miFileOpenDatabase" Header="Database" Command="{Binding DbCommand}" 
                             CommandParameter="Open" />
-                    <MenuItem Header="Table" />
-                    <MenuItem Header="Sequence" />
-                    <MenuItem Header="View" />
-                    <MenuItem Header="Trigger" />
+                    <MenuItem Name="miFileOpenTable" Header="Table" />
+                    <MenuItem Name="miFileOpenSequence" Header="Sequence" />
+                    <MenuItem Name="miFileOpenView" Header="View" />
+                    <MenuItem Name="miFileOpenTrigger" Header="Trigger" />
                 </MenuItem>
-                <MenuItem Header="Reopen" />
+                <MenuItem Name="miFileReopen" Header="Reopen" />
                 <Separator/>
-                <MenuItem Header="Save" />
-                <MenuItem Header="Save All" />
+                <MenuItem Name="miFileSave" Header="Save" />
+                <MenuItem Name="miFileSaveAll" Header="Save All" />
                 <Separator/>
-                <MenuItem Header="Close" />
-                <MenuItem Header="Close All" />
+                <MenuItem Name="miFileClose" Header="Close" />
+                <MenuItem Name="miFileCloseAll" Header="Close All" />
                 <Separator/>
-                <MenuItem Header="Exit" Command="{Binding AppCommand}" 
-                        CommandParameter="Exit" />
+                <MenuItem Name="miFileExit" Header="Exit" Command="{Binding AppCommand}" 
+                        CommandParameter="ExitApplication" />
             </MenuItem>
 
-            <MenuItem Header="Edit">
-                <MenuItem Header="Undo" />
-                <MenuItem Header="Redo" />
+            <MenuItem Name="miEdit" Header="Edit">
+                <MenuItem Name="miEditUndo" Header="Undo" />
+                <MenuItem Name="miEditRedo" Header="Redo" />
                 <Separator/>
-                <MenuItem Header="Settings" Command="{Binding RedirectCommand}"
+                <MenuItem Name="miEditSettings" Header="Settings" Command="{Binding RedirectCommand}"
                         CommandParameter="Settings" />
             </MenuItem>
 
-            <MenuItem Header="Pages">
-                <MenuItem Header="SQL query" Command="{Binding RedirectCommand}" 
+            <MenuItem Name="miPages" Header="Pages">
+                <MenuItem Name="miPagesSqlQuery" Header="SQL query" Command="{Binding RedirectCommand}" 
                         CommandParameter="SqlQuery" />
-                <MenuItem Header="Command line" />
+                <MenuItem Name="miPagesCommandLine" Header="Command line" />
                 <Separator/>
-                <MenuItem Header="Functions" />
-                <MenuItem Header="Procedures" />
+                <MenuItem Name="miPagesFunctions" Header="Functions" />
+                <MenuItem Name="miPagesProcedures" Header="Procedures" />
+                <MenuItem Name="miPagesTests" Header="Tests" />
                 <Separator/>
-                <MenuItem Header="Databases" />
-                <MenuItem Header="Tables" Command="{Binding RedirectCommand}" 
+                <MenuItem Name="miPagesDatabases" Header="Databases" />
+                <MenuItem Name="miPagesTables" Header="Tables" Command="{Binding RedirectCommand}" 
                         CommandParameter="Tables" />
             </MenuItem>
 
-            <MenuItem Header="Tools">
-                <MenuItem Header="Options" Command="{Binding RedirectCommand}"
+            <MenuItem Name="miTools" Header="Tools">
+                <MenuItem Name="miToolsOptions" Header="Options" Command="{Binding RedirectCommand}"
                         CommandParameter="Options" />
-                <MenuItem Header="Toolbars" />
-                <MenuItem Header="Connections" Command="{Binding RedirectCommand}"
+                <MenuItem Name="miToolsToolbars" Header="Toolbars" />
+                <MenuItem Name="miToolsConnections" Header="Connections" Command="{Binding RedirectCommand}"
                         CommandParameter="Connections" />
             </MenuItem>
 
-            <MenuItem Header="Help">
-                <MenuItem Header="Common SQL docs">
-                    <MenuItem Header="SQLite" Command="{Binding HelpCommand}" 
+            <MenuItem Name="miHelp" Header="Help">
+                <MenuItem Name="miHelpDocs" Header="Common SQL docs">
+                    <MenuItem Name="miHelpDocsSqlite" Header="SQLite" Command="{Binding HelpCommand}" 
                             CommandParameter="SqliteDocs" />
-                    <MenuItem Header="PostgreSQL" Command="{Binding HelpCommand}" 
+                    <MenuItem Name="miHelpDocsPostgres" Header="PostgreSQL" Command="{Binding HelpCommand}" 
                             CommandParameter="PosgresDocs" />
-                    <MenuItem Header="MySQL" Command="{Binding HelpCommand}" 
+                    <MenuItem Name="miHelpDocsMySql" Header="MySQL" Command="{Binding HelpCommand}" 
                             CommandParameter="MySqlDocs" />
                 </MenuItem>
-                <MenuItem Header="User guide">
-                    <MenuItem Header="About" Command="{Binding HelpCommand}" 
+                <MenuItem Name="miHelpUserGuide" Header="User guide">
+                    <MenuItem Name="miHelpUserGuideAbout" Header="About" Command="{Binding HelpCommand}" 
                             CommandParameter="About" />
                 </MenuItem>
-                <MenuItem Header="GitHub repository" />
+                <MenuItem Name="miHelpGithub" Header="GitHub repository" />
                 <Separator/>
-                <MenuItem Header="Report" />
+                <MenuItem Name="miHelpReport" Header="Report" />
             </MenuItem>
         </Menu>
     </Grid>

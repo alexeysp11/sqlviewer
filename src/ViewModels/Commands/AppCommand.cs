@@ -21,9 +21,25 @@ namespace SqlViewer.Commands
         public void Execute(object parameter)
         {
             string parameterString = parameter as string; 
-            if (parameterString == "Exit")
+            if (parameterString == "ExitApplication")
             {
                 this.MainVM.ExitApplication(); 
+            }
+            else if (parameterString == "RecoverSettings")
+            {
+                this.MainVM.RecoverSettings(); 
+            }
+            else if (parameterString == "SaveSettings")
+            {
+                this.MainVM.SaveSettings(); 
+            }
+            else if (parameterString == "CancelSettings")
+            {
+                this.MainVM.CancelSettings(); 
+            }
+            else 
+            {
+                System.Windows.MessageBox.Show($"Incorrect CommandParameter: {parameterString} inside AppCommand", "Exception"); 
             }
         }
     }

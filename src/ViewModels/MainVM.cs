@@ -7,24 +7,39 @@ using System.Windows.Input;
 using Microsoft.Win32;
 using SqlViewer.Commands; 
 using SqlViewer.Models; 
+using SqlViewer.Models.EnumOperations; 
 using SqlViewer.Models.DbConnections; 
 using SqlViewer.Views; 
+using SqlViewer.Utils.Language; 
+using IDbConnectionSqlViewer = SqlViewer.Models.DbConnections.IDbConnection; 
+using UserControlsMenu = SqlViewer.UserControls.Menu; 
+using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
 namespace SqlViewer.ViewModels
 {
     public class MainVM
     {
-        private MainWindow MainWindow; 
+        public MainWindow MainWindow { get; private set; } 
 
         public Config Config { get; private set; } 
 
+        public AppRepository AppRepository { get; private set; } = null; 
+
         public SqliteDbConnection AppDbConnection { get; private set; }
-        public SqlViewer.Models.DbConnections.IDbConnection UserDbConnection { get; private set; }
+        public IDbConnectionSqlViewer UserDbConnection { get; private set; }
 
         public ICommand DbCommand { get; private set; } 
         public ICommand HelpCommand { get; private set; } 
         public ICommand RedirectCommand { get; private set; } 
         public ICommand AppCommand { get; private set; } 
+
+        public Window SettingsView { get; set; }
+        public UserControl Menu { get; set; }
+
+        public EnumEncoder EnumEncoder {get; private set; } = new EnumEncoder();  
+        public EnumDecoder EnumDecoder {get; private set; } = new EnumDecoder(); 
+
+        public Translator Translator { get; private set; }  
 
         private SaveFileDialog sfd = new SaveFileDialog();
         private OpenFileDialog ofd = new OpenFileDialog(); 
@@ -49,6 +64,72 @@ namespace SqlViewer.ViewModels
             this.HelpCommand = new HelpCommand(this); 
             this.RedirectCommand = new RedirectCommand(this); 
             this.AppCommand = new AppCommand(this); 
+
+            var appDbConnection = this.AppDbConnection; 
+            this.Translator = new Translator(this); 
+            this.Translator.SetAppDbConnection(appDbConnection); 
+        }
+
+        #region User DB methods 
+        private void InitUserDbConnection()
+        {
+            try
+            {
+                if (AppRepository == null)
+                {
+                    throw new System.Exception("AppRepository is not assigned."); 
+                }
+
+                if (AppRepository.ActiveRdbms == RdbmsEnum.SQLite)
+                {
+                    // Unable to set an empty path for UserDbConnection, so it's better to assign UserDbConnection as null.  
+                    this.UserDbConnection = null; 
+                }
+                else if (AppRepository.ActiveRdbms == RdbmsEnum.PostgreSQL)
+                {
+                    this.UserDbConnection = new PgDbConnection(); 
+                }
+                else if (AppRepository.ActiveRdbms == RdbmsEnum.MySQL)
+                {
+                    this.UserDbConnection = new MysqlDbConnection(); 
+                }
+                else 
+                {
+                    throw new System.Exception($"Unable to assign UserDbConnection, incorrect ActiveRdbms: {AppRepository.ActiveRdbms}."); 
+                }
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+            }
+            finally
+            {
+                this.MainWindow.SqlPage.tblSqlPagePath.Text = string.Empty;
+
+                var emptyDt = new DataTable(); 
+                this.MainWindow.TablesPage.tvTables.Items.Clear();
+                this.MainWindow.TablesPage.tblTablesPagePath.Text = string.Empty;
+                this.MainWindow.TablesPage.dgrAllData.ItemsSource = emptyDt.DefaultView;
+                this.MainWindow.TablesPage.dgrColumns.ItemsSource = emptyDt.DefaultView;
+                this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = emptyDt.DefaultView;
+                this.MainWindow.TablesPage.dgrTriggers.ItemsSource = emptyDt.DefaultView;
+                this.MainWindow.TablesPage.tbTableName.Text = string.Empty; 
+                this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
+            }
+        }
+
+        private void InitLocalDbConnection(string path)
+        {
+            try
+            {
+                this.UserDbConnection = new SqliteDbConnection(path);
+                this.MainWindow.SqlPage.tblSqlPagePath.Text = path;
+                this.MainWindow.TablesPage.tblTablesPagePath.Text = path;
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+            }
         }
 
         public void SendSqlRequest()
@@ -78,7 +159,7 @@ namespace SqlViewer.ViewModels
             {
                 return; 
             }
-            
+
             try
             {
                 string sqlRequest = GetSqlRequest("TableInfo\\DisplayTablesInDb.sql"); 
@@ -96,6 +177,7 @@ namespace SqlViewer.ViewModels
             catch (System.Exception e)
             {
                 System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+
             }
         }
 
@@ -219,10 +301,7 @@ namespace SqlViewer.ViewModels
                 {
                     return; 
                 }
-                this.UserDbConnection = new SqliteDbConnection(path);
-                this.MainWindow.SqlPage.tblSqlPagePath.Text = path;
-                this.MainWindow.TablesPage.tblTablesPagePath.Text = path;
-
+                InitLocalDbConnection(path); 
                 DisplayTablesInDb();
             }
             catch (System.Exception ex)
@@ -230,7 +309,51 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        #endregion  // User DB methods 
+
+        #region System DB methods
+        public DataTable SendSqlRequest(string sql)
+        {
+            DataTable dt = new DataTable(); 
+            try
+            {
+                if (this.AppDbConnection == null)
+                {
+                    throw new System.Exception("System RDBMS is not assigned."); 
+                }
+                dt = this.AppDbConnection.ExecuteSqlCommand(sql);
+            }
+            catch (System.Exception e)
+            {
+                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+            }
+            return dt; 
+        }
+
+        private void ClearTempTable(string tableName)
+        {
+            string sqlRequest = $"DELETE FROM {tableName};";
+            try
+            {
+                this.AppDbConnection.ExecuteSqlCommand(sqlRequest);
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+        #endregion  // System DB methods
         
+        #region Common UI methods 
+        private void InitUI()
+        {
+            ((SettingsView)SettingsView).Init(); 
+
+            ((UserControlsMenu)Menu).Init(); 
+        }
+        #endregion  // Common UI methods 
+
+        #region Views methods
         public void OpenView(string viewName)
         {
             try
@@ -264,7 +387,9 @@ namespace SqlViewer.ViewModels
                 }
             }
         }
+        #endregion  // Views methods
 
+        #region Pages methods
         public void RedirectToSqlQuery()
         {
             HideAllPages();
@@ -296,6 +421,117 @@ namespace SqlViewer.ViewModels
             this.MainWindow.TablesPage.IsEnabled = false; 
             this.MainWindow.TablesPage.IsEnabled = false; 
         }
+        #endregion  // Pages methods
+
+        #region Application methods 
+        public void InitAppRepository()
+        {
+            try
+            {
+                string sql = GetSqlRequest("App/SelectFromSettings.sql"); 
+                DataTable dt = SendSqlRequest(sql); 
+
+                string language = dt.Rows[0]["language"].ToString();
+                string autoSave = dt.Rows[0]["auto_save"].ToString();
+                int fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
+                string fontFamily = dt.Rows[0]["font_family"].ToString();
+                int tabSize = System.Convert.ToInt32(dt.Rows[0]["tab_size"]);
+                string wordWrap = dt.Rows[0]["word_wrap"].ToString();
+                string defaultRdbms = dt.Rows[0]["default_rdbms"].ToString();
+                string activeRdbms = dt.Rows[0]["active_rdbms"].ToString();
+                string dbName = dt.Rows[0]["db_name"].ToString();
+                string schemaName = dt.Rows[0]["schema_name"].ToString();
+                string dbUsername = dt.Rows[0]["db_username"].ToString();
+                string dbPswd = dt.Rows[0]["db_pswd"].ToString();
+
+                var enumEncoder = this.EnumEncoder; 
+                this.AppRepository = new AppRepository(enumEncoder, language, autoSave, 
+                    fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, 
+                    dbName, schemaName, dbUsername, dbPswd); 
+                InitUserDbConnection(); 
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void Translate()
+        {
+            try
+            {
+                var language = AppRepository.Language; 
+                this.Translator.SetLanguageEnum(language); 
+                this.Translator.TranslateMenu(); 
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void RecoverSettings()
+        {
+            string msg = "Are you sure to recover settings changes?"; 
+            if (System.Windows.MessageBox.Show(msg, "Recover settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                ClearTempTable("tmp_settings");
+                
+                string sql = GetSqlRequest("App/RecoverSettings.sql"); 
+                SendSqlRequest(sql); 
+                InitAppRepository(); 
+                Translate(); 
+                InitUI(); 
+
+                System.Windows.MessageBox.Show("Settings recovered", "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
+            }
+        }
+
+        public void SaveSettings()
+        {
+            string msg = "Are you sure to save settings changes?"; 
+            if (System.Windows.MessageBox.Show(msg, "Save settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                try 
+                {
+                    ClearTempTable("tmp_settings"); 
+                    ((SettingsView)SettingsView).UpdateAppRepository(); 
+
+                    string sql = GetSqlRequest("App/UpdateSettingsEditor.sql"); 
+                    sql = string.Format(sql, AppRepository.Language, AppRepository.AutoSave, 
+                        EnumDecoder.GetFontSizeName(AppRepository.FontSize), AppRepository.FontFamily, 
+                        EnumDecoder.GetTabSizeName(AppRepository.TabSize), AppRepository.WordWrap); 
+                    SendSqlRequest(sql); 
+
+                    sql = GetSqlRequest("App/UpdateSettingsDb.sql"); 
+                    sql = string.Format(sql, AppRepository.DefaultRdbms, AppRepository.ActiveRdbms, 
+                        AppRepository.DbName, AppRepository.DbSchema, AppRepository.DbUsername, 
+                        AppRepository.DbPassword); 
+                    SendSqlRequest(sql); 
+
+                    InitAppRepository(); 
+                    Translate(); 
+                    InitUI(); 
+                    System.Windows.MessageBox.Show("Settings saved", "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
+                    SettingsView.Close(); 
+                }
+                catch (System.Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        public void CancelSettings()
+        {
+            string msg = "Are you sure to cancel settings changes?"; 
+            if (System.Windows.MessageBox.Show(msg, "Cancel settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                ClearTempTable("tmp_settings"); 
+                System.Windows.MessageBox.Show("Settings cancelled", "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
+                SettingsView.Close(); 
+            }
+        }
 
         public void ExitApplication()
         {
@@ -305,5 +541,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.Application.Current.Shutdown();
             }
         }
+        #endregion  // Application methods 
     }
 }

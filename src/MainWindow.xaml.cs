@@ -16,9 +16,12 @@ namespace SqlViewer
         {
             try
             {
-                InitializeComponent();
-
                 this.MainVM = new MainVM(this); 
+
+                this.MainVM.OpenView("LoginView"); 
+                InitializeComponent();
+                this.Hide();
+
                 this.DataContext = this.MainVM;
                 this.Menu.DataContext = this.MainVM; 
                 this.SqlPage.DataContext = this.MainVM; 

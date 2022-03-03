@@ -10,7 +10,13 @@
         WindowStartupLocation="CenterScreen" 
         Title="sqlviewer: SQL Database Viewer (for Windows) [Settings]" 
         Icon="../Resources/icon.ico"
-        MinHeight="475" MaxHeight="475" MinWidth="600" MaxWidth="600">
+        MinHeight="475" MaxHeight="475" MinWidth="600" MaxWidth="600"
+        Closing="SettingsView_Closing">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding AppCommand}" 
+            CommandParameter="CancelSettings" Key="Esc" />
+    </Window.InputBindings>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="400" />
@@ -19,24 +25,31 @@
 
         <Grid Name="grMain" Grid.Row="0">
             <StackPanel Name="spPreferences" Orientation="Vertical" Margin="5,5,0,0">
-                <!--StackPanels and ScrollBar-->
-                <Label Content="Editor" />
+                <Label Name="lblPreferencesEditor" Content="Editor" FontWeight="Bold" />
                 <StackPanel Name="spPreferencesLanguage" Orientation="Horizontal">
-                    <Label Content="Language:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
-                        <ComboBoxItem Content="English" />
+                    <Label Name="lblLanguage" Content="Language:" Width="120" />
+                    <ComboBox Name="cbLanguage" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
+                        <ComboBoxItem Name="cbiLanguageEnglish" Content="English" />
+                        <ComboBoxItem Name="cbiLanguageGerman" Content="German" />
+                        <ComboBoxItem Name="cbiLanguageRussian" Content="Russian" />
+                        <ComboBoxItem Name="cbiLanguageSpanish" Content="Spanish" />
+                        <ComboBoxItem Name="cbiLanguagePortugues" Content="Portugues" />
+                        <ComboBoxItem Name="cbiLanguageItalian" Content="Italian" />
+                        <ComboBoxItem Name="cbiLanguageFrench" Content="French" />
+                        <ComboBoxItem Name="cbiLanguageUkranian" Content="Ukranian" />
+                        <ComboBoxItem Name="cbiLanguageDutch" Content="Dutch" />
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesAutoSave" Orientation="Horizontal">
-                    <Label Content="Auto save:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="1">
-                        <ComboBoxItem Content="Enabled" />
-                        <ComboBoxItem Content="Disabled" />
+                    <Label Name="lblAutoSave" Content="Auto save:" Width="120" />
+                    <ComboBox Name="cbAutoSave" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="1">
+                        <ComboBoxItem Name="cbiAutoSaveEnabled" Content="Enabled" />
+                        <ComboBoxItem Name="cbiAutoSaveDisabled" Content="Disabled" />
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesFontSize" Orientation="Horizontal">
-                    <Label Content="Font size:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
+                    <Label Name="lblFontSize" Content="Font size:" Width="120" />
+                    <ComboBox Name="cbFontSize" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
                         <ComboBoxItem Content="8" />
                         <ComboBoxItem Content="9" />
                         <ComboBoxItem Content="10" />
@@ -49,14 +62,14 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesFontFamily" Orientation="Horizontal">
-                    <Label Content="Font family:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
+                    <Label Name="lblFontFamily" Content="Font family:" Width="120" />
+                    <ComboBox Name="cbFontFamily" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
                         <ComboBoxItem Content="Consolas" />
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesTabSize" Orientation="Horizontal">
-                    <Label Content="Tab size:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="3">
+                    <Label Name="lblTabSize" Content="Tab size:" Width="120" />
+                    <ComboBox Name="cbTabSize" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="3">
                         <ComboBoxItem Content="1" />
                         <ComboBoxItem Content="2" />
                         <ComboBoxItem Content="3" />
@@ -68,25 +81,25 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesWordWrap" Orientation="Horizontal">
-                    <Label Content="Word wrap:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
-                        <ComboBoxItem Content="On" />
-                        <ComboBoxItem Content="Off" />
+                    <Label Name="lblWordWrap" Content="Word wrap:" Width="120" />
+                    <ComboBox Name="cbWordWrap" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
+                        <ComboBoxItem Name="cbiWordWrapEnabled" Content="Enabled" />
+                        <ComboBoxItem Name="cbiWordWrapDisabled" Content="Disabled" />
                     </ComboBox>
                 </StackPanel>
 
-                <Label Content="DB" />
-                <StackPanel Name="spPreferencesDefaultDbProvider" Orientation="Horizontal">
-                    <Label Content="Default DB provider:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
+                <Label Name="lblPreferencesDb" Content="DB" FontWeight="Bold" />
+                <StackPanel Name="spPreferencesDefaultRdbms" Orientation="Horizontal">
+                    <Label Name="lblDefaultRdbms" Content="Default RDBMS:" Width="120" />
+                    <ComboBox Name="cbDefaultRdbms" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
                         <ComboBoxItem Content="SQLite" />
                         <ComboBoxItem Content="PostgreSQL" />
                         <ComboBoxItem Content="MySQL" />
                     </ComboBox>
                 </StackPanel>
-                <StackPanel Name="spPreferencesActiveDbProvider" Orientation="Horizontal">
-                    <Label Content="Active DB provider:" Width="120" />
-                    <ComboBox Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
+                <StackPanel Name="spPreferencesActiveRdbms" Orientation="Horizontal">
+                    <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="120" />
+                    <ComboBox Name="cbActiveRdbms" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
                         <ComboBoxItem Content="SQLite" />
                         <ComboBoxItem Content="PostgreSQL" />
                         <ComboBoxItem Content="MySQL" />
@@ -94,24 +107,31 @@
                 </StackPanel>
                 <StackPanel Name="spPreferencesDatabase" Orientation="Horizontal">
                     <Label Content="Database:" Width="120" />
-                    <TextBox Width="200" Height="25" Margin="10,0,0,0" />
+                    <TextBox Name="tbDatabase" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesSchema" Orientation="Horizontal">
                     <Label Content="Schema:" Width="120" />
-                    <TextBox Width="200" Height="25" Margin="10,0,0,0" />
+                    <TextBox Name="tbSchema" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesUsername" Orientation="Horizontal">
+                    <Label Content="Username:" Width="120" />
+                    <TextBox Name="tbUsername" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesPassword" Orientation="Horizontal">
                     <Label Content="Password:" Width="120" />
-                    <TextBox Width="200" Height="25" Margin="10,0,0,0" />
+                    <PasswordBox Name="pbPassword" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
             </StackPanel>
         </Grid>
 
         <Grid Name="grButtons" Grid.Row="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
-                <Button Content="Recover" Width="75" Height="25" />
-                <Button Content="Save" Width="75" Height="25" />
-                <Button Content="Cancel" Width="75" Height="25" />
+                <Button Name="btnRecover" Content="Recover" Width="75" Height="25" Margin="5,0,0,0"
+                        Command="{Binding AppCommand}" CommandParameter="RecoverSettings" />
+                <Button Name="btnSave" Content="Save" Width="75" Height="25" Margin="5,0,0,0" 
+                        Command="{Binding AppCommand}" CommandParameter="SaveSettings" />
+                <Button Name="btnCancel" Content="Cancel" Width="75" Height="25" Margin="5,0,0,0" 
+                        Command="{Binding AppCommand}" CommandParameter="CancelSettings" />
             </StackPanel>
         </Grid>
     </Grid>
