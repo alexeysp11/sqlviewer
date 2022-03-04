@@ -93,3 +93,80 @@ INSERT INTO translation (context, english, german, russian, spanish, portugues, 
 VALUES ('Menu', 'GitHub repository', 'GitHub-Repository', 'GitHub репозиторий', 'Repositorio de GitHub', 'Repositório do GitHub', 'Repository GitHub', 'Référentiel GitHub', 'Репозиторій GitHub', 'GitHub-opslagplaats'); 
 INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
 VALUES ('Menu', 'Report', 'Prüfbericht', 'Отчет об ошибке', 'Informe', 'Relatório', 'Rapporto', 'Reportage', 'Звіт', 'Rapport'); 
+
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Editor', 'Editor', 'Редактор', 'Editor', 'editor', 'Editore', 'Éditeur', 'Редактор', 'Editor'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Language', 'Sprache', 'Язык', 'Lenguaje', 'Linguagem', 'Lingua', 'Langue', 'Мову', 'Taal'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Auto save', 'Automatisch speichern', 'Автосохранение', 'Guardado automático', 'Salvamento automático', 'Salvataggio automatico', 'Sauvegarde automatique', 'Автозбереження', 'Automatisch opslaan'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Font size', 'Schriftgröße', 'Размер шрифта', 'Tamaño de fuente', 'Tamanho da fonte', 'Dimensione del font', 'Taille de police', 'Розмір шрифту', 'Lettertypegrootte'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Font family', 'Schriftfamilie', 'Шрифт', 'Familia tipográfica', 'Família de fontes', 'Famiglia di font', 'Famille de polices', 'Сімейство шрифтів', 'Lettertypefamilie'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Tab size', 'Tab-Größe', 'Размер табуляции', 'Tamaño de pestaña', 'Tamanho da guia', 'Dimensione della scheda', 'Taille de l''onglet', 'Розмір вкладки', 'Tabbladgrootte'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Word wrap', 'Zeilenumbruch', 'Перенос слов', 'Ajuste de línea', 'Quebra de linha', 'Involucro di parole', 'Retour à la ligne', 'Перенос слів', 'Woordterugloop'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'DB', 'DB', 'БД', 'base de datos', 'BD', 'DB', 'BD', 'БД', 'DB'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Default RDBMS', 'Standard-RDBMS', 'БД по умолчанию', 'RDBMS predeterminado', 'RDBMS padrão', 'RDBMS predefinito', 'SGBDR par défaut', 'СУБД за замовчуванням', 'Standaard RDBMS'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Active RDBMS', 'Aktives RDBMS', 'Активная БД', 'RDBMS activo', 'RDBMS ativo', 'RDBMS attivo', 'SGBDR actif', 'Активна СУБД', 'Actieve RDBMS'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Database', 'Datenbank', 'База данных', 'Base de datos', 'Base de dados', 'Banca dati', 'Base de données', 'База даних', 'Database'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Schema', 'Schema', 'Схема', 'Esquema', 'Esquema', 'Schema', 'Schéma', 'Схема', 'Schema'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Username', 'Nutzername', 'Пользователь', 'Nombre de usuario', 'Nome do usuário', 'Nome utente', 'Nom d''utilisateur', 'Ім''я користувача', 'gebruikersnaam'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Password', 'Passwort', 'Пароль', 'Contraseña', 'Senha', 'Parola d''ordine', 'Mot de passe', 'Пароль', 'Wachtwoord'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Recover', 'Wiederherstellung', 'Восстановить', 'Recuperar', 'Recuperar', 'Recuperare', 'Récupérer', 'Відновити', 'Herstellen'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Save', 'Speichern', 'Сохранить', 'Salvar', 'Salvar', 'Salva', 'sauver', 'Зберегти', 'Opslaan'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Settings', 'Cancel', 'Stornieren', 'Отмена', 'Cancelar', 'Cancelar', 'Annulla', 'Annuler', 'Скасувати', 'Annuleren'); 
+
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Common', 'Enabled', 'Ermöglicht', 'Включено', 'Activado', 'Habilitado', 'Abilitato', 'Autorisé', 'Увімкнено', 'Ingeschakeld'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Common', 'Disabled', 'Deaktiviert', 'Отключено', 'Discapacitado', 'Desabilitado', 'Disabilitato', 'Désactivé', 'Вимкнено', 'Gehandicapt'); 
+
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'English', 'Englisch', 'Анлийский', 'inglés', 'inglês', 'inglese', 'Anglais', 'англійська', 'Engels'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'German', 'Deutsch', 'Немецкий', 'alemán', 'alemão', 'Tedesco', 'Allemand', 'німецька', 'Duits'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'Russian', 'Russisch', 'Русский', 'ruso', 'russo', 'russo', 'russe', 'російський', 'Russisch'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'Spanish', 'Spanisch', 'Испанский', 'español', 'espanhol', 'spagnolo', 'Espagnol', 'іспанська', 'Spaans'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'Portuguese', 'Portugiesisch', 'Португальский', 'portugués', 'português', 'portoghese', 'Portugais', 'португальська', 'Portugees'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'Italian', 'Italienisch', 'Итальянский', 'italiano', 'italiano', 'italiano', 'italien', 'італійська', 'Italiaans'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'French', 'Französisch', 'Французский', 'francés', 'francês', 'francese', 'français', 'французький', 'Frans'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'Ukrainian', 'ukrainisch', 'Украинский', 'ucranio', 'ucraniano', 'ucraino', 'ukrainien', 'український', 'Oekraïens'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Language', 'Dutch', 'Niederländisch', 'Нидерландский', 'holandés', 'holandês', 'olandese', 'Néerlandais', 'голландський', 'Nederlands'); 
+
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'Path', 'Pfad', 'Путь', 'Sendero', 'Caminho', 'Sentiero', 'Chemin', 'Шлях', 'Pad'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'Execute', 'Ausführen', 'Выполнить', 'Ejecutar', 'Executar', 'Eseguire', 'Exécuter', 'Виконати', 'Uitvoeren'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'Tables', 'Tabellen', 'Таблицы', 'Tablas', 'Tabelas', 'Tabelle', 'les tables', 'Таблиці', 'tabellen'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'General info', 'Allgemeine Information', 'Общие данные', 'Información general', 'Informações gerais', 'Informazioni generali', 'Informations générales', 'Загальна інформація', 'Algemene informatie'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'Columns', 'Säulen', 'Столбцы', 'columnas', 'Colunas', 'Colonne', 'Colonnes', 'Колонки', 'Kolommen'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'Foreign keys', 'Fremde Schlüssel', 'Внешние ключи', 'Llaves extranjeras', 'Chaves estrangeiras', 'Chiavi esterne', 'Clés étrangères', 'Сторонні ключі', 'Buitenlandse sleutels'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'Triggers', 'Trigger', 'Триггеры', 'disparadores', 'Desencadeia', 'Trigger', 'Déclencheurs', 'Тригери', 'Triggers'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Pages', 'Data', 'Daten', 'Данные', 'Datos', 'Dados', 'Dati', 'Données', 'Дані', 'Gegevens'); 
+

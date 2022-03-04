@@ -10,6 +10,7 @@ using SqlViewer.Models;
 using SqlViewer.Models.EnumOperations; 
 using SqlViewer.Models.DbConnections; 
 using SqlViewer.Views; 
+using SqlViewer.Pages; 
 using SqlViewer.Utils.Language; 
 using IDbConnectionSqlViewer = SqlViewer.Models.DbConnections.IDbConnection; 
 using UserControlsMenu = SqlViewer.UserControls.Menu; 
@@ -35,6 +36,8 @@ namespace SqlViewer.ViewModels
 
         public Window SettingsView { get; set; }
         public UserControl Menu { get; set; }
+        public UserControl SqlPage { get; set; }
+        public UserControl TablesPage { get; set; }
 
         public EnumEncoder EnumEncoder {get; private set; } = new EnumEncoder();  
         public EnumDecoder EnumDecoder {get; private set; } = new EnumDecoder(); 
@@ -350,6 +353,9 @@ namespace SqlViewer.ViewModels
             ((SettingsView)SettingsView).Init(); 
 
             ((UserControlsMenu)Menu).Init(); 
+
+            ((SqlPage)SqlPage).Init(); 
+            ((TablesPage)TablesPage).Init(); 
         }
         #endregion  // Common UI methods 
 
@@ -463,6 +469,8 @@ namespace SqlViewer.ViewModels
                 var language = AppRepository.Language; 
                 this.Translator.SetLanguageEnum(language); 
                 this.Translator.TranslateMenu(); 
+                this.Translator.TranslateSettings(); 
+                this.Translator.TranslatePages(); 
             }
             catch (System.Exception ex)
             {

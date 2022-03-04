@@ -18,13 +18,13 @@
 
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
                 Orientation="Horizontal" Margin="10,5,0,0">
-            <TextBlock Text="Path:" FontWeight="Bold" />
+            <TextBlock Name="tbPath" Text="Path:" FontWeight="Bold" />
             <TextBlock Name="tblTablesPagePath" Margin="5,0,0,0" />
         </StackPanel>
             
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">
             <StackPanel Orientation="Vertical">
-                <TextBlock Text="Tables:" />
+                <TextBlock Name="tbTables" Text="Tables:" />
                 <Grid>
                     <TreeView Name="tvTables" Height="422" Width="200"
                             IsEnabled="False" Visibility="Collapsed"
@@ -51,7 +51,7 @@
                             VerticalAlignment="Top" HorizontalAlignment="Left"
                             Width="280">
                         <StackPanel Orientation="Vertical" Margin="0,0,0,10">
-                            <Label Content="General info" />
+                            <Label Name="lblGeneralInfo" Content="General info" />
                             <StackPanel Orientation="Horizontal" Margin="25,5,0,0">
                                 <Label Content="Name:" Width="50" />
                                 <TextBox Name="tbTableName" Width="150" IsReadOnly="True" />
@@ -71,7 +71,7 @@
 
                 <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">
                     <StackPanel Orientation="Vertical">
-                        <Label Content="Columns" />
+                        <Label Name="lblColumns" Content="Columns" />
                         <uc:DbGrid x:Name="dgrColumns" Height="175" Width="283"
                             IsReadOnly="True" AutoGenerateColumns="True" />
                     </StackPanel>
@@ -84,10 +84,10 @@
                             VerticalAlignment="Top" HorizontalAlignment="Left"
                             Width="280">
                         <StackPanel Orientation="Vertical">
-                            <Label Content="Foreign keys" />
+                            <Label Name="lblForeignKeys" Content="Foreign keys" />
                             <uc:DbGrid x:Name="dgrForeignKeys" Height="125" Width="263"
                                 IsReadOnly="True" AutoGenerateColumns="True" />
-                            <Label Content="Triggers" />
+                            <Label Name="lblTriggers" Content="Triggers" />
                             <uc:DbGrid x:Name="dgrTriggers" Height="150" Width="263"
                                 IsReadOnly="True" AutoGenerateColumns="True" />
                         </StackPanel>
@@ -96,7 +96,7 @@
 
                 <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="0.5">
                     <StackPanel Orientation="Vertical">
-                        <Label Content="Data" />
+                        <Label Name="lblData" Content="Data" />
                         <uc:DbGrid x:Name="dgrAllData" Height="175" Width="283"
                                 IsReadOnly="True" AutoGenerateColumns="True" />
                     </StackPanel>

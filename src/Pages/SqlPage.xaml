@@ -27,7 +27,7 @@
                 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Path:" FontWeight="Bold" />
+                        <TextBlock Name="tbSqlPagePath" Text="Path:" FontWeight="Bold" />
                         <TextBlock Name="tblSqlPagePath" Margin="5,0,0,0" />
                     </StackPanel>
 
@@ -60,9 +60,9 @@
                             <ColumnDefinition Width="50" />
                         </Grid.ColumnDefinitions>
 
-                        <Button Content="Execute" Grid.Column="0" Margin="0,5,0,0" 
+                        <Button Name="btnSqlPageExecute" Content="Execute" Grid.Column="0" Margin="0,5,0,0" 
                                 Command="{Binding DbCommand}" CommandParameter="SendSql" />
-                        <TextBlock Text="SQLite" Grid.Column="1" Margin="15,8,0,0" />
+                        <TextBlock Name="tbActiveRdbms" Text="SQLite" Grid.Column="1" Margin="15,8,0,0" />
                         <TextBlock Text="UTF-8" Grid.Column="2" Margin="0,8,0,0" />
                     </Grid>
                 </StackPanel>
