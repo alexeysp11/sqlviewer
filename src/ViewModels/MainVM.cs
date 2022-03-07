@@ -107,17 +107,24 @@ namespace SqlViewer.ViewModels
             }
             finally
             {
-                this.MainWindow.SqlPage.tblSqlPagePath.Text = string.Empty;
+                if (this.MainWindow.SqlPage != null)
+                { 
+                    this.MainWindow.SqlPage.tblSqlPagePath.Text = string.Empty;
+                }
+                
+                if (this.MainWindow.TablesPage != null)
+                {
+                    var emptyDt = new DataTable(); 
+                    this.MainWindow.TablesPage.tvTables.Items.Clear();
+                    this.MainWindow.TablesPage.tblTablesPagePath.Text = string.Empty;
+                    this.MainWindow.TablesPage.dgrAllData.ItemsSource = emptyDt.DefaultView;
+                    this.MainWindow.TablesPage.dgrColumns.ItemsSource = emptyDt.DefaultView;
+                    this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = emptyDt.DefaultView;
+                    this.MainWindow.TablesPage.dgrTriggers.ItemsSource = emptyDt.DefaultView;
+                    this.MainWindow.TablesPage.tbTableName.Text = string.Empty; 
+                    this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
+                }
 
-                var emptyDt = new DataTable(); 
-                this.MainWindow.TablesPage.tvTables.Items.Clear();
-                this.MainWindow.TablesPage.tblTablesPagePath.Text = string.Empty;
-                this.MainWindow.TablesPage.dgrAllData.ItemsSource = emptyDt.DefaultView;
-                this.MainWindow.TablesPage.dgrColumns.ItemsSource = emptyDt.DefaultView;
-                this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = emptyDt.DefaultView;
-                this.MainWindow.TablesPage.dgrTriggers.ItemsSource = emptyDt.DefaultView;
-                this.MainWindow.TablesPage.tbTableName.Text = string.Empty; 
-                this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
             }
         }
 
@@ -455,6 +462,20 @@ namespace SqlViewer.ViewModels
                     fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, 
                     dbName, schemaName, dbUsername, dbPswd); 
                 InitUserDbConnection(); 
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        public void TranslateLogin()
+        {
+            try
+            {
+                var language = AppRepository.Language; 
+                this.Translator.SetLanguageEnum(language); 
+                this.Translator.TranslateLogin(); 
             }
             catch (System.Exception ex)
             {

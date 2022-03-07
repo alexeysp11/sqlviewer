@@ -14,6 +14,21 @@ CREATE TABLE IF NOT EXISTS translation
 ); 
 
 INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Login', 'Active RDBMS', 'Aktives RDBMS', 'Активная БД', 'RDBMS activo', 'RDBMS ativo', 'RDBMS attivo', 'SGBDR actif', 'Активна СУБД', 'Actieve RDBMS'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Login', 'Database', 'Datenbank', 'База данных', 'Base de datos', 'Base de dados', 'Banca dati', 'Base de données', 'База даних', 'Database'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Login', 'Schema', 'Schema', 'Схема', 'Esquema', 'Esquema', 'Schema', 'Schéma', 'Схема', 'Schema'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Login', 'Username', 'Nutzername', 'Пользователь', 'Nombre de usuario', 'Nome do usuário', 'Nome utente', 'Nom d''utilisateur', 'Ім''я користувача', 'gebruikersnaam'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Login', 'Password', 'Passwort', 'Пароль', 'Contraseña', 'Senha', 'Parola d''ordine', 'Mot de passe', 'Пароль', 'Wachtwoord'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Login', 'Log In', 'Einloggen', 'Войти', 'Iniciar', 'Entrar', 'Accesso', 'Connexion', 'Увійти', 'Log in'); 
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
+VALUES ('Login', 'Cancel', 'Stornieren', 'Отмена', 'Cancelar', 'Cancelar', 'Annulla', 'Annuler', 'Скасувати', 'Annuleren'); 
+
+INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
 VALUES ('Menu', 'File', 'Datei', 'Файл', 'Expediente', 'Arquivo', 'File', 'Fichier', 'Файл', 'Het dossier'); 
 INSERT INTO translation (context, english, german, russian, spanish, portugues, italian, french, ukranian, dutch)
 VALUES ('Menu', 'New', 'Schaffen', 'Создать', 'crear', 'crio', 'creare', 'créer', 'створювати', 'creëren'); 

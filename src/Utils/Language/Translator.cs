@@ -14,6 +14,7 @@ namespace SqlViewer.Utils.Language
 
         public LanguageEnum LanguageEnum { get; private set; }
 
+        public LoginEntity LoginEntity { get; private set; } = new LoginEntity(); 
         public MenuEntity MenuEntity { get; private set; } = new MenuEntity(); 
         public SettingsEntity SettingsEntity { get; private set; } = new SettingsEntity(); 
         public SqlPageEntity SqlPageEntity { get; private set; } = new SqlPageEntity(); 
@@ -40,6 +41,33 @@ namespace SqlViewer.Utils.Language
 
                 var languageWord = new Word(LanguageEnum.ToString()); 
                 SettingsEntity.SetChosenLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), languageWord.English)); 
+            }
+            catch (System.Exception ex)
+            {
+                throw ex; 
+            }
+        }
+
+        public void TranslateLogin()
+        {
+            string sql = this.MainVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            try
+            {
+                if (sql == string.Empty)
+                {
+                    throw new System.Exception("Error while translation: SQL request should not be empty."); 
+                }
+                sql = string.Format(sql, LanguageEnum.ToString(), "LOGIN");
+                DataTable dt = base.Translate(sql); 
+
+                LoginEntity.SetActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.ActiveRdbmsField.English)); 
+                LoginEntity.SetDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.DatabaseField.English)); 
+                LoginEntity.SetSchemaField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.SchemaField.English)); 
+                LoginEntity.SetUsernameField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.UsernameField.English)); 
+                LoginEntity.SetPasswordField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.PasswordField.English)); 
+                
+                LoginEntity.SetLogInField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.LogInField.English)); 
+                LoginEntity.SetCancelField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.CancelField.English)); 
             }
             catch (System.Exception ex)
             {

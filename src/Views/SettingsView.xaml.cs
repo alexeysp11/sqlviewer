@@ -74,9 +74,9 @@ namespace SqlViewer.Views
         {
             lblPreferencesDb.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DbField.Translation) ? SettingsEntity.DbField.English : SettingsEntity.DbField.Translation; 
             lblDefaultRdbms.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DefaultRdbmsField.Translation) ? SettingsEntity.DefaultRdbmsField.English : SettingsEntity.DefaultRdbmsField.Translation; 
-            cbDefaultRdbms.Text = this.MainVM.AppRepository.DefaultRdbms.ToString(); 
+            cbDefaultRdbms.Text = string.IsNullOrEmpty(this.MainVM.AppRepository.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : this.MainVM.AppRepository.ActiveRdbms.ToString(); 
             lblActiveRdbms.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.ActiveRdbmsField.Translation) ? SettingsEntity.ActiveRdbmsField.English : SettingsEntity.ActiveRdbmsField.Translation; 
-            cbActiveRdbms.Text = this.MainVM.AppRepository.ActiveRdbms.ToString(); 
+            cbActiveRdbms.Text = string.IsNullOrEmpty(this.MainVM.AppRepository.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : this.MainVM.AppRepository.ActiveRdbms.ToString(); 
 
             lblDatabase.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DatabaseField.Translation) ? SettingsEntity.DatabaseField.English : SettingsEntity.DatabaseField.Translation; 
             lblSchema.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.SchemaField.Translation) ? SettingsEntity.SchemaField.English : SettingsEntity.SchemaField.Translation; 

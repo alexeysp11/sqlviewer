@@ -28,19 +28,19 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesDatabase" Orientation="Horizontal">
-                    <Label Content="Database:" Width="120" />
+                    <Label Name="lblDatabase" Content="Database:" Width="120" />
                     <TextBox Name="tbDatabase" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesSchema" Orientation="Horizontal">
-                    <Label Content="Schema:" Width="120" />
+                    <Label Name="lblSchema" Content="Schema:" Width="120" />
                     <TextBox Name="tbSchema" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesUsername" Orientation="Horizontal">
-                    <Label Content="Username:" Width="120" />
+                    <Label Name="lblUsername" Content="Username:" Width="120" />
                     <TextBox Name="tbUsername" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesPassword" Orientation="Horizontal">
-                    <Label Content="Password:" Width="120" />
+                    <Label Name="lblPassword" Content="Password:" Width="120" />
                     <PasswordBox Name="pbPassword" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
             </StackPanel>
