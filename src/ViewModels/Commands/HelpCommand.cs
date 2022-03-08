@@ -20,7 +20,7 @@ namespace SqlViewer.Commands
 
         public void Execute(object parameter)
         {
-            string parameterString = parameter as string; 
+            System.String parameterString = parameter as System.String; 
             if (parameterString == "About")
             {
                 this.MainVM.OpenDocsInBrowser("About page", 

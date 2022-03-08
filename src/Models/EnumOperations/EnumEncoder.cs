@@ -11,7 +11,7 @@ namespace SqlViewer.Models.EnumOperations
     public class EnumEncoder
     {
         #region Common 
-        public LanguageEnum GetLanguageEnum(string language)
+        public LanguageEnum GetLanguageEnum(System.String language)
         {
             if (language == "English")
                 return LanguageEnum.English; 
@@ -37,7 +37,7 @@ namespace SqlViewer.Models.EnumOperations
         #endregion  // Common 
 
         #region Editor
-        public AutoSaveEnum GetAutoSaveEnum(string autoSave)
+        public AutoSaveEnum GetAutoSaveEnum(System.String autoSave)
         {
             if (autoSave == "Enabled")
                 return AutoSaveEnum.Enabled; 
@@ -47,7 +47,7 @@ namespace SqlViewer.Models.EnumOperations
                 throw new System.Exception("Unable to find autoSave enum"); 
         }
 
-        public FontSizeEnum GetFontSizeEnum(string fontSize)
+        public FontSizeEnum GetFontSizeEnum(System.String fontSize)
         {
             if (fontSize == "8")
                 return FontSizeEnum.FontSize8; 
@@ -71,7 +71,7 @@ namespace SqlViewer.Models.EnumOperations
                 throw new System.Exception("Unable to find fontSize enum"); 
         }
 
-        public FontFamilyEnum GetFontFamilyEnum(string fontFamily)
+        public FontFamilyEnum GetFontFamilyEnum(System.String fontFamily)
         {
             if (fontFamily == "Consolas")
                 return FontFamilyEnum.Consolas; 
@@ -79,7 +79,7 @@ namespace SqlViewer.Models.EnumOperations
                 throw new System.Exception("Unable to find fontFamily enum"); 
         }
 
-        public TabSizeEnum GetTabSizeEnum(string tabSize)
+        public TabSizeEnum GetTabSizeEnum(System.String tabSize)
         {
             if (tabSize == "1")
                 return TabSizeEnum.TabSize1; 
@@ -101,7 +101,7 @@ namespace SqlViewer.Models.EnumOperations
                 throw new System.Exception("Unable to find tabSize enum"); 
         }
 
-        public WordWrapEnum GetWordWrapEnum(string wordWrap)
+        public WordWrapEnum GetWordWrapEnum(System.String wordWrap)
         {
             if (wordWrap == "Enabled")
                 return WordWrapEnum.Enabled; 
@@ -113,7 +113,7 @@ namespace SqlViewer.Models.EnumOperations
         #endregion  // Editor
 
         #region Database 
-        public RdbmsEnum GetRdbmsEnum(string rdbms)
+        public RdbmsEnum GetRdbmsEnum(System.String rdbms)
         {
             if (rdbms == "SQLite")
                 return RdbmsEnum.SQLite; 

@@ -48,17 +48,17 @@ namespace SqlViewer.ViewModels
         private OpenFileDialog ofd = new OpenFileDialog(); 
 
         public DataTable ResultCollection { get; private set; }
-        public List<string> TablesCollection { get; private set; }
+        public List<System.String> TablesCollection { get; private set; }
 
-        public string RootFolder { get; private set; } = System.AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\.."; 
+        public System.String RootFolder { get; private set; } = System.AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\.."; 
         
-        private const string filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
+        private const System.String filter = "All files|*.*|Database files|*.db|SQLite3 files|*.sqlite3";
         
         public MainVM(MainWindow mainWindow)
         {
             this.MainWindow = mainWindow; 
 
-            string rootFolder = this.RootFolder; 
+            System.String rootFolder = this.RootFolder; 
             this.Config = new Config(this, rootFolder); 
 
             this.AppDbConnection = new SqliteDbConnection($"{RootFolder}\\data\\app.db"); 
@@ -91,6 +91,7 @@ namespace SqlViewer.ViewModels
                 else if (AppRepository.ActiveRdbms == RdbmsEnum.PostgreSQL)
                 {
                     this.UserDbConnection = new PgDbConnection(); 
+                    this.UserDbConnection.SetConnString("localhost", AppRepository.DbUsername, AppRepository.DbName); 
                 }
                 else if (AppRepository.ActiveRdbms == RdbmsEnum.MySQL)
                 {
@@ -109,26 +110,26 @@ namespace SqlViewer.ViewModels
             {
                 if (this.MainWindow.SqlPage != null)
                 { 
-                    this.MainWindow.SqlPage.tblSqlPagePath.Text = string.Empty;
+                    this.MainWindow.SqlPage.tblSqlPagePath.Text = System.String.Empty;
                 }
                 
                 if (this.MainWindow.TablesPage != null)
                 {
                     var emptyDt = new DataTable(); 
                     this.MainWindow.TablesPage.tvTables.Items.Clear();
-                    this.MainWindow.TablesPage.tblTablesPagePath.Text = string.Empty;
+                    this.MainWindow.TablesPage.tblTablesPagePath.Text = System.String.Empty;
                     this.MainWindow.TablesPage.dgrAllData.ItemsSource = emptyDt.DefaultView;
                     this.MainWindow.TablesPage.dgrColumns.ItemsSource = emptyDt.DefaultView;
                     this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = emptyDt.DefaultView;
                     this.MainWindow.TablesPage.dgrTriggers.ItemsSource = emptyDt.DefaultView;
-                    this.MainWindow.TablesPage.tbTableName.Text = string.Empty; 
-                    this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
+                    this.MainWindow.TablesPage.tbTableName.Text = System.String.Empty; 
+                    this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = System.String.Empty;
                 }
 
             }
         }
 
-        private void InitLocalDbConnection(string path)
+        private void InitLocalDbConnection(System.String path)
         {
             try
             {
@@ -172,7 +173,7 @@ namespace SqlViewer.ViewModels
 
             try
             {
-                string sqlRequest = GetSqlRequest("TableInfo\\DisplayTablesInDb.sql"); 
+                System.String sqlRequest = GetSqlRequest("TableInfo\\DisplayTablesInDb.sql"); 
                 DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -191,11 +192,11 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void GetAllDataFromTable(string tableName)
+        public void GetAllDataFromTable(System.String tableName)
         {
             try
             {
-                string sqlRequest = $"SELECT * FROM {tableName}"; 
+                System.String sqlRequest = $"SELECT * FROM {tableName}"; 
                 DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrAllData.ItemsSource = dt.DefaultView;
             }
@@ -205,11 +206,11 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void GetColumnsOfTable(string tableName)
+        public void GetColumnsOfTable(System.String tableName)
         {
             try
             {
-                string sqlRequest = $"PRAGMA table_info({tableName});"; 
+                System.String sqlRequest = $"PRAGMA table_info({tableName});"; 
                 DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrColumns.ItemsSource = dt.DefaultView;
             }
@@ -219,11 +220,11 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void GetForeignKeys(string tableName)
+        public void GetForeignKeys(System.String tableName)
         {
             try
             {
-                string sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
+                System.String sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
                 DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = dt.DefaultView;
             }
@@ -233,11 +234,11 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void GetTriggers(string tableName)
+        public void GetTriggers(System.String tableName)
         {
             try
             {
-                string sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
+                System.String sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
                 DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 this.MainWindow.TablesPage.dgrTriggers.ItemsSource = dt.DefaultView;
             }
@@ -247,11 +248,11 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void GetSqlDefinition(string tableName)
+        public void GetSqlDefinition(System.String tableName)
         {
             try
             {
-                string sqlRequest = string.Format(GetSqlRequest("TableInfo\\GetSqlDefinition.sql"), tableName);
+                System.String sqlRequest = System.String.Format(GetSqlRequest("TableInfo\\GetSqlDefinition.sql"), tableName);
                 DataTable dt = this.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
@@ -260,7 +261,7 @@ namespace SqlViewer.ViewModels
                 }
                 else 
                 {
-                    this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
+                    this.MainWindow.TablesPage.mtbSqlTableDefinition.Text = System.String.Empty;
                 }
             }
             catch (System.Exception e)
@@ -269,9 +270,9 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public string GetSqlRequest(string filename)
+        public System.String GetSqlRequest(System.String filename)
         {
-            string sqlRequest = string.Empty; 
+            System.String sqlRequest = System.String.Empty; 
             try
             {
                 sqlRequest = System.IO.File.ReadAllText($"{RootFolder}\\src\\Queries\\{filename}"); 
@@ -290,7 +291,7 @@ namespace SqlViewer.ViewModels
                 sfd.Filter = filter; 
                 if (sfd.ShowDialog() == true)
                 {
-                    System.IO.File.WriteAllText(sfd.FileName, string.Empty);
+                    System.IO.File.WriteAllText(sfd.FileName, System.String.Empty);
                 }
             }
             catch (System.Exception ex)
@@ -306,8 +307,8 @@ namespace SqlViewer.ViewModels
                 ofd.Filter = filter;
                 if (ofd.ShowDialog() == true) {}
 
-                string path = ofd.FileName; 
-                if (path == string.Empty)
+                System.String path = ofd.FileName; 
+                if (path == System.String.Empty)
                 {
                     return; 
                 }
@@ -322,7 +323,7 @@ namespace SqlViewer.ViewModels
         #endregion  // User DB methods 
 
         #region System DB methods
-        public DataTable SendSqlRequest(string sql)
+        public DataTable SendSqlRequest(System.String sql)
         {
             DataTable dt = new DataTable(); 
             try
@@ -340,9 +341,9 @@ namespace SqlViewer.ViewModels
             return dt; 
         }
 
-        private void ClearTempTable(string tableName)
+        private void ClearTempTable(System.String tableName)
         {
-            string sqlRequest = $"DELETE FROM {tableName};";
+            System.String sqlRequest = $"DELETE FROM {tableName};";
             try
             {
                 this.AppDbConnection.ExecuteSqlCommand(sqlRequest);
@@ -367,7 +368,7 @@ namespace SqlViewer.ViewModels
         #endregion  // Common UI methods 
 
         #region Views methods
-        public void OpenView(string viewName)
+        public void OpenView(System.String viewName)
         {
             try
             {
@@ -382,9 +383,9 @@ namespace SqlViewer.ViewModels
             }
         }
 
-        public void OpenDocsInBrowser(string docName, string title, string filePath)
+        public void OpenDocsInBrowser(System.String docName, System.String title, System.String filePath)
         {
-            string msg = "Do you want to open " + docName + " in your browser?"; 
+            System.String msg = "Do you want to open " + docName + " in your browser?"; 
             if (System.Windows.MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 System.Diagnostics.Process process = new System.Diagnostics.Process();
@@ -441,21 +442,21 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                string sql = GetSqlRequest("App/SelectFromSettings.sql"); 
+                System.String sql = GetSqlRequest("App/SelectFromSettings.sql"); 
                 DataTable dt = SendSqlRequest(sql); 
 
-                string language = dt.Rows[0]["language"].ToString();
-                string autoSave = dt.Rows[0]["auto_save"].ToString();
-                int fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
-                string fontFamily = dt.Rows[0]["font_family"].ToString();
-                int tabSize = System.Convert.ToInt32(dt.Rows[0]["tab_size"]);
-                string wordWrap = dt.Rows[0]["word_wrap"].ToString();
-                string defaultRdbms = dt.Rows[0]["default_rdbms"].ToString();
-                string activeRdbms = dt.Rows[0]["active_rdbms"].ToString();
-                string dbName = dt.Rows[0]["db_name"].ToString();
-                string schemaName = dt.Rows[0]["schema_name"].ToString();
-                string dbUsername = dt.Rows[0]["db_username"].ToString();
-                string dbPswd = dt.Rows[0]["db_pswd"].ToString();
+                System.String language = dt.Rows[0]["language"].ToString();
+                System.String autoSave = dt.Rows[0]["auto_save"].ToString();
+                System.Int32 fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
+                System.String fontFamily = dt.Rows[0]["font_family"].ToString();
+                System.Int32 tabSize = System.Convert.ToInt32(dt.Rows[0]["tab_size"]);
+                System.String wordWrap = dt.Rows[0]["word_wrap"].ToString();
+                System.String defaultRdbms = dt.Rows[0]["default_rdbms"].ToString();
+                System.String activeRdbms = dt.Rows[0]["active_rdbms"].ToString();
+                System.String dbName = dt.Rows[0]["db_name"].ToString();
+                System.String schemaName = dt.Rows[0]["schema_name"].ToString();
+                System.String dbUsername = dt.Rows[0]["db_username"].ToString();
+                System.String dbPswd = dt.Rows[0]["db_pswd"].ToString();
 
                 var enumEncoder = this.EnumEncoder; 
                 this.AppRepository = new AppRepository(enumEncoder, language, autoSave, 
@@ -501,12 +502,12 @@ namespace SqlViewer.ViewModels
 
         public void RecoverSettings()
         {
-            string msg = "Are you sure to recover settings changes?"; 
+            System.String msg = "Are you sure to recover settings changes?"; 
             if (System.Windows.MessageBox.Show(msg, "Recover settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 ClearTempTable("tmp_settings");
                 
-                string sql = GetSqlRequest("App/RecoverSettings.sql"); 
+                System.String sql = GetSqlRequest("App/RecoverSettings.sql"); 
                 SendSqlRequest(sql); 
                 InitAppRepository(); 
                 Translate(); 
@@ -518,7 +519,7 @@ namespace SqlViewer.ViewModels
 
         public void SaveSettings()
         {
-            string msg = "Are you sure to save settings changes?"; 
+            System.String msg = "Are you sure to save settings changes?"; 
             if (System.Windows.MessageBox.Show(msg, "Save settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 try 
@@ -526,14 +527,14 @@ namespace SqlViewer.ViewModels
                     ClearTempTable("tmp_settings"); 
                     ((SettingsView)SettingsView).UpdateAppRepository(); 
 
-                    string sql = GetSqlRequest("App/UpdateSettingsEditor.sql"); 
-                    sql = string.Format(sql, AppRepository.Language, AppRepository.AutoSave, 
+                    System.String sql = GetSqlRequest("App/UpdateSettingsEditor.sql"); 
+                    sql = System.String.Format(sql, AppRepository.Language, AppRepository.AutoSave, 
                         EnumDecoder.GetFontSizeName(AppRepository.FontSize), AppRepository.FontFamily, 
                         EnumDecoder.GetTabSizeName(AppRepository.TabSize), AppRepository.WordWrap); 
                     SendSqlRequest(sql); 
 
                     sql = GetSqlRequest("App/UpdateSettingsDb.sql"); 
-                    sql = string.Format(sql, AppRepository.DefaultRdbms, AppRepository.ActiveRdbms, 
+                    sql = System.String.Format(sql, AppRepository.DefaultRdbms, AppRepository.ActiveRdbms, 
                         AppRepository.DbName, AppRepository.DbSchema, AppRepository.DbUsername, 
                         AppRepository.DbPassword); 
                     SendSqlRequest(sql); 
@@ -553,7 +554,7 @@ namespace SqlViewer.ViewModels
 
         public void CancelSettings()
         {
-            string msg = "Are you sure to cancel settings changes?"; 
+            System.String msg = "Are you sure to cancel settings changes?"; 
             if (System.Windows.MessageBox.Show(msg, "Cancel settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 ClearTempTable("tmp_settings"); 
@@ -564,7 +565,7 @@ namespace SqlViewer.ViewModels
 
         public void ExitApplication()
         {
-            string msg = "Are you sure to close the application?"; 
+            System.String msg = "Are you sure to close the application?"; 
             if (System.Windows.MessageBox.Show(msg, "Exit the application", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 System.Windows.Application.Current.Shutdown();

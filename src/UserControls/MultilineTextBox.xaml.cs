@@ -22,8 +22,8 @@ namespace SqlViewer.UserControls
                 new PropertyMetadata(false));
 
         public static readonly DependencyProperty TextProperty
-            = DependencyProperty.Register("Text", typeof(string), typeof(MultilineTextBox),
-                new PropertyMetadata(string.Empty));
+            = DependencyProperty.Register("Text", typeof(System.String), typeof(MultilineTextBox),
+                new PropertyMetadata(System.String.Empty));
 
         public static readonly DependencyProperty FontSizeProperty
             = DependencyProperty.Register("FontSize", typeof(double), typeof(MultilineTextBox),
@@ -63,12 +63,12 @@ namespace SqlViewer.UserControls
             }
         }
         
-        public string Text
+        public System.String Text
         {
             get 
             {
                 SetValue(TextProperty, tbMultiline.Text);
-                return (string)GetValue(TextProperty);
+                return (System.String)GetValue(TextProperty);
             }
             set 
             {

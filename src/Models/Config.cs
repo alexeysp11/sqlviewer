@@ -8,9 +8,9 @@ namespace SqlViewer.Models
     {
         private MainVM MainVM { get; set; }
 
-        private string RootFolder { get; set; }
+        private System.String RootFolder { get; set; }
 
-        public Config(MainVM mainVM, string rootFolder)
+        public Config(MainVM mainVM, System.String rootFolder)
         {
             this.MainVM = mainVM; 
             this.RootFolder = rootFolder; 
@@ -25,10 +25,10 @@ namespace SqlViewer.Models
         #region File system methods
         public void CreateDataFolder()
         {
-            string dataFolderPath = $"{RootFolder}\\data"; 
+            System.String dataFolderPath = $"{RootFolder}\\data"; 
             CreateFolderIfNotExists(dataFolderPath); 
 
-            string sqlFolderPath = $"{RootFolder}\\src\\Queries\\Init"; 
+            System.String sqlFolderPath = $"{RootFolder}\\src\\Queries\\Init"; 
             CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDb.sql"); 
             CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDbSettings.sql"); 
             CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\RecoverSettings.sql"); 
@@ -36,7 +36,7 @@ namespace SqlViewer.Models
             CreateLocalDbIfNotExists($"{dataFolderPath}\\test.db", $"{sqlFolderPath}\\InitTestDb.sql"); 
         }
 
-        private void CreateFolderIfNotExists(string folderPath)
+        private void CreateFolderIfNotExists(System.String folderPath)
         {
             if ( !(System.IO.Directory.Exists(folderPath)) )
             {
@@ -44,11 +44,11 @@ namespace SqlViewer.Models
             }
         }
 
-        private void CreateLocalDbIfNotExists(string localDbPath, string sqlScriptPath)
+        private void CreateLocalDbIfNotExists(System.String localDbPath, System.String sqlScriptPath)
         {
             if ( !(System.IO.File.Exists(localDbPath)) )
             {
-                string sql = this.MainVM.GetSqlRequest(sqlScriptPath); 
+                System.String sql = this.MainVM.GetSqlRequest(sqlScriptPath); 
                 MainVM.AppDbConnection.ExecuteSqlCommand(sql); 
             }
         }
@@ -63,7 +63,7 @@ namespace SqlViewer.Models
 
         private void CreateShortcutInFolder()
         {
-            string shortcutPath = $"{RootFolder}\\SqlViewer.lnk"; 
+            System.String shortcutPath = $"{RootFolder}\\SqlViewer.lnk"; 
             if ( !(System.IO.File.Exists(shortcutPath)) )
             {
                 CreateShortcut(shortcutPath); 
@@ -72,15 +72,15 @@ namespace SqlViewer.Models
 
         private void CreateShortcutOnDesktop()
         {
-            string deskDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
-            string shortcutPath = $"{deskDir}\\SqlViewer.lnk"; 
+            System.String deskDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
+            System.String shortcutPath = $"{deskDir}\\SqlViewer.lnk"; 
             if ( !(System.IO.File.Exists(shortcutPath)) )
             {
-                int? fDesktopShortcut = null; // get this parameter from DB 
+                System.Int32? fDesktopShortcut = null; // get this parameter from DB 
                 if (fDesktopShortcut == null || fDesktopShortcut == 1)
                 {
-                    string msg = "Do you want to create a shortcut on Desktop?"; 
-                    string caption = "Creating shortcut on Desktop"; 
+                    System.String msg = "Do you want to create a shortcut on Desktop?"; 
+                    System.String caption = "Creating shortcut on Desktop"; 
                     var result = System.Windows.MessageBox.Show(msg, caption, 
                                 MessageBoxButton.YesNoCancel, 
                                 MessageBoxImage.Question); 
@@ -97,23 +97,23 @@ namespace SqlViewer.Models
                     {
                         return; 
                     }
-                    string sql = string.Empty; // for storing result in DB
+                    System.String sql = System.String.Empty; // for storing result in DB
                     MainVM.AppDbConnection.ExecuteSqlCommand(sql); 
                 }
             }
         }
 
-        private void CreateShortcut(string shortcutPath)
+        private void CreateShortcut(System.String shortcutPath)
         {
             throw new System.NotSupportedException("Incorrect way to create a shortcut."); 
 
             using (var writer = new System.IO.StreamWriter(shortcutPath))
             {
-                string app = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                System.String app = System.Reflection.Assembly.GetExecutingAssembly().Location;
                 //writer.WriteLine("[InternetShortcut]");
                 writer.WriteLine("URI=file:///" + app);
                 writer.WriteLine("IconIndex=0");
-                string icon = $"{RootFolder}\\src\\Resources\\icon.ico";
+                System.String icon = $"{RootFolder}\\src\\Resources\\icon.ico";
                 writer.WriteLine("IconFile=" + icon);
                 writer.Flush();
             }

@@ -40,37 +40,37 @@ namespace SqlViewer.Entities.ViewsEntities
         #endregion  // Buttons fields
 
         #region Editor methods
-        public void SetEditorField(string value)
+        public void SetEditorField(System.String value)
         {
             EditorField.SetTranslation(value); 
         }
 
-        public void SetLanguageField(string value)
+        public void SetLanguageField(System.String value)
         {
             LanguageField.SetTranslation(value); 
         }
 
-        public void SetAutoSaveField(string value)
+        public void SetAutoSaveField(System.String value)
         {
             AutoSaveField.SetTranslation(value); 
         }
 
-        public void SetFontSizeField(string value)
+        public void SetFontSizeField(System.String value)
         {
             FontSizeField.SetTranslation(value); 
         }
 
-        public void SetFontFamilyField(string value)
+        public void SetFontFamilyField(System.String value)
         {
             FontFamilyField.SetTranslation(value); 
         }
 
-        public void SetTabSizeField(string value)
+        public void SetTabSizeField(System.String value)
         {
             TabSizeField.SetTranslation(value); 
         }
 
-        public void SetWordWrapField(string value)
+        public void SetWordWrapField(System.String value)
         {
             WordWrapField.SetTranslation(value); 
         }
@@ -78,73 +78,73 @@ namespace SqlViewer.Entities.ViewsEntities
         #endregion  // Editor methods
 
         #region DB methods
-        public void SetDbField(string value)
+        public void SetDbField(System.String value)
         {
             DbField.SetTranslation(value); 
         }
 
-        public void SetDefaultRdbmsField(string value)
+        public void SetDefaultRdbmsField(System.String value)
         {
             DefaultRdbmsField.SetTranslation(value); 
         }
 
-        public void SetActiveRdbmsField(string value)
+        public void SetActiveRdbmsField(System.String value)
         {
             ActiveRdbmsField.SetTranslation(value); 
         }
 
-        public void SetDatabaseField(string value)
+        public void SetDatabaseField(System.String value)
         {
             DatabaseField.SetTranslation(value); 
         }
 
-        public void SetSchemaField(string value)
+        public void SetSchemaField(System.String value)
         {
             SchemaField.SetTranslation(value); 
         }
 
-        public void SetUsernameField(string value)
+        public void SetUsernameField(System.String value)
         {
             UsernameField.SetTranslation(value); 
         }
 
-        public void SetPasswordField(string value)
+        public void SetPasswordField(System.String value)
         {
             PasswordField.SetTranslation(value); 
         }
         #endregion  // DB methods
 
         #region Common field
-        public void SetEnabledField(string value)
+        public void SetEnabledField(System.String value)
         {
             EnabledField.SetTranslation(value); 
         }
 
-        public void SetDisabledField(string value)
+        public void SetDisabledField(System.String value)
         {
             DisabledField.SetTranslation(value); 
         }
         #endregion  // Common field
 
         #region Common field
-        public void SetChosenLanguageField(string value)
+        public void SetChosenLanguageField(System.String value)
         {
             ChosenLanguageField.SetTranslation(value); 
         }
         #endregion  // Common field
 
         #region Buttons methods
-        public void SetRecoverField(string value)
+        public void SetRecoverField(System.String value)
         {
             RecoverField.SetTranslation(value); 
         }
         
-        public void SetSaveField(string value)
+        public void SetSaveField(System.String value)
         {
             SaveField.SetTranslation(value); 
         }
         
-        public void SetCancelField(string value)
+        public void SetCancelField(System.String value)
         {
             CancelField.SetTranslation(value); 
         }

@@ -23,13 +23,13 @@ namespace SqlViewer.Models
         public RdbmsEnum DefaultRdbms { get; private set; }
         public RdbmsEnum ActiveRdbms { get; private set; }
 
-        public string DbName { get; private set; }
-        public string DbSchema { get; private set; }
-        public string DbUsername { get; private set; }
-        public string DbPassword { get; private set; }
+        public System.String DbName { get; private set; }
+        public System.String DbSchema { get; private set; }
+        public System.String DbUsername { get; private set; }
+        public System.String DbPassword { get; private set; }
 
-        public AppRepository(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily, 
-            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms)
+        public AppRepository(EnumEncoder enumEncoder, System.String language, System.String autoSave, System.Int32 fontSize, System.String fontFamily, 
+            System.Int32 tabSize, System.String wordWrap, System.String defaultRdbms, System.String activeRdbms)
         {
             try
             {
@@ -42,9 +42,9 @@ namespace SqlViewer.Models
             }
         }
 
-        public AppRepository(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily, 
-            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms, string dbName, string dbSchema, 
-            string dbUsername, string dbPassword)
+        public AppRepository(EnumEncoder enumEncoder, System.String language, System.String autoSave, System.Int32 fontSize, System.String fontFamily, 
+            System.Int32 tabSize, System.String wordWrap, System.String defaultRdbms, System.String activeRdbms, System.String dbName, System.String dbSchema, 
+            System.String dbUsername, System.String dbPassword)
         {
             try
             {
@@ -58,8 +58,8 @@ namespace SqlViewer.Models
             }
         }
 
-        private void AssignBasic(string language, string autoSave, int fontSize, string fontFamily, 
-            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms)
+        private void AssignBasic(System.String language, System.String autoSave, System.Int32 fontSize, System.String fontFamily, 
+            System.Int32 tabSize, System.String wordWrap, System.String defaultRdbms, System.String activeRdbms)
         {
             try
             {
@@ -78,7 +78,7 @@ namespace SqlViewer.Models
             }
         }
 
-        private void AssignDbCredentials(string dbName, string dbSchema, string dbUsername, string dbPassword)
+        private void AssignDbCredentials(System.String dbName, System.String dbSchema, System.String dbUsername, System.String dbPassword)
         {
             DbName = dbName; 
             DbSchema = dbSchema; 
@@ -86,9 +86,9 @@ namespace SqlViewer.Models
             DbPassword = dbPassword; 
         }
 
-        public void Update(string language, string autoSave, int fontSize, string fontFamily, int tabSize, 
-            string wordWrap, string defaultRdbms, string activeRdbms, string dbName, string dbSchema, 
-            string dbUsername, string dbPassword)
+        public void Update(System.String language, System.String autoSave, System.Int32 fontSize, System.String fontFamily, System.Int32 tabSize, 
+            System.String wordWrap, System.String defaultRdbms, System.String activeRdbms, System.String dbName, System.String dbSchema, 
+            System.String dbUsername, System.String dbPassword)
         {
             try
             {

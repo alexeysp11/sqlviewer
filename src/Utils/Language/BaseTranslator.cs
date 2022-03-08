@@ -13,7 +13,7 @@ namespace SqlViewer.Utils.Language
             this.AppDbConnection = appDbConnection; 
         }
 
-        public DataTable Translate(string sql)
+        public DataTable Translate(System.String sql)
         {
             try
             {
@@ -25,14 +25,14 @@ namespace SqlViewer.Utils.Language
             }
         }
 
-        public string TranslateSingleWord(DataTable dt, string rowName, string wordEnglish)
+        public System.String TranslateSingleWord(DataTable dt, System.String rowName, System.String wordEnglish)
         {
-            string result = string.Empty; 
+            System.String result = System.String.Empty; 
             try
             {
                 var row = dt
                     .AsEnumerable()
-                    .Where(row => row.Field<string>("english") == wordEnglish)
+                    .Where(row => row.Field<System.String>("english") == wordEnglish)
                     .First(); 
                 result = row[rowName].ToString(); 
             }

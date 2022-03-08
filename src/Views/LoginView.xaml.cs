@@ -47,27 +47,27 @@ namespace SqlViewer.Views
 
         private void InitPreferencesDb()
         {
-            lblActiveRdbms.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.ActiveRdbmsField.Translation) ? LoginEntity.ActiveRdbmsField.English : LoginEntity.ActiveRdbmsField.Translation; 
-            cbActiveRdbms.Text = string.IsNullOrEmpty(this.MainVM.AppRepository.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : this.MainVM.AppRepository.ActiveRdbms.ToString(); 
+            lblActiveRdbms.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(LoginEntity.ActiveRdbmsField.Translation) ? LoginEntity.ActiveRdbmsField.English : LoginEntity.ActiveRdbmsField.Translation; 
+            cbActiveRdbms.Text = System.String.IsNullOrEmpty(this.MainVM.AppRepository.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : this.MainVM.AppRepository.ActiveRdbms.ToString(); 
 
-            lblDatabase.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.DatabaseField.Translation) ? LoginEntity.DatabaseField.English : LoginEntity.DatabaseField.Translation; 
-            lblSchema.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.SchemaField.Translation) ? LoginEntity.SchemaField.English : LoginEntity.SchemaField.Translation; 
-            lblUsername.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.UsernameField.Translation) ? LoginEntity.UsernameField.English : LoginEntity.UsernameField.Translation; 
-            lblPassword.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.PasswordField.Translation) ? LoginEntity.PasswordField.English : LoginEntity.PasswordField.Translation; 
+            lblDatabase.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(LoginEntity.DatabaseField.Translation) ? LoginEntity.DatabaseField.English : LoginEntity.DatabaseField.Translation; 
+            lblSchema.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(LoginEntity.SchemaField.Translation) ? LoginEntity.SchemaField.English : LoginEntity.SchemaField.Translation; 
+            lblUsername.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(LoginEntity.UsernameField.Translation) ? LoginEntity.UsernameField.English : LoginEntity.UsernameField.Translation; 
+            lblPassword.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(LoginEntity.PasswordField.Translation) ? LoginEntity.PasswordField.English : LoginEntity.PasswordField.Translation; 
         }
 
         private void InitButtons()
         {
-            btnLogIn.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.LogInField.Translation) ? LoginEntity.LogInField.English : LoginEntity.LogInField.Translation; 
-            btnCancel.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.CancelField.Translation) ? LoginEntity.CancelField.English : LoginEntity.CancelField.Translation; 
+            btnLogIn.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(LoginEntity.LogInField.Translation) ? LoginEntity.LogInField.English : LoginEntity.LogInField.Translation; 
+            btnCancel.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(LoginEntity.CancelField.Translation) ? LoginEntity.CancelField.English : LoginEntity.CancelField.Translation; 
         }
 
         private void btnLogIn_Clicked(object sender, RoutedEventArgs e)
         {
             this.IsLoggedIn = true; 
 
-            string sql = this.MainVM.GetSqlRequest("App/UpdateSettingsDb.sql"); 
-            sql = string.Format(sql, "SQLite", cbActiveRdbms.Text, tbDatabase.Text, 
+            System.String sql = this.MainVM.GetSqlRequest("App/UpdateSettingsDb.sql"); 
+            sql = System.String.Format(sql, "SQLite", cbActiveRdbms.Text, tbDatabase.Text, 
                 tbSchema.Text, tbUsername.Text, pbPassword.Password); 
             this.MainVM.SendSqlRequest(sql); 
             this.MainVM.InitAppRepository(); 

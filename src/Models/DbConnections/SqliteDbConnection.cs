@@ -5,11 +5,11 @@ namespace SqlViewer.Models.DbConnections
 {
     public class SqliteDbConnection : SqlViewer.Models.DbConnections.IDbConnection 
     {
-        //public string ProviderName { get; private set; } // For debugging purposes
+        //public System.String ProviderName { get; private set; } // For debugging purposes
 
-        private string AbsolutePathToDb; 
+        private System.String AbsolutePathToDb; 
 
-        public SqliteDbConnection(string path)
+        public SqliteDbConnection(System.String path)
         {
             try
             {
@@ -21,7 +21,12 @@ namespace SqlViewer.Models.DbConnections
             }
         }
 
-        public void SetPathToDb(string path)
+        public void SetConnString(System.String host, System.String username, System.String database)
+        {
+            throw new System.NotImplementedException("There's no connection System.String in SqliteDbConnection."); 
+        }
+
+        public void SetPathToDb(System.String path)
         {
             if ( System.IO.File.Exists(path) )
             {
@@ -33,7 +38,7 @@ namespace SqlViewer.Models.DbConnections
             }
         }
 
-        public DataTable ExecuteSqlCommand(string sqlRequest)
+        public DataTable ExecuteSqlCommand(System.String sqlRequest)
         {
             DataTable table = new DataTable(); 
             var connectionStringBuilder = new SqliteConnectionStringBuilder();

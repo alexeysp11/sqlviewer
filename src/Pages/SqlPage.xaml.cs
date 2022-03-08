@@ -30,9 +30,9 @@ namespace SqlViewer.Pages
 
         public void Init()
         {
-            tbSqlPagePath.Text = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": "; 
+            tbSqlPagePath.Text = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": "; 
             tbActiveRdbms.Text = this.MainVM.AppRepository.ActiveRdbms.ToString(); 
-            btnSqlPageExecute.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.ExecuteField.Translation) ? SqlPageEntity.ExecuteField.English : SqlPageEntity.ExecuteField.Translation; 
+            btnSqlPageExecute.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SqlPageEntity.ExecuteField.Translation) ? SqlPageEntity.ExecuteField.English : SqlPageEntity.ExecuteField.Translation; 
         }
     }
 }

@@ -97,7 +97,7 @@ namespace SqlViewer.UserControls
 
         private void dgrBrowse_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            string header = e.Column.Header.ToString();
+            System.String header = e.Column.Header.ToString();
             e.Column.Header = header.Replace("_", "__");
         }
     }
