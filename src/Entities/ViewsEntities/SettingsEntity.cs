@@ -40,114 +40,38 @@ namespace SqlViewer.Entities.ViewsEntities
         #endregion  // Buttons fields
 
         #region Editor methods
-        public void SetEditorField(System.String value)
-        {
-            EditorField.SetTranslation(value); 
-        }
-
-        public void SetLanguageField(System.String value)
-        {
-            LanguageField.SetTranslation(value); 
-        }
-
-        public void SetAutoSaveField(System.String value)
-        {
-            AutoSaveField.SetTranslation(value); 
-        }
-
-        public void SetFontSizeField(System.String value)
-        {
-            FontSizeField.SetTranslation(value); 
-        }
-
-        public void SetFontFamilyField(System.String value)
-        {
-            FontFamilyField.SetTranslation(value); 
-        }
-
-        public void SetTabSizeField(System.String value)
-        {
-            TabSizeField.SetTranslation(value); 
-        }
-
-        public void SetWordWrapField(System.String value)
-        {
-            WordWrapField.SetTranslation(value); 
-        }
-
+        public void SetEditorField(string value) => EditorField.SetTranslation(value); 
+        public void SetLanguageField(string value) => LanguageField.SetTranslation(value); 
+        public void SetAutoSaveField(string value) => AutoSaveField.SetTranslation(value); 
+        public void SetFontSizeField(string value) => FontSizeField.SetTranslation(value); 
+        public void SetFontFamilyField(string value) => FontFamilyField.SetTranslation(value); 
+        public void SetTabSizeField(string value) => TabSizeField.SetTranslation(value); 
+        public void SetWordWrapField(string value) => WordWrapField.SetTranslation(value); 
         #endregion  // Editor methods
 
         #region DB methods
-        public void SetDbField(System.String value)
-        {
-            DbField.SetTranslation(value); 
-        }
-
-        public void SetDefaultRdbmsField(System.String value)
-        {
-            DefaultRdbmsField.SetTranslation(value); 
-        }
-
-        public void SetActiveRdbmsField(System.String value)
-        {
-            ActiveRdbmsField.SetTranslation(value); 
-        }
-
-        public void SetDatabaseField(System.String value)
-        {
-            DatabaseField.SetTranslation(value); 
-        }
-
-        public void SetSchemaField(System.String value)
-        {
-            SchemaField.SetTranslation(value); 
-        }
-
-        public void SetUsernameField(System.String value)
-        {
-            UsernameField.SetTranslation(value); 
-        }
-
-        public void SetPasswordField(System.String value)
-        {
-            PasswordField.SetTranslation(value); 
-        }
+        public void SetDbField(string value) => DbField.SetTranslation(value); 
+        public void SetDefaultRdbmsField(string value) => DefaultRdbmsField.SetTranslation(value); 
+        public void SetActiveRdbmsField(string value) => ActiveRdbmsField.SetTranslation(value); 
+        public void SetDatabaseField(string value) => DatabaseField.SetTranslation(value); 
+        public void SetSchemaField(string value) => SchemaField.SetTranslation(value); 
+        public void SetUsernameField(string value) => UsernameField.SetTranslation(value); 
+        public void SetPasswordField(string value) => PasswordField.SetTranslation(value); 
         #endregion  // DB methods
 
         #region Common field
-        public void SetEnabledField(System.String value)
-        {
-            EnabledField.SetTranslation(value); 
-        }
-
-        public void SetDisabledField(System.String value)
-        {
-            DisabledField.SetTranslation(value); 
-        }
+        public void SetEnabledField(string value) => EnabledField.SetTranslation(value); 
+        public void SetDisabledField(string value) => DisabledField.SetTranslation(value); 
         #endregion  // Common field
 
         #region Common field
-        public void SetChosenLanguageField(System.String value)
-        {
-            ChosenLanguageField.SetTranslation(value); 
-        }
+        public void SetChosenLanguageField(string value) => ChosenLanguageField.SetTranslation(value); 
         #endregion  // Common field
 
         #region Buttons methods
-        public void SetRecoverField(System.String value)
-        {
-            RecoverField.SetTranslation(value); 
-        }
-        
-        public void SetSaveField(System.String value)
-        {
-            SaveField.SetTranslation(value); 
-        }
-        
-        public void SetCancelField(System.String value)
-        {
-            CancelField.SetTranslation(value); 
-        }
+        public void SetRecoverField(string value) => RecoverField.SetTranslation(value); 
+        public void SetSaveField(string value) => SaveField.SetTranslation(value); 
+        public void SetCancelField(string value) => CancelField.SetTranslation(value); 
         #endregion  // Buttons methods
     }
 }

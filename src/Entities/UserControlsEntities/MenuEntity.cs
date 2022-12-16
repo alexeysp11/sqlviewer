@@ -71,237 +71,69 @@ namespace SqlViewer.Entities.UserControlsEntities
         #endregion  // Help fields
 
         #region File methods 
-        public void SetFileField(System.String value)
-        {
-            FileField.SetTranslation(value); 
-        }
-
-        public void SetFileNewField(System.String value)
-        {
-            FileNewField.SetTranslation(value); 
-        }
-
-        public void SetFileNewSqlFileField(System.String value)
-        {
-            FileNewSqlFileField.SetTranslation(value); 
-        }
-
-        public void SetFileNewFunctionField(System.String value)
-        {
-            FileNewFunctionField.SetTranslation(value); 
-        }
-
-        public void SetFileNewProcedureField(System.String value)
-        {
-            FileNewProcedureField.SetTranslation(value); 
-        }
-
-        public void SetFileNewTestField(System.String value)
-        {
-            FileNewTestField.SetTranslation(value); 
-        }
-
-        public void SetFileNewDatabaseField(System.String value)
-        {
-            FileNewDatabaseField.SetTranslation(value); 
-        }
-
-        public void SetFileNewTableField(System.String value)
-        {
-            FileNewTableField.SetTranslation(value); 
-        }
-
-        public void SetFileNewSequenceField(System.String value)
-        {
-            FileNewSequenceField.SetTranslation(value); 
-        }
-
-        public void SetFileNewViewField(System.String value)
-        {
-            FileNewViewField.SetTranslation(value); 
-        }
-
-        public void SetFileNewTriggerField(System.String value)
-        {
-            FileNewTriggerField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenField(System.String value)
-        {
-            FileOpenField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenSqlFileField(System.String value)
-        {
-            FileOpenSqlFileField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenFunctionField(System.String value)
-        {
-            FileOpenFunctionField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenProcedureField(System.String value)
-        {
-            FileOpenProcedureField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenTestField(System.String value)
-        {
-            FileOpenTestField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenDatabaseField(System.String value)
-        {
-            FileOpenDatabaseField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenTableField(System.String value)
-        {
-            FileOpenTableField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenSequenceField(System.String value)
-        {
-            FileOpenSequenceField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenViewField(System.String value)
-        {
-            FileOpenViewField.SetTranslation(value); 
-        }
-
-        public void SetFileOpenTriggerField(System.String value)
-        {
-            FileOpenTriggerField.SetTranslation(value); 
-        }
-
-        public void SetFileReopenField(System.String value)
-        {
-            FileReopenField.SetTranslation(value); 
-        }
-
-        public void SetFileSaveField(System.String value)
-        {
-            FileSaveField.SetTranslation(value); 
-        }
-
-        public void SetFileSaveAllField(System.String value)
-        {
-            FileSaveAllField.SetTranslation(value); 
-        }
-
-        public void SetFileCloseField(System.String value)
-        {
-            FileCloseField.SetTranslation(value); 
-        }
-
-        public void SetFileCloseAllField(System.String value)
-        {
-            FileCloseAllField.SetTranslation(value); 
-        }
-
-        public void SetFileExitField(System.String value)
-        {
-            FileExitField.SetTranslation(value); 
-        }
-
+        public void SetFileField(string value) => FileField.SetTranslation(value); 
+        
+        public void SetFileNewField(string value) => FileNewField.SetTranslation(value); 
+        public void SetFileNewSqlFileField(string value) => FileNewSqlFileField.SetTranslation(value); 
+        public void SetFileNewFunctionField(string value) => FileNewFunctionField.SetTranslation(value); 
+        public void SetFileNewProcedureField(string value) => FileNewProcedureField.SetTranslation(value); 
+        public void SetFileNewTestField(string value) => FileNewTestField.SetTranslation(value); 
+        public void SetFileNewDatabaseField(string value) => FileNewDatabaseField.SetTranslation(value); 
+        public void SetFileNewTableField(string value) => FileNewTableField.SetTranslation(value); 
+        public void SetFileNewSequenceField(string value) => FileNewSequenceField.SetTranslation(value); 
+        public void SetFileNewViewField(string value) => FileNewViewField.SetTranslation(value); 
+        public void SetFileNewTriggerField(string value) => FileNewTriggerField.SetTranslation(value); 
+        
+        public void SetFileOpenField(string value) => FileOpenField.SetTranslation(value); 
+        public void SetFileOpenSqlFileField(string value) => FileOpenSqlFileField.SetTranslation(value); 
+        public void SetFileOpenFunctionField(string value) => FileOpenFunctionField.SetTranslation(value); 
+        public void SetFileOpenProcedureField(string value) => FileOpenProcedureField.SetTranslation(value); 
+        public void SetFileOpenTestField(string value) => FileOpenTestField.SetTranslation(value); 
+        public void SetFileOpenDatabaseField(string value) => FileOpenDatabaseField.SetTranslation(value); 
+        public void SetFileOpenTableField(string value) => FileOpenTableField.SetTranslation(value); 
+        public void SetFileOpenSequenceField(string value) => FileOpenSequenceField.SetTranslation(value); 
+        public void SetFileOpenViewField(string value) => FileOpenViewField.SetTranslation(value); 
+        public void SetFileOpenTriggerField(string value) => FileOpenTriggerField.SetTranslation(value); 
+        
+        public void SetFileReopenField(string value) => FileReopenField.SetTranslation(value); 
+        public void SetFileSaveField(string value) => FileSaveField.SetTranslation(value); 
+        public void SetFileSaveAllField(string value) => FileSaveAllField.SetTranslation(value); 
+        public void SetFileCloseField(string value) => FileCloseField.SetTranslation(value); 
+        public void SetFileCloseAllField(string value) => FileCloseAllField.SetTranslation(value); 
+        public void SetFileExitField(string value) => FileExitField.SetTranslation(value); 
         #endregion  // File methods 
 
         #region Edit methods
-        public void SetEditField(System.String value)
-        {
-            EditField.SetTranslation(value); 
-        }
-        public void SetEditUndoField(System.String value)
-        {
-            EditUndoField.SetTranslation(value); 
-        }
-        public void SetEditRedoField(System.String value)
-        {
-            EditRedoField.SetTranslation(value); 
-        }
-        public void SetEditSettingsField(System.String value)
-        {
-            EditSettingsField.SetTranslation(value); 
-        }
+        public void SetEditField(string value) => EditField.SetTranslation(value); 
+        public void SetEditUndoField(string value) => EditUndoField.SetTranslation(value); 
+        public void SetEditRedoField(string value) => EditRedoField.SetTranslation(value); 
+        public void SetEditSettingsField(string value) => EditSettingsField.SetTranslation(value); 
         #endregion  // Edit methods        
 
         #region Pages methods
-        public void SetPagesField(System.String value)
-        {
-            PagesField.SetTranslation(value); 
-        }
-        public void SetPagesSqlQueryField(System.String value)
-        {
-            PagesSqlQueryField.SetTranslation(value); 
-        }
-        public void SetPagesCommandLineField(System.String value)
-        {
-            PagesCommandLineField.SetTranslation(value); 
-        }
-        public void SetPagesFunctionsField(System.String value)
-        {
-            PagesFunctionsField.SetTranslation(value); 
-        }
-        public void SetPagesProceduresField(System.String value)
-        {
-            PagesProceduresField.SetTranslation(value); 
-        }
-        public void SetPagesTestsField(System.String value)
-        {
-            PagesTestsField.SetTranslation(value); 
-        }
-        public void SetPagesDatabasesField(System.String value)
-        {
-            PagesDatabasesField.SetTranslation(value); 
-        }
-        public void SetPagesTablesField(System.String value)
-        {
-            PagesTablesField.SetTranslation(value); 
-        }
+        public void SetPagesField(string value) => PagesField.SetTranslation(value); 
+        public void SetPagesSqlQueryField(string value) => PagesSqlQueryField.SetTranslation(value); 
+        public void SetPagesCommandLineField(string value) => PagesCommandLineField.SetTranslation(value); 
+        public void SetPagesFunctionsField(string value) => PagesFunctionsField.SetTranslation(value); 
+        public void SetPagesProceduresField(string value) => PagesProceduresField.SetTranslation(value); 
+        public void SetPagesTestsField(string value) => PagesTestsField.SetTranslation(value); 
+        public void SetPagesDatabasesField(string value) => PagesDatabasesField.SetTranslation(value); 
+        public void SetPagesTablesField(string value) => PagesTablesField.SetTranslation(value); 
         #endregion  // Pages methods
 
         #region Tools methods
-        public void SetToolsField(System.String value)
-        {
-            ToolsField.SetTranslation(value); 
-        }
-        public void SetToolsOptionsField(System.String value)
-        {
-            ToolsOptionsField.SetTranslation(value); 
-        }
-        public void SetToolsToolbarsField(System.String value)
-        {
-            ToolsToolbarsField.SetTranslation(value); 
-        }
-        public void SetToolsConnectionsField(System.String value)
-        {
-            ToolsConnectionsField.SetTranslation(value); 
-        }
+        public void SetToolsField(string value) => ToolsField.SetTranslation(value); 
+        public void SetToolsOptionsField(string value) => ToolsOptionsField.SetTranslation(value); 
+        public void SetToolsToolbarsField(string value) => ToolsToolbarsField.SetTranslation(value); 
+        public void SetToolsConnectionsField(string value) => ToolsConnectionsField.SetTranslation(value); 
         #endregion  // Tools methods
 
         #region Help methods
-        public void SetHelpField(System.String value)
-        {
-            HelpField.SetTranslation(value); 
-        }
-        public void SetHelpDocsField(System.String value)
-        {
-            HelpDocsField.SetTranslation(value); 
-        }
-        public void SetHelpUserGuideField(System.String value)
-        {
-            HelpUserGuideField.SetTranslation(value); 
-        }
-        public void SetHelpGithubField(System.String value)
-        {
-            HelpGithubField.SetTranslation(value); 
-        }
-        public void SetHelpReportField(System.String value)
-        {
-            HelpReportField.SetTranslation(value); 
-        }
+        public void SetHelpField(string value) => HelpField.SetTranslation(value); 
+        public void SetHelpDocsField(string value) => HelpDocsField.SetTranslation(value); 
+        public void SetHelpUserGuideField(string value) => HelpUserGuideField.SetTranslation(value); 
+        public void SetHelpGithubField(string value) => HelpGithubField.SetTranslation(value); 
+        public void SetHelpReportField(string value) => HelpReportField.SetTranslation(value); 
         #endregion  // Help methods        
     }
 }

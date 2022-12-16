@@ -29,14 +29,14 @@ namespace SqlViewer.Utils.Language
         {
             LanguageEnum = language; 
 
-            System.String sql = this.MainVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DbVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
             try
             {
-                if (sql == System.String.Empty)
+                if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
-                sql = System.String.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
+                sql = string.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
                 DataTable dt = base.Translate(sql); 
 
                 var languageWord = new Word(LanguageEnum.ToString()); 
@@ -50,14 +50,14 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateLogin()
         {
-            System.String sql = this.MainVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DbVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
             try
             {
-                if (sql == System.String.Empty)
+                if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
-                sql = System.String.Format(sql, LanguageEnum.ToString(), "LOGIN");
+                sql = string.Format(sql, LanguageEnum.ToString(), "LOGIN");
                 DataTable dt = base.Translate(sql); 
 
                 LoginEntity.SetActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.ActiveRdbmsField.English)); 
@@ -77,14 +77,14 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateMenu()
         {
-            System.String sql = this.MainVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DbVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
             try
             {
-                if (sql == System.String.Empty)
+                if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
-                sql = System.String.Format(sql, LanguageEnum.ToString(), "MENU");
+                sql = string.Format(sql, LanguageEnum.ToString(), "MENU");
                 DataTable dt = base.Translate(sql); 
 
                 #region Translate File
@@ -161,15 +161,15 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateSettings()
         {
-            System.String sql = this.MainVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DbVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
             try
             {
-                if (sql == System.String.Empty)
+                if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
                 #region Translate Settings  
-                sql = System.String.Format(sql, LanguageEnum.ToString(), "SETTINGS");
+                sql = string.Format(sql, LanguageEnum.ToString(), "SETTINGS");
                 DataTable dt = base.Translate(sql); 
 
                 SettingsEntity.SetEditorField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EditorField.English)); 
@@ -194,7 +194,7 @@ namespace SqlViewer.Utils.Language
                 #endregion  // Translate Settings  
 
                 #region Translate Common 
-                sql = System.String.Format(sql, LanguageEnum.ToString(), "COMMON");
+                sql = string.Format(sql, LanguageEnum.ToString(), "COMMON");
                 dt = base.Translate(sql); 
 
                 SettingsEntity.SetDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English)); 
@@ -203,7 +203,7 @@ namespace SqlViewer.Utils.Language
                 #endregion  // Translate Common 
 
                 #region Translate Language 
-                sql = System.String.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
+                sql = string.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
                 dt = base.Translate(sql); 
 
                 SettingsEntity.SetChosenLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.ChosenLanguageField.English)); 
@@ -217,14 +217,14 @@ namespace SqlViewer.Utils.Language
 
         public void TranslatePages()
         {
-            System.String sql = this.MainVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DbVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
             try
             {
-                if (sql == System.String.Empty)
+                if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
-                sql = System.String.Format(sql, LanguageEnum.ToString(), "PAGES");
+                sql = string.Format(sql, LanguageEnum.ToString(), "PAGES");
                 DataTable dt = base.Translate(sql); 
 
                 #region Translate SQL page

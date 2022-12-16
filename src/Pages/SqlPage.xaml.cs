@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
 using SqlViewer.Entities.PagesEntities; 
+using SqlViewer.Helpers; 
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
@@ -22,7 +23,7 @@ namespace SqlViewer.Pages
             Loaded += (o, e) => 
             {
                 this.MainVM = (MainVM)this.DataContext; 
-                this.MainVM.SqlPage = this; 
+                this.MainVM.VisualVM.SqlPage = this; 
                 this.SqlPageEntity = this.MainVM.Translator.SqlPageEntity;  
                 Init(); 
             }; 
@@ -30,9 +31,9 @@ namespace SqlViewer.Pages
 
         public void Init()
         {
-            tbSqlPagePath.Text = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": "; 
-            tbActiveRdbms.Text = this.MainVM.AppRepository.ActiveRdbms.ToString(); 
-            btnSqlPageExecute.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SqlPageEntity.ExecuteField.Translation) ? SqlPageEntity.ExecuteField.English : SqlPageEntity.ExecuteField.Translation; 
+            tbSqlPagePath.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": "; 
+            tbActiveRdbms.Text = RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            btnSqlPageExecute.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.ExecuteField.Translation) ? SqlPageEntity.ExecuteField.English : SqlPageEntity.ExecuteField.Translation; 
         }
     }
 }

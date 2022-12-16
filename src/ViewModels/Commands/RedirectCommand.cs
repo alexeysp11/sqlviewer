@@ -21,30 +21,32 @@ namespace SqlViewer.Commands
 
         public void Execute(object parameter)
         {
-            System.String parameterString = parameter as System.String; 
-            if (parameterString == "SqlQuery")
+            string parameterString = parameter as string; 
+            switch (parameterString)
             {
-                this.MainVM.RedirectToSqlQuery(); 
-            }
-            else if (parameterString == "Tables")
-            {
-                this.MainVM.RedirectToTables(); 
-            }
-            else if (parameterString == "Settings")
-            {
-                this.MainVM.OpenView("SettingsView"); 
-            }
-            else if (parameterString == "Options")
-            {
-                this.MainVM.OpenView("OptionsView"); 
-            }
-            else if (parameterString == "Connections")
-            {
-                this.MainVM.OpenView("ConnectionsView"); 
-            }
-            else
-            {
-                System.Windows.MessageBox.Show($"Incorrect CommandParameter: {parameterString} inside RedirectCommand", "Exception"); 
+                case "SqlQuery":
+                    this.MainVM.VisualVM.RedirectToSqlQuery(); 
+                    break;
+
+                case "Tables":
+                    this.MainVM.VisualVM.RedirectToTables(); 
+                    break;
+
+                case "Settings":
+                    this.MainVM.VisualVM.OpenView("SettingsView"); 
+                    break;
+
+                case "Options":
+                    this.MainVM.VisualVM.OpenView("OptionsView"); 
+                    break;
+
+                case "Connections":
+                    this.MainVM.VisualVM.OpenView("ConnectionsView"); 
+                    break;
+
+                default:
+                    System.Windows.MessageBox.Show($"Incorrect parameter: '{parameterString}' in RedirectCommand", "Error"); 
+                    break;
             }
         }
     }

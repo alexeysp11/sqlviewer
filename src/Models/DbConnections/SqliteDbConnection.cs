@@ -3,13 +3,13 @@ using Microsoft.Data.Sqlite;
 
 namespace SqlViewer.Models.DbConnections
 {
-    public class SqliteDbConnection : SqlViewer.Models.DbConnections.IDbConnection 
+    public class SqliteDbConnection : SqlViewer.Models.DbConnections.ICommonDbConnection 
     {
-        //public System.String ProviderName { get; private set; } // For debugging purposes
+        //public string ProviderName { get; private set; } // For debugging purposes
 
-        private System.String AbsolutePathToDb; 
+        private string AbsolutePathToDb; 
 
-        public SqliteDbConnection(System.String path)
+        public SqliteDbConnection(string path)
         {
             try
             {
@@ -21,14 +21,9 @@ namespace SqlViewer.Models.DbConnections
             }
         }
 
-        public void SetConnString(System.String host, System.String username, System.String database)
+        public void SetPathToDb(string path)
         {
-            throw new System.NotImplementedException("There's no connection System.String in SqliteDbConnection."); 
-        }
-
-        public void SetPathToDb(System.String path)
-        {
-            if ( System.IO.File.Exists(path) )
+            if (System.IO.File.Exists(path))
             {
                 this.AbsolutePathToDb = path; 
             }
@@ -38,7 +33,7 @@ namespace SqlViewer.Models.DbConnections
             }
         }
 
-        public DataTable ExecuteSqlCommand(System.String sqlRequest)
+        public DataTable ExecuteSqlCommand(string sqlRequest)
         {
             DataTable table = new DataTable(); 
             var connectionStringBuilder = new SqliteConnectionStringBuilder();

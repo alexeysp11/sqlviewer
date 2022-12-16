@@ -20,34 +20,28 @@ namespace SqlViewer.Commands
 
         public void Execute(object parameter)
         {
-            System.String parameterString = parameter as System.String; 
-            if (parameterString == "About")
+            string parameterString = parameter as string; 
+            switch (parameterString)
             {
-                this.MainVM.OpenDocsInBrowser("About page", 
-                                            "User guide", 
-                                            $"{this.MainVM.RootFolder}\\docs\\About.html"); 
-            }
-            else if (parameterString == "SqliteDocs")
-            {
-                this.MainVM.OpenDocsInBrowser("SQLite documentation", 
-                                            "Common SQL docs", 
-                                            "https://www.sqlite.org/index.html"); 
-            }
-            else if (parameterString == "PosgresDocs")
-            {
-                this.MainVM.OpenDocsInBrowser("PosgresSQL documentation", 
-                                            "Common SQL docs", 
-                                            "https://www.postgresql.org/"); 
-            }
-            else if (parameterString == "MySqlDocs")
-            {
-                this.MainVM.OpenDocsInBrowser("MySQL documentation", 
-                                            "Common SQL docs", 
-                                            "https://dev.mysql.com/doc/"); 
-            }
-            else 
-            {
-                System.Windows.MessageBox.Show($"Incorrect parameter: {parameterString}", "Error"); 
+                case "About":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("About page", "User guide", $"{SqlViewer.Helpers.SettingsHelper.GetRootFolder()}\\docs\\About.html"); 
+                    break;
+
+                case "SqliteDocs":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("SQLite documentation", "Common SQL docs", "https://www.sqlite.org/index.html");
+                    break;
+
+                case "PosgresDocs":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("PosgresSQL documentation", "Common SQL docs", "https://www.postgresql.org/");
+                    break;
+
+                case "MySqlDocs":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("MySQL documentation", "Common SQL docs", "https://dev.mysql.com/doc/"); 
+                    break;
+
+                default:
+                    System.Windows.MessageBox.Show($"Incorrect parameter: {parameterString}", "Error"); 
+                    break;
             }
         }
     }

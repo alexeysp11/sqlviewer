@@ -4,6 +4,7 @@ namespace SqlViewer.Enums.Database
     {
         SQLite = 1, 
         PostgreSQL = 2, 
-        MySQL = 3
+        MySQL = 3, 
+        MSSQL = 4
     }
 }

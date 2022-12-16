@@ -11,119 +11,78 @@ namespace SqlViewer.Models.EnumOperations
     public class EnumDecoder
     {
         #region Common 
-        public System.String GetLanguageName(LanguageEnum language)
+        public string GetLanguageName(LanguageEnum language) => language switch
         {
-            if (language == LanguageEnum.English)
-                return "English"; 
-            else if (language == LanguageEnum.German)
-                return "German"; 
-            else if (language == LanguageEnum.Russian)
-                return "Russian"; 
-            else if (language == LanguageEnum.Spanish)
-                return "Spanish"; 
-            else if (language == LanguageEnum.Portugues)
-                return "Portugues"; 
-            else if (language == LanguageEnum.Italian)
-                return "Italian"; 
-            else if (language == LanguageEnum.French)
-                return "French"; 
-            else if (language == LanguageEnum.Ukranian)
-                return "Ukranian"; 
-            else if (language == LanguageEnum.Dutch)
-                return "Dutch"; 
-            else
-                throw new System.Exception("Unable to find language name"); 
-        }
+            LanguageEnum.English       => "English",
+            LanguageEnum.German        => "German",
+            LanguageEnum.Russian       => "Russian",
+            LanguageEnum.Spanish       => "Spanish",
+            LanguageEnum.Portuguese    => "Portuguese",
+            LanguageEnum.Italian       => "Italian",
+            LanguageEnum.French        => "French",
+            LanguageEnum.Ukranian      => "Ukranian",
+            LanguageEnum.Dutch         => "Dutch",
+            _ => throw new System.Exception("Unable to find language name")
+        }; 
         #endregion  // Common 
 
         #region Editor
-        public System.String GetAutoSaveName(AutoSaveEnum autoSave)
+        public string GetAutoSaveName(AutoSaveEnum autoSave) => autoSave switch
         {
-            if (autoSave == AutoSaveEnum.Enabled)
-                return "Enabled"; 
-            else if (autoSave == AutoSaveEnum.Disabled)
-                return "Disabled"; 
-            else
-                throw new System.Exception("Unable to find autoSave name"); 
-        }
+            AutoSaveEnum.Enabled   => "Enabled",
+            AutoSaveEnum.Disabled  => "Disabled",
+            _ => throw new System.Exception("Unable to find autoSave name")
+        }; 
 
-        public System.String GetFontSizeName(FontSizeEnum fontSize)
+        public string GetFontSizeName(FontSizeEnum fontSize) => fontSize switch
         {
-            if (fontSize == FontSizeEnum.FontSize8)
-                return "8"; 
-            else if (fontSize == FontSizeEnum.FontSize9)
-                return "9"; 
-            else if (fontSize == FontSizeEnum.FontSize10)
-                return "10"; 
-            else if (fontSize == FontSizeEnum.FontSize11)
-                return "11"; 
-            else if (fontSize == FontSizeEnum.FontSize12)
-                return "12"; 
-            else if (fontSize == FontSizeEnum.FontSize14)
-                return "14"; 
-            else if (fontSize == FontSizeEnum.FontSize16)
-                return "16"; 
-            else if (fontSize == FontSizeEnum.FontSize18)
-                return "18"; 
-            else if (fontSize == FontSizeEnum.FontSize20)
-                return "20"; 
-            else
-                throw new System.Exception("Unable to find fontSize name"); 
-        }
+            FontSizeEnum.FontSize8     => "8",
+            FontSizeEnum.FontSize9     => "9",
+            FontSizeEnum.FontSize10    => "10",
+            FontSizeEnum.FontSize11    => "11",
+            FontSizeEnum.FontSize12    => "12",
+            FontSizeEnum.FontSize14    => "14",
+            FontSizeEnum.FontSize16    => "16",
+            FontSizeEnum.FontSize18    => "18",
+            FontSizeEnum.FontSize20    => "20",
+            _ => throw new System.Exception("Unable to find fontSize name")
+        }; 
 
-        public System.String GetFontFamilyName(FontFamilyEnum fontFamily)
+        public string GetFontFamilyName(FontFamilyEnum fontFamily) => fontFamily switch
         {
-            if (fontFamily == FontFamilyEnum.Consolas)
-                return "Consolas"; 
-            else
-                throw new System.Exception("Unable to find fontFamily name"); 
-        }
+            FontFamilyEnum.Consolas => "Consolas",
+            _ => throw new System.Exception("Unable to find fontFamily name")
+        }; 
 
-        public System.String GetTabSizeName(TabSizeEnum tabSize)
+        public string GetTabSizeName(TabSizeEnum tabSize) => tabSize switch
         {
-            if (tabSize == TabSizeEnum.TabSize1)
-                return "1"; 
-            else if (tabSize == TabSizeEnum.TabSize2)
-                return "2"; 
-            else if (tabSize == TabSizeEnum.TabSize3)
-                return "3"; 
-            else if (tabSize == TabSizeEnum.TabSize4)
-                return "4"; 
-            else if (tabSize == TabSizeEnum.TabSize5)
-                return "5"; 
-            else if (tabSize == TabSizeEnum.TabSize6)
-                return "6"; 
-            else if (tabSize == TabSizeEnum.TabSize7)
-                return "7"; 
-            else if (tabSize == TabSizeEnum.TabSize8)
-                return "8"; 
-            else
-                throw new System.Exception("Unable to find tabSize name"); 
-        }
+            TabSizeEnum.TabSize1 => "1",
+            TabSizeEnum.TabSize2 => "2",
+            TabSizeEnum.TabSize3 => "3",
+            TabSizeEnum.TabSize4 => "4",
+            TabSizeEnum.TabSize5 => "5",
+            TabSizeEnum.TabSize6 => "6",
+            TabSizeEnum.TabSize7 => "7",
+            TabSizeEnum.TabSize8 => "8",
+            _ => throw new System.Exception("Unable to find tabSize name")
+        }; 
 
-        public System.String GetWordWrapName(WordWrapEnum wordWrap)
+        public string GetWordWrapName(WordWrapEnum wordWrap) => wordWrap switch
         {
-            if (wordWrap == WordWrapEnum.Enabled)
-                return "Enabled"; 
-            else if (wordWrap == WordWrapEnum.Disabled)
-                return "Disabled"; 
-            else
-                throw new System.Exception("Unable to find wordWrap name"); 
-        }
+            WordWrapEnum.Enabled   => "Enabled",
+            WordWrapEnum.Disabled  => "Disabled",
+            _ => throw new System.Exception("Unable to find wordWrap name")
+        }; 
         #endregion  // Editor
 
         #region Database 
-        public System.String GetRdbmsName(RdbmsEnum rdbms)
+        public string GetRdbmsName(RdbmsEnum rdbms) => rdbms switch
         {
-            if (rdbms == RdbmsEnum.SQLite)
-                return "SQLite"; 
-            else if (rdbms == RdbmsEnum.PostgreSQL)
-                return "PostgreSQL"; 
-            else if (rdbms == RdbmsEnum.MySQL)
-                return "MySQL"; 
-            else
-                throw new System.Exception("Unable to find RDBMS name"); 
-        }
+            RdbmsEnum.SQLite        => "SQLite",
+            RdbmsEnum.PostgreSQL    => "PostgreSQL",
+            RdbmsEnum.MySQL         => "MySQL",
+            _ => throw new System.Exception("Unable to find rdbms name")
+        }; 
         #endregion  // Database 
     }
 }

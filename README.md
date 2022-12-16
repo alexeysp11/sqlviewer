@@ -8,7 +8,7 @@ It's available in multiple languages:
 - German;
 - Russian;
 - Spanish;
-- Portugues;
+- Portuguese;
 - Italian;
 - French;
 - Ukranian;

@@ -2,9 +2,8 @@ using System.Data;
 
 namespace SqlViewer.Models.DbConnections
 {
-    public interface IDbConnection
+    public interface ICommonDbConnection
     {
-        void SetConnString(System.String host, System.String username, System.String database);
-        DataTable ExecuteSqlCommand(System.String sqlRequest); 
+        DataTable ExecuteSqlCommand(string sqlRequest); 
     }
 }

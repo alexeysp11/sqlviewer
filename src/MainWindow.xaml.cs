@@ -18,7 +18,7 @@ namespace SqlViewer
             {
                 this.MainVM = new MainVM(this); 
 
-                this.MainVM.OpenView("LoginView"); 
+                this.MainVM.VisualVM.OpenView("LoginView"); 
                 InitializeComponent();
                 this.Hide();
 
@@ -27,7 +27,7 @@ namespace SqlViewer
                 this.SqlPage.DataContext = this.MainVM; 
                 this.TablesPage.DataContext = this.MainVM; 
                 
-                this.MainVM.Config.Initialize(); 
+                this.MainVM.ConfigHelper.Initialize(); 
             }
             catch (System.Exception e)
             {

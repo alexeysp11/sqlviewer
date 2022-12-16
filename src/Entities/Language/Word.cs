@@ -2,21 +2,21 @@ namespace SqlViewer.Entities.Language
 {
     public class Word 
     {
-        public System.String English { get; private set; }
-        public System.String Translation { get; private set; }
+        public string English { get; private set; }
+        public string Translation { get; private set; }
         
-        public Word(System.String english)
+        public Word(string english)
         {
             English = english; 
         }
         
-        public Word(System.String english, System.String translation)
+        public Word(string english, string translation)
         {
             English = english; 
             Translation = translation; 
         }
 
-        public void SetTranslation(System.String translation)
+        public void SetTranslation(string translation)
         {
             Translation = translation; 
         }

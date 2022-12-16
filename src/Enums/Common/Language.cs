@@ -6,7 +6,7 @@ namespace SqlViewer.Enums.Common
         German = 2, 
         Russian = 3, 
         Spanish = 4, 
-        Portugues = 5, 
+        Portuguese = 5, 
         Italian = 6, 
         French = 7, 
         Ukranian = 8, 

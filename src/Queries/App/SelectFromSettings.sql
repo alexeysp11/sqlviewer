@@ -75,7 +75,7 @@ SELECT
         WHEN UPPER(tmp.language) LIKE '%GERMAN%' THEN 'German' 
         WHEN UPPER(tmp.language) LIKE '%RUSSIAN%' THEN 'Russian' 
         WHEN UPPER(tmp.language) LIKE '%SPANISH%' THEN 'Spanish' 
-        WHEN UPPER(tmp.language) LIKE '%PORTUGUES%' THEN 'Portugues' 
+        WHEN UPPER(tmp.language) LIKE '%PORTUGUESE%' THEN 'Portuguese' 
         WHEN UPPER(tmp.language) LIKE '%ITALIAN%' THEN 'Italian' 
         WHEN UPPER(tmp.language) LIKE '%FRENCH%' THEN 'French' 
         WHEN UPPER(tmp.language) LIKE '%UKRANIAN%' THEN 'Ukranian' 

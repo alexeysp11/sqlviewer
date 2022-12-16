@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
 using SqlViewer.Entities.ViewsEntities; 
+using SqlViewer.Helpers; 
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
@@ -23,7 +24,7 @@ namespace SqlViewer.Views
             Loaded += (o, e) => 
             {
                 this.MainVM = (MainVM)this.DataContext; 
-                this.MainVM.SettingsView = this; 
+                this.MainVM.VisualVM.SettingsView = this; 
                 this.SettingsEntity = this.MainVM.Translator.SettingsEntity;  
                 Init(); 
             }; 
@@ -34,73 +35,102 @@ namespace SqlViewer.Views
             InitPreferencesEditor(); 
             InitPreferencesDb();
             InitButtons();
+            InitDbCredentials(); 
         }
 
         private void InitPreferencesEditor()
         {
-            lblPreferencesEditor.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.EditorField.Translation) ? SettingsEntity.EditorField.English : SettingsEntity.EditorField.Translation; 
+            lblPreferencesEditor.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.EditorField.Translation) ? SettingsEntity.EditorField.English : SettingsEntity.EditorField.Translation; 
 
-            lblLanguage.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.LanguageField.Translation) ? SettingsEntity.LanguageField.English : SettingsEntity.LanguageField.Translation; 
-            cbLanguage.Text = this.MainVM.AppRepository.Language.ToString();
+            lblLanguage.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.LanguageField.Translation) ? SettingsEntity.LanguageField.English : SettingsEntity.LanguageField.Translation; 
+            cbLanguage.Text = RepoHelper.AppSettingsRepo.Language.ToString();
             cbiLanguageEnglish.Content = "English"; 
             cbiLanguageGerman.Content = "German"; 
             cbiLanguageRussian.Content = "Russian"; 
             cbiLanguageSpanish.Content = "Spanish"; 
-            cbiLanguagePortugues.Content = "Portugues"; 
+            cbiLanguagePortuguese.Content = "Portuguese"; 
             cbiLanguageItalian.Content = "Italian"; 
             cbiLanguageFrench.Content = "French"; 
             cbiLanguageUkranian.Content = "Ukranian"; 
             cbiLanguageDutch.Content = "Dutch"; 
 
-            lblAutoSave.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.AutoSaveField.Translation) ? SettingsEntity.AutoSaveField.English : SettingsEntity.AutoSaveField.Translation; 
-            cbAutoSave.Text = this.MainVM.AppRepository.AutoSave.ToString();
-            cbiAutoSaveEnabled.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.EnabledField.Translation) ? SettingsEntity.EnabledField.English : SettingsEntity.EnabledField.Translation; 
-            cbiAutoSaveDisabled.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.DisabledField.Translation) ? SettingsEntity.DisabledField.English : SettingsEntity.DisabledField.Translation; 
+            lblAutoSave.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.AutoSaveField.Translation) ? SettingsEntity.AutoSaveField.English : SettingsEntity.AutoSaveField.Translation; 
+            cbAutoSave.Text = RepoHelper.AppSettingsRepo.AutoSave.ToString();
+            cbiAutoSaveEnabled.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.EnabledField.Translation) ? SettingsEntity.EnabledField.English : SettingsEntity.EnabledField.Translation; 
+            cbiAutoSaveDisabled.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DisabledField.Translation) ? SettingsEntity.DisabledField.English : SettingsEntity.DisabledField.Translation; 
 
-            lblFontSize.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.FontSizeField.Translation) ? SettingsEntity.FontSizeField.English : SettingsEntity.FontSizeField.Translation; 
-            cbFontSize.Text = this.MainVM.EnumDecoder.GetFontSizeName(this.MainVM.AppRepository.FontSize); 
-            lblFontFamily.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.FontFamilyField.Translation) ? SettingsEntity.FontFamilyField.English : SettingsEntity.FontFamilyField.Translation; 
-            cbFontFamily.Text = this.MainVM.AppRepository.FontFamily.ToString(); 
-            lblTabSize.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.TabSizeField.Translation) ? SettingsEntity.TabSizeField.English : SettingsEntity.TabSizeField.Translation; 
-            cbTabSize.Text = this.MainVM.EnumDecoder.GetTabSizeName(this.MainVM.AppRepository.TabSize); 
+            lblFontSize.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.FontSizeField.Translation) ? SettingsEntity.FontSizeField.English : SettingsEntity.FontSizeField.Translation; 
+            cbFontSize.Text = EnumCodecHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize); 
+            lblFontFamily.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.FontFamilyField.Translation) ? SettingsEntity.FontFamilyField.English : SettingsEntity.FontFamilyField.Translation; 
+            cbFontFamily.Text = RepoHelper.AppSettingsRepo.FontFamily.ToString(); 
+            lblTabSize.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.TabSizeField.Translation) ? SettingsEntity.TabSizeField.English : SettingsEntity.TabSizeField.Translation; 
+            cbTabSize.Text = EnumCodecHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize); 
 
-            lblWordWrap.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.WordWrapField.Translation) ? SettingsEntity.WordWrapField.English : SettingsEntity.WordWrapField.Translation; 
-            cbWordWrap.Text = this.MainVM.AppRepository.WordWrap.ToString(); 
-            cbiWordWrapEnabled.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.EnabledField.Translation) ? SettingsEntity.EnabledField.English : SettingsEntity.EnabledField.Translation; 
-            cbiWordWrapDisabled.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.DisabledField.Translation) ? SettingsEntity.DisabledField.English : SettingsEntity.DisabledField.Translation; 
+            lblWordWrap.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.WordWrapField.Translation) ? SettingsEntity.WordWrapField.English : SettingsEntity.WordWrapField.Translation; 
+            cbWordWrap.Text = RepoHelper.AppSettingsRepo.WordWrap.ToString(); 
+            cbiWordWrapEnabled.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.EnabledField.Translation) ? SettingsEntity.EnabledField.English : SettingsEntity.EnabledField.Translation; 
+            cbiWordWrapDisabled.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DisabledField.Translation) ? SettingsEntity.DisabledField.English : SettingsEntity.DisabledField.Translation; 
         }
 
         private void InitPreferencesDb()
         {
-            lblPreferencesDb.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.DbField.Translation) ? SettingsEntity.DbField.English : SettingsEntity.DbField.Translation; 
-            lblDefaultRdbms.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.DefaultRdbmsField.Translation) ? SettingsEntity.DefaultRdbmsField.English : SettingsEntity.DefaultRdbmsField.Translation; 
-            cbDefaultRdbms.Text = System.String.IsNullOrEmpty(this.MainVM.AppRepository.DefaultRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : this.MainVM.AppRepository.DefaultRdbms.ToString(); 
-            lblActiveRdbms.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.ActiveRdbmsField.Translation) ? SettingsEntity.ActiveRdbmsField.English : SettingsEntity.ActiveRdbmsField.Translation; 
-            cbActiveRdbms.Text = System.String.IsNullOrEmpty(this.MainVM.AppRepository.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : this.MainVM.AppRepository.ActiveRdbms.ToString(); 
+            lblPreferencesDb.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DbField.Translation) ? SettingsEntity.DbField.English : SettingsEntity.DbField.Translation; 
+            lblDefaultRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DefaultRdbmsField.Translation) ? SettingsEntity.DefaultRdbmsField.English : SettingsEntity.DefaultRdbmsField.Translation; 
+            cbDefaultRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            lblActiveRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.ActiveRdbmsField.Translation) ? SettingsEntity.ActiveRdbmsField.English : SettingsEntity.ActiveRdbmsField.Translation; 
+            cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
 
-            lblDatabase.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.DatabaseField.Translation) ? SettingsEntity.DatabaseField.English : SettingsEntity.DatabaseField.Translation; 
-            lblSchema.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.SchemaField.Translation) ? SettingsEntity.SchemaField.English : SettingsEntity.SchemaField.Translation; 
-            lblUsername.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.UsernameField.Translation) ? SettingsEntity.UsernameField.English : SettingsEntity.UsernameField.Translation; 
-            lblPassword.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.PasswordField.Translation) ? SettingsEntity.PasswordField.English : SettingsEntity.PasswordField.Translation; 
+            lblDatabase.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DatabaseField.Translation) ? SettingsEntity.DatabaseField.English : SettingsEntity.DatabaseField.Translation; 
+            lblSchema.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.SchemaField.Translation) ? SettingsEntity.SchemaField.English : SettingsEntity.SchemaField.Translation; 
+            lblUsername.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.UsernameField.Translation) ? SettingsEntity.UsernameField.English : SettingsEntity.UsernameField.Translation; 
+            lblPassword.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.PasswordField.Translation) ? SettingsEntity.PasswordField.English : SettingsEntity.PasswordField.Translation; 
             
-            tbDatabase.Text = this.MainVM.AppRepository.DbName; 
-            tbSchema.Text = this.MainVM.AppRepository.DbSchema; 
-            tbUsername.Text = this.MainVM.AppRepository.DbUsername; 
-            pbPassword.Password = this.MainVM.AppRepository.DbPassword; 
+            tbDatabase.Text = RepoHelper.AppSettingsRepo.DbName; 
+            tbSchema.Text = RepoHelper.AppSettingsRepo.DbSchema; 
+            tbUsername.Text = RepoHelper.AppSettingsRepo.DbUsername; 
+            pbPassword.Password = RepoHelper.AppSettingsRepo.DbPassword; 
         }
 
         private void InitButtons()
         {
-            btnRecover.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.RecoverField.Translation) ? SettingsEntity.RecoverField.English : SettingsEntity.RecoverField.Translation; 
-            btnSave.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.SaveField.Translation) ? SettingsEntity.SaveField.English : SettingsEntity.SaveField.Translation; 
-            btnCancel.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(SettingsEntity.CancelField.Translation) ? SettingsEntity.CancelField.English : SettingsEntity.CancelField.Translation; 
+            btnRecover.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.RecoverField.Translation) ? SettingsEntity.RecoverField.English : SettingsEntity.RecoverField.Translation; 
+            btnSave.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.SaveField.Translation) ? SettingsEntity.SaveField.English : SettingsEntity.SaveField.Translation; 
+            btnCancel.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.CancelField.Translation) ? SettingsEntity.CancelField.English : SettingsEntity.CancelField.Translation; 
+        }
+
+        private void InitDbCredentials()
+        {
+            if (cbActiveRdbms.Text == "SQLite")
+            {
+                tbSchema.IsEnabled = false; 
+                tbUsername.IsEnabled = false; 
+                pbPassword.IsEnabled = false; 
+
+                tbSchema.Text = System.String.Empty; 
+                tbUsername.Text = System.String.Empty; 
+                pbPassword.Password = System.String.Empty; 
+                
+                tbSchema.Background = System.Windows.Media.Brushes.Gray; 
+                tbUsername.Background = System.Windows.Media.Brushes.Gray; 
+                pbPassword.Background = System.Windows.Media.Brushes.Gray; 
+            }
+            else
+            {
+                tbSchema.IsEnabled = true; 
+                tbUsername.IsEnabled = true; 
+                pbPassword.IsEnabled = true; 
+                
+                tbSchema.Background = System.Windows.Media.Brushes.White; 
+                tbUsername.Background = System.Windows.Media.Brushes.White; 
+                pbPassword.Background = System.Windows.Media.Brushes.White; 
+            }
         }
 
         public void UpdateAppRepository()
         {
             try 
             {
-                this.MainVM.AppRepository.Update(cbLanguage.Text, cbAutoSave.Text, System.Convert.ToInt32(cbFontSize.Text), 
+                RepoHelper.AppSettingsRepo.Update(cbLanguage.Text, cbAutoSave.Text, System.Convert.ToInt32(cbFontSize.Text), 
                     cbFontFamily.Text, System.Convert.ToInt32(cbTabSize.Text), cbWordWrap.Text, cbDefaultRdbms.Text, 
                     cbActiveRdbms.Text, tbDatabase.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password); 
             }
@@ -112,7 +142,12 @@ namespace SqlViewer.Views
 
         private void SettingsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ((MainVM)this.DataContext).SettingsView = null; 
+            ((MainVM)this.DataContext).VisualVM.SettingsView = null; 
+        }
+
+        private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
+        {
+            InitDbCredentials(); 
         }
     }
 }

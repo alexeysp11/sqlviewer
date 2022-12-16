@@ -21,15 +21,17 @@
             <StackPanel Name="spPreferences" Orientation="Vertical" Margin="5,5,0,0">
                 <StackPanel Name="spPreferencesActiveRdbms" Orientation="Horizontal">
                     <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="120" />
-                    <ComboBox Name="cbActiveRdbms" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0">
-                        <ComboBoxItem Content="SQLite" />
-                        <ComboBoxItem Content="PostgreSQL" />
-                        <ComboBoxItem Content="MySQL" />
+                    <ComboBox Name="cbActiveRdbms" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" DropDownClosed="cbActiveRdbms_DropDownClosed">
+                        <ComboBoxItem Content="SQLite" Cursor="Hand" />
+                        <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
+                        <ComboBoxItem Content="MySQL" Cursor="Hand" />
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesDatabase" Orientation="Horizontal">
                     <Label Name="lblDatabase" Content="Database:" Width="120" />
                     <TextBox Name="tbDatabase" Width="200" Height="25" Margin="10,0,0,0" />
+                    <Button Name="btnDatabase" Content="..." Width="25" Height="25" Margin="5,0,0,0" Cursor="Hand"
+                            Command="{Binding DbCommand}" CommandParameter="Open" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesSchema" Orientation="Horizontal">
                     <Label Name="lblSchema" Content="Schema:" Width="120" />
@@ -48,8 +50,8 @@
 
         <Grid Name="grButtons" Grid.Row="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
-                <Button Name="btnLogIn" Content="Log In" Width="75" Height="25" Margin="5,0,0,0" Click="btnLogIn_Clicked" />
-                <Button Name="btnCancel" Content="Cancel" Width="75" Height="25" Margin="5,0,0,0" 
+                <Button Name="btnLogIn" Content="Log In" Width="75" Height="25" Cursor="Hand" Margin="5,0,0,0" Click="btnLogIn_Clicked" />
+                <Button Name="btnCancel" Content="Cancel" Width="75" Height="25" Cursor="Hand" Margin="5,0,0,0" 
                         Command="{Binding AppCommand}" CommandParameter="ExitApplication" />
             </StackPanel>
         </Grid>

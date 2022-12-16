@@ -20,24 +20,26 @@ namespace SqlViewer.Commands
 
         public void Execute(object parameter)
         {
-            System.String parameterString = parameter as System.String; 
-            if (parameterString == "SendSql")
+            string parameterString = parameter as string; 
+            switch (parameterString)
             {
-                this.MainVM.SendSqlRequest(); 
-            }
-            else if (parameterString == "New")
-            {
-                // If SQLite 
-                this.MainVM.CreateLocalDb(); 
-            }
-            else if (parameterString == "Open")
-            {
-                // If SQLite 
-                this.MainVM.OpenLocalDb(); 
-            }
-            else
-            {
-                System.Windows.MessageBox.Show($"Incorrect CommandParameter: {parameterString} inside DbCommand", "Exception"); 
+                case "SendSql":
+                    this.MainVM.DbVM.SendSqlRequest(); 
+                    break;
+                    
+                case "New":
+                    // if SQLite
+                    this.MainVM.DbVM.CreateLocalDb(); 
+                    break;
+                    
+                case "Open":
+                    // if SQLite
+                    this.MainVM.DbVM.OpenLocalDb(); 
+                    break;
+
+                default: 
+                    System.Windows.MessageBox.Show($"Incorrect CommandParameter: '{parameterString}' inside DbCommand", "Exception"); 
+                    break; 
             }
         }
     }

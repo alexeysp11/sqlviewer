@@ -2,6 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.ViewModels;
 using SqlViewer.Entities.PagesEntities; 
+using SqlViewer.Helpers; 
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
@@ -22,7 +23,7 @@ namespace SqlViewer.Pages
             Loaded += (o, e) => 
             {
                 this.MainVM = (MainVM)this.DataContext; 
-                this.MainVM.TablesPage = this; 
+                this.MainVM.VisualVM.TablesPage = this; 
                 this.TablesPageEntity = this.MainVM.Translator.TablesPageEntity;  
                 Init(); 
             }; 
@@ -30,18 +31,18 @@ namespace SqlViewer.Pages
 
         public void Init()
         {
-            tbPath.Text = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ";
-            tbTables.Text = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(TablesPageEntity.TablesField.Translation) ? TablesPageEntity.TablesField.English : TablesPageEntity.TablesField.Translation;
-            lblGeneralInfo.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(TablesPageEntity.GeneralInfoField.Translation) ? TablesPageEntity.GeneralInfoField.English : TablesPageEntity.GeneralInfoField.Translation; 
-            lblColumns.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(TablesPageEntity.ColumnsField.Translation) ? TablesPageEntity.ColumnsField.English : TablesPageEntity.ColumnsField.Translation; 
-            lblForeignKeys.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(TablesPageEntity.ForeignKeysField.Translation) ? TablesPageEntity.ForeignKeysField.English : TablesPageEntity.ForeignKeysField.Translation; 
-            lblTriggers.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(TablesPageEntity.TriggersField.Translation) ? TablesPageEntity.TriggersField.English : TablesPageEntity.TriggersField.Translation; 
-            lblData.Content = this.MainVM.AppRepository.Language == LanguageEnum.English || System.String.IsNullOrEmpty(TablesPageEntity.DataField.Translation) ? TablesPageEntity.DataField.English : TablesPageEntity.DataField.Translation; 
+            tbPath.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ";
+            tbTables.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.TablesField.Translation) ? TablesPageEntity.TablesField.English : TablesPageEntity.TablesField.Translation;
+            lblGeneralInfo.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.GeneralInfoField.Translation) ? TablesPageEntity.GeneralInfoField.English : TablesPageEntity.GeneralInfoField.Translation; 
+            lblColumns.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ColumnsField.Translation) ? TablesPageEntity.ColumnsField.English : TablesPageEntity.ColumnsField.Translation; 
+            lblForeignKeys.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ForeignKeysField.Translation) ? TablesPageEntity.ForeignKeysField.English : TablesPageEntity.ForeignKeysField.Translation; 
+            lblTriggers.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.TriggersField.Translation) ? TablesPageEntity.TriggersField.English : TablesPageEntity.TriggersField.Translation; 
+            lblData.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.DataField.Translation) ? TablesPageEntity.DataField.English : TablesPageEntity.DataField.Translation; 
         }
 
         private void ResultDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
-            System.String header = e.Column.Header.ToString();
+            string header = e.Column.Header.ToString();
             e.Column.Header = header.Replace("_", "__");
         }
 
@@ -51,18 +52,18 @@ namespace SqlViewer.Pages
             {
                 if (e.NewValue == null) 
                     return; 
-                System.String selectedItem = (e.NewValue).ToString(); 
+                string selectedItem = (e.NewValue).ToString(); 
                 foreach (TreeViewItem tableName in this.tvTables.Items)
                 {
                     if (tableName.ToString() == selectedItem)
                     {
                         this.tbTableName.Text = tableName.Header.ToString(); 
                         
-                        this.MainVM.GetAllDataFromTable(tableName.Header.ToString()); 
-                        this.MainVM.GetColumnsOfTable(tableName.Header.ToString()); 
-                        this.MainVM.GetForeignKeys(tableName.Header.ToString()); 
-                        this.MainVM.GetTriggers(tableName.Header.ToString()); 
-                        this.MainVM.GetSqlDefinition(tableName.Header.ToString()); 
+                        this.MainVM.DbVM.GetAllDataFromTable(tableName.Header.ToString()); 
+                        this.MainVM.DbVM.GetColumnsOfTable(tableName.Header.ToString()); 
+                        this.MainVM.DbVM.GetForeignKeys(tableName.Header.ToString()); 
+                        this.MainVM.DbVM.GetTriggers(tableName.Header.ToString()); 
+                        this.MainVM.DbVM.GetSqlDefinition(tableName.Header.ToString()); 
                         break; 
                     }
                 }

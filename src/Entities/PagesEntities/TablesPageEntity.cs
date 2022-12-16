@@ -12,39 +12,12 @@ namespace SqlViewer.Entities.PagesEntities
         public Word TriggersField { get; private set; } = new Word("Triggers"); 
         public Word DataField { get; private set; } = new Word("Data"); 
 
-        public void SetPathField(System.String value)
-        {
-            PathField.SetTranslation(value); 
-        }
-
-        public void SetTablesField(System.String value)
-        {
-            TablesField.SetTranslation(value); 
-        }
-
-        public void SetGeneralInfoField(System.String value)
-        {
-            GeneralInfoField.SetTranslation(value); 
-        }
-
-        public void SetColumnsField(System.String value)
-        {
-            ColumnsField.SetTranslation(value); 
-        }
-
-        public void SetForeignKeysField(System.String value)
-        {
-            ForeignKeysField.SetTranslation(value); 
-        }
-
-        public void SetTriggersField(System.String value)
-        {
-            TriggersField.SetTranslation(value); 
-        }
-
-        public void SetDataField(System.String value)
-        {
-            DataField.SetTranslation(value); 
-        }
+        public void SetPathField(string value) => PathField.SetTranslation(value); 
+        public void SetTablesField(string value) => TablesField.SetTranslation(value); 
+        public void SetGeneralInfoField(string value) => GeneralInfoField.SetTranslation(value); 
+        public void SetColumnsField(string value) => ColumnsField.SetTranslation(value); 
+        public void SetForeignKeysField(string value) => ForeignKeysField.SetTranslation(value); 
+        public void SetTriggersField(string value) => TriggersField.SetTranslation(value); 
+        public void SetDataField(string value) => DataField.SetTranslation(value); 
     }
 }
