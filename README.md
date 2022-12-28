@@ -1,9 +1,8 @@
 # sqlviewer 
 
 `sqlviewer` is a C# implementation of a GUI for **SQLite**, **PostgreSQL** and **MySQL**. 
-This application is written with **WPF** using **MVVM** pattern. 
 
-It's available in multiple languages: 
+It's available in 29 different languages: 
 - English;
 - German;
 - Russian;
@@ -12,7 +11,15 @@ It's available in multiple languages:
 - Italian;
 - French;
 - Ukranian;
-- Dutch. 
+- Dutch
+- Polish
+- Czech
+- Serbian
+- Croatian
+- Korean
+- Japanese
+<br>
+etc. 
 
 Using this app, you can do the following things: 
 
@@ -23,3 +30,7 @@ Using this app, you can do the following things:
 - watch information about all tables inside your database 
 
 ![Example (UI, tables)](docs/img/ui_tables.png)
+
+## Aplication structure 
+
+This application is written with **WPF** using **MVVM** pattern. 

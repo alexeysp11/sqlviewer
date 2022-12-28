@@ -28,14 +28,34 @@
                 <StackPanel Name="spPreferencesLanguage" Orientation="Horizontal">
                     <Label Name="lblLanguage" Content="Language:" Width="120" />
                     <ComboBox Name="cbLanguage" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand">
+                        <ComboBoxItem Name="cbiLanguageAfrikaans" Content="Afrikaans" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageAlbanian" Content="Albanian" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageArmenian" Content="Armenian" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageBulgarian" Content="Bulgarian" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageCroatian" Content="Croatian" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageCzech" Content="Czech" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageDanish" Content="Danish" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageDutch" Content="Dutch" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageEnglish" Content="English" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageFrench" Content="French" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageGeorgian" Content="Georgian" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageGerman" Content="German" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageGreek" Content="Greek" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageIndonesian" Content="Indonesian" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageItalian" Content="Italian" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageJapanese" Content="Japanese" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageKazakh" Content="Kazakh" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageKorean" Content="Korean" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageMalay" Content="Malay" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageNorwegian" Content="Norwegian" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguagePolish" Content="Polish" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguagePortuguese" Content="Portuguese" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageRomanian" Content="Romanian" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageRussian" Content="Russian" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageSerbian" Content="Serbian" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageSpanish" Content="Spanish" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageSwedish" Content="Swedish" Cursor="Hand" />
+                        <ComboBoxItem Name="cbiLanguageTurkish" Content="Turkish" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageUkranian" Content="Ukranian" Cursor="Hand" />
                     </ComboBox>
                 </StackPanel>
