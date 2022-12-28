@@ -11,15 +11,13 @@ It's available in 29 different languages:
 - Italian;
 - French;
 - Ukranian;
-- Dutch
-- Polish
-- Czech
-- Serbian
-- Croatian
-- Korean
-- Japanese
-<br>
-etc. 
+- Dutch;
+- Polish;
+- Czech;
+- Serbian;
+- Croatian;
+- Korean;
+- Japanese, etc. 
 
 Using this app, you can do the following things: 
 
