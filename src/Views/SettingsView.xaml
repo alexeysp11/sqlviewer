@@ -10,7 +10,7 @@
         WindowStartupLocation="CenterScreen" 
         Title="sqlviewer: SQL Database Viewer (for Windows) [Settings]" 
         Icon="../Resources/icon.ico"
-        MinHeight="475" MaxHeight="475" MinWidth="600" MaxWidth="600"
+        MinHeight="500" MaxHeight="500" MinWidth="600" MaxWidth="600"
         Closing="SettingsView_Closing">
     <Window.InputBindings>
         <KeyBinding Command="{Binding AppCommand}" CommandParameter="CancelSettings" Key="Esc" />
@@ -18,7 +18,7 @@
     
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="400" />
+            <RowDefinition Height="425" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
@@ -26,7 +26,7 @@
             <StackPanel Name="spPreferences" Orientation="Vertical" Margin="5,5,0,0">
                 <Label Name="lblPreferencesEditor" Content="Editor" FontWeight="Bold" />
                 <StackPanel Name="spPreferencesLanguage" Orientation="Horizontal">
-                    <Label Name="lblLanguage" Content="Language:" Width="120" />
+                    <Label Name="lblLanguage" Content="Language:" Width="150" />
                     <ComboBox Name="cbLanguage" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand">
                         <ComboBoxItem Name="cbiLanguageAfrikaans" Content="Afrikaans" Cursor="Hand" />
                         <ComboBoxItem Name="cbiLanguageAlbanian" Content="Albanian" Cursor="Hand" />
@@ -60,14 +60,14 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesAutoSave" Orientation="Horizontal">
-                    <Label Name="lblAutoSave" Content="Auto save:" Width="120" />
+                    <Label Name="lblAutoSave" Content="Auto save:" Width="150" />
                     <ComboBox Name="cbAutoSave" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="1" Cursor="Hand">
                         <ComboBoxItem Name="cbiAutoSaveEnabled" Content="Enabled" Cursor="Hand" />
                         <ComboBoxItem Name="cbiAutoSaveDisabled" Content="Disabled" Cursor="Hand" />
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesFontSize" Orientation="Horizontal">
-                    <Label Name="lblFontSize" Content="Font size:" Width="120" />
+                    <Label Name="lblFontSize" Content="Font size:" Width="150" />
                     <ComboBox Name="cbFontSize" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand">
                         <ComboBoxItem Content="8" Cursor="Hand" />
                         <ComboBoxItem Content="9" Cursor="Hand" />
@@ -81,13 +81,13 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesFontFamily" Orientation="Horizontal">
-                    <Label Name="lblFontFamily" Content="Font family:" Width="120" />
+                    <Label Name="lblFontFamily" Content="Font family:" Width="150" />
                     <ComboBox Name="cbFontFamily" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand">
                         <ComboBoxItem Content="Consolas" Cursor="Hand" />
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesTabSize" Orientation="Horizontal">
-                    <Label Name="lblTabSize" Content="Tab size:" Width="120" />
+                    <Label Name="lblTabSize" Content="Tab size:" Width="150" />
                     <ComboBox Name="cbTabSize" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="3" Cursor="Hand">
                         <ComboBoxItem Content="1" Cursor="Hand" />
                         <ComboBoxItem Content="2" Cursor="Hand" />
@@ -100,7 +100,7 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesWordWrap" Orientation="Horizontal">
-                    <Label Name="lblWordWrap" Content="Word wrap:" Width="120" />
+                    <Label Name="lblWordWrap" Content="Word wrap:" Width="150" />
                     <ComboBox Name="cbWordWrap" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand">
                         <ComboBoxItem Name="cbiWordWrapEnabled" Content="Enabled" Cursor="Hand" />
                         <ComboBoxItem Name="cbiWordWrapDisabled" Content="Disabled" Cursor="Hand" />
@@ -109,7 +109,7 @@
 
                 <Label Name="lblPreferencesDb" Content="DB" FontWeight="Bold" />
                 <StackPanel Name="spPreferencesDefaultRdbms" Orientation="Horizontal">
-                    <Label Name="lblDefaultRdbms" Content="Default RDBMS:" Width="120" />
+                    <Label Name="lblDefaultRdbms" Content="Default RDBMS:" Width="150" />
                     <ComboBox Name="cbDefaultRdbms" Width="200" Height="25" Margin="10,0,0,0" Cursor="Hand" SelectedIndex="0">
                         <ComboBoxItem Content="SQLite" Cursor="Hand" />
                         <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
@@ -117,29 +117,37 @@
                     </ComboBox>
                 </StackPanel>
                 <StackPanel Name="spPreferencesActiveRdbms" Orientation="Horizontal">
-                    <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="120" />
+                    <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="150" />
                     <ComboBox Name="cbActiveRdbms" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" DropDownClosed="cbActiveRdbms_DropDownClosed">
                         <ComboBoxItem Content="SQLite" Cursor="Hand" />
                         <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
                         <ComboBoxItem Content="MySQL" Cursor="Hand" />
                     </ComboBox>
                 </StackPanel>
+                <StackPanel Name="spPreferencesServer" Orientation="Horizontal">
+                    <Label Name="lblServer" Content="Server:" Width="150" />
+                    <TextBox Name="tbServer" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
                 <StackPanel Name="spPreferencesDatabase" Orientation="Horizontal">
-                    <Label Name="lblDatabase" Content="Database:" Width="120" />
+                    <Label Name="lblDatabase" Content="Database:" Width="150" />
                     <TextBox Name="tbDatabase" Width="200" Height="25" Margin="10,0,0,0" />
                     <Button Name="btnDatabase" Content="..." Width="25" Height="25" Cursor="Hand" Margin="5,0,0,0"
                             Command="{Binding DbCommand}" CommandParameter="Open" />
                 </StackPanel>
+                <StackPanel Name="spPreferencesPort" Orientation="Horizontal">
+                    <Label Name="lblPort" Content="Port:" Width="150" />
+                    <TextBox Name="tbPort" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
                 <StackPanel Name="spPreferencesSchema" Orientation="Horizontal">
-                    <Label Name="lblSchema" Content="Schema:" Width="120" />
+                    <Label Name="lblSchema" Content="Schema:" Width="150" />
                     <TextBox Name="tbSchema" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesUsername" Orientation="Horizontal">
-                    <Label Name="lblUsername" Content="Username:" Width="120" />
+                    <Label Name="lblUsername" Content="Username:" Width="150" />
                     <TextBox Name="tbUsername" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesPassword" Orientation="Horizontal">
-                    <Label Name="lblPassword" Content="Password:" Width="120" />
+                    <Label Name="lblPassword" Content="Password:" Width="150" />
                     <PasswordBox Name="pbPassword" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
             </StackPanel>

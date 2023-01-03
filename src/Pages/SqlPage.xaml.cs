@@ -32,6 +32,7 @@ namespace SqlViewer.Pages
         public void Init()
         {
             tbSqlPagePath.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": "; 
+            tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
             tbActiveRdbms.Text = RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
             btnSqlPageExecute.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.ExecuteField.Translation) ? SqlPageEntity.ExecuteField.English : SqlPageEntity.ExecuteField.Translation; 
         }

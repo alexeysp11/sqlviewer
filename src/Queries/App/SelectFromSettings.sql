@@ -8,7 +8,9 @@ WITH tmp AS (
         MAX(tt.word_wrap) AS word_wrap, 
         MAX(tt.default_rdbms) AS default_rdbms, 
         MAX(tt.active_rdbms) AS active_rdbms, 
+        MAX(tt.server) AS server, 
         MAX(tt.db_name) AS db_name, 
+        MAX(tt.port) AS port, 
         MAX(tt.schema_name) AS schema_name, 
         MAX(tt.db_username) AS db_username,
         MAX(tt.db_pswd) AS db_pswd
@@ -47,9 +49,17 @@ WITH tmp AS (
                 ELSE ''
             END AS active_rdbms, 
             CASE  
+                WHEN UPPER(t.name) LIKE '%SERVER%' THEN COALESCE(t.value, '')
+                ELSE ''
+            END AS server, 
+            CASE  
                 WHEN UPPER(t.name) LIKE '%DATABASE%' THEN COALESCE(t.value, '')
                 ELSE ''
             END AS db_name, 
+            CASE  
+                WHEN UPPER(t.name) LIKE '%PORT%' THEN COALESCE(t.value, '')
+                ELSE ''
+            END AS port, 
             CASE  
                 WHEN UPPER(t.name) LIKE '%SCHEMA%' THEN COALESCE(t.value, '')
                 ELSE ''
@@ -130,7 +140,9 @@ SELECT
         WHEN UPPER(tmp.active_rdbms) IN ('SQLITE', 'POSTGRESQL', 'MYSQL') THEN tmp.active_rdbms 
         ELSE 'SQLite'
     END AS active_rdbms, 
+    CAST(tmp.server AS TEXT) AS server, 
     CAST(tmp.db_name AS TEXT) AS db_name, 
+    CAST(tmp.port AS TEXT) AS port, 
     CAST(tmp.schema_name AS TEXT) AS schema_name, 
     CAST(tmp.db_username AS TEXT) AS db_username, 
     CAST(tmp.db_pswd AS TEXT) AS db_pswd

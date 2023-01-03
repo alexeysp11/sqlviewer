@@ -2,7 +2,6 @@ using System.Windows;
 using System.Windows.Controls; 
 using SqlViewer.Views; 
 using SqlViewer.Pages; 
-//using IDbConnectionSqlViewer = SqlViewer.Models.DbConnections.IDbConnection; 
 using UserControlsMenu = SqlViewer.UserControls.Menu; 
 
 namespace SqlViewer.ViewModels
@@ -11,7 +10,9 @@ namespace SqlViewer.ViewModels
     {
         private MainVM MainVM { get; set; }
 
+        public Window LoginView { get; set; }
         public Window SettingsView { get; set; }
+        
         public UserControl Menu { get; set; }
         public UserControl SqlPage { get; set; }
         public UserControl TablesPage { get; set; }
@@ -81,7 +82,7 @@ namespace SqlViewer.ViewModels
 
         public void RedirectToTables()
         {
-            this.MainVM.DbVM.DisplayTablesInDb();
+            this.MainVM.DataVM.DisplayTablesInDb();
 
             HideAllPages();
             DisableAllPages();

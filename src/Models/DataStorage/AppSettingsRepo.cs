@@ -23,6 +23,8 @@ namespace SqlViewer.Models.DataStorage
         public RdbmsEnum DefaultRdbms { get; private set; }
         public RdbmsEnum ActiveRdbms { get; private set; }
 
+        public string DbHost { get; private set; }
+        public string DbPort { get; private set; }
         public string DbName { get; private set; }
         public string DbSchema { get; private set; }
         public string DbUsername { get; private set; }
@@ -43,14 +45,14 @@ namespace SqlViewer.Models.DataStorage
         }
 
         public AppSettingsRepo(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily, 
-            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms, string dbName, string dbSchema, 
-            string dbUsername, string dbPassword)
+            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms, string server, string dbName, string port,
+            string dbSchema, string dbUsername, string dbPassword)
         {
             try
             {
                 this.EnumEncoder = enumEncoder; 
                 AssignBasic(language, autoSave, fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms); 
-                AssignDbCredentials(dbName, dbSchema, dbUsername, dbPassword); 
+                AssignDbCredentials(server, dbName, port, dbSchema, dbUsername, dbPassword); 
             }
             catch (System.Exception ex)
             {
@@ -78,27 +80,38 @@ namespace SqlViewer.Models.DataStorage
             }
         }
 
-        private void AssignDbCredentials(string dbName, string dbSchema, string dbUsername, string dbPassword)
+        private void AssignDbCredentials(string server, string dbName, string port, string dbSchema, string dbUsername, string dbPassword)
         {
+            DbHost = server; 
             DbName = dbName; 
+            DbPort = port; 
             DbSchema = dbSchema; 
             DbUsername = dbUsername; 
             DbPassword = dbPassword; 
         }
 
         public void Update(string language, string autoSave, int fontSize, string fontFamily, int tabSize, 
-            string wordWrap, string defaultRdbms, string activeRdbms, string dbName, string dbSchema, 
-            string dbUsername, string dbPassword)
+            string wordWrap, string defaultRdbms, string activeRdbms, string server, string dbName, string port, 
+            string dbSchema, string dbUsername, string dbPassword)
         {
             try
             {
                 AssignBasic(language, autoSave, fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms); 
-                AssignDbCredentials(dbName, dbSchema, dbUsername, dbPassword); 
+                AssignDbCredentials(server, dbName, port, dbSchema, dbUsername, dbPassword); 
             }
             catch (System.Exception ex)
             {
                 throw ex; 
             }
+        }
+
+        public void SetActiveRdbms(string activeRdbms)
+        {
+            if (string.IsNullOrEmpty(activeRdbms))
+            {
+                throw new System.Exception("Parameter 'activeRdbms' should not be null or empty"); 
+            }
+            ActiveRdbms = this.EnumEncoder.GetRdbmsEnum($"{activeRdbms}"); 
         }
 
         public void SetDbName(string dbName)

@@ -9,40 +9,48 @@
         WindowStartupLocation="CenterScreen" 
         Title="sqlviewer: SQL Database Viewer (for Windows) [Log In]" 
         Icon="../Resources/icon.ico"
-        MinHeight="250" MaxHeight="250" MinWidth="500" MaxWidth="500"
+        MinHeight="275" MaxHeight="275" MinWidth="500" MaxWidth="500"
         Closing="LoginView_Closing">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="175" />
+            <RowDefinition Height="200" />
             <RowDefinition Height="35" />
         </Grid.RowDefinitions>
 
         <Grid Name="grMain" Grid.Row="0">
             <StackPanel Name="spPreferences" Orientation="Vertical" Margin="5,5,0,0">
                 <StackPanel Name="spPreferencesActiveRdbms" Orientation="Horizontal">
-                    <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="120" />
+                    <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="150" />
                     <ComboBox Name="cbActiveRdbms" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" DropDownClosed="cbActiveRdbms_DropDownClosed">
                         <ComboBoxItem Content="SQLite" Cursor="Hand" />
                         <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
                         <ComboBoxItem Content="MySQL" Cursor="Hand" />
                     </ComboBox>
                 </StackPanel>
+                <StackPanel Name="spPreferencesServer" Orientation="Horizontal">
+                    <Label Name="lblServer" Content="Server:" Width="150" />
+                    <TextBox Name="tbServer" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
                 <StackPanel Name="spPreferencesDatabase" Orientation="Horizontal">
-                    <Label Name="lblDatabase" Content="Database:" Width="120" />
+                    <Label Name="lblDatabase" Content="Database:" Width="150" />
                     <TextBox Name="tbDatabase" Width="200" Height="25" Margin="10,0,0,0" />
                     <Button Name="btnDatabase" Content="..." Width="25" Height="25" Margin="5,0,0,0" Cursor="Hand"
                             Command="{Binding DbCommand}" CommandParameter="Open" />
                 </StackPanel>
+                <StackPanel Name="spPreferencesPort" Orientation="Horizontal">
+                    <Label Name="lblPort" Content="Port:" Width="150" />
+                    <TextBox Name="tbPort" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
                 <StackPanel Name="spPreferencesSchema" Orientation="Horizontal">
-                    <Label Name="lblSchema" Content="Schema:" Width="120" />
+                    <Label Name="lblSchema" Content="Schema:" Width="150" />
                     <TextBox Name="tbSchema" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesUsername" Orientation="Horizontal">
-                    <Label Name="lblUsername" Content="Username:" Width="120" />
+                    <Label Name="lblUsername" Content="Username:" Width="150" />
                     <TextBox Name="tbUsername" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesPassword" Orientation="Horizontal">
-                    <Label Name="lblPassword" Content="Password:" Width="120" />
+                    <Label Name="lblPassword" Content="Password:" Width="150" />
                     <PasswordBox Name="pbPassword" Width="200" Height="25" Margin="10,0,0,0" />
                 </StackPanel>
             </StackPanel>

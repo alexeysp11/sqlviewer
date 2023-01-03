@@ -1,4 +1,6 @@
+using SqlViewer.Helpers; 
 using SqlViewer.ViewModels; 
+using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
 namespace SqlViewer.Commands
 {
@@ -24,17 +26,15 @@ namespace SqlViewer.Commands
             switch (parameterString)
             {
                 case "SendSql":
-                    this.MainVM.DbVM.SendSqlRequest(); 
+                    this.MainVM.DataVM.SendSqlRequest(); 
                     break;
                     
                 case "New":
-                    // if SQLite
-                    this.MainVM.DbVM.CreateLocalDb(); 
+                    this.MainVM.DataVM.CreateDb(); 
                     break;
                     
                 case "Open":
-                    // if SQLite
-                    this.MainVM.DbVM.OpenLocalDb(); 
+                    this.MainVM.DataVM.OpenDb(); 
                     break;
 
                 default: 

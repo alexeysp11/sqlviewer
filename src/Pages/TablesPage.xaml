@@ -19,7 +19,7 @@
         <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" 
                 Orientation="Horizontal" Margin="10,5,0,0">
             <TextBlock Name="tbPath" Text="Path:" FontWeight="Bold" />
-            <TextBlock Name="tblTablesPagePath" Margin="5,0,0,0" />
+            <TextBlock Name="tblDbName" Margin="5,0,0,0" />
         </StackPanel>
             
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">

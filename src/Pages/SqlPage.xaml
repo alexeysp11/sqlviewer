@@ -28,7 +28,7 @@
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Name="tbSqlPagePath" Text="Path:" FontWeight="Bold" />
-                        <TextBlock Name="tblSqlPagePath" Margin="5,0,0,0" />
+                        <TextBlock Name="tblDbName" Margin="5,0,0,0" />
                     </StackPanel>
 
                     <uc:DbGrid x:Name="dbgSqlResult" Height="215" Width="760"

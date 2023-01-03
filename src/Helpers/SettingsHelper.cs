@@ -33,5 +33,29 @@ namespace SqlViewer.Helpers
         {
 
         }
+
+        public static string GetActiveRdbmsString() 
+        {
+            return string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+        } 
+
+        #region DB connection strings
+        public static string GetPgDbConnectionString()
+        {
+            return ""; 
+        }
+
+        public static string GetOracleConnectionString()
+        {
+            return @"Data Source=(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = service_name)
+    )
+  ); User ID=user_id;Password=password;"; 
+        }
+        #endregion  // DB connection strings
     }
 }

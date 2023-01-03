@@ -14,6 +14,7 @@ namespace SqlViewer.Views
     public partial class LoginView : Window
     {
         private MainVM MainVM { get; set; }
+        
         private LoginEntity LoginEntity { get; set; }
 
         private bool IsLoggedIn { get; set; } = false; 
@@ -26,6 +27,7 @@ namespace SqlViewer.Views
             {
                 this.MainVM = ((MainVM)this.DataContext); 
                 this.LoginEntity = this.MainVM.Translator.LoginEntity; 
+                this.MainVM.VisualVM.LoginView = this; 
                 Init(); 
             }; 
         }
@@ -35,7 +37,7 @@ namespace SqlViewer.Views
             try
             {
                 this.MainVM.InitAppRepository(); 
-                this.MainVM.TranslateLogin(); 
+                this.MainVM.Translate(); 
 
                 InitPreferencesDb();
                 InitButtons();
@@ -68,40 +70,55 @@ namespace SqlViewer.Views
         {
             if (cbActiveRdbms.Text == "SQLite")
             {
+                tbServer.IsEnabled = false; 
+                tbPort.IsEnabled = false; 
                 tbSchema.IsEnabled = false; 
                 tbUsername.IsEnabled = false; 
                 pbPassword.IsEnabled = false; 
+                btnDatabase.IsEnabled = true; 
 
-                tbSchema.Text = System.String.Empty; 
-                tbUsername.Text = System.String.Empty; 
-                pbPassword.Password = System.String.Empty; 
-
+                tbServer.Background = System.Windows.Media.Brushes.Gray; 
+                tbPort.Background = System.Windows.Media.Brushes.Gray; 
                 tbSchema.Background = System.Windows.Media.Brushes.Gray; 
                 tbUsername.Background = System.Windows.Media.Brushes.Gray; 
                 pbPassword.Background = System.Windows.Media.Brushes.Gray; 
             }
             else
-            { 
+            {
+                tbServer.IsEnabled = true; 
+                tbPort.IsEnabled = true; 
                 tbSchema.IsEnabled = true; 
                 tbUsername.IsEnabled = true; 
                 pbPassword.IsEnabled = true;
+                btnDatabase.IsEnabled = false; 
 
+                tbServer.Background = System.Windows.Media.Brushes.White; 
+                tbPort.Background = System.Windows.Media.Brushes.White; 
                 tbSchema.Background = System.Windows.Media.Brushes.White; 
                 tbUsername.Background = System.Windows.Media.Brushes.White; 
                 pbPassword.Background = System.Windows.Media.Brushes.White; 
             }
+            tbServer.Text = System.String.Empty; 
+            tbDatabase.Text = System.String.Empty; 
+            tbPort.Text = System.String.Empty; 
+            tbSchema.Text = System.String.Empty; 
+            tbUsername.Text = System.String.Empty; 
+            pbPassword.Password = System.String.Empty; 
+
+            RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
         }
 
         private void btnLogIn_Clicked(object sender, RoutedEventArgs e)
         {
             this.IsLoggedIn = true; 
 
-            string sql = this.MainVM.DbVM.GetSqlRequest("App/UpdateSettingsDb.sql"); 
-            sql = string.Format(sql, "SQLite", cbActiveRdbms.Text, tbDatabase.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password); 
-            this.MainVM.DbVM.SendSqlRequest(sql); 
+            string sql = this.MainVM.DataVM.GetSqlRequest("App/UpdateSettingsDb.sql"); 
+            sql = string.Format(sql, "SQLite", cbActiveRdbms.Text, tbServer.Text, tbDatabase.Text, tbPort.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password); 
+            this.MainVM.DataVM.SendSqlRequest(sql); 
             this.MainVM.InitAppRepository(); 
             this.MainVM.Translate(); 
 
+            this.MainVM.VisualVM.LoginView = null; 
             this.MainVM.MainWindow.Show(); 
             this.Close(); 
         }

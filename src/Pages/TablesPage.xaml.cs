@@ -33,6 +33,7 @@ namespace SqlViewer.Pages
         {
             tbPath.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ";
             tbTables.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.TablesField.Translation) ? TablesPageEntity.TablesField.English : TablesPageEntity.TablesField.Translation;
+            tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
             lblGeneralInfo.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.GeneralInfoField.Translation) ? TablesPageEntity.GeneralInfoField.English : TablesPageEntity.GeneralInfoField.Translation; 
             lblColumns.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ColumnsField.Translation) ? TablesPageEntity.ColumnsField.English : TablesPageEntity.ColumnsField.Translation; 
             lblForeignKeys.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ForeignKeysField.Translation) ? TablesPageEntity.ForeignKeysField.English : TablesPageEntity.ForeignKeysField.Translation; 
@@ -59,11 +60,11 @@ namespace SqlViewer.Pages
                     {
                         this.tbTableName.Text = tableName.Header.ToString(); 
                         
-                        this.MainVM.DbVM.GetAllDataFromTable(tableName.Header.ToString()); 
-                        this.MainVM.DbVM.GetColumnsOfTable(tableName.Header.ToString()); 
-                        this.MainVM.DbVM.GetForeignKeys(tableName.Header.ToString()); 
-                        this.MainVM.DbVM.GetTriggers(tableName.Header.ToString()); 
-                        this.MainVM.DbVM.GetSqlDefinition(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetAllDataFromTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetColumnsOfTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetForeignKeys(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetTriggers(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetSqlDefinition(tableName.Header.ToString()); 
                         break; 
                     }
                 }
