@@ -29,7 +29,7 @@ namespace SqlViewer.Utils.Language
         {
             LanguageEnum = language; 
 
-            string sql = this.MainVM.DataVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
                 if (sql == string.Empty)
@@ -50,7 +50,7 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateLogin()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
                 if (sql == string.Empty)
@@ -77,7 +77,7 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateMenu()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
                 if (sql == string.Empty)
@@ -161,7 +161,7 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateSettings()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
                 if (sql == string.Empty)
@@ -217,7 +217,7 @@ namespace SqlViewer.Utils.Language
 
         public void TranslatePages()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("App/SelectFromTranslation.sql"); 
+            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
                 if (sql == string.Empty)

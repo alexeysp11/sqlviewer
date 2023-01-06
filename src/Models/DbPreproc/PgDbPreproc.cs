@@ -1,5 +1,6 @@
 using System.Data; 
 using System.Windows; 
+using System.Windows.Controls; 
 using SqlViewer.Helpers; 
 using SqlViewer.ViewModels; 
 using SqlViewer.Models.DbConnections; 
@@ -23,7 +24,7 @@ namespace SqlViewer.Models.DbPreproc
 
         public void CreateDb()
         {
-
+            System.Windows.MessageBox.Show("Postgres CreateDb"); 
         }
         public void OpenDb()
         {
@@ -50,27 +51,89 @@ namespace SqlViewer.Models.DbPreproc
 
         public void DisplayTablesInDb()
         {
+            if (UserDbConnection == null)
+            {
+                return; 
+            }
 
+            try
+            {
+                string sqlRequest = MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\DisplayTablesInDb.sql"); 
+                DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
+                MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
+                foreach (DataRow row in dt.Rows)
+                {
+                    TreeViewItem item = new TreeViewItem(); 
+                    item.Header = row["name"].ToString();
+                    MainVM.MainWindow.TablesPage.tvTables.Items.Add(item); 
+                }
+                MainVM.MainWindow.TablesPage.tvTables.IsEnabled = true; 
+                MainVM.MainWindow.TablesPage.tvTables.Visibility = Visibility.Visible; 
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
         } 
         public void GetAllDataFromTable(string tableName)
         {
-
+            try
+            {
+                string sqlRequest = $"SELECT * FROM {tableName}"; 
+                MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
         } 
         public void GetColumnsOfTable(string tableName)
         {
-
+            string[] tn = tableName.Split('.');
+            try
+            {
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
+                MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
         } 
         public void GetForeignKeys(string tableName)
         {
-
+            try
+            {
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetForeignKeys.sql"), tableName);;
+                MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
         } 
         public void GetTriggers(string tableName)
         {
-
+            try
+            {
+                string sqlRequest = $"SELECT * FROM information_schema.triggers WHERE event_object_table LIKE '{tableName}';";
+                MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
         } 
         public void GetSqlDefinition(string tableName)
         {
-
+            try
+            {
+                MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = "The functionality is not supported at the moment...";
+            }
+            catch (System.Exception e)
+            {
+                throw e; 
+            }
         } 
 
         public void SendSqlRequest()

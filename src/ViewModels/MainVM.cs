@@ -54,7 +54,7 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                DataTable dt = this.DataVM.SendSqlRequest(this.DataVM.GetSqlRequest("App/SelectFromSettings.sql")); 
+                DataTable dt = this.DataVM.SendSqlRequest(this.DataVM.GetSqlRequest("Sqlite/App/SelectFromSettings.sql")); 
                 
                 string language = dt.Rows[0]["language"].ToString();
                 string autoSave = dt.Rows[0]["auto_save"].ToString();
@@ -111,7 +111,7 @@ namespace SqlViewer.ViewModels
             {
                 this.DataVM.ClearTempTable("tmp_settings");
                 
-                string sql = this.DataVM.GetSqlRequest("App/RecoverSettings.sql"); 
+                string sql = this.DataVM.GetSqlRequest("Sqlite/App/RecoverSettings.sql"); 
                 this.DataVM.SendSqlRequest(sql); 
                 InitAppRepository(); 
                 Translate(); 
@@ -131,13 +131,13 @@ namespace SqlViewer.ViewModels
                     this.DataVM.ClearTempTable("tmp_settings"); 
                     ((SqlViewer.Views.SettingsView)this.VisualVM.SettingsView).UpdateAppRepository(); 
 
-                    string sql = this.DataVM.GetSqlRequest("App/UpdateSettingsEditor.sql"); 
+                    string sql = this.DataVM.GetSqlRequest("Sqlite/App/UpdateSettingsEditor.sql"); 
                     sql = string.Format(sql, RepoHelper.AppSettingsRepo.Language, RepoHelper.AppSettingsRepo.AutoSave, 
                         EnumCodecHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize), RepoHelper.AppSettingsRepo.FontFamily, 
                         EnumCodecHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize), RepoHelper.AppSettingsRepo.WordWrap); 
                     this.DataVM.SendSqlRequest(sql); 
 
-                    sql = this.DataVM.GetSqlRequest("App/UpdateSettingsDb.sql"); 
+                    sql = this.DataVM.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
                     sql = string.Format(sql, RepoHelper.AppSettingsRepo.DefaultRdbms, RepoHelper.AppSettingsRepo.ActiveRdbms, 
                         RepoHelper.AppSettingsRepo.DbHost, RepoHelper.AppSettingsRepo.DbName, RepoHelper.AppSettingsRepo.DbPort, 
                         RepoHelper.AppSettingsRepo.DbSchema, RepoHelper.AppSettingsRepo.DbUsername, RepoHelper.AppSettingsRepo.DbPassword); 

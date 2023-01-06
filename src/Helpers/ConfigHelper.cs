@@ -28,7 +28,7 @@ namespace SqlViewer.Helpers
             string dataFolderPath = $"{RootFolder}\\data"; 
             CreateFolderIfNotExists(dataFolderPath); 
 
-            string sqlFolderPath = $"{RootFolder}\\src\\Queries\\Init"; 
+            string sqlFolderPath = $"{RootFolder}\\src\\Queries\\Sqlite\\Init"; 
             CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDb.sql"); 
             CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDbSettings.sql"); 
             CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\RecoverSettings.sql"); 

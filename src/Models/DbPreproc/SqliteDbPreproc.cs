@@ -97,24 +97,6 @@ namespace SqlViewer.Models.DbPreproc
             {
                 throw e;
             }
-            finally
-            {
-                // Maybe, this piece of code should be in VisualVM?  
-                /*
-                if (MainVM.MainWindow.TablesPage != null)
-                {
-                    var emptyDt = new DataTable(); 
-                    //MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
-                    //MainVM.MainWindow.TablesPage.tblDbName.Text = string.Empty;
-                    MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = emptyDt.DefaultView;
-                    MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = emptyDt.DefaultView;
-                    MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = emptyDt.DefaultView;
-                    MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = emptyDt.DefaultView;
-                    MainVM.MainWindow.TablesPage.tbTableName.Text = string.Empty; 
-                    MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
-                }
-                */
-            }
         }
 
         /// <summary>
@@ -155,7 +137,7 @@ namespace SqlViewer.Models.DbPreproc
 
             try
             {
-                string sqlRequest = MainVM.DataVM.GetSqlRequest("TableInfo\\DisplayTablesInDb.sql"); 
+                string sqlRequest = MainVM.DataVM.GetSqlRequest("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -229,7 +211,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("TableInfo\\GetSqlDefinition.sql"), tableName);
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Sqlite\\TableInfo\\GetSqlDefinition.sql"), tableName);
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
