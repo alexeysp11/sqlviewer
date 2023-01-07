@@ -4,14 +4,14 @@ using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection
 
 namespace SqlViewer.Models.DbPreproc
 {
-    public class MysqlDbPreproc : IDbPreproc
+    public class HsqldbDbPreproc : IDbPreproc
     {
         private MainVM MainVM { get; set; }
 
         public ICommonDbConnectionSV AppDbConnection { get; private set; }
         public ICommonDbConnectionSV UserDbConnection { get; private set; }
 
-        public MysqlDbPreproc(MainVM mainVM)
+        public HsqldbDbPreproc(MainVM mainVM)
         {
             this.MainVM = mainVM; 
         }

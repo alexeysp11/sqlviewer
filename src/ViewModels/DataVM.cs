@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using Microsoft.Win32;
 using SqlViewer.Models.DbConnections; 
 using SqlViewer.Models.DbPreproc; 
+using SqlViewer.Models.DbTransfer; 
 using SqlViewer.Helpers; 
 using SqlViewer.Views; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
@@ -15,13 +16,16 @@ namespace SqlViewer.ViewModels
     {
         private MainVM MainVM { get; set; }
 
-        public IRdbmsPreproc AppRdbmsPreproc { get; private set; }
-        public IRdbmsPreproc UserRdbmsPreproc { get; private set; }
+        public IDbPreproc AppRdbmsPreproc { get; private set; }
+        public IDbPreproc UserRdbmsPreproc { get; private set; }
+        
+        public DbInterconnection DbInterconnection { get; private set; }
 
         public DataVM(MainVM mainVM)
         {
             this.MainVM = mainVM; 
             this.AppRdbmsPreproc = new SqliteDbPreproc(this.MainVM); 
+            this.DbInterconnection = new DbInterconnection(); 
         }
 
         #region Primary DB operations 
@@ -60,9 +64,9 @@ namespace SqlViewer.ViewModels
             {
                 sqlRequest = System.IO.File.ReadAllText($"{SettingsHelper.GetRootFolder()}\\src\\Queries\\{filename}"); 
             }
-            catch (System.Exception e) 
+            catch (System.Exception ex) 
             {
-                throw e; 
+                throw ex; 
             }
             return sqlRequest; 
         }
@@ -92,9 +96,9 @@ namespace SqlViewer.ViewModels
                         break;
                 }
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
         #endregion  // Initialization 
@@ -106,9 +110,9 @@ namespace SqlViewer.ViewModels
             {
                 UserRdbmsPreproc.DisplayTablesInDb(); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -118,9 +122,9 @@ namespace SqlViewer.ViewModels
             {
                 UserRdbmsPreproc.GetAllDataFromTable(tableName); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -130,9 +134,9 @@ namespace SqlViewer.ViewModels
             {
                 UserRdbmsPreproc.GetColumnsOfTable(tableName); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -142,9 +146,9 @@ namespace SqlViewer.ViewModels
             {
                 UserRdbmsPreproc.GetForeignKeys(tableName); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -154,9 +158,9 @@ namespace SqlViewer.ViewModels
             {
                 UserRdbmsPreproc.GetTriggers(tableName); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -166,9 +170,9 @@ namespace SqlViewer.ViewModels
             {
                 UserRdbmsPreproc.GetSqlDefinition(tableName); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
         #endregion  // DB information 
@@ -180,9 +184,9 @@ namespace SqlViewer.ViewModels
             {
                 UserRdbmsPreproc.SendSqlRequest(); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -193,9 +197,9 @@ namespace SqlViewer.ViewModels
             {
                 dt = AppRdbmsPreproc.SendSqlRequest(sql); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
             return dt; 
         }

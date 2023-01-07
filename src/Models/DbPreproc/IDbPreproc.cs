@@ -3,7 +3,7 @@ using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection
 
 namespace SqlViewer.Models.DbPreproc
 {
-    public interface IRdbmsPreproc
+    public interface IDbPreproc
     {
         void CreateDb();
         void OpenDb(); 

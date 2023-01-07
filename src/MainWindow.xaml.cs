@@ -18,6 +18,8 @@ namespace SqlViewer
             {
                 this.MainVM = new MainVM(this); 
 
+                this.MainVM.ConfigHelper.Initialize(); 
+
                 this.MainVM.VisualVM.OpenView("LoginView"); 
                 InitializeComponent();
                 this.Hide();
@@ -26,12 +28,10 @@ namespace SqlViewer
                 this.Menu.DataContext = this.MainVM; 
                 this.SqlPage.DataContext = this.MainVM; 
                 this.TablesPage.DataContext = this.MainVM; 
-                
-                this.MainVM.ConfigHelper.Initialize(); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
     }

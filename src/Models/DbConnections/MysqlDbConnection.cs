@@ -10,5 +10,10 @@ namespace SqlViewer.Models.DbConnections
             
             return table; 
         }
+
+        public string GetSqlFromDataTable(DataTable dt, string tableName)
+        {
+            return ""; 
+        }
     }
 }

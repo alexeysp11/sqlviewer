@@ -12,6 +12,7 @@ namespace SqlViewer.ViewModels
 
         public Window LoginView { get; set; }
         public Window SettingsView { get; set; }
+        public Window ConnectionsView { get; set; }
         
         public UserControl Menu { get; set; }
         public UserControl SqlPage { get; set; }
@@ -44,9 +45,9 @@ namespace SqlViewer.ViewModels
                 win.DataContext = this.MainVM;
                 win.Show();
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -62,9 +63,9 @@ namespace SqlViewer.ViewModels
                     process.StartInfo.FileName = filePath;
                     process.Start();
                 }
-                catch (System.Exception e)
+                catch (System.Exception ex)
                 {
-                    System.Windows.MessageBox.Show(e.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
                 }
             }
         }

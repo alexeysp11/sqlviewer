@@ -24,14 +24,14 @@ namespace SqlViewer.Pages
             {
                 this.MainVM = (MainVM)this.DataContext; 
                 this.MainVM.VisualVM.SqlPage = this; 
-                this.SqlPageEntity = this.MainVM.Translator.SqlPageEntity;  
+                this.SqlPageEntity = this.MainVM.Translator.SqlPageEntity; 
                 Init(); 
             }; 
         }
 
         public void Init()
         {
-            tbSqlPagePath.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": "; 
+            tbSqlPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": ") : "DB: "; 
             tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
             tbActiveRdbms.Text = RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
             btnSqlPageExecute.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.ExecuteField.Translation) ? SqlPageEntity.ExecuteField.English : SqlPageEntity.ExecuteField.Translation; 

@@ -9,7 +9,7 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.DbPreproc
 {
-    public class PgDbPreproc : IRdbmsPreproc
+    public class PgDbPreproc : IDbPreproc
     {
         private MainVM MainVM { get; set; }
 
@@ -43,9 +43,9 @@ namespace SqlViewer.Models.DbPreproc
                 if (RepoHelper.AppSettingsRepo != null)
                     UserDbConnection = new PgDbConnection();
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e;
+                throw ex;
             }
         }
 
@@ -70,9 +70,9 @@ namespace SqlViewer.Models.DbPreproc
                 MainVM.MainWindow.TablesPage.tvTables.IsEnabled = true; 
                 MainVM.MainWindow.TablesPage.tvTables.Visibility = Visibility.Visible; 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
         public void GetAllDataFromTable(string tableName)
@@ -82,9 +82,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = $"SELECT * FROM {tableName}"; 
                 MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
         public void GetColumnsOfTable(string tableName)
@@ -95,9 +95,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
                 MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
         public void GetForeignKeys(string tableName)
@@ -107,9 +107,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetForeignKeys.sql"), tableName);;
                 MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
         public void GetTriggers(string tableName)
@@ -119,9 +119,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = $"SELECT * FROM information_schema.triggers WHERE event_object_table LIKE '{tableName}';";
                 MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
         public void GetSqlDefinition(string tableName)
@@ -130,9 +130,9 @@ namespace SqlViewer.Models.DbPreproc
             {
                 MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = "The functionality is not supported at the moment...";
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
 
@@ -149,9 +149,9 @@ namespace SqlViewer.Models.DbPreproc
                 MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
                 MainVM.MainWindow.SqlPage.dbgSqlResult.IsEnabled = true; 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
         public DataTable SendSqlRequest(string sql)
@@ -162,9 +162,9 @@ namespace SqlViewer.Models.DbPreproc
                     throw new System.Exception("System RDBMS is not assigned."); 
                 return AppDbConnection.ExecuteSqlCommand(sql);
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         } 
         public void ClearTempTable(string tableName)

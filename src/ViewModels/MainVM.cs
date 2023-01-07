@@ -35,8 +35,7 @@ namespace SqlViewer.ViewModels
             this.DataVM = new DataVM(this); 
             this.VisualVM = new VisualVM(this); 
 
-            string rootFolder = SettingsHelper.GetRootFolder(); 
-            this.ConfigHelper = new ConfigHelper(this, rootFolder); 
+            this.ConfigHelper = new ConfigHelper(this, SettingsHelper.GetRootFolder()); 
             
             this.DbCommand = new DbCommand(this); 
             this.HelpCommand = new HelpCommand(this); 
@@ -95,6 +94,7 @@ namespace SqlViewer.ViewModels
                 this.Translator.TranslateMenu(); 
                 this.Translator.TranslateSettings(); 
                 this.Translator.TranslatePages(); 
+                this.Translator.TranslateConnection(); 
             }
             catch (System.Exception ex)
             {

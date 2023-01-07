@@ -13,7 +13,7 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.DbPreproc 
 {
-    public class SqliteDbPreproc : IRdbmsPreproc
+    public class SqliteDbPreproc : IDbPreproc
     {
         private MainVM MainVM { get; set; }
 
@@ -51,9 +51,9 @@ namespace SqlViewer.Models.DbPreproc
                 if (sfd.ShowDialog() == true)
                     System.IO.File.WriteAllText(sfd.FileName, string.Empty);
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -73,9 +73,9 @@ namespace SqlViewer.Models.DbPreproc
                 InitLocalDbConnection(path); 
                 DisplayTablesInDb();
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
         #endregion  // Primary DB operations
@@ -93,9 +93,9 @@ namespace SqlViewer.Models.DbPreproc
                 if (RepoHelper.AppSettingsRepo != null && !string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DbName))
                     UserDbConnection = new SqliteDbConnection(RepoHelper.AppSettingsRepo.DbName);
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e;
+                throw ex;
             }
         }
 
@@ -120,9 +120,9 @@ namespace SqlViewer.Models.DbPreproc
                 if (this.MainVM.VisualVM.Menu != null)
                     ((UserControlsMenu)this.MainVM.VisualVM.Menu).Init(); 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
         #endregion  // DbConnection initialization
@@ -149,9 +149,9 @@ namespace SqlViewer.Models.DbPreproc
                 MainVM.MainWindow.TablesPage.tvTables.IsEnabled = true; 
                 MainVM.MainWindow.TablesPage.tvTables.Visibility = Visibility.Visible; 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -162,9 +162,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = $"SELECT * FROM {tableName}"; 
                 MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -175,9 +175,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = $"PRAGMA table_info({tableName});"; 
                 MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -188,9 +188,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
                 MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -201,9 +201,9 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
                 MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -223,9 +223,9 @@ namespace SqlViewer.Models.DbPreproc
                     MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
                 }
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
         #endregion  // DB information  
@@ -244,9 +244,9 @@ namespace SqlViewer.Models.DbPreproc
                 MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
                 MainVM.MainWindow.SqlPage.dbgSqlResult.IsEnabled = true; 
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -258,9 +258,9 @@ namespace SqlViewer.Models.DbPreproc
                     throw new System.Exception("System RDBMS is not assigned."); 
                 return AppDbConnection.ExecuteSqlCommand(sql);
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
 
@@ -271,9 +271,9 @@ namespace SqlViewer.Models.DbPreproc
             {
                 AppDbConnection.ExecuteSqlCommand(sqlRequest);
             }
-            catch (System.Exception e)
+            catch (System.Exception ex)
             {
-                throw e; 
+                throw ex; 
             }
         }
         #endregion  // Low-level operations 

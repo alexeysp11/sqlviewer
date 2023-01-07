@@ -19,6 +19,7 @@ namespace SqlViewer.Utils.Language
         public SettingsEntity SettingsEntity { get; private set; } = new SettingsEntity(); 
         public SqlPageEntity SqlPageEntity { get; private set; } = new SqlPageEntity(); 
         public TablesPageEntity TablesPageEntity { get; private set; } = new TablesPageEntity(); 
+        public ConnectionEntity ConnectionEntity { get; private set; } = new ConnectionEntity(); 
 
         public Translator(MainVM mainVM)
         {
@@ -241,6 +242,27 @@ namespace SqlViewer.Utils.Language
                 TablesPageEntity.SetTriggersField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.TriggersField.English)); 
                 TablesPageEntity.SetDataField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.DataField.English)); 
                 #endregion  // Translate Tables page 
+            }
+            catch (System.Exception ex)
+            {
+                throw ex; 
+            }
+        }
+
+        public void TranslateConnection()
+        {
+            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+            try
+            {
+                if (sql == string.Empty)
+                {
+                    throw new System.Exception("Error while translation: SQL request should not be empty."); 
+                }
+                sql = string.Format(sql, LanguageEnum.ToString(), "CONNECTION");
+                DataTable dt = base.Translate(sql); 
+
+                ConnectionEntity.SetActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ActiveRdbmsField.English)); 
+                ConnectionEntity.SetExecuteField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ExecuteField.English)); 
             }
             catch (System.Exception ex)
             {

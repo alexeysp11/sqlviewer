@@ -29,6 +29,10 @@ Using this app, you can do the following things:
 
 ![Example (UI, tables)](docs/img/ui_tables.png)
 
+- transfer data from one table to another 
+
+![Example (UI, tables)](docs/img/ui_connections.png)
+
 ## Application structure 
 
 This application is written with **WPF** using **MVVM** pattern. 
