@@ -40,6 +40,7 @@ namespace SqlViewer.UserControls
         {
             lblActiveRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(ConnectionEntity.ActiveRdbmsField.Translation) ? ConnectionEntity.ActiveRdbmsField.English + ":" : ConnectionEntity.ActiveRdbmsField.Translation + ":"; 
             btnConnectionExecute.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(ConnectionEntity.ExecuteField.Translation) ? ConnectionEntity.ExecuteField.English : ConnectionEntity.ExecuteField.Translation; 
+            btnConnectionTransfer.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(ConnectionEntity.TransferField.Translation) ? ConnectionEntity.TransferField.English : ConnectionEntity.TransferField.Translation; 
         }
 
         public void SetOrdinalNum(int ordinalNum) 

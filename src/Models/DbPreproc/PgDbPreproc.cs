@@ -128,7 +128,18 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = "The functionality is not supported at the moment...";
+                string[] tn = tableName.Split('.');
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetSqlDefinition.sql"), tn[0], tn[1]);
+                DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
+                if (dt.Rows.Count > 0) 
+                {
+                    DataRow row = dt.Rows[0];
+                    MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
+                }
+                else 
+                {
+                    MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
+                }
             }
             catch (System.Exception ex)
             {

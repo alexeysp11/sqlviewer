@@ -29,10 +29,9 @@ namespace SqlViewer.Utils.Language
         public void SetLanguageEnum(LanguageEnum language)
         {
             LanguageEnum = language; 
-
-            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -51,9 +50,9 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateLogin()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -78,9 +77,9 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateMenu()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -162,9 +161,9 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateSettings()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -218,9 +217,9 @@ namespace SqlViewer.Utils.Language
 
         public void TranslatePages()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -251,9 +250,9 @@ namespace SqlViewer.Utils.Language
 
         public void TranslateConnection()
         {
-            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
             try
             {
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -263,6 +262,7 @@ namespace SqlViewer.Utils.Language
 
                 ConnectionEntity.SetActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ActiveRdbmsField.English)); 
                 ConnectionEntity.SetExecuteField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ExecuteField.English)); 
+                ConnectionEntity.SetTransferField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.TransferField.English)); 
             }
             catch (System.Exception ex)
             {
