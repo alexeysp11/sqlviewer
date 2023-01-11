@@ -15,6 +15,7 @@
                     <ComboBoxItem Content="SQLite" Cursor="Hand" />
                     <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
                     <ComboBoxItem Content="MySQL" Cursor="Hand" />
+                    <ComboBoxItem Content="Oracle" Cursor="Hand" />
                 </ComboBox>
             </StackPanel>
             <StackPanel Name="spConnectionDataSource" Orientation="Horizontal" >

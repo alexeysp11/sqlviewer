@@ -9,14 +9,14 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.DbPreproc
 {
-    public class MysqlDbPreproc : IDbPreproc
+    public class MssqlDbPreproc : IDbPreproc
     {
         private MainVM MainVM { get; set; }
 
         public ICommonDbConnectionSV AppDbConnection { get; private set; }
         public ICommonDbConnectionSV UserDbConnection { get; private set; }
 
-        public MysqlDbPreproc(MainVM mainVM)
+        public MssqlDbPreproc(MainVM mainVM)
         {
             this.MainVM = mainVM; 
             this.AppDbConnection = new SqliteDbConnection($"{SettingsHelper.GetRootFolder()}\\data\\app.db"); 
@@ -24,11 +24,11 @@ namespace SqlViewer.Models.DbPreproc
 
         public void CreateDb()
         {
-            System.Windows.MessageBox.Show("Mysql CreateDb"); 
+            System.Windows.MessageBox.Show("Mssql CreateDb"); 
         }
         public void OpenDb()
         {
-            System.Windows.MessageBox.Show("Mysql OpenDb"); 
+            System.Windows.MessageBox.Show("Mssql OpenDb"); 
         } 
 
         public void InitUserDbConnection()
@@ -37,11 +37,11 @@ namespace SqlViewer.Models.DbPreproc
             {
                 if (RepoHelper.AppSettingsRepo == null)
                     throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned."); 
-                if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.MySQL)
+                if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.MSSQL)
                     throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: '{RepoHelper.AppSettingsRepo.ActiveRdbms}'.");
                 
                 if (RepoHelper.AppSettingsRepo != null)
-                    UserDbConnection = new MysqlDbConnection();
+                    UserDbConnection = new MssqlDbConnection();
             }
             catch (System.Exception ex)
             {
@@ -58,7 +58,7 @@ namespace SqlViewer.Models.DbPreproc
 
             try
             {
-                string sqlRequest = MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\DisplayTablesInDb.sql"); 
+                string sqlRequest = MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\DisplayTablesInDb.sql"); 
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -92,7 +92,7 @@ namespace SqlViewer.Models.DbPreproc
             string[] tn = tableName.Split('.');
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
                 MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -104,7 +104,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetForeignKeys.sql"), tableName);;
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\GetForeignKeys.sql"), tableName);;
                 MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -129,7 +129,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string[] tn = tableName.Split('.');
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetSqlDefinition.sql"), tn[0], tn[1]);
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\GetSqlDefinition.sql"), tn[0], tn[1]);
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
@@ -145,7 +145,7 @@ namespace SqlViewer.Models.DbPreproc
             {
                 throw ex; 
             }
-        } 
+        }
 
         public void SendSqlRequest()
         {

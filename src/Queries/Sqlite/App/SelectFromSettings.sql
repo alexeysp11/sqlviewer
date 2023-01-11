@@ -133,11 +133,11 @@ SELECT
         ELSE 'Disabled'
     END AS word_wrap, 
     CASE 
-        WHEN UPPER(tmp.default_rdbms) IN ('SQLITE', 'POSTGRESQL', 'MYSQL') THEN tmp.default_rdbms 
+        WHEN UPPER(tmp.default_rdbms) IN ('SQLITE', 'POSTGRESQL', 'MYSQL', 'ORACLE') THEN tmp.default_rdbms 
         ELSE 'SQLite'
     END AS default_rdbms, 
     CASE 
-        WHEN UPPER(tmp.active_rdbms) IN ('SQLITE', 'POSTGRESQL', 'MYSQL') THEN tmp.active_rdbms 
+        WHEN UPPER(tmp.active_rdbms) IN ('SQLITE', 'POSTGRESQL', 'MYSQL', 'ORACLE') THEN tmp.active_rdbms 
         ELSE 'SQLite'
     END AS active_rdbms, 
     CAST(tmp.server AS TEXT) AS server, 

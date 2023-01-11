@@ -1,6 +1,6 @@
 # sqlviewer 
 
-`sqlviewer` is a C# implementation of a GUI for **SQLite**, **PostgreSQL** and **MySQL**. 
+`sqlviewer` is a C# implementation of a GUI for **SQLite**, **PostgreSQL**, **MySQL** and **Oracle**. 
 
 It's available in 29 different languages: 
 - English;

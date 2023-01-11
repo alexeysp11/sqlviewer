@@ -80,7 +80,17 @@ namespace SqlViewer.UserControls
         private void btnDataSource_Clicked(object sender, RoutedEventArgs e)
         {
             string msg = @"SQLite: specify the full path to the local database (for example, 'C:\projects\sqlviewer\data\app.db').
-PostgreSQL: specify server, username, database, port and password (for example, 'Server=localhost;Username=username;Database=database;Port=800;Password=password')."; 
+
+PostgreSQL: specify server, username, database, port and password (for example, 'Server=localhost;Username=username;Database=database;Port=800;Password=password').
+
+Oracle: specify protocol, host, port, service name, user ID and password (for example, 'Data Source=(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = service_name)
+    )
+  ); User ID=user_id;Password=password;')"; 
             System.Windows.MessageBox.Show(msg, "Instruction: How to form DataSource (DS) string", MessageBoxButton.OK, MessageBoxImage.Information); 
         }
 
@@ -148,6 +158,10 @@ PostgreSQL: specify server, username, database, port and password (for example, 
             
                 case "PostgreSQL":
                     dbConnection = new PgDbConnection(tbDataSource.Text); 
+                    break;
+            
+                case "Oracle":
+                    dbConnection = new OracleDbConnection(tbDataSource.Text); 
                     break;
 
                 default: 

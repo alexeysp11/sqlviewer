@@ -104,7 +104,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetForeignKeys.sql"), tableName);;
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetForeignKeys.sql"), tableName);
                 MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -116,7 +116,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = $"SELECT * FROM information_schema.triggers WHERE event_object_table LIKE '{tableName}';";
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Postgres\\TableInfo\\GetTriggers.sql"), tableName);
                 MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)

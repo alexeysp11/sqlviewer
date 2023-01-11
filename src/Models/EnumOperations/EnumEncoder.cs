@@ -101,6 +101,7 @@ namespace SqlViewer.Models.EnumOperations
             "SQLite"        => RdbmsEnum.SQLite,
             "PostgreSQL"    => RdbmsEnum.PostgreSQL,
             "MySQL"         => RdbmsEnum.MySQL,
+            "Oracle"        => RdbmsEnum.Oracle,
             _ => throw new System.Exception("Unable to find rdbms enum")
         }; 
         #endregion  // Database 

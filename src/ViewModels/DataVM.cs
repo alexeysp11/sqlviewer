@@ -91,6 +91,14 @@ namespace SqlViewer.ViewModels
                         (this.UserRdbmsPreproc = new MysqlDbPreproc(this.MainVM)).InitUserDbConnection(); 
                         break;
 
+                    case RdbmsEnum.MSSQL: 
+                        (this.UserRdbmsPreproc = new MssqlDbPreproc(this.MainVM)).InitUserDbConnection(); 
+                        break;
+
+                    case RdbmsEnum.Oracle: 
+                        (this.UserRdbmsPreproc = new OracleDbPreproc(this.MainVM)).InitUserDbConnection(); 
+                        break;
+
                     default:
                         throw new System.Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
                         break;
