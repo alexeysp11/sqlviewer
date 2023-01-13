@@ -160,6 +160,10 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
                     dbConnection = new PgDbConnection(tbDataSource.Text); 
                     break;
             
+                case "MySQL":
+                    dbConnection = new MysqlDbConnection(tbDataSource.Text); 
+                    break;
+            
                 case "Oracle":
                     dbConnection = new OracleDbConnection(tbDataSource.Text); 
                     break;

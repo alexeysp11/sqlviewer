@@ -58,7 +58,7 @@ namespace SqlViewer.Models.DbPreproc
 
             try
             {
-                string sqlRequest = MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\DisplayTablesInDb.sql"); 
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\DisplayTablesInDb.sql"), RepoHelper.AppSettingsRepo.DbName); 
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -89,10 +89,9 @@ namespace SqlViewer.Models.DbPreproc
         } 
         public void GetColumnsOfTable(string tableName)
         {
-            string[] tn = tableName.Split('.');
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetColumns.sql"), RepoHelper.AppSettingsRepo.DbName, tableName); 
                 MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -104,7 +103,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetForeignKeys.sql"), tableName);;
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetForeignKeys.sql"), RepoHelper.AppSettingsRepo.DbName, tableName);;
                 MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -116,7 +115,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = $"SELECT * FROM information_schema.triggers WHERE event_object_table LIKE '{tableName}';";
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetTriggers.sql"), tableName);
                 MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -128,13 +127,12 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string[] tn = tableName.Split('.');
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetSqlDefinition.sql"), tn[0], tn[1]);
+                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mysql\\TableInfo\\GetSqlDefinition.sql"), tableName);
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
                     DataRow row = dt.Rows[0];
-                    MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
+                    MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["Create Table"].ToString();
                 }
                 else 
                 {
