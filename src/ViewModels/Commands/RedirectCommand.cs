@@ -44,6 +44,14 @@ namespace SqlViewer.Commands
                     this.MainVM.VisualVM.OpenView("ConnectionsView"); 
                     break;
 
+                case "Network":
+                    this.MainVM.VisualVM.OpenView("NetworkView"); 
+                    break;
+
+                case "CustomFiles":
+                    this.MainVM.VisualVM.OpenView("CustomFilesView"); 
+                    break;
+
                 default:
                     System.Windows.MessageBox.Show($"Incorrect parameter: '{parameterString}' in RedirectCommand", "Error"); 
                     break;

@@ -28,7 +28,7 @@ namespace SqlViewer.ViewModels
             this.DbInterconnection = new DbInterconnection(); 
         }
 
-        #region Primary DB operations 
+        #region DB operations 
         public void CreateDb()
         {
             try
@@ -40,10 +40,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        /// <summary>
-        /// Opens DB 
-        /// </summary>
         public void OpenDb()
         {
             try
@@ -70,9 +66,7 @@ namespace SqlViewer.ViewModels
             }
             return sqlRequest; 
         }
-        #endregion  // Primary DB operations 
 
-        #region Initialization 
         public void InitUserDbConnection()
         {
             try
@@ -109,9 +103,7 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-        #endregion  // Initialization 
 
-        #region // DB information 
         public void DisplayTablesInDb()
         {
             try
@@ -123,7 +115,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-
         public void GetAllDataFromTable(string tableName)
         {
             try
@@ -135,7 +126,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-
         public void GetColumnsOfTable(string tableName)
         {
             try
@@ -147,7 +137,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-
         public void GetForeignKeys(string tableName)
         {
             try
@@ -159,7 +148,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-
         public void GetTriggers(string tableName)
         {
             try
@@ -171,7 +159,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-
         public void GetSqlDefinition(string tableName)
         {
             try
@@ -183,9 +170,7 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-        #endregion  // DB information 
-
-        #region Low-level operations
+        
         public void SendSqlRequest()
         {
             try
@@ -197,7 +182,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
-
         public DataTable SendSqlRequest(string sql)
         {
             DataTable dt = new DataTable(); 
@@ -223,6 +207,6 @@ namespace SqlViewer.ViewModels
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-        #endregion  // Low-level operations 
+        #endregion  // DB operations 
     }
 }

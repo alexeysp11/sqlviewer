@@ -1,0 +1,116 @@
+<Window x:Class="SqlViewer.Views.NetworkView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlViewer.Views"
+        xmlns:vm="clr-namespace:SqlViewer.ViewModels"
+        xmlns:uc="clr-namespace:SqlViewer.UserControls"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" 
+        Icon="../Resources/icon.ico"
+        Title="sqlviewer: SQL Database Viewer (for Windows) [Network]" 
+        MinHeight="525" MaxHeight="525" MinWidth="800" MaxWidth="800">
+    <Grid>
+        <StackPanel Name="spMain" Orientation="Vertical" Margin="10,5,0,0">
+            <StackPanel Name="spHost" Orientation="Horizontal" >
+                <Label Name="lblHost" Content="Host:" Width="50" />
+                <TextBox Name="tbHost" Width="280" Height="25" Margin="10,0,0,0" />
+                <Label Name="lblPort" Content="Port:" Width="35" Margin="10,0,0,0" />
+                <TextBox Name="tbPort" Width="100" Height="25" Margin="10,0,0,0" />
+                <Button Name="btnPing" Content="Ping" Width="100" Margin="65,5,0,0" Cursor="Hand" Click="btnPing_Clicked" />
+                <Button Name="btnConnect" Content="Connect" Width="100" Margin="5,5,0,0" Cursor="Hand" Click="btnConnect_Clicked" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical" >
+                    <StackPanel Name="spDataType" Orientation="Horizontal" >
+                        <Label Name="lblDataType" Content="Data type:" Width="75" />
+                        <StackPanel Orientation="Horizontal" Margin="5,7,0,0">      
+                            <RadioButton Name="rbDataTypeActiveRdbms" Checked="rbDataTypeChecked">Active RDBMS</RadioButton>
+                            <RadioButton Name="rbDataTypeCustomDocType" Checked="rbDataTypeChecked" Margin="5,0,0,0">Custom doc type</RadioButton>
+                        </StackPanel>
+                    </StackPanel>
+                    <StackPanel Name="spActiveRdbms" Orientation="Horizontal" >
+                        <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="150" />
+                        <ComboBox Name="cbActiveRdbms" Width="180" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" DropDownClosed="cbActiveRdbms_DropDownClosed">
+                            <ComboBoxItem Content="SQLite" Cursor="Hand" />
+                            <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
+                            <ComboBoxItem Content="MySQL" Cursor="Hand" />
+                            <ComboBoxItem Content="Oracle" Cursor="Hand" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Name="spCustomDocType" Orientation="Horizontal" >
+                        <Label Name="lblCustomDocType" Content="Custom doc type:" Width="150" />
+                        <ComboBox Name="cbCustomDocType" Width="180" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" DropDownClosed="cbCustomDocType_DropDownClosed">
+                            <ComboBoxItem Content="MS Excel" Cursor="Hand" />
+                            <ComboBoxItem Content="LibreOffice Calc" Cursor="Hand" />
+                            <ComboBoxItem Content="OpenOffice Calc" Cursor="Hand" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Name="spFile" Orientation="Horizontal" >
+                        <Label Name="lblFile" Content="File:" Width="135" />
+                        <Button Name="btnUpload" Content="Upload" Width="100" Margin="0,5,0,0" Cursor="Hand" Click="btnUpload_Clicked" />
+                        <Button Name="btnDownload" Content="Download" Width="100" Margin="5,5,0,0" Cursor="Hand" Click="btnDownload_Clicked" />
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical" Margin="50,0,0,0" >
+                    <StackPanel Name="spLogging" Orientation="Horizontal" >
+                        <Label Name="lblLogging" Content="Logging:" Width="75" />
+                        <StackPanel Orientation="Horizontal" Margin="5,7,0,0">      
+                            <RadioButton Name="rbLoggingOn" Checked="rbLoggingChecked">On</RadioButton>
+                            <RadioButton Name="rbLoggingOff" Checked="rbLoggingChecked" Margin="5,0,0,0">Off</RadioButton>
+                        </StackPanel>
+                        <Button Name="btnWatchLogs" Content="Watch logs" Width="100" Margin="15,5,0,0" Cursor="Hand" Click="btnWatchLogs_Clicked" />
+                        <Button Name="btnSaveLogs" Content="Save logs" Width="100" Margin="5,5,0,0" Cursor="Hand" Click="btnSaveLogs_Clicked" />
+                    </StackPanel>
+                    <StackPanel Name="spNetworkProtocol" Orientation="Horizontal" >
+                        <Label Name="lblNetworkProtocol" Content="Network protocol:" Width="135" />
+                        <ComboBox Name="cbNetworkProtocol" Width="180" Height="25" Margin="60,0,0,0" SelectedIndex="0" Cursor="Hand" DropDownClosed="cbNetworkProtocol_DropDownClosed">
+                            <ComboBoxItem Content="HTTP" Cursor="Hand" />
+                            <ComboBoxItem Content="TCP" Cursor="Hand" />
+                            <ComboBoxItem Content="FTP" Cursor="Hand" />
+                            <ComboBoxItem Content="SOAP" Cursor="Hand" />
+                            <ComboBoxItem Content="REST API" Cursor="Hand" />
+                            <ComboBoxItem Content="gRPC" Cursor="Hand" />
+                            <ComboBoxItem Content="NNTP" Cursor="Hand" />
+                            <ComboBoxItem Content="IPFS" Cursor="Hand" />
+                            <ComboBoxItem Content="IMAP" Cursor="Hand" />
+                            <ComboBoxItem Content="IRC" Cursor="Hand" />
+                            <ComboBoxItem Content="POP" Cursor="Hand" />
+                            <ComboBoxItem Content="SMTP" Cursor="Hand" />
+                            <ComboBoxItem Content="XMPP" Cursor="Hand" />
+                            <ComboBoxItem Content="MQTP" Cursor="Hand" />
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Name="spMessage" Orientation="Horizontal" >
+                        <Label Name="lblMessage" Content="Message" Foreground="Red" Width="135" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+            <uc:DbGrid x:Name="dbgSqlResult" Height="155" Width="765" IsReadOnly="True" AutoGenerateColumns="True" Margin="0,5,0,0" />
+
+            <uc:MultilineTextBox x:Name="mtbSqlRequest" IsReadOnly="False" FontSize="14" Height="155" Width="765" Margin="0,5,0,0" />
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="215" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                    <ColumnDefinition Width="100" />
+                </Grid.ColumnDefinitions>
+
+                <Button Name="btnExecute" Content="Execute" Grid.Column="0" Margin="0,5,0,0" Cursor="Hand" Click="btnExecute_Clicked" />
+                <TextBlock Name="tbActiveRdbms" Text="SQLite" Grid.Column="1" Margin="15,8,0,0" />
+                <TextBlock Text="UTF-8" Grid.Column="3" Margin="0,8,0,0" />
+                <Button Name="btnSave" Content="Save" Grid.Column="4" Margin="5,5,0,0" Cursor="Hand" Click="btnSave_Clicked" />
+                <Button Name="btnClear" Content="Clear" Grid.Column="5" Margin="5,5,0,0" Cursor="Hand" Click="btnClear_Clicked" />
+                <Button Name="btnCancel" Content="Cancel" Grid.Column="6" Margin="5,5,0,0" Cursor="Hand" Click="btnCancel_Clicked" />
+            </Grid>
+        </StackPanel>
+    </Grid>
+</Window>

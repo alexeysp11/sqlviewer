@@ -83,6 +83,8 @@ namespace SqlViewer.UserControls
 
 PostgreSQL: specify server, username, database, port and password (for example, 'Server=localhost;Username=username;Database=database;Port=800;Password=password').
 
+MySQL: specify server, database, username, password (for example, Server=localhost; database=your_db; UID=username; password=password). 
+
 Oracle: specify protocol, host, port, service name, user ID and password (for example, 'Data Source=(DESCRIPTION =
     (ADDRESS_LIST =
       (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
@@ -90,7 +92,7 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
     (CONNECT_DATA =
       (SERVICE_NAME = service_name)
     )
-  ); User ID=user_id;Password=password;')"; 
+  ); User ID=user_id;Password=password;')."; 
             System.Windows.MessageBox.Show(msg, "Instruction: How to form DataSource (DS) string", MessageBoxButton.OK, MessageBoxImage.Information); 
         }
 

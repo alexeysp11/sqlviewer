@@ -67,6 +67,8 @@
                 <MenuItem Name="miToolsToolbars" Header="Toolbars" />
                 <Separator/>
                 <MenuItem Name="miToolsConnections" Header="Connections" Command="{Binding RedirectCommand}" CommandParameter="Connections" />
+                <MenuItem Name="miToolsNetwork" Header="Network" Command="{Binding RedirectCommand}" CommandParameter="Network" />
+                <MenuItem Name="miToolsCustomFiles" Header="Custom files" Command="{Binding RedirectCommand}" CommandParameter="CustomFiles" />
             </MenuItem>
 
             <MenuItem Name="miHelp" Header="Help">
