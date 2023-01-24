@@ -26,15 +26,15 @@ namespace SqlViewer.Commands
             switch (parameterString)
             {
                 case "SendSql":
-                    this.MainVM.DataVM.SendSqlRequest(); 
+                    this.MainVM.DataVM.MainDbClient.SendSqlRequest(); 
                     break;
                     
                 case "New":
-                    this.MainVM.DataVM.CreateDb(); 
+                    this.MainVM.DataVM.MainDbClient.CreateDb(); 
                     break;
                     
                 case "Open":
-                    this.MainVM.DataVM.OpenDb(); 
+                    this.MainVM.DataVM.MainDbClient.OpenDb(); 
                     break;
 
                 default: 

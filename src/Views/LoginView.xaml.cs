@@ -112,9 +112,9 @@ namespace SqlViewer.Views
         {
             this.IsLoggedIn = true; 
 
-            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
+            string sql = this.MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
             sql = string.Format(sql, "SQLite", cbActiveRdbms.Text, tbServer.Text, tbDatabase.Text, tbPort.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password); 
-            this.MainVM.DataVM.SendSqlRequest(sql); 
+            this.MainVM.DataVM.MainDbClient.SendSqlRequest(sql); 
             this.MainVM.InitAppRepository(); 
             this.MainVM.Translate(); 
 

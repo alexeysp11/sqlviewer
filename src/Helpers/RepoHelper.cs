@@ -6,9 +6,6 @@ namespace SqlViewer.Helpers
     {
         public static AppSettingsRepo AppSettingsRepo { get; private set; } = null; 
 
-        public static void SetAppSettingsRepo(AppSettingsRepo appSettingsRepo)
-        {
-            AppSettingsRepo = appSettingsRepo; 
-        }
+        public static void SetAppSettingsRepo(AppSettingsRepo appSettingsRepo) => AppSettingsRepo = appSettingsRepo; 
     }
 }

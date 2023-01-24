@@ -60,11 +60,11 @@ namespace SqlViewer.Pages
                     {
                         this.tbTableName.Text = tableName.Header.ToString(); 
                         
-                        this.MainVM.DataVM.GetAllDataFromTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.GetColumnsOfTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.GetForeignKeys(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.GetTriggers(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.GetSqlDefinition(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbClient.GetAllDataFromTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbClient.GetColumnsOfTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbClient.GetForeignKeys(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbClient.GetTriggers(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbClient.GetSqlDefinition(tableName.Header.ToString()); 
                         break; 
                     }
                 }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Data; 
 using System.Windows; 
 using System.Windows.Controls; 
-using Microsoft.Win32;
 using SqlViewer.Models.DbConnections; 
 using SqlViewer.Helpers; 
 using SqlViewer.Views; 
@@ -44,17 +43,7 @@ namespace SqlViewer.Models.DbPreproc
         /// </summary>
         public void CreateDb()
         {
-            try
-            {
-                SaveFileDialog sfd = new SaveFileDialog();
-                sfd.Filter = SettingsHelper.GetFilterFileSystemDb(); 
-                if (sfd.ShowDialog() == true)
-                    System.IO.File.WriteAllText(sfd.FileName, string.Empty);
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
+            SqlViewer.Helpers.FileSysHelper.SaveLocalFile(); 
         }
 
         /// <summary>
@@ -64,11 +53,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                OpenFileDialog ofd = new OpenFileDialog(); 
-                ofd.Filter = SettingsHelper.GetFilterFileSystemDb();
-                if (ofd.ShowDialog() == true) {}
-
-                string path = ofd.FileName; 
+                string path = SqlViewer.Helpers.FileSysHelper.OpenLocalFile(); 
                 if (path == string.Empty) return; 
                 InitLocalDbConnection(path); 
                 DisplayTablesInDb();
@@ -137,7 +122,7 @@ namespace SqlViewer.Models.DbPreproc
 
             try
             {
-                string sqlRequest = MainVM.DataVM.GetSqlRequest("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
+                string sqlRequest = MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -211,7 +196,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Sqlite\\TableInfo\\GetSqlDefinition.sql"), tableName);
+                string sqlRequest = string.Format(MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite\\TableInfo\\GetSqlDefinition.sql"), tableName);
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {

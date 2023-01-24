@@ -32,6 +32,8 @@
                             <ComboBox Name="cbDs1" Width="120" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" >
                                 <ComboBoxItem Content="Spreadsheets" Cursor="Hand" />
                                 <ComboBoxItem Content="RDBMS" Cursor="Hand" />
+                                <ComboBoxItem Content="Text-based" Cursor="Hand" />
+                                <ComboBoxItem Content="Binary" Cursor="Hand" />
                             </ComboBox>
                         </StackPanel>
                         <StackPanel Name="spInputSource" Orientation="Horizontal" >
@@ -41,6 +43,16 @@
                                 <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
                                 <ComboBoxItem Content="MySQL" Cursor="Hand" />
                                 <ComboBoxItem Content="Oracle" Cursor="Hand" />
+                                <Separator/>
+                                <ComboBoxItem Content="MS Excel" Cursor="Hand" />
+                                <ComboBoxItem Content="LibreOffice Calc" Cursor="Hand" />
+                                <ComboBoxItem Content="OpenOffice Calc" Cursor="Hand" />
+                                <Separator/>
+                                <ComboBoxItem Content="XML" Cursor="Hand" />
+                                <ComboBoxItem Content="JSON" Cursor="Hand" />
+                                <ComboBoxItem Content="CSV" Cursor="Hand" />
+                                <Separator/>
+                                <ComboBoxItem Content="Binary" Cursor="Hand" />
                             </ComboBox>
                         </StackPanel>
                     </StackPanel>
@@ -51,6 +63,8 @@
                             <ComboBox Name="cbDs2" Width="120" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" >
                                 <ComboBoxItem Content="Spreadsheets" Cursor="Hand" />
                                 <ComboBoxItem Content="RDBMS" Cursor="Hand" />
+                                <ComboBoxItem Content="Text-based" Cursor="Hand" />
+                                <ComboBoxItem Content="Binary" Cursor="Hand" />
                             </ComboBox>
                         </StackPanel>
                         <StackPanel Name="spOutputSource" Orientation="Horizontal" >
@@ -60,6 +74,16 @@
                                 <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
                                 <ComboBoxItem Content="MySQL" Cursor="Hand" />
                                 <ComboBoxItem Content="Oracle" Cursor="Hand" />
+                                <Separator/>
+                                <ComboBoxItem Content="MS Excel" Cursor="Hand" />
+                                <ComboBoxItem Content="LibreOffice Calc" Cursor="Hand" />
+                                <ComboBoxItem Content="OpenOffice Calc" Cursor="Hand" />
+                                <Separator/>
+                                <ComboBoxItem Content="XML" Cursor="Hand" />
+                                <ComboBoxItem Content="JSON" Cursor="Hand" />
+                                <ComboBoxItem Content="CSV" Cursor="Hand" />
+                                <Separator/>
+                                <ComboBoxItem Content="Binary" Cursor="Hand" />
                             </ComboBox>
                         </StackPanel>
                     </StackPanel>

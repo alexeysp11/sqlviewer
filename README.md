@@ -81,11 +81,34 @@ Using this app, you can do the following things:
 
 ## Getting started 
 
+### Prerequisites 
+
+- Windows OS; 
+- .NET Core 3.1; 
+- One of the following data sources to be able to perform some operations with data (if you have more than one data sources installed on your computer, your user experience is going to be much better and productive): 
+    - RDBMS (**SQLite**, **PostgreSQL**, **MySQL**, or **Oracle**), 
+    - MS Office (**Excel**), 
+    - LibreOffice/OpenOffice (**Calc**). 
+
+### Download and run 
+
 To be continued... 
 
-## Application structure 
+### How to use 
 
-This application is written with **WPF** using **MVVM** pattern. 
+<!--
+- Running the application; 
+- Configuration; 
+- User manual. 
+-->
+
+To be continued... 
+
+## For developers 
+
+This application is written in C# with **WPF** using **MVVM** pattern. 
+
+### Application structure 
 
 Class diagram is shown below:
 

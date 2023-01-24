@@ -83,7 +83,7 @@ namespace SqlViewer.ViewModels
 
         public void RedirectToTables()
         {
-            this.MainVM.DataVM.DisplayTablesInDb();
+            this.MainVM.DataVM.MainDbClient.DisplayTablesInDb();
 
             HideAllPages();
             DisableAllPages();

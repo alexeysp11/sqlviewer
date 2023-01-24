@@ -42,7 +42,7 @@ namespace SqlViewer.ViewModels
             this.RedirectCommand = new RedirectCommand(this); 
             this.AppCommand = new AppCommand(this); 
 
-            (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewer.Models.DbConnections.SqliteDbConnection)this.DataVM.AppRdbmsPreproc.GetAppDbConnection()); 
+            (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewer.Models.DbConnections.SqliteDbConnection)this.DataVM.MainDbClient.AppRdbmsPreproc.GetAppDbConnection()); 
         }
 
         #region Initialization 
@@ -53,7 +53,7 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                DataTable dt = this.DataVM.SendSqlRequest(this.DataVM.GetSqlRequest("Sqlite/App/SelectFromSettings.sql")); 
+                DataTable dt = this.DataVM.MainDbClient.SendSqlRequest(this.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/SelectFromSettings.sql")); 
                 
                 string language = dt.Rows[0]["language"].ToString();
                 string autoSave = dt.Rows[0]["auto_save"].ToString();
@@ -74,7 +74,7 @@ namespace SqlViewer.ViewModels
                 RepoHelper.SetAppSettingsRepo(new SqlViewer.Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave, 
                     fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server, 
                     dbName, port, schemaName, dbUsername, dbPswd)); 
-                this.DataVM.InitUserDbConnection(); 
+                this.DataVM.MainDbClient.InitUserDbConnection(); 
             }
             catch (System.Exception ex)
             {
@@ -109,10 +109,10 @@ namespace SqlViewer.ViewModels
             string msg = "Are you sure to recover settings changes?"; 
             if (System.Windows.MessageBox.Show(msg, "Recover settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                this.DataVM.ClearTempTable("tmp_settings");
+                this.DataVM.MainDbClient.ClearTempTable("tmp_settings");
                 
-                string sql = this.DataVM.GetSqlRequest("Sqlite/App/RecoverSettings.sql"); 
-                this.DataVM.SendSqlRequest(sql); 
+                string sql = this.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/RecoverSettings.sql"); 
+                this.DataVM.MainDbClient.SendSqlRequest(sql); 
                 InitAppRepository(); 
                 Translate(); 
                 this.VisualVM.InitUI(); 
@@ -128,20 +128,20 @@ namespace SqlViewer.ViewModels
             {
                 try 
                 {
-                    this.DataVM.ClearTempTable("tmp_settings"); 
+                    this.DataVM.MainDbClient.ClearTempTable("tmp_settings"); 
                     ((SqlViewer.Views.SettingsView)this.VisualVM.SettingsView).UpdateAppRepository(); 
 
-                    string sql = this.DataVM.GetSqlRequest("Sqlite/App/UpdateSettingsEditor.sql"); 
+                    string sql = this.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/UpdateSettingsEditor.sql"); 
                     sql = string.Format(sql, RepoHelper.AppSettingsRepo.Language, RepoHelper.AppSettingsRepo.AutoSave, 
                         EnumCodecHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize), RepoHelper.AppSettingsRepo.FontFamily, 
                         EnumCodecHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize), RepoHelper.AppSettingsRepo.WordWrap); 
-                    this.DataVM.SendSqlRequest(sql); 
+                    this.DataVM.MainDbClient.SendSqlRequest(sql); 
 
-                    sql = this.DataVM.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
+                    sql = this.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
                     sql = string.Format(sql, RepoHelper.AppSettingsRepo.DefaultRdbms, RepoHelper.AppSettingsRepo.ActiveRdbms, 
                         RepoHelper.AppSettingsRepo.DbHost, RepoHelper.AppSettingsRepo.DbName, RepoHelper.AppSettingsRepo.DbPort, 
                         RepoHelper.AppSettingsRepo.DbSchema, RepoHelper.AppSettingsRepo.DbUsername, RepoHelper.AppSettingsRepo.DbPassword); 
-                    this.DataVM.SendSqlRequest(sql); 
+                    this.DataVM.MainDbClient.SendSqlRequest(sql); 
 
                     InitAppRepository(); 
                     Translate(); 
@@ -161,7 +161,7 @@ namespace SqlViewer.ViewModels
             string msg = "Are you sure to cancel settings changes?"; 
             if (System.Windows.MessageBox.Show(msg, "Cancel settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                this.DataVM.ClearTempTable("tmp_settings"); 
+                this.DataVM.MainDbClient.ClearTempTable("tmp_settings"); 
                 
                 ((SqlViewer.Views.SettingsView)this.VisualVM.SettingsView).CancelChangesAppRepository(); 
                 
@@ -177,6 +177,7 @@ namespace SqlViewer.ViewModels
             if (System.Windows.MessageBox.Show(msg, "Exit the application", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 System.Windows.Application.Current.Shutdown();
+                //SqlViewer.Helpers.FileSysHelper.ExecuteCmd("taskkill /f /im SqlViewer.exe /t"); 
             }
         }
     }

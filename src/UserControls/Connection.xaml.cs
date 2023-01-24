@@ -1,7 +1,6 @@
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
 using SqlViewer.Models.DbConnections;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
@@ -63,11 +62,7 @@ namespace SqlViewer.UserControls
         {
             try
             {
-                OpenFileDialog ofd = new OpenFileDialog(); 
-                ofd.Filter = SettingsHelper.GetFilterFileSystemDb();
-                if (ofd.ShowDialog() == true) {}
-
-                string path = ofd.FileName; 
+                string path = SqlViewer.Helpers.FileSysHelper.OpenLocalFile(); 
                 if (path == string.Empty) return; 
                 tbDataSource.Text = path;
             }
@@ -79,20 +74,7 @@ namespace SqlViewer.UserControls
 
         private void btnDataSource_Clicked(object sender, RoutedEventArgs e)
         {
-            string msg = @"SQLite: specify the full path to the local database (for example, 'C:\projects\sqlviewer\data\app.db').
-
-PostgreSQL: specify server, username, database, port and password (for example, 'Server=localhost;Username=username;Database=database;Port=800;Password=password').
-
-MySQL: specify server, database, username, password (for example, Server=localhost; database=your_db; UID=username; password=password). 
-
-Oracle: specify protocol, host, port, service name, user ID and password (for example, 'Data Source=(DESCRIPTION =
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
-    )
-    (CONNECT_DATA =
-      (SERVICE_NAME = service_name)
-    )
-  ); User ID=user_id;Password=password;')."; 
+            string msg = SqlViewer.Helpers.SettingsHelper.GetHelpDataSourceString(); 
             System.Windows.MessageBox.Show(msg, "Instruction: How to form DataSource (DS) string", MessageBoxButton.OK, MessageBoxImage.Information); 
         }
 
@@ -107,22 +89,23 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
         {
             try
             {
-                ICommonDbConnectionSV dbConnection = GetDbConnection(); 
+                var di = this.MainVM.DataVM.InterDbClient.DbInterconnection; 
+                ICommonDbConnectionSV dbConnection = di.GetDbConnection(cbActiveRdbms.Text, tbDataSource.Text); 
                 switch (OrdinalNum)
                 {
                     case 1:
-                        this.MainVM.DataVM.DbInterconnection.SetDbConnection1(dbConnection); 
+                        di.SetInterDbConnection1(dbConnection); 
                         break;
                 
                     case 2:
-                        this.MainVM.DataVM.DbInterconnection.SetDbConnection2(dbConnection); 
+                        di.SetInterDbConnection2(dbConnection); 
                         break;
 
                     default: 
                         throw new System.Exception("Incorrect OrdinalNum in UserControls.Connection: '" + OrdinalNum + "'"); 
                         break; 
                 }
-                dbgSqlResult.ItemsSource = OrdinalNum == 1 ? this.MainVM.DataVM.DbInterconnection.DbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : this.MainVM.DataVM.DbInterconnection.DbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView; 
+                dbgSqlResult.ItemsSource = OrdinalNum == 1 ? di.InterDbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : di.InterDbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView; 
             }
             catch (System.Exception ex)
             {
@@ -137,7 +120,7 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
                 if (OrdinalNum != 1 && OrdinalNum != 2)
                     throw new System.Exception("Incorrect OrdinalNum in UserControls.Connection: '" + OrdinalNum + "'"); 
 
-                string tableName = SettingsHelper.GetTmpTableTransfer(); 
+                string tableName = SettingsHelper.GetTmpTableTransferString(); 
                 TransferData(tableName); 
                 System.Windows.MessageBox.Show("Data successfully transferred!\nTable name: " + tableName, "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
             }
@@ -149,34 +132,6 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
         #endregion  // Event processing
 
         #region Database methods
-        private ICommonDbConnectionSV GetDbConnection()
-        {
-            ICommonDbConnectionSV dbConnection; 
-            switch (cbActiveRdbms.Text)
-            {
-                case "SQLite":
-                    dbConnection = new SqliteDbConnection(tbDataSource.Text); 
-                    break;
-            
-                case "PostgreSQL":
-                    dbConnection = new PgDbConnection(tbDataSource.Text); 
-                    break;
-            
-                case "MySQL":
-                    dbConnection = new MysqlDbConnection(tbDataSource.Text); 
-                    break;
-            
-                case "Oracle":
-                    dbConnection = new OracleDbConnection(tbDataSource.Text); 
-                    break;
-
-                default: 
-                    throw new System.Exception("Incorrect ActiveRdbms in UserControls.Connection: '" + cbActiveRdbms.Text + "'"); 
-                    break; 
-            }
-            return dbConnection; 
-        }
-
         private void TransferData(string tableName)
         {
             try
@@ -187,7 +142,7 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
                 if ( !(connectionView.CheckDataGrids()) ) 
                     throw new System.Exception("None of DataGrids should be empty"); 
                 
-                ICommonDbConnectionSV dbConnection = OrdinalNum == 1 ? this.MainVM.DataVM.DbInterconnection.DbConnection2 : this.MainVM.DataVM.DbInterconnection.DbConnection1; 
+                ICommonDbConnectionSV dbConnection = OrdinalNum == 1 ? this.MainVM.DataVM.InterDbClient.DbInterconnection.InterDbConnection2 : this.MainVM.DataVM.InterDbClient.DbInterconnection.InterDbConnection1; 
                 DataTable dt = ((DataView)(dbgSqlResult.ItemsSource)).Table; 
                 dbConnection.ExecuteSqlCommand(dbConnection.GetSqlFromDataTable(dt, tableName)); 
             }
