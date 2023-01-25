@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Text; 
+using System.Threading; 
 
 namespace SqlViewerNetwork.NetworkServer
 {
@@ -14,11 +13,6 @@ namespace SqlViewerNetwork.NetworkServer
         /// Instance of HttpListener
         /// </summary>
         private HttpListener Listener { get; set; }
-
-        /// <summary>
-        /// Instance of Thread for processing HTTP requests 
-        /// </summary>
-        private Thread HttpThread { get; set; }
 
         /// <summary>
         /// Web site's file system delimiter characters 
@@ -47,6 +41,11 @@ namespace SqlViewerNetwork.NetworkServer
         #endregion  // Constructors
 
         #region Public methods
+        public bool IsRunning()
+        {
+            return Listener != null; 
+        }
+
         /// <summary>
         /// Create web server as HttpListener
         /// </summary>
@@ -54,16 +53,13 @@ namespace SqlViewerNetwork.NetworkServer
         {
             try
             {
-                // Don't run if there is a process named that uses the same ip and port 
                 Listener = new HttpListener();
                 AddPrefixes(); 
                 Listener.Start();
-                
-                (this.HttpThread = new Thread(ThreadInit)).Start();
             }
             catch (System.Exception ex)
             {
-                //System.Windows.MessageBox.Show(ex.ToString()); 
+                throw ex; 
             }
         }
 
@@ -74,17 +70,12 @@ namespace SqlViewerNetwork.NetworkServer
         {
             try
             {
-                Listener.Stop(); 
-                HttpThread.Interrupt(); 
-
+                if (Listener != null) Listener.Stop(); 
                 Listener = null; 
-                HttpThread = null;
-
-                System.Diagnostics.Process.GetCurrentProcess().Kill();
             }
             catch (System.Exception ex)
             {
-                //System.Windows.MessageBox.Show(ex.ToString()); 
+                throw ex; 
             }
         }
         #endregion  // Public methods
@@ -93,27 +84,30 @@ namespace SqlViewerNetwork.NetworkServer
         /// <summary>
         /// Initializes thread for processing HTTP requests 
         /// </summary>
-        private void ThreadInit()
+        public void Listen()
         {
-            while (true)
+            if (Listener == null) throw new System.Exception("Unable to listen because Listener is null"); 
+            try
             {
-                HttpListenerContext ctx = Listener.GetContext();
-                ThreadPool.QueueUserWorkItem((_) => ProcessRequest(ctx));
+                ThreadPool.QueueUserWorkItem((_) => ProcessRequest(Listener.GetContext()));
+            }
+            catch (System.Exception ex)
+            {
+                throw ex; 
             }
         }
 
         /// <summary>
         /// Processes request and sends response back 
         /// </summary>
-        /// <param name="ctx"></param>
+        /// <param name="ctx">Instance of HttpListenerContext</param>
         private void ProcessRequest(HttpListenerContext ctx)
         {
+            if (ctx == null) throw new System.Exception("HttpListenerContext is null"); 
             try
             {
                 string responseText = GetResponseText(ctx.Request.Url.ToString());
                 byte[] buf = Encoding.UTF8.GetBytes(responseText);
-
-                //System.Console.WriteLine(ctx.Response.StatusCode + " " + ctx.Response.StatusDescription + ": " + ctx.Request.Url);
 
                 ctx.Response.ContentEncoding = Encoding.UTF8;
                 ctx.Response.ContentType = "text/html";
@@ -124,7 +118,7 @@ namespace SqlViewerNetwork.NetworkServer
             }
             catch (System.Exception ex)
             {
-                //System.Windows.MessageBox.Show(ex.ToString()); 
+                throw ex; 
             }
         }
 
@@ -145,7 +139,7 @@ namespace SqlViewerNetwork.NetworkServer
             }
             else if (IsPathValid(url, WebPaths["dbg"]))
             {
-                return "<html><head><title>Debug</title></head><body>Hello, this is a custom WinCCTcpServer.<br>Debug</body></html>";
+                return "<html><head><title>Debug</title></head><body>Hello, this is a custom Server.<br>Debug</body></html>";
             }
             return "Page is not found";
         }

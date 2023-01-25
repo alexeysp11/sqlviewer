@@ -4,5 +4,8 @@ namespace SqlViewerNetwork.NetworkServer
     {
         void StartServer(); 
         void StopServer(); 
+
+        void Listen(); 
+        bool IsRunning(); 
     }
 }

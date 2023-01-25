@@ -1,24 +1,22 @@
-﻿using SqlViewerNetwork.NetworkServer; 
-
-namespace SqlViewerNetwork
+﻿namespace SqlViewerNetwork
 {
     class Program
     {
         static void Main(string[] args)
         {
-            System.Console.Clear(); 
-            System.Console.WriteLine("SERVER STARTED");
-
-            string protocolName = "HTTP"; 
-            System.Console.WriteLine("Protocol: " + protocolName);
-
-            INetworkServer server = new HttpNetworkServer(); 
-            server.StartServer(); 
             while (true)
             {
-                string str = System.Console.ReadLine(); 
-                if (str == "kill")
-                    server.StopServer(); 
+                try 
+                {
+                    SqlViewerNetwork.Helpers.NetworkHelper.InitServer(); 
+                    SqlViewerNetwork.Helpers.NetworkHelper.Listen(); 
+                }
+                catch (System.Exception ex)
+                {
+                    System.Console.WriteLine(ex.Message); 
+                    System.Console.WriteLine("Press Enter to continue"); 
+                    System.Console.ReadLine(); 
+                }
             }
         }
     }
