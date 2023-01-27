@@ -17,6 +17,11 @@ namespace SqlViewer.Models.AppClients
             this.DbInterconnection = new DbInterconnection(); 
         }
 
+        private bool IsDifferentNetworkPreproc(INetworkPreproc networkPreproc, string typeName) 
+        {
+            return string.IsNullOrEmpty(typeName) || networkPreproc == null || !networkPreproc.GetType().ToString().Contains(typeName);
+        }
+
         public void InitCommunicationProtocol(string protocolName)
         {
             if (string.IsNullOrEmpty(protocolName))
@@ -27,29 +32,35 @@ namespace SqlViewer.Models.AppClients
                 switch (protocolName)
                 {
                     case "HTTP":
-                        this.CommunicationNetworkPreproc = new HttpPreproc(); 
+                        if (IsDifferentNetworkPreproc(this.CommunicationNetworkPreproc, "HttpPreproc")) 
+                            this.CommunicationNetworkPreproc = new HttpPreproc(); 
                         break;
 
                     case "TCP":
-                        this.CommunicationNetworkPreproc = new TcpPreproc(); 
+                        if (IsDifferentNetworkPreproc(this.CommunicationNetworkPreproc, "TcpPreproc")) 
+                            this.CommunicationNetworkPreproc = new TcpPreproc(); 
                         break;
 
                     case "SOAP":
-                        this.CommunicationNetworkPreproc = new SoapPreproc(); 
+                        if (IsDifferentNetworkPreproc(this.CommunicationNetworkPreproc, "SoapPreproc")) 
+                            this.CommunicationNetworkPreproc = new SoapPreproc(); 
                         break;
 
                     case "REST API":
-                        this.CommunicationNetworkPreproc = new RestApiPreproc(); 
+                        if (IsDifferentNetworkPreproc(this.CommunicationNetworkPreproc, "RestApiPreproc")) 
+                            this.CommunicationNetworkPreproc = new RestApiPreproc(); 
                         break;
 
                     case "gRPC":
-                        this.CommunicationNetworkPreproc = new GrpcPreproc(); 
+                        if (IsDifferentNetworkPreproc(this.CommunicationNetworkPreproc, "GrpcPreproc")) 
+                            this.CommunicationNetworkPreproc = new GrpcPreproc(); 
                         break;
 
                     default: 
                         throw new System.Exception("Incorrect ProtocolName: '" + protocolName + "'"); 
                         break; 
                 }
+                this.CommunicationNetworkPreproc.StartServer(); 
             }
             catch (System.Exception ex)
             {
@@ -64,7 +75,8 @@ namespace SqlViewer.Models.AppClients
             switch (protocolName)
             {
                 case "HTTP":
-                    this.TransferNetworkPreproc = new HttpPreproc(); 
+                    if (IsDifferentNetworkPreproc(this.TransferNetworkPreproc, "HttpPreproc")) 
+                            this.TransferNetworkPreproc = new HttpPreproc(); 
                     break;
 
                 default: 

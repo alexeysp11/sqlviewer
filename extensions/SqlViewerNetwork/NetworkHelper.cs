@@ -53,19 +53,29 @@ namespace SqlViewerNetwork.Helpers
         public static string GetSettingsFileString()
         {
             string path = GetSettingsFilePath(); 
-            return System.IO.File.Exists(path) ? System.IO.File.ReadAllText(path) : string.Empty; 
+            return System.IO.File.Exists(path) ? TryReadAllText(path) : string.Empty; 
         }
 
         public static string GetProtocolName()
         {
-            return SettingsFileString.ToUpper().Contains("http".ToUpper()) ? "HTTP" : "Unknown"; 
+            string settingsUpper = SettingsFileString.ToUpper(); 
+            if (settingsUpper.Contains("http".ToUpper()))
+                return "HTTP"; 
+            else if (settingsUpper.Contains("tcp".ToUpper()))
+                return "TCP"; 
+            else if (settingsUpper.Contains("soap".ToUpper()))
+                return "SOAP"; 
+            else if (settingsUpper.Contains("rest".ToUpper()))
+                return "REST"; 
+            else 
+                return "Unknown"; 
         }
 
         public static INetworkServer GetNetworkServer()
         {
             INetworkServer result; 
             result = new HttpNetworkServer(); 
-            return ProtocolName != PrevProtocolName ? (result == null ? new HttpNetworkServer() : result) : Server; 
+            return ProtocolName == PrevProtocolName ? Server : (result == null ? new HttpNetworkServer() : result); 
         }
 
         private static string GetSettingsFilePath()
@@ -76,6 +86,23 @@ namespace SqlViewerNetwork.Helpers
         private static string GetProjectDirectory()
         {
             return System.AppDomain.CurrentDomain.BaseDirectory + "..\\..\\..\\..\\.."; 
+        }
+
+        private static string TryReadAllText(string path)
+        {
+            int maxAttempts = 50; 
+            for (int i = 0; i < maxAttempts; i++)
+            {
+                try
+                {
+                    return System.IO.File.ReadAllText(path); 
+                }
+                catch (System.Exception) 
+                {
+                    continue; 
+                }
+            }
+            return string.Empty; 
         }
     }
 }

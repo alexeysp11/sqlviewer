@@ -21,7 +21,6 @@ namespace SqlViewer.Helpers
             }
             return path; 
         }
-
         public static void SaveLocalFile()
         {
             try
@@ -35,6 +34,18 @@ namespace SqlViewer.Helpers
             {
                 throw ex; 
             }
+        }
+
+        public static void WriteIntoFile(string filename, string content)
+        {
+            using (var outputFile = new System.IO.StreamWriter(filename))
+            {
+                outputFile.Write(content);
+            }
+        }
+        public static string ReadFromFile()
+        {
+            return ""; 
         }
 
         public static void ExecuteCmd(string cmdCommand)
