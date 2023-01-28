@@ -49,7 +49,7 @@ namespace SqlViewer.Helpers
             if ( !(System.IO.File.Exists(localDbPath)) )
             {
                 System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
-                this.MainVM.DataVM.MainDbClient.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(this.MainVM.DataVM.MainDbClient.GetSqlRequest(sqlScriptPath)); 
+                this.MainVM.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(this.MainVM.DataVM.MainDbBranch.GetSqlRequest(sqlScriptPath)); 
                 System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
             }
         }
@@ -96,7 +96,7 @@ namespace SqlViewer.Helpers
                     {
                         return; 
                     }
-                    MainVM.DataVM.MainDbClient.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(string.Empty); // for storing result in DB
+                    MainVM.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(string.Empty); // for storing result in DB
                 }
             }
         }

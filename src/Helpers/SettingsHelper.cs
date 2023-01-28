@@ -58,6 +58,11 @@ namespace SqlViewer.Helpers
             return "tmp" + year + month + day + hour + minute + second; 
         }
 
+        public static string TranslateUiElement(string eng, string translation)
+        {
+            return RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(translation) ? eng : translation;
+        }
+
         #region Strings for helping users
         public static string GetHelpDataSourceString()
         {

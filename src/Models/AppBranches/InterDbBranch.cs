@@ -1,13 +1,13 @@
 using SqlViewer.Models.DbTransfer; 
 using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
 
-namespace SqlViewer.Models.AppClients
+namespace SqlViewer.Models.AppBranches
 {
-    public class InterDbClient
+    public class InterDbBranch
     {
         public DbInterconnection DbInterconnection { get; private set; }
 
-        public InterDbClient()
+        public InterDbBranch()
         {
             this.DbInterconnection = new DbInterconnection(); 
         }

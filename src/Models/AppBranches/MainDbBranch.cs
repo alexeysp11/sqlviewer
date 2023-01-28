@@ -11,16 +11,16 @@ using SqlViewer.ViewModels;
 using SqlViewer.Views; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
-namespace SqlViewer.Models.AppClients
+namespace SqlViewer.Models.AppBranches
 {
-    public class MainDbClient
+    public class MainDbBranch
     {
         private MainVM MainVM { get; set; }
 
         public IDbPreproc AppRdbmsPreproc { get; private set; }
         public IDbPreproc UserRdbmsPreproc { get; private set; }
 
-        public MainDbClient(MainVM mainVM)
+        public MainDbBranch(MainVM mainVM)
         {
             this.MainVM = mainVM; 
             this.AppRdbmsPreproc = new SqliteDbPreproc(this.MainVM); 

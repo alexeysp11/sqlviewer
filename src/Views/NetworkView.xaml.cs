@@ -39,13 +39,13 @@ namespace SqlViewer.Views
         }
         private void GetLocalIp()
         {
-            tbThisPcAddress.Text = this.MainVM.DataVM.NetworkClient.GetLocalIp(); 
+            tbThisPcAddress.Text = this.MainVM.DataVM.NetworkBranch.GetLocalIp(); 
         }
         private void InitCommunicationProtocol()
         {
             try
             {
-                this.MainVM.DataVM.NetworkClient.InitCommunicationProtocol(cbCommunicationProtocol.Text); 
+                this.MainVM.DataVM.NetworkBranch.InitCommunicationProtocol(cbCommunicationProtocol.Text); 
             }
             catch (System.Exception ex)
             {
@@ -54,14 +54,14 @@ namespace SqlViewer.Views
         }
         private void InitTransferProtocol()
         {
-            this.MainVM.DataVM.NetworkClient.InitTransferProtocol(cbTransferProtocol.Text); 
+            this.MainVM.DataVM.NetworkBranch.InitTransferProtocol(cbTransferProtocol.Text); 
         }
 
         private void btnPing_Clicked(object sender, System.EventArgs e)
         {
             try
             {
-                bool pingable = this.MainVM.DataVM.NetworkClient.PingHost(tbHost.Text); 
+                bool pingable = this.MainVM.DataVM.NetworkBranch.PingHost(tbHost.Text); 
                 lblMessage.Content = "Ping '" + tbHost.Text + "': " + (pingable ? "success" : "failed"); 
                 System.Windows.MessageBox.Show(lblMessage.Content.ToString()); 
             }
@@ -112,7 +112,7 @@ namespace SqlViewer.Views
         {
             try
             {
-                var di = this.MainVM.DataVM.NetworkClient.DbInterconnection; 
+                var di = this.MainVM.DataVM.NetworkBranch.DbInterconnection; 
                 ICommonDbConnectionSV dbConnection = di.GetDbConnection(cbActiveRdbms.Text, tbDataSource.Text); 
                 di.SetNetworkDbConnection(dbConnection); 
                 dbgSqlResult.ItemsSource = di.NetworkDbConnection.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView; 

@@ -89,7 +89,7 @@ namespace SqlViewer.UserControls
         {
             try
             {
-                var di = this.MainVM.DataVM.InterDbClient.DbInterconnection; 
+                var di = this.MainVM.DataVM.InterDbBranch.DbInterconnection; 
                 ICommonDbConnectionSV dbConnection = di.GetDbConnection(cbActiveRdbms.Text, tbDataSource.Text); 
                 switch (OrdinalNum)
                 {
@@ -142,7 +142,7 @@ namespace SqlViewer.UserControls
                 if ( !(connectionView.CheckDataGrids()) ) 
                     throw new System.Exception("None of DataGrids should be empty"); 
                 
-                ICommonDbConnectionSV dbConnection = OrdinalNum == 1 ? this.MainVM.DataVM.InterDbClient.DbInterconnection.InterDbConnection2 : this.MainVM.DataVM.InterDbClient.DbInterconnection.InterDbConnection1; 
+                ICommonDbConnectionSV dbConnection = OrdinalNum == 1 ? this.MainVM.DataVM.InterDbBranch.DbInterconnection.InterDbConnection2 : this.MainVM.DataVM.InterDbBranch.DbInterconnection.InterDbConnection1; 
                 DataTable dt = ((DataView)(dbgSqlResult.ItemsSource)).Table; 
                 dbConnection.ExecuteSqlCommand(dbConnection.GetSqlFromDataTable(dt, tableName)); 
             }

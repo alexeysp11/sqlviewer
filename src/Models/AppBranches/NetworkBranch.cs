@@ -3,16 +3,16 @@ using System.Net.Sockets;
 using SqlViewer.Models.DbTransfer; 
 using SqlViewer.Models.NetworkPreproc; 
 
-namespace SqlViewer.Models.AppClients
+namespace SqlViewer.Models.AppBranches
 {
-    public class NetworkClient
+    public class NetworkBranch
     {
         public INetworkPreproc CommunicationNetworkPreproc { get; private set; }
         public INetworkPreproc TransferNetworkPreproc { get; private set; }
 
         public DbInterconnection DbInterconnection { get; private set; }
 
-        public NetworkClient()
+        public NetworkBranch()
         {
             this.DbInterconnection = new DbInterconnection(); 
         }

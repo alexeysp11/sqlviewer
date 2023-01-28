@@ -1,18 +1,18 @@
-using SqlViewer.Models.AppClients; 
+using SqlViewer.Models.AppBranches; 
 
 namespace SqlViewer.ViewModels
 {
     public class DataVM
     {
-        public MainDbClient MainDbClient { get; private set; }
-        public InterDbClient InterDbClient { get; private set; }
-        public NetworkClient NetworkClient { get; private set; }
+        public MainDbBranch MainDbBranch { get; private set; }
+        public InterDbBranch InterDbBranch { get; private set; }
+        public NetworkBranch NetworkBranch { get; private set; }
 
         public DataVM(MainVM mainVM)
         {
-            this.MainDbClient = new MainDbClient(mainVM); 
-            this.InterDbClient = new InterDbClient(); 
-            this.NetworkClient = new NetworkClient(); 
+            this.MainDbBranch = new MainDbBranch(mainVM); 
+            this.InterDbBranch = new InterDbBranch(); 
+            this.NetworkBranch = new NetworkBranch(); 
         }
     }
 }

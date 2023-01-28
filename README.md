@@ -86,23 +86,32 @@ Using this app, you can do the following things:
 - Windows OS; 
 - .NET Core 3.1; 
 - One of the following data sources to be able to perform some operations with data (if you have more than one data sources installed on your computer, your user experience is going to be much better and productive): 
-    - RDBMS (**SQLite**, **PostgreSQL**, **MySQL**, or **Oracle**), 
+    - RDBMS (**SQLite**, **PostgreSQL**, **MySQL** or **Oracle**), 
     - MS Office (**Excel**), 
     - LibreOffice/OpenOffice (**Calc**). 
 
 ### Download and run 
 
-To be continued... 
+You can download this application from this GitHub repository in two ways:  
+- Using Git: 
+```
+git clone https://github.com/alexeysp11/sqlviewer.git 
+```
+- Simply download ZIP. 
+
+In order to run the application, you can use command line: 
+1. Go to the main folder of the repository: 
+```
+cd C:\PathToRepo\sqlviewer 
+```
+2. Execute `run.cmd` file: 
+```
+run.cmd 
+```
 
 ### How to use 
 
-<!--
-- Running the application; 
-- Configuration; 
-- User manual. 
--->
-
-To be continued... 
+[Click here](docs/HowToUse.md) to read guide on how to use the application. 
 
 ## For developers 
 

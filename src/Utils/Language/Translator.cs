@@ -31,7 +31,7 @@ namespace SqlViewer.Utils.Language
             LanguageEnum = language; 
             try
             {
-                string sql = this.MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -52,7 +52,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -79,7 +79,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -163,7 +163,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -219,7 +219,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -252,7 +252,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 

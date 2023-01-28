@@ -32,13 +32,13 @@ namespace SqlViewer.Pages
         public void Init()
         {
             tbTablesPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ") : "DB: ";
-            tbTables.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.TablesField.Translation) ? TablesPageEntity.TablesField.English : TablesPageEntity.TablesField.Translation;
+            tbTables.Text = SettingsHelper.TranslateUiElement(TablesPageEntity.TablesField.English, TablesPageEntity.TablesField.Translation); 
             tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
-            lblGeneralInfo.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.GeneralInfoField.Translation) ? TablesPageEntity.GeneralInfoField.English : TablesPageEntity.GeneralInfoField.Translation; 
-            lblColumns.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ColumnsField.Translation) ? TablesPageEntity.ColumnsField.English : TablesPageEntity.ColumnsField.Translation; 
-            lblForeignKeys.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ForeignKeysField.Translation) ? TablesPageEntity.ForeignKeysField.English : TablesPageEntity.ForeignKeysField.Translation; 
-            lblTriggers.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.TriggersField.Translation) ? TablesPageEntity.TriggersField.English : TablesPageEntity.TriggersField.Translation; 
-            lblData.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.DataField.Translation) ? TablesPageEntity.DataField.English : TablesPageEntity.DataField.Translation; 
+            lblGeneralInfo.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.GeneralInfoField.English, TablesPageEntity.GeneralInfoField.Translation); 
+            lblColumns.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.ColumnsField.English, TablesPageEntity.ColumnsField.Translation); 
+            lblForeignKeys.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.ForeignKeysField.English, TablesPageEntity.ForeignKeysField.Translation); 
+            lblTriggers.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.TriggersField.English, TablesPageEntity.TriggersField.Translation); 
+            lblData.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.DataField.English, TablesPageEntity.DataField.Translation); 
         }
 
         private void ResultDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
@@ -60,11 +60,11 @@ namespace SqlViewer.Pages
                     {
                         this.tbTableName.Text = tableName.Header.ToString(); 
                         
-                        this.MainVM.DataVM.MainDbClient.GetAllDataFromTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbClient.GetColumnsOfTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbClient.GetForeignKeys(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbClient.GetTriggers(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbClient.GetSqlDefinition(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.GetAllDataFromTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.GetColumnsOfTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.GetForeignKeys(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.GetTriggers(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.GetSqlDefinition(tableName.Header.ToString()); 
                         break; 
                     }
                 }

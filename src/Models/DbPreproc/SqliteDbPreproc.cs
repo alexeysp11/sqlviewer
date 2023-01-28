@@ -122,7 +122,7 @@ namespace SqlViewer.Models.DbPreproc
 
             try
             {
-                string sqlRequest = MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
+                string sqlRequest = MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -196,7 +196,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.MainDbClient.GetSqlRequest("Sqlite\\TableInfo\\GetSqlDefinition.sql"), tableName);
+                string sqlRequest = string.Format(MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite\\TableInfo\\GetSqlDefinition.sql"), tableName);
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {

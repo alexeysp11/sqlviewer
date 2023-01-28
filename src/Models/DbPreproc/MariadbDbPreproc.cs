@@ -57,7 +57,7 @@ namespace SqlViewer.Models.DbPreproc
 
             try
             {
-                string sqlRequest = MainVM.DataVM.MainDbClient.GetSqlRequest("Mariadb\\TableInfo\\DisplayTablesInDb.sql"); 
+                string sqlRequest = MainVM.DataVM.MainDbBranch.GetSqlRequest("Mariadb\\TableInfo\\DisplayTablesInDb.sql"); 
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -91,7 +91,7 @@ namespace SqlViewer.Models.DbPreproc
             string[] tn = tableName.Split('.');
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.MainDbClient.GetSqlRequest("Mariadb\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
+                string sqlRequest = string.Format(MainVM.DataVM.MainDbBranch.GetSqlRequest("Mariadb\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
                 MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -103,7 +103,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.MainDbClient.GetSqlRequest("Mariadb\\TableInfo\\GetForeignKeys.sql"), tableName);;
+                string sqlRequest = string.Format(MainVM.DataVM.MainDbBranch.GetSqlRequest("Mariadb\\TableInfo\\GetForeignKeys.sql"), tableName);;
                 MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
@@ -128,7 +128,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string[] tn = tableName.Split('.');
-                string sqlRequest = string.Format(MainVM.DataVM.MainDbClient.GetSqlRequest("Mariadb\\TableInfo\\GetSqlDefinition.sql"), tn[0], tn[1]);
+                string sqlRequest = string.Format(MainVM.DataVM.MainDbBranch.GetSqlRequest("Mariadb\\TableInfo\\GetSqlDefinition.sql"), tn[0], tn[1]);
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
