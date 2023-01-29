@@ -1,6 +1,6 @@
 using System.Data; 
 using System.Linq;
-using SqlViewer.Models.DbConnections; 
+using SqlViewerDatabase.DbConnections; 
 
 namespace SqlViewer.Utils.Language
 {

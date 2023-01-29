@@ -1,13 +1,13 @@
 using System.Data; 
-using SqlViewer.Helpers;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 
-namespace SqlViewer.Models.DbConnections
+namespace SqlViewerDatabase.DbConnections
 {
     public class MysqlDbConnection : BaseDbConnection, ICommonDbConnection
     {
         private string DataSource { get; set; }
+        private string ConnString { get; set; }
 
         public MysqlDbConnection() { }
 
@@ -16,19 +16,19 @@ namespace SqlViewer.Models.DbConnections
             DataSource = dataSource; 
         }
 
+        public ICommonDbConnection SetConnString(string connString)
+        {
+            ConnString = connString; 
+            return this; 
+        }
+
         public DataTable ExecuteSqlCommand(string sqlRequest)
         {
             DataTable table = new DataTable(); 
             MySqlConnection connection = null; 
             try
             {
-                string connString = string.Format("Server={0}; database={1}; UID={2}; password={3}",  
-                    RepoHelper.AppSettingsRepo.DbHost,
-                    RepoHelper.AppSettingsRepo.DbName,
-                    RepoHelper.AppSettingsRepo.DbUsername,
-                    //RepoHelper.AppSettingsRepo.DbPort,
-                    RepoHelper.AppSettingsRepo.DbPassword);
-                connection = new MySqlConnection(string.IsNullOrEmpty(DataSource) ? connString : DataSource);
+                connection = new MySqlConnection(string.IsNullOrEmpty(DataSource) ? ConnString : DataSource);
                 connection.Open();
                 var reader = (new MySqlCommand(sqlRequest, connection)).ExecuteReader();
                 table = GetDataTable(reader); 

@@ -1,5 +1,5 @@
 -- Create tables 
-CREATE TABLE sys_param 
+CREATE TABLE IF NOT EXISTS sys_param 
 (
     -- stores information about that how the app works (filter strings for opening/creating a file, )
 	sys_param_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
@@ -8,14 +8,14 @@ CREATE TABLE sys_param
     value VARCHAR(255) NOT NULL
 ); 
 
-CREATE TABLE sys_sql
+CREATE TABLE IF NOT EXISTS sys_sql
 (
     sys_sql_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     name VARCHAR(50) NOT NULL, 
     sql TEXT NOT NULL
 ); 
 
-CREATE TABLE command 
+CREATE TABLE IF NOT EXISTS command 
 (
     command_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     name VARCHAR(50) NOT NULL,              -- name of a command
@@ -44,7 +44,7 @@ WHERE name = '{0}' AND in_param = '{1}';
 */ 
 
 
-CREATE TABLE user 
+CREATE TABLE IF NOT EXISTS user 
 (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     name VARCHAR(25) NOT NULL, 
@@ -52,7 +52,7 @@ CREATE TABLE user
     role_id INTEGER 
 ); 
 
-CREATE TABLE role 
+CREATE TABLE IF NOT EXISTS role 
 (
     role_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     name VARCHAR(25), 
@@ -62,7 +62,7 @@ CREATE TABLE role
     f_delete NUMERIC(1) 
 ); 
 
-CREATE TABLE user_settings 
+CREATE TABLE IF NOT EXISTS user_settings 
 (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     settings_id INTEGER NOT NULL, 

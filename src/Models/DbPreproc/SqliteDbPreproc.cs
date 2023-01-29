@@ -2,11 +2,11 @@ using System.Collections.Generic;
 using System.Data; 
 using System.Windows; 
 using System.Windows.Controls; 
-using SqlViewer.Models.DbConnections; 
+using SqlViewerDatabase.DbConnections; 
 using SqlViewer.Helpers; 
 using SqlViewer.Views; 
 using SqlViewer.ViewModels; 
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
 using UserControlsMenu = SqlViewer.UserControls.Menu; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 

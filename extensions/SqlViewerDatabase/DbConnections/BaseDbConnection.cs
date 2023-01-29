@@ -1,6 +1,6 @@
 using System.Data; 
 
-namespace SqlViewer.Models.DbConnections
+namespace SqlViewerDatabase.DbConnections
 {
     public class BaseDbConnection 
     {

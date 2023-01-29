@@ -2,7 +2,7 @@ using System.Windows;
 using System.Windows.Controls;
 using SqlViewer.Helpers; 
 using SqlViewer.ViewModels;
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.Views
 {

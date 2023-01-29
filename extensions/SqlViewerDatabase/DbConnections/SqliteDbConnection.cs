@@ -1,11 +1,12 @@
 using System.Data; 
 using Microsoft.Data.Sqlite;
 
-namespace SqlViewer.Models.DbConnections
+namespace SqlViewerDatabase.DbConnections
 {
     public class SqliteDbConnection : BaseDbConnection, ICommonDbConnection 
     {
-        private string AbsolutePathToDb; 
+        private string ConnString { get; set; }
+        private string AbsolutePathToDb { get; set; }
 
         public SqliteDbConnection(string path)
         {
@@ -17,6 +18,12 @@ namespace SqlViewer.Models.DbConnections
             {
                 throw ex; 
             }
+        }
+
+        public ICommonDbConnection SetConnString(string connString)
+        {
+            ConnString = connString; 
+            return this; 
         }
 
         public void SetPathToDb(string path)

@@ -1,21 +1,32 @@
-﻿using Microsoft.Extensions.Configuration; 
-
-namespace SqlViewerConfig
+﻿namespace SqlViewerConfig
 {
     class Program
     {
         static void Main(string[] args)
         {
-            IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
-                .AddEnvironmentVariables()
-                .Build();
+            Configurator configurator = new Configurator(); 
 
-            Settings settings = config.GetSection("Settings").Get<Settings>();
+            System.Console.WriteLine("Configure settings..."); 
+            configurator.GetConfigSettings(); 
+            System.Console.WriteLine("Settings are configured."); 
 
-            System.Console.WriteLine($"KeyOne = {settings.KeyOne}");
-            System.Console.WriteLine($"KeyTwo = {settings.KeyTwo}");
-            System.Console.WriteLine($"KeyThree:Message = {settings.KeyThree.Message}");
+            System.Console.WriteLine("Create folders..."); 
+            configurator.CreateFolders(); 
+            System.Console.WriteLine("Folders are created."); 
+            
+            // System.Console.WriteLine("Start making backups..."); 
+            // configurator.BackupData(); 
+            // System.Console.WriteLine("Backups are made."); 
+
+            System.Console.WriteLine("Create local files..."); 
+            configurator.CreateLocalFiles(); 
+            System.Console.WriteLine("Local files are created."); 
+
+            System.Console.WriteLine("Initialize databases..."); 
+            configurator.InitDatabases(); 
+            System.Console.WriteLine("Databases are initialized."); 
+
+            System.Console.WriteLine("Configuration is finished successfully!"); 
         }
     }
 }

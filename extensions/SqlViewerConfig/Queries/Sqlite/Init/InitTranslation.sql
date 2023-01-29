@@ -33,6 +33,8 @@ CREATE TABLE IF NOT EXISTS translation
     japanese TEXT
 ); 
 
+DELETE FROM translation; 
+
 INSERT INTO translation VALUES(1,'Login','Active RDBMS','Aktives RDBMS','Активная БД','RDBMS activo','RDBMS ativo','RDBMS attivo','SGBDR actif','Активна СУБД','Actieve RDBMS','Aktywny RDBMS','Aktivní RDBMS','Ацтиве РДБМС','Aktivni RDBMS','Aktiv RDBMS','Aktiv RDBMS','Aktiv RDBMS','Aktiewe RDBMS','Aktif RDBMS','Белсенді RDBMS','Ակտիվ RDBMS','აქტიური RDBMS','RDBMS activ','Активна RDBMS','RDBMS aktive','Ενεργό RDBMS','RDBMS Aktif','RDBMS aktif','활성 RDBMS','アクティブな RDBMS');
 INSERT INTO translation VALUES(2,'Login','Database','Datenbank','База данных','Base de datos','Base de dados','Banca dati','Base de données','База даних','Database','Baza danych','Databáze','База података','Baza podataka','Databas','Database','Database','Databasis','Veri tabanı','Дерекқор','Տվյալների բազա','Მონაცემთა ბაზა','Bază de date','База данни','Baza e të dhënave','Βάση δεδομένων','Basis data','Pangkalan data','데이터 베이스','データベース');
 INSERT INTO translation VALUES(3,'Login','Schema','Schema','Схема','Esquema','Esquema','Schema','Schéma','Схема','Schema','Schemat','Schéma','Шема','Shema','Schema','Skjema','Skema','Skema','Şema','Схема','Սխեման','სქემა','Schemă','Схема','Skema','Σχήμα','Skema','Skema','개요','スキーマ');

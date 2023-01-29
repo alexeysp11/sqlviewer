@@ -1,5 +1,5 @@
 using SqlViewer.Models.DbTransfer; 
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.Models.AppBranches
 {

@@ -1,12 +1,12 @@
 using System.Data; 
-using SqlViewer.Helpers;
 using Oracle.ManagedDataAccess.Client;
 
-namespace SqlViewer.Models.DbConnections
+namespace SqlViewerDatabase.DbConnections
 {
     public class OracleDbConnection : BaseDbConnection, ICommonDbConnection
     {
         private string DataSource { get; set; }
+        private string ConnString { get; set; }
         
         public OracleDbConnection() { }
 
@@ -15,10 +15,16 @@ namespace SqlViewer.Models.DbConnections
             DataSource = dataSource; 
         }
 
+        public ICommonDbConnection SetConnString(string connString)
+        {
+            ConnString = connString; 
+            return this; 
+        }
+
         public DataTable ExecuteSqlCommand(string sqlRequest)
         {
             DataTable table = new DataTable();
-            using (OracleConnection con = new OracleConnection(string.IsNullOrEmpty(DataSource) ? GetOracleConnectionString() : DataSource))
+            using (OracleConnection con = new OracleConnection(string.IsNullOrEmpty(DataSource) ? ConnString : DataSource))
             {
                 using (OracleCommand cmd = new OracleCommand(sqlRequest, con))
                 {
@@ -35,18 +41,6 @@ namespace SqlViewer.Models.DbConnections
         public new string GetSqlFromDataTable(DataTable dt, string tableName)
         {
             return base.GetSqlFromDataTable(dt, tableName); 
-        }
-        
-        private string GetOracleConnectionString()
-        {
-            return $@"Data Source=(DESCRIPTION =
-    (ADDRESS_LIST =
-      (ADDRESS = (PROTOCOL = TCP)(HOST = {RepoHelper.AppSettingsRepo.DbHost})(PORT = {RepoHelper.AppSettingsRepo.DbPort}))
-    )
-    (CONNECT_DATA =
-      (SERVICE_NAME = {RepoHelper.AppSettingsRepo.DbName})
-    )
-  ); User ID={RepoHelper.AppSettingsRepo.DbUsername};Password={RepoHelper.AppSettingsRepo.DbPassword};"; 
         }
     }
 }

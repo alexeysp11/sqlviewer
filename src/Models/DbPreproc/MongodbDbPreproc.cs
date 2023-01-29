@@ -1,6 +1,6 @@
 using System.Data;
 using SqlViewer.ViewModels;  
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.Models.DbPreproc
 {

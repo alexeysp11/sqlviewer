@@ -3,8 +3,8 @@ using System.Windows;
 using System.Windows.Controls; 
 using SqlViewer.Helpers; 
 using SqlViewer.ViewModels; 
-using SqlViewer.Models.DbConnections; 
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
+using SqlViewerDatabase.DbConnections; 
+using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
 namespace SqlViewer.Models.DbPreproc

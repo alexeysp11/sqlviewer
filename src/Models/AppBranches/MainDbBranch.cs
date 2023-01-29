@@ -3,7 +3,7 @@ using System.Data;
 using System.Windows; 
 using System.Windows.Controls; 
 using Microsoft.Win32;
-using SqlViewer.Models.DbConnections; 
+using SqlViewerDatabase.DbConnections; 
 using SqlViewer.Models.DbPreproc; 
 using SqlViewer.Models.DbTransfer; 
 using SqlViewer.Helpers; 

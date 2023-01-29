@@ -38,7 +38,7 @@ namespace SqlViewer.ViewModels
             this.RedirectCommand = new RedirectCommand(this); 
             this.AppCommand = new AppCommand(this); 
 
-            (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewer.Models.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection()); 
+            (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewerDatabase.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection()); 
         }
 
         #region Initialization 

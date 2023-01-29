@@ -1,14 +1,14 @@
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using SqlViewer.Models.DbConnections;
+using SqlViewerDatabase.DbConnections;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
 using SqlViewer.Helpers; 
 using SqlViewer.Entities.UserControlsEntities; 
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.UserControls
 {

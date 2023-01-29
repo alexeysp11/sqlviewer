@@ -1,12 +1,12 @@
 using System.Data; 
-using SqlViewer.Helpers;
 using Npgsql;
 
-namespace SqlViewer.Models.DbConnections
+namespace SqlViewerDatabase.DbConnections
 {
     public class PgDbConnection : BaseDbConnection, ICommonDbConnection
     {
         private string DataSource { get; set; }
+        private string ConnString { get; set; }
 
         public PgDbConnection() { }
 
@@ -15,18 +15,16 @@ namespace SqlViewer.Models.DbConnections
             DataSource = dataSource; 
         }
 
+        public ICommonDbConnection SetConnString(string connString)
+        {
+            ConnString = connString; 
+            return this; 
+        }
+
         public DataTable ExecuteSqlCommand(string sqlRequest)
         {
             DataTable table = new DataTable(); 
-
-            string connString = System.String.Format("Server={0};Username={1};Database={2};Port={3};Password={4}", 
-                RepoHelper.AppSettingsRepo.DbHost,
-                RepoHelper.AppSettingsRepo.DbUsername,
-                RepoHelper.AppSettingsRepo.DbName,
-                RepoHelper.AppSettingsRepo.DbPort,
-                RepoHelper.AppSettingsRepo.DbPassword);
-
-            using (var conn = new NpgsqlConnection(string.IsNullOrEmpty(DataSource) ? connString : DataSource))
+            using (var conn = new NpgsqlConnection(string.IsNullOrEmpty(DataSource) ? ConnString : DataSource))
             {
                 conn.Open();
                 using (var command = new NpgsqlCommand(sqlRequest, conn))
