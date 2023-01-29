@@ -82,8 +82,9 @@
                             <ComboBoxItem Content="HTTP" Cursor="Hand" />
                             <ComboBoxItem Content="TCP" Cursor="Hand" />
                             <Separator/>
-                            <ComboBoxItem Content="SOAP" Cursor="Hand" />
                             <ComboBoxItem Content="REST API" Cursor="Hand" />
+                            <ComboBoxItem Content="SOAP" Cursor="Hand" />
+                            <ComboBoxItem Content="WCF" Cursor="Hand" />
                             <ComboBoxItem Content="gRPC" Cursor="Hand" />
                             <Separator/>
                             <ComboBoxItem Content="NNTP" Cursor="Hand" />

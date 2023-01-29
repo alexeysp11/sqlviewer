@@ -3,14 +3,9 @@ using System.Threading.Tasks;
 
 namespace SqlViewerNetwork.NetworkClient
 {
-    public class HttpNetworkClient : INetworkClient
+    public class SvHttpClient : INetworkClient
     {
         private static readonly HttpClient client = new HttpClient();
-
-        public void CloseClient()
-        {
-            
-        }
 
         public static async Task GetAsync(string requestUri)
         {

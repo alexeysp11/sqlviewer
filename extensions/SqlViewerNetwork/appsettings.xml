@@ -1,0 +1,6 @@
+<configuration>
+    <Settings>
+        <SomeSetting>Test</SomeSetting>
+        <Another>true</Another>
+    </Settings>
+</configuration>

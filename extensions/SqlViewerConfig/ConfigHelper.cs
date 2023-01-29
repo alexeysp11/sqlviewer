@@ -1,18 +1,13 @@
 using System.Windows;
-using SqlViewer.ViewModels; 
-using SqlViewer.Models.DbConnections; 
 
 namespace SqlViewer.Helpers
 {
     public class ConfigHelper
     {
-        private MainVM MainVM { get; set; }
-
         private string RootFolder { get; set; }
 
-        public ConfigHelper(MainVM mainVM, string rootFolder)
+        public ConfigHelper(string rootFolder)
         {
-            this.MainVM = mainVM; 
             this.RootFolder = rootFolder; 
         }
 
@@ -48,9 +43,9 @@ namespace SqlViewer.Helpers
         {
             if ( !(System.IO.File.Exists(localDbPath)) )
             {
-                System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
-                this.MainVM.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(this.MainVM.DataVM.MainDbBranch.GetSqlRequest(sqlScriptPath)); 
-                System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
+                //System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
+                //this.MainVM.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(this.MainVM.DataVM.MainDbBranch.GetSqlRequest(sqlScriptPath)); 
+                //System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
             }
         }
         #endregion  // File system methods
@@ -82,21 +77,7 @@ namespace SqlViewer.Helpers
                 {
                     string msg = "Do you want to create a shortcut on Desktop?"; 
                     string caption = "Creating shortcut on Desktop"; 
-                    var result = System.Windows.MessageBox.Show(msg, caption, MessageBoxButton.YesNoCancel, MessageBoxImage.Question); 
-                    if (result == MessageBoxResult.Yes)
-                    {
-                        CreateShortcut(shortcutPath); 
-                        fDesktopShortcut = 1; 
-                    }
-                    else if (result == MessageBoxResult.No)
-                    {
-                        fDesktopShortcut = 0; 
-                    }
-                    else 
-                    {
-                        return; 
-                    }
-                    MainVM.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(string.Empty); // for storing result in DB
+                    //MainVM.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(string.Empty); // for storing result in DB
                 }
             }
         }

@@ -18,8 +18,6 @@ namespace SqlViewer
             {
                 this.MainVM = new MainVM(this); 
 
-                this.MainVM.ConfigHelper.Initialize(); 
-
                 this.MainVM.VisualVM.OpenView("LoginView"); 
                 InitializeComponent();
                 this.Hide();

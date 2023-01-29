@@ -104,7 +104,11 @@ In order to run the application, you can use command line:
 ```
 cd C:\PathToRepo\sqlviewer 
 ```
-2. Execute `run.cmd` file: 
+2. Execute `config.cmd` file to restore all the projects, and initialize databases and the project's file system: 
+```
+config.cmd
+```
+3. Execute `run.cmd` file: 
 ```
 run.cmd 
 ```
@@ -121,4 +125,8 @@ This application is written in C# with **WPF** using **MVVM** pattern.
 
 Class diagram is shown below:
 
-![Example (UI, query)](docs/img/sqlviewer_diagram.png)
+![Class diagram: SqlViewer](docs/img/sqlviewer_diagram.png)
+
+Class diagram of network extension: 
+
+![Class diagram: SqlViewerNetwork](docs/img/sqlviewernetwork_diagram.png)

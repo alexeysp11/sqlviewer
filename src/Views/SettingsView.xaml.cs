@@ -55,11 +55,11 @@ namespace SqlViewer.Views
             cbiAutoSaveDisabled.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DisabledField.English, SettingsEntity.DisabledField.Translation); 
 
             lblFontSize.Content = SettingsHelper.TranslateUiElement(SettingsEntity.FontSizeField.English, SettingsEntity.FontSizeField.Translation); 
-            cbFontSize.Text = EnumCodecHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize); 
+            cbFontSize.Text = RepoHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize); 
             lblFontFamily.Content = SettingsHelper.TranslateUiElement(SettingsEntity.FontFamilyField.English, SettingsEntity.FontFamilyField.Translation); 
             cbFontFamily.Text = RepoHelper.AppSettingsRepo.FontFamily.ToString(); 
             lblTabSize.Content = SettingsHelper.TranslateUiElement(SettingsEntity.TabSizeField.English, SettingsEntity.TabSizeField.Translation); 
-            cbTabSize.Text = EnumCodecHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize); 
+            cbTabSize.Text = RepoHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize); 
 
             lblWordWrap.Content = SettingsHelper.TranslateUiElement(SettingsEntity.WordWrapField.English, SettingsEntity.WordWrapField.Translation); 
             cbWordWrap.Text = RepoHelper.AppSettingsRepo.WordWrap.ToString(); 

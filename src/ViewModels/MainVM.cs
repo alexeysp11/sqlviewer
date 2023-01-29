@@ -18,8 +18,6 @@ namespace SqlViewer.ViewModels
         public DataVM DataVM { get; private set; } 
         public VisualVM VisualVM { get; private set; } 
 
-        public ConfigHelper ConfigHelper { get; private set; } 
-
         public ICommand DbCommand { get; private set; } 
         public ICommand HelpCommand { get; private set; } 
         public ICommand RedirectCommand { get; private set; } 
@@ -34,8 +32,6 @@ namespace SqlViewer.ViewModels
 
             this.DataVM = new DataVM(this); 
             this.VisualVM = new VisualVM(this); 
-
-            this.ConfigHelper = new ConfigHelper(this, SettingsHelper.GetRootFolder()); 
             
             this.DbCommand = new DbCommand(this); 
             this.HelpCommand = new HelpCommand(this); 
@@ -70,7 +66,7 @@ namespace SqlViewer.ViewModels
                 string dbUsername = dt.Rows[0]["db_username"].ToString();
                 string dbPswd = dt.Rows[0]["db_pswd"].ToString();
 
-                var enumEncoder = EnumCodecHelper.EnumEncoder; 
+                var enumEncoder = RepoHelper.EnumEncoder; 
                 RepoHelper.SetAppSettingsRepo(new SqlViewer.Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave, 
                     fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server, 
                     dbName, port, schemaName, dbUsername, dbPswd)); 
@@ -133,8 +129,8 @@ namespace SqlViewer.ViewModels
 
                     string sql = this.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/UpdateSettingsEditor.sql"); 
                     sql = string.Format(sql, RepoHelper.AppSettingsRepo.Language, RepoHelper.AppSettingsRepo.AutoSave, 
-                        EnumCodecHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize), RepoHelper.AppSettingsRepo.FontFamily, 
-                        EnumCodecHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize), RepoHelper.AppSettingsRepo.WordWrap); 
+                        RepoHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize), RepoHelper.AppSettingsRepo.FontFamily, 
+                        RepoHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize), RepoHelper.AppSettingsRepo.WordWrap); 
                     this.DataVM.MainDbBranch.SendSqlRequest(sql); 
 
                     sql = this.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 

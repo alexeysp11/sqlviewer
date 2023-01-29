@@ -4,12 +4,9 @@ using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection
 
 namespace SqlViewer.Models.DbPreproc
 {
-    public class MongodbDbPreproc : IDbPreproc
+    public class MongodbDbPreproc : BaseDodbPreproc, IDbPreproc
     {
         private MainVM MainVM { get; set; }
-
-        public ICommonDbConnectionSV AppDbConnection { get; private set; }
-        public ICommonDbConnectionSV UserDbConnection { get; private set; }
 
         public MongodbDbPreproc(MainVM mainVM)
         {
@@ -70,11 +67,11 @@ namespace SqlViewer.Models.DbPreproc
 
         public ICommonDbConnectionSV GetAppDbConnection()
         {
-            return AppDbConnection; 
+            return base.AppDbConnection; 
         }
         public ICommonDbConnectionSV GetUserDbConnection()
         {
-            return UserDbConnection; 
+            return base.UserDbConnection; 
         }
     }
 }

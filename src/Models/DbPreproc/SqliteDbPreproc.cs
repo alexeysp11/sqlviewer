@@ -12,12 +12,9 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.DbPreproc 
 {
-    public class SqliteDbPreproc : IDbPreproc
+    public class SqliteDbPreproc : BaseRdbmsPreproc, IDbPreproc
     {
         private MainVM MainVM { get; set; }
-
-        public ICommonDbConnectionSV AppDbConnection { get; private set; }
-        public ICommonDbConnectionSV UserDbConnection { get; private set; }
 
         public DataTable ResultCollection { get; private set; }
         public List<string> TablesCollection { get; private set; }
@@ -25,16 +22,16 @@ namespace SqlViewer.Models.DbPreproc
         public SqliteDbPreproc(MainVM mainVM)
         {
             this.MainVM = mainVM; 
-            this.AppDbConnection = new SqliteDbConnection($"{SettingsHelper.GetRootFolder()}\\data\\app.db"); 
+            base.AppDbConnection = new SqliteDbConnection($"{SettingsHelper.GetRootFolder()}\\data\\app.db"); 
         }
 
         public ICommonDbConnectionSV GetAppDbConnection()
         {
-            return AppDbConnection; 
+            return base.AppDbConnection; 
         }
         public ICommonDbConnectionSV GetUserDbConnection()
         {
-            return UserDbConnection; 
+            return base.UserDbConnection; 
         }
 
         #region Primary DB operations
@@ -73,10 +70,10 @@ namespace SqlViewer.Models.DbPreproc
                 if (RepoHelper.AppSettingsRepo == null)
                     throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned."); 
                 if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.SQLite)
-                    throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
+                    throw new System.Exception($"Unable to initialize base.UserDbConnection, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
                 
                 if (RepoHelper.AppSettingsRepo != null && !string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DbName))
-                    UserDbConnection = new SqliteDbConnection(RepoHelper.AppSettingsRepo.DbName);
+                    base.UserDbConnection = new SqliteDbConnection(RepoHelper.AppSettingsRepo.DbName);
             }
             catch (System.Exception ex)
             {
@@ -91,7 +88,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                UserDbConnection = new SqliteDbConnection(path);
+                base.UserDbConnection = new SqliteDbConnection(path);
                 MainVM.MainWindow.SqlPage.tblDbName.Text = path;
                 MainVM.MainWindow.TablesPage.tblDbName.Text = path;
 
@@ -115,7 +112,7 @@ namespace SqlViewer.Models.DbPreproc
         #region DB information 
         public void DisplayTablesInDb()
         {
-            if (UserDbConnection == null)
+            if (base.UserDbConnection == null)
             {
                 return; 
             }
@@ -123,7 +120,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string sqlRequest = MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
-                DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = base.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
                 {
@@ -145,7 +142,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string sqlRequest = $"SELECT * FROM {tableName}"; 
-                MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = base.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -158,7 +155,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string sqlRequest = $"PRAGMA table_info({tableName});"; 
-                MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = base.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -171,7 +168,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string sqlRequest = $"PRAGMA foreign_key_list('{tableName}');";
-                MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = base.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -184,7 +181,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string sqlRequest = $"SELECT * FROM sqlite_master WHERE type = 'trigger' AND tbl_name LIKE '{tableName}';";
-                MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = base.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -197,7 +194,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string sqlRequest = string.Format(MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite\\TableInfo\\GetSqlDefinition.sql"), tableName);
-                DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = base.UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
                     DataRow row = dt.Rows[0];
@@ -220,10 +217,10 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                if (UserDbConnection == null)
+                if (base.UserDbConnection == null)
                     throw new System.Exception("Database is not opened."); 
 
-                ResultCollection = UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
+                ResultCollection = base.UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
                 MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = ResultCollection.DefaultView;
 
                 MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
@@ -239,9 +236,9 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                if (AppDbConnection == null)
+                if (base.AppDbConnection == null)
                     throw new System.Exception("System RDBMS is not assigned."); 
-                return AppDbConnection.ExecuteSqlCommand(sql);
+                return base.AppDbConnection.ExecuteSqlCommand(sql);
             }
             catch (System.Exception ex)
             {
@@ -254,7 +251,7 @@ namespace SqlViewer.Models.DbPreproc
             string sqlRequest = $"DELETE FROM {tableName};";
             try
             {
-                AppDbConnection.ExecuteSqlCommand(sqlRequest);
+                base.AppDbConnection.ExecuteSqlCommand(sqlRequest);
             }
             catch (System.Exception ex)
             {

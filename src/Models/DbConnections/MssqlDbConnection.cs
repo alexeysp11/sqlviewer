@@ -2,7 +2,7 @@ using System.Data;
 
 namespace SqlViewer.Models.DbConnections
 {
-    public class MssqlDbConnection : SqlViewer.Models.DbConnections.ICommonDbConnection
+    public class MssqlDbConnection : BaseDbConnection, ICommonDbConnection
     {
         public DataTable ExecuteSqlCommand(string sqlRequest)
         {
@@ -11,9 +11,9 @@ namespace SqlViewer.Models.DbConnections
             return table; 
         }
 
-        public string GetSqlFromDataTable(DataTable dt, string tableName)
+        public new string GetSqlFromDataTable(DataTable dt, string tableName)
         {
-            return ""; 
+            return base.GetSqlFromDataTable(dt, tableName); 
         }
     }
 }
