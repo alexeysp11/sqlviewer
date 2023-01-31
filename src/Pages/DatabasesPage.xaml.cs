@@ -11,6 +11,9 @@ namespace SqlViewer.Pages
     {
         private MainVM MainVM { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DatabasesPage()
         {
             InitializeComponent();

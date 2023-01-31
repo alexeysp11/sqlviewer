@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../SqlViewerDatabase/SqlViewerDatabase.csproj" />
+    <ProjectReference Include="../../SqlViewerDatabase/SqlViewerDatabase.csproj" />
   </ItemGroup>
 
   <ItemGroup>

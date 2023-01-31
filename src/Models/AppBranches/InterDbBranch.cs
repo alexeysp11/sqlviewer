@@ -3,10 +3,19 @@ using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnectio
 
 namespace SqlViewer.Models.AppBranches
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class InterDbBranch
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public DbInterconnection DbInterconnection { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public InterDbBranch()
         {
             this.DbInterconnection = new DbInterconnection(); 

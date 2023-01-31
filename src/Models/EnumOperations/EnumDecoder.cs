@@ -8,9 +8,15 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.EnumOperations
 {
+    /// <summary>
+    /// Class for getting strings from enums
+    /// </summary>  
     public class EnumDecoder
     {
         #region Common 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetLanguageName(LanguageEnum language) => language switch
         {
             LanguageEnum.English       => "English",
@@ -47,6 +53,9 @@ namespace SqlViewer.Models.EnumOperations
         #endregion  // Common 
 
         #region Editor
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetAutoSaveName(AutoSaveEnum autoSave) => autoSave switch
         {
             AutoSaveEnum.Enabled   => "Enabled",
@@ -54,6 +63,9 @@ namespace SqlViewer.Models.EnumOperations
             _ => throw new System.Exception("Unable to find autoSave name")
         }; 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetFontSizeName(FontSizeEnum fontSize) => fontSize switch
         {
             FontSizeEnum.FontSize8     => "8",
@@ -68,12 +80,18 @@ namespace SqlViewer.Models.EnumOperations
             _ => throw new System.Exception("Unable to find fontSize name")
         }; 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetFontFamilyName(FontFamilyEnum fontFamily) => fontFamily switch
         {
             FontFamilyEnum.Consolas => "Consolas",
             _ => throw new System.Exception("Unable to find fontFamily name")
         }; 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetTabSizeName(TabSizeEnum tabSize) => tabSize switch
         {
             TabSizeEnum.TabSize1 => "1",
@@ -87,6 +105,9 @@ namespace SqlViewer.Models.EnumOperations
             _ => throw new System.Exception("Unable to find tabSize name")
         }; 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetWordWrapName(WordWrapEnum wordWrap) => wordWrap switch
         {
             WordWrapEnum.Enabled   => "Enabled",
@@ -96,6 +117,9 @@ namespace SqlViewer.Models.EnumOperations
         #endregion  // Editor
 
         #region Database 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetRdbmsName(RdbmsEnum rdbms) => rdbms switch
         {
             RdbmsEnum.SQLite        => "SQLite",

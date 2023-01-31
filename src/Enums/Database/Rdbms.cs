@@ -1,5 +1,8 @@
 namespace SqlViewer.Enums.Database
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum Rdbms
     {
         SQLite = 1, 

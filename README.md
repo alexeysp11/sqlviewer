@@ -92,7 +92,10 @@ Using this app, you can do the following things:
 
 ### Download and run 
 
-You can download this application from this GitHub repository in two ways:  
+First of all, make sure if you have installed **.NET Core 3.1** on your computer. 
+[Click here](https://dotnet.microsoft.com/en-us/download/dotnet/3.1) to download it. 
+
+So, you can download this application from this GitHub repository in two ways:  
 - Using Git: 
 ```
 git clone https://github.com/alexeysp11/sqlviewer.git 

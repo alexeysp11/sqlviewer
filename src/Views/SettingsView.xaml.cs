@@ -14,12 +14,24 @@ namespace SqlViewer.Views
     /// </summary>
     public partial class SettingsView : Window
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
         
+        /// <summary>
+        /// 
+        /// </summary>
         private SettingsEntity SettingsEntity { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private string OldActiveRdbms { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public SettingsView()
         {
             InitializeComponent();
@@ -34,6 +46,9 @@ namespace SqlViewer.Views
             }; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Init()
         {
             InitPreferencesEditor(); 
@@ -42,6 +57,9 @@ namespace SqlViewer.Views
             InitDbCredentials(); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitPreferencesEditor()
         {
             lblPreferencesEditor.Content = SettingsHelper.TranslateUiElement(SettingsEntity.EditorField.English, SettingsEntity.EditorField.Translation); 
@@ -67,6 +85,9 @@ namespace SqlViewer.Views
             cbiWordWrapDisabled.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DisabledField.English, SettingsEntity.DisabledField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitPreferencesDb()
         {
             lblPreferencesDb.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DbField.English, SettingsEntity.DbField.Translation); 
@@ -86,6 +107,9 @@ namespace SqlViewer.Views
             pbPassword.Password = RepoHelper.AppSettingsRepo.DbPassword; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitButtons()
         {
             btnRecover.Content = SettingsHelper.TranslateUiElement(SettingsEntity.RecoverField.English, SettingsEntity.RecoverField.Translation); 
@@ -93,6 +117,9 @@ namespace SqlViewer.Views
             btnCancel.Content = SettingsHelper.TranslateUiElement(SettingsEntity.CancelField.English, SettingsEntity.CancelField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitDbCredentials()
         {
             if (cbActiveRdbms.Text == "SQLite")
@@ -135,13 +162,27 @@ namespace SqlViewer.Views
             RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
         }
 
+        /// <summary>
+        /// Allows to update settings repository (it is invoked from MainVM)
+        /// </summary>
         public void UpdateAppRepository()
         {
             try 
             {
-                RepoHelper.AppSettingsRepo.Update(cbLanguage.Text, cbAutoSave.Text, System.Convert.ToInt32(cbFontSize.Text), 
-                    cbFontFamily.Text, System.Convert.ToInt32(cbTabSize.Text), cbWordWrap.Text, cbDefaultRdbms.Text, 
-                    cbActiveRdbms.Text, tbServer.Text, tbDatabase.Text, tbPort.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password); 
+                RepoHelper.AppSettingsRepo.SetLanguage(cbLanguage.Text); 
+                RepoHelper.AppSettingsRepo.SetAutoSave(cbAutoSave.Text); 
+                RepoHelper.AppSettingsRepo.SetFontSize(System.Convert.ToInt32(cbFontSize.Text)); 
+                RepoHelper.AppSettingsRepo.SetFontFamily(cbFontFamily.Text); 
+                RepoHelper.AppSettingsRepo.SetTabSize(System.Convert.ToInt32(cbTabSize.Text)); 
+                RepoHelper.AppSettingsRepo.SetWordWrap(cbWordWrap.Text); 
+                RepoHelper.AppSettingsRepo.SetDefaultRdbms(cbDefaultRdbms.Text); 
+                RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
+                RepoHelper.AppSettingsRepo.SetDbHost(tbServer.Text); 
+                RepoHelper.AppSettingsRepo.SetDbName(tbDatabase.Text); 
+                RepoHelper.AppSettingsRepo.SetDbPort(tbPort.Text); 
+                RepoHelper.AppSettingsRepo.SetDbSchema(tbSchema.Text); 
+                RepoHelper.AppSettingsRepo.SetDbUsername(tbUsername.Text); 
+                RepoHelper.AppSettingsRepo.SetDbPassword(pbPassword.Password); 
             }
             catch (System.Exception ex)
             {
@@ -149,6 +190,9 @@ namespace SqlViewer.Views
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void CancelChangesAppRepository()
         {
             string activeRdbms = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
@@ -158,11 +202,17 @@ namespace SqlViewer.Views
             } 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void SettingsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ((MainVM)this.DataContext).VisualVM.SettingsView = null; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             InitDbCredentials(); 

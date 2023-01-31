@@ -1,5 +1,8 @@
 namespace SqlViewer.Enums.Editor
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum TabSize
     {
         TabSize1 = 1, 

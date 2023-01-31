@@ -13,19 +13,46 @@ namespace SqlViewer.ViewModels
     public class MainVM
     {
         #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
         public MainWindow MainWindow { get; private set; } 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DataVM DataVM { get; private set; } 
+        /// <summary>
+        /// 
+        /// </summary>
         public VisualVM VisualVM { get; private set; } 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand DbCommand { get; private set; } 
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand HelpCommand { get; private set; } 
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand RedirectCommand { get; private set; } 
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommand AppCommand { get; private set; } 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Translator Translator { get; private set; }  
         #endregion  // Properties
 
+        /// <summary>
+        /// 
+        /// </summary>
         public MainVM(MainWindow mainWindow)
         {
             this.MainWindow = mainWindow; 
@@ -51,25 +78,24 @@ namespace SqlViewer.ViewModels
             {
                 DataTable dt = this.DataVM.MainDbBranch.SendSqlRequest(this.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromSettings.sql")); 
                 
-                string language = dt.Rows[0]["language"].ToString();
-                string autoSave = dt.Rows[0]["auto_save"].ToString();
-                int fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
-                string fontFamily = dt.Rows[0]["font_family"].ToString();
-                int tabSize = System.Convert.ToInt32(dt.Rows[0]["tab_size"]);
-                string wordWrap = dt.Rows[0]["word_wrap"].ToString();
-                string defaultRdbms = dt.Rows[0]["default_rdbms"].ToString();
-                string activeRdbms = dt.Rows[0]["active_rdbms"].ToString();
-                string server = dt.Rows[0]["server"].ToString();
-                string dbName = dt.Rows[0]["db_name"].ToString();
-                string port = dt.Rows[0]["port"].ToString();
-                string schemaName = dt.Rows[0]["schema_name"].ToString();
-                string dbUsername = dt.Rows[0]["db_username"].ToString();
-                string dbPswd = dt.Rows[0]["db_pswd"].ToString();
+                var appSettingsRepo = new SqlViewer.Models.DataStorage.AppSettingsRepo(); 
+                
+                appSettingsRepo.SetLanguage(dt.Rows[0]["language"].ToString()); 
+                appSettingsRepo.SetAutoSave(dt.Rows[0]["auto_save"].ToString()); 
+                appSettingsRepo.SetFontSize(System.Convert.ToInt32(dt.Rows[0]["font_size"])); 
+                appSettingsRepo.SetFontFamily(dt.Rows[0]["font_family"].ToString()); 
+                appSettingsRepo.SetTabSize(System.Convert.ToInt32(dt.Rows[0]["tab_size"])); 
+                appSettingsRepo.SetWordWrap(dt.Rows[0]["word_wrap"].ToString()); 
+                appSettingsRepo.SetDefaultRdbms(dt.Rows[0]["default_rdbms"].ToString()); 
+                appSettingsRepo.SetActiveRdbms(dt.Rows[0]["active_rdbms"].ToString()); 
+                appSettingsRepo.SetDbHost(dt.Rows[0]["server"].ToString()); 
+                appSettingsRepo.SetDbName(dt.Rows[0]["db_name"].ToString()); 
+                appSettingsRepo.SetDbPort(dt.Rows[0]["port"].ToString()); 
+                appSettingsRepo.SetDbSchema(dt.Rows[0]["schema_name"].ToString()); 
+                appSettingsRepo.SetDbUsername(dt.Rows[0]["db_username"].ToString()); 
+                appSettingsRepo.SetDbPassword(dt.Rows[0]["db_pswd"].ToString()); 
 
-                var enumEncoder = RepoHelper.EnumEncoder; 
-                RepoHelper.SetAppSettingsRepo(new SqlViewer.Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave, 
-                    fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server, 
-                    dbName, port, schemaName, dbUsername, dbPswd)); 
+                RepoHelper.SetAppSettingsRepo(appSettingsRepo); 
                 this.DataVM.MainDbBranch.InitUserDbConnection(); 
             }
             catch (System.Exception ex)
@@ -100,6 +126,9 @@ namespace SqlViewer.ViewModels
         #endregion  // Initialization 
 
         #region Settings methods
+        /// <summary>
+        /// 
+        /// </summary>
         public void RecoverSettings()
         {
             string msg = "Are you sure to recover settings changes?"; 
@@ -117,6 +146,9 @@ namespace SqlViewer.ViewModels
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void SaveSettings()
         {
             string msg = "Are you sure to save settings changes?"; 
@@ -152,6 +184,9 @@ namespace SqlViewer.ViewModels
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void CancelSettings()
         {
             string msg = "Are you sure to cancel settings changes?"; 
@@ -167,6 +202,9 @@ namespace SqlViewer.ViewModels
         }
         #endregion  // Settings methods 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void ExitApplication()
         {
             string msg = "Are you sure to close the application?"; 

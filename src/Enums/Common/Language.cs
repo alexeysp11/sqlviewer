@@ -1,5 +1,8 @@
 namespace SqlViewer.Enums.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum Language
     {
         English = 1, 

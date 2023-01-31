@@ -13,9 +13,18 @@ namespace SqlViewer.Pages
     /// </summary>
     public partial class SqlPage : UserControl
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         private SqlPageEntity SqlPageEntity { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public SqlPage()
         {
             InitializeComponent();
@@ -29,6 +38,9 @@ namespace SqlViewer.Pages
             }; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Init()
         {
             tbSqlPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": ") : "DB: "; 

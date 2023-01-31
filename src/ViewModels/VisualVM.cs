@@ -6,24 +6,56 @@ using UserControlsMenu = SqlViewer.UserControls.Menu;
 
 namespace SqlViewer.ViewModels
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class VisualVM
     {
+        #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Window LoginView { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Window SettingsView { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public Window ConnectionsView { get; set; }
         
+        /// <summary>
+        /// 
+        /// </summary>
         public UserControl Menu { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public UserControl SqlPage { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public UserControl TablesPage { get; set; }
+        #endregion  // Properties
 
+        /// <summary>
+        /// 
+        /// </summary>
         public VisualVM(MainVM mainVM)
         {
             this.MainVM = mainVM; 
         }
 
         #region Common UI methods 
+        /// <summary>
+        /// 
+        /// </summary>
         public void InitUI()
         {
             ((SettingsView)SettingsView).Init(); 
@@ -36,6 +68,9 @@ namespace SqlViewer.ViewModels
         #endregion  // Common UI methods 
 
         #region Views methods
+        /// <summary>
+        /// 
+        /// </summary>
         public void OpenView(string viewName)
         {
             try
@@ -51,6 +86,9 @@ namespace SqlViewer.ViewModels
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void OpenDocsInBrowser(string docName, string title, string filePath)
         {
             string msg = "Do you want to open " + docName + " in your browser?"; 
@@ -72,6 +110,9 @@ namespace SqlViewer.ViewModels
         #endregion  // Views methods
 
         #region Pages methods
+        /// <summary>
+        /// 
+        /// </summary>
         public void RedirectToSqlQuery()
         {
             HideAllPages();
@@ -81,6 +122,9 @@ namespace SqlViewer.ViewModels
             this.MainVM.MainWindow.SqlPage.IsEnabled = true; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void RedirectToTables()
         {
             this.MainVM.DataVM.MainDbBranch.DisplayTablesInDb();
@@ -92,12 +136,18 @@ namespace SqlViewer.ViewModels
             this.MainVM.MainWindow.TablesPage.IsEnabled = true; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void HideAllPages()
         {
             this.MainVM.MainWindow.SqlPage.Visibility = Visibility.Collapsed; 
             this.MainVM.MainWindow.TablesPage.Visibility = Visibility.Collapsed; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void DisableAllPages()
         {
             this.MainVM.MainWindow.TablesPage.IsEnabled = false; 

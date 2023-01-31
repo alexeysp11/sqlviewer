@@ -13,9 +13,18 @@ namespace SqlViewer.Pages
     /// </summary>
     public partial class TablesPage : UserControl
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         private TablesPageEntity TablesPageEntity { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public TablesPage()
         {
             InitializeComponent();
@@ -29,6 +38,9 @@ namespace SqlViewer.Pages
             }; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Init()
         {
             tbTablesPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ") : "DB: ";
@@ -41,12 +53,18 @@ namespace SqlViewer.Pages
             lblData.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.DataField.English, TablesPageEntity.DataField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void ResultDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             string header = e.Column.Header.ToString();
             e.Column.Header = header.Replace("_", "__");
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             try

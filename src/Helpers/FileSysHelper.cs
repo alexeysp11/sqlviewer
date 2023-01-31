@@ -2,8 +2,14 @@ using Microsoft.Win32;
 
 namespace SqlViewer.Helpers
 {
+    /// <summary>
+    /// Helper for file system operations 
+    /// </summary>
     public static class FileSysHelper
     {
+        /// <summary>
+        /// Opens a local file 
+        /// </summary>
         public static string OpenLocalFile()
         {
             string path = string.Empty; 
@@ -21,6 +27,9 @@ namespace SqlViewer.Helpers
             }
             return path; 
         }
+        /// <summary>
+        /// Saves a local file 
+        /// </summary>
         public static void SaveLocalFile()
         {
             try
@@ -36,6 +45,9 @@ namespace SqlViewer.Helpers
             }
         }
 
+        /// <summary>
+        /// Writes a string into a local file 
+        /// </summary>
         public static void WriteIntoFile(string filename, string content)
         {
             using (var outputFile = new System.IO.StreamWriter(filename))
@@ -43,11 +55,17 @@ namespace SqlViewer.Helpers
                 outputFile.Write(content);
             }
         }
+        /// <summary>
+        /// Reads text from a local file 
+        /// </summary>
         public static string ReadFromFile()
         {
             return ""; 
         }
 
+        /// <summary>
+        /// Executes a command using command line 
+        /// </summary>
         public static void ExecuteCmd(string cmdCommand)
         {
             System.Diagnostics.Process process = new System.Diagnostics.Process();

@@ -13,12 +13,24 @@ namespace SqlViewer.Views
     /// </summary>
     public partial class LoginView : Window
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
         
+        /// <summary>
+        /// 
+        /// </summary>
         private LoginEntity LoginEntity { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private bool IsLoggedIn { get; set; } = false; 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public LoginView()
         {
             InitializeComponent();
@@ -32,6 +44,9 @@ namespace SqlViewer.Views
             }; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void Init()
         {
             try
@@ -49,6 +64,9 @@ namespace SqlViewer.Views
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitPreferencesDb()
         {
             lblActiveRdbms.Content = SettingsHelper.TranslateUiElement(LoginEntity.ActiveRdbmsField.English, LoginEntity.ActiveRdbmsField.Translation); 
@@ -59,12 +77,18 @@ namespace SqlViewer.Views
             lblUsername.Content = SettingsHelper.TranslateUiElement(LoginEntity.UsernameField.English, LoginEntity.UsernameField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitButtons()
         {
             btnLogIn.Content = SettingsHelper.TranslateUiElement(LoginEntity.LogInField.English, LoginEntity.LogInField.Translation); 
             btnCancel.Content = SettingsHelper.TranslateUiElement(LoginEntity.CancelField.English, LoginEntity.CancelField.Translation); 
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitDbCredentials()
         {
             if (cbActiveRdbms.Text == "SQLite")
@@ -107,6 +131,9 @@ namespace SqlViewer.Views
             RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void btnLogIn_Clicked(object sender, RoutedEventArgs e)
         {
             this.IsLoggedIn = true; 
@@ -122,11 +149,17 @@ namespace SqlViewer.Views
             this.Close(); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             InitDbCredentials(); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void LoginView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!IsLoggedIn)

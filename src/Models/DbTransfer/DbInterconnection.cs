@@ -3,16 +3,40 @@ using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnectio
 
 namespace SqlViewer.Models.DbTransfer
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DbInterconnection
     {
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommonDbConnectionSV InterDbConnection1 { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommonDbConnectionSV InterDbConnection2 { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommonDbConnectionSV NetworkDbConnection { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void SetInterDbConnection1(ICommonDbConnectionSV dbConnection) => InterDbConnection1 = dbConnection; 
+        /// <summary>
+        /// 
+        /// </summary>
         public void SetInterDbConnection2(ICommonDbConnectionSV dbConnection) => InterDbConnection2 = dbConnection; 
+        /// <summary>
+        /// 
+        /// </summary>
         public void SetNetworkDbConnection(ICommonDbConnectionSV dbConnection) => NetworkDbConnection = dbConnection; 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommonDbConnectionSV GetDbConnection(string activeRdbms, string dataSource)
         {
             if (string.IsNullOrEmpty(activeRdbms))

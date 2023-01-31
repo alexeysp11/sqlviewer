@@ -1,4 +1,4 @@
-using SqlViewer.Models.EnumOperations; 
+using SqlViewer.Helpers; 
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using AutoSaveEnum = SqlViewer.Enums.Editor.AutoSave; 
 using FontSizeEnum = SqlViewer.Enums.Editor.FontSize; 
@@ -9,10 +9,12 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.DataStorage
 {
+    /// <summary>
+    /// App settings at the current moment 
+    /// </summary>
     public class AppSettingsRepo
     {
-        private EnumEncoder EnumEncoder {get; set; } 
-
+        #region Properties
         public LanguageEnum Language { get; private set; }
         public AutoSaveEnum AutoSave { get; private set; }
         public FontSizeEnum FontSize { get; private set; }
@@ -29,98 +31,73 @@ namespace SqlViewer.Models.DataStorage
         public string DbSchema { get; private set; }
         public string DbUsername { get; private set; }
         public string DbPassword { get; private set; }
+        #endregion  // Properties
 
-        public AppSettingsRepo(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily, 
-            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms)
+        #region Public methods 
+        public void SetLanguage(string language) 
         {
-            try
-            {
-                this.EnumEncoder = enumEncoder; 
-                AssignBasic(language, autoSave, fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms); 
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
+            if (string.IsNullOrEmpty(language)) throw new System.Exception("Parameter 'language' could not be null or empty"); 
+            Language = RepoHelper.EnumEncoder.GetLanguageEnum(language); 
+        }
+        public void SetAutoSave(string autoSave) 
+        {
+            if (string.IsNullOrEmpty(autoSave)) throw new System.Exception("Parameter 'autoSave' could not be null or empty"); 
+            AutoSave = RepoHelper.EnumEncoder.GetAutoSaveEnum(autoSave); 
+        }
+        public void SetFontSize(int fontSize) 
+        {
+            FontSize = RepoHelper.EnumEncoder.GetFontSizeEnum(fontSize.ToString()); 
+        }
+        public void SetFontFamily(string fontFamily) 
+        {
+            if (string.IsNullOrEmpty(fontFamily)) throw new System.Exception("Parameter 'fontFamily' could not be null or empty"); 
+            FontFamily = RepoHelper.EnumEncoder.GetFontFamilyEnum(fontFamily); 
+        }
+        public void SetTabSize(int tabSize) 
+        {
+            TabSize = RepoHelper.EnumEncoder.GetTabSizeEnum(tabSize.ToString()); 
+        }
+        public void SetWordWrap(string wordWrap) 
+        {
+            if (string.IsNullOrEmpty(wordWrap)) throw new System.Exception("Parameter 'wordWrap' could not be null or empty"); 
+            WordWrap = RepoHelper.EnumEncoder.GetWordWrapEnum(wordWrap); 
         }
 
-        public AppSettingsRepo(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily, 
-            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms, string server, string dbName, string port,
-            string dbSchema, string dbUsername, string dbPassword)
+        public void SetDefaultRdbms(string defaultRdbms) 
         {
-            try
-            {
-                this.EnumEncoder = enumEncoder; 
-                AssignBasic(language, autoSave, fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms); 
-                AssignDbCredentials(server, dbName, port, dbSchema, dbUsername, dbPassword); 
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
+            if (string.IsNullOrEmpty(defaultRdbms)) throw new System.Exception("Parameter 'defaultRdbms' could not be null or empty"); 
+            DefaultRdbms = RepoHelper.EnumEncoder.GetRdbmsEnum(defaultRdbms); 
+        }
+        public void SetActiveRdbms(string activeRdbms) 
+        {
+            if (string.IsNullOrEmpty(activeRdbms)) throw new System.Exception("Parameter 'activeRdbms' could not be null or empty"); 
+            ActiveRdbms = RepoHelper.EnumEncoder.GetRdbmsEnum(activeRdbms); 
         }
 
-        private void AssignBasic(string language, string autoSave, int fontSize, string fontFamily, 
-            int tabSize, string wordWrap, string defaultRdbms, string activeRdbms)
+        public void SetDbHost(string dbHost) 
         {
-            try
-            {
-                Language = this.EnumEncoder.GetLanguageEnum($"{language}"); 
-                AutoSave = this.EnumEncoder.GetAutoSaveEnum($"{autoSave}"); 
-                FontSize = this.EnumEncoder.GetFontSizeEnum($"{fontSize}"); 
-                FontFamily = this.EnumEncoder.GetFontFamilyEnum($"{fontFamily}"); 
-                TabSize = this.EnumEncoder.GetTabSizeEnum($"{tabSize}"); 
-                WordWrap = this.EnumEncoder.GetWordWrapEnum($"{wordWrap}"); 
-                DefaultRdbms = this.EnumEncoder.GetRdbmsEnum($"{defaultRdbms}"); 
-                ActiveRdbms = this.EnumEncoder.GetRdbmsEnum($"{activeRdbms}"); 
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
+            DbHost = dbHost; 
         }
-
-        private void AssignDbCredentials(string server, string dbName, string port, string dbSchema, string dbUsername, string dbPassword)
+        public void SetDbName(string dbName) 
         {
-            DbHost = server; 
             DbName = dbName; 
-            DbPort = port; 
+        }
+        public void SetDbPort(string dbPort) 
+        {
+            DbPort = dbPort; 
+        }
+        public void SetDbSchema(string dbSchema) 
+        {
             DbSchema = dbSchema; 
+        }
+        public void SetDbUsername(string dbUsername) 
+        {
             DbUsername = dbUsername; 
+        }
+        public void SetDbPassword(string dbPassword) 
+        {
             DbPassword = dbPassword; 
         }
-
-        public void Update(string language, string autoSave, int fontSize, string fontFamily, int tabSize, 
-            string wordWrap, string defaultRdbms, string activeRdbms, string server, string dbName, string port, 
-            string dbSchema, string dbUsername, string dbPassword)
-        {
-            try
-            {
-                AssignBasic(language, autoSave, fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms); 
-                AssignDbCredentials(server, dbName, port, dbSchema, dbUsername, dbPassword); 
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        }
-
-        public void SetActiveRdbms(string activeRdbms)
-        {
-            if (string.IsNullOrEmpty(activeRdbms))
-            {
-                throw new System.Exception("Parameter 'activeRdbms' should not be null or empty"); 
-            }
-            ActiveRdbms = this.EnumEncoder.GetRdbmsEnum($"{activeRdbms}"); 
-        }
-
-        public void SetDbName(string dbName)
-        {
-            if (string.IsNullOrEmpty(dbName))
-            {
-                throw new System.Exception("Parameter 'dbName' should not be null or empty"); 
-            }
-            DbName = dbName; 
-        }
+        #endregion  // Public methods 
     }
 }

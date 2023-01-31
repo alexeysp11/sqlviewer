@@ -5,23 +5,41 @@ using SqlViewer.Models.NetworkPreproc;
 
 namespace SqlViewer.Models.AppBranches
 {
+    /// <summary>
+    /// 
+    /// </summary>  
     public class NetworkBranch
     {
+        #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
         public INetworkPreproc CommunicationNetworkPreproc { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public INetworkPreproc TransferNetworkPreproc { get; private set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public DbInterconnection DbInterconnection { get; private set; }
+        #endregion  // Properties
 
+        #region Constructor
+        /// <summary>
+        /// 
+        /// </summary>
         public NetworkBranch()
         {
             this.DbInterconnection = new DbInterconnection(); 
         }
+        #endregion  // Constructor
 
-        private bool IsDifferentNetworkPreproc(INetworkPreproc networkPreproc, string typeName) 
-        {
-            return string.IsNullOrEmpty(typeName) || networkPreproc == null || !networkPreproc.GetType().ToString().Contains(typeName);
-        }
-
+        #region Public methods
+        /// <summary>
+        /// 
+        /// </summary>
         public void InitCommunicationProtocol(string protocolName)
         {
             if (string.IsNullOrEmpty(protocolName))
@@ -67,6 +85,9 @@ namespace SqlViewer.Models.AppBranches
                 throw ex; 
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public void InitTransferProtocol(string protocolName)
         {
             if (string.IsNullOrEmpty(protocolName))
@@ -85,6 +106,9 @@ namespace SqlViewer.Models.AppBranches
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string GetLocalIp()
         {
             int port = 8000; 
@@ -111,6 +135,9 @@ namespace SqlViewer.Models.AppBranches
             return string.IsNullOrEmpty(output) ? "no connection" : output;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public bool PingHost(string nameOrAddress)
         {
             if (string.IsNullOrEmpty(nameOrAddress))
@@ -137,5 +164,16 @@ namespace SqlViewer.Models.AppBranches
             }
             return pingable;
         }
+        #endregion  // Public methods
+
+        #region Private methods
+        /// <summary>
+        /// 
+        /// </summary>
+        private bool IsDifferentNetworkPreproc(INetworkPreproc networkPreproc, string typeName) 
+        {
+            return string.IsNullOrEmpty(typeName) || networkPreproc == null || !networkPreproc.GetType().ToString().Contains(typeName);
+        }
+        #endregion  // Private methods
     }
 }

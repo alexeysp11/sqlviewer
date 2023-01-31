@@ -13,9 +13,18 @@ namespace SqlViewer.UserControls
     /// </summary>
     public partial class Menu : UserControl
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         private MenuEntity MenuEntity { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Menu()
         {
             InitializeComponent();
@@ -29,6 +38,9 @@ namespace SqlViewer.UserControls
             }; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void Init()
         {
             InitFile(); 
@@ -38,6 +50,9 @@ namespace SqlViewer.UserControls
             InitHelp(); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitFile()
         {
             miFile.Header = SettingsHelper.TranslateUiElement(MenuEntity.FileField.English, MenuEntity.FileField.Translation); 
@@ -86,6 +101,9 @@ namespace SqlViewer.UserControls
             miFileExit.Header = SettingsHelper.TranslateUiElement(MenuEntity.FileExitField.English, MenuEntity.FileExitField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitEdit()
         {
             miEdit.Header = SettingsHelper.TranslateUiElement(MenuEntity.EditField.English, MenuEntity.EditField.Translation); 
@@ -94,6 +112,9 @@ namespace SqlViewer.UserControls
             miEditSettings.Header = SettingsHelper.TranslateUiElement(MenuEntity.EditSettingsField.English, MenuEntity.EditSettingsField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitPages()
         {
             miPages.Header = SettingsHelper.TranslateUiElement(MenuEntity.PagesField.English, MenuEntity.PagesField.Translation); 
@@ -110,6 +131,9 @@ namespace SqlViewer.UserControls
             miPagesTables.Header = SettingsHelper.TranslateUiElement(MenuEntity.PagesTablesField.English, MenuEntity.PagesTablesField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitTools()
         {
             miTools.Header = SettingsHelper.TranslateUiElement(MenuEntity.ToolsField.English, MenuEntity.ToolsField.Translation); 
@@ -118,6 +142,9 @@ namespace SqlViewer.UserControls
             miToolsConnections.Header = SettingsHelper.TranslateUiElement(MenuEntity.ToolsConnectionsField.English, MenuEntity.ToolsConnectionsField.Translation); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void InitHelp()
         {
             miHelp.Header = SettingsHelper.TranslateUiElement(MenuEntity.HelpField.English, MenuEntity.HelpField.Translation); 

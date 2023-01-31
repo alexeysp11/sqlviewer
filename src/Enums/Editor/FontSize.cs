@@ -1,5 +1,8 @@
 namespace SqlViewer.Enums.Editor
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public enum FontSize
     {
         FontSize8 = 8, 

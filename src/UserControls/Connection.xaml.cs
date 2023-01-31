@@ -17,11 +17,23 @@ namespace SqlViewer.UserControls
     /// </summary>
     public partial class Connection : UserControl
     {
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
         private ConnectionEntity ConnectionEntity { get; set; }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private int OrdinalNum = 0; 
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Connection()
         {
             InitializeComponent();
@@ -35,6 +47,9 @@ namespace SqlViewer.UserControls
         }
         
         #region Initialization
+        /// <summary>
+        /// 
+        /// </summary>
         private void Init()
         {
             lblActiveRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(ConnectionEntity.ActiveRdbmsField.Translation) ? ConnectionEntity.ActiveRdbmsField.English + ":" : ConnectionEntity.ActiveRdbmsField.Translation + ":"; 
@@ -42,6 +57,9 @@ namespace SqlViewer.UserControls
             btnConnectionTransfer.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(ConnectionEntity.TransferField.Translation) ? ConnectionEntity.TransferField.English : ConnectionEntity.TransferField.Translation; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         public void SetOrdinalNum(int ordinalNum) 
         {
             try
@@ -58,6 +76,9 @@ namespace SqlViewer.UserControls
         #endregion  // Initialization
 
         #region Event processing
+        /// <summary>
+        /// 
+        /// </summary>
         private void btnOpenSqliteDataSource_Clicked(object sender, RoutedEventArgs e)
         {
             try
@@ -72,12 +93,18 @@ namespace SqlViewer.UserControls
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void btnDataSource_Clicked(object sender, RoutedEventArgs e)
         {
             string msg = SqlViewer.Helpers.SettingsHelper.GetHelpDataSourceString(); 
             System.Windows.MessageBox.Show(msg, "Instruction: How to form DataSource (DS) string", MessageBoxButton.OK, MessageBoxImage.Information); 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             tbDataSource.Text = System.String.Empty; 
@@ -85,6 +112,9 @@ namespace SqlViewer.UserControls
             tbActiveRdbms.Text = cbActiveRdbms.Text; 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void btnConnectionExecute_Clicked(object sender, System.EventArgs e)
         {
             try
@@ -113,6 +143,9 @@ namespace SqlViewer.UserControls
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private void btnConnectionTransfer_Clicked(object sender, System.EventArgs e)
         {
             try
@@ -132,6 +165,9 @@ namespace SqlViewer.UserControls
         #endregion  // Event processing
 
         #region Database methods
+        /// <summary>
+        /// 
+        /// </summary>
         private void TransferData(string tableName)
         {
             try

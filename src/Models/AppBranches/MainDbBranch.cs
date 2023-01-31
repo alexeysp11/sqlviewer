@@ -13,19 +13,42 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.AppBranches
 {
+    /// <summary>
+    /// Class for using database connections on SQL and tables pages 
+    /// </summary>
     public class MainDbBranch
     {
+        #region Properties
+        /// <summary>
+        /// 
+        /// </summary>
         private MainVM MainVM { get; set; }
 
+        /// <summary>
+        /// Instance of database connection for getting and/or setting app settings 
+        /// </summary>
         public IDbPreproc AppRdbmsPreproc { get; private set; }
+        /// <summary>
+        /// Instance of database connection that performs queries written by a user 
+        /// </summary>
         public IDbPreproc UserRdbmsPreproc { get; private set; }
+        #endregion  // Properties
 
+        #region Constructor
+        /// <summary>
+        /// 
+        /// </summary>
         public MainDbBranch(MainVM mainVM)
         {
             this.MainVM = mainVM; 
             this.AppRdbmsPreproc = new SqliteDbPreproc(this.MainVM); 
         }
+        #endregion  // Constructor
 
+        #region Public methods
+        /// <summary>
+        /// Creates database using UserRdbmsPreproc
+        /// </summary>
         public void CreateDb()
         {
             try
@@ -37,6 +60,9 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        /// <summary>
+        /// Opens database using UserRdbmsPreproc
+        /// </summary>
         public void OpenDb()
         {
             try
@@ -50,6 +76,9 @@ namespace SqlViewer.Models.AppBranches
             }
         }
 
+        /// <summary>
+        /// Gets SQL query from a local file 
+        /// </summary>
         public string GetSqlRequest(string filename)
         {
             string sqlRequest = string.Empty; 
@@ -64,6 +93,9 @@ namespace SqlViewer.Models.AppBranches
             return sqlRequest; 
         }
 
+        /// <summary>
+        /// initializes UserRdbmsPreproc
+        /// </summary>
         public void InitUserDbConnection()
         {
             try
@@ -101,6 +133,9 @@ namespace SqlViewer.Models.AppBranches
             }
         }
 
+        /// <summary>
+        /// Displays all tables that a database contains 
+        /// </summary>
         public void DisplayTablesInDb()
         {
             try
@@ -112,6 +147,9 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+        /// <summary>
+        /// Gets all data from a table 
+        /// </summary>
         public void GetAllDataFromTable(string tableName)
         {
             try
@@ -123,6 +161,9 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+        /// <summary>
+        /// Gets info about all the columns that a table contains 
+        /// </summary>
         public void GetColumnsOfTable(string tableName)
         {
             try
@@ -134,6 +175,9 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+        /// <summary>
+        /// Gets info about all the foreign keys that a table contains 
+        /// </summary>
         public void GetForeignKeys(string tableName)
         {
             try
@@ -145,6 +189,9 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+        /// <summary>
+        /// Gets info about all the triggers that a table contains 
+        /// </summary>
         public void GetTriggers(string tableName)
         {
             try
@@ -156,6 +203,9 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+        /// <summary>
+        /// Gets SQL query for recreating a table  
+        /// </summary>
         public void GetSqlDefinition(string tableName)
         {
             try
@@ -168,6 +218,9 @@ namespace SqlViewer.Models.AppBranches
             }
         }
         
+        /// <summary>
+        /// Sends SQL quty to database 
+        /// </summary>
         public void SendSqlRequest()
         {
             try
@@ -179,6 +232,9 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
+        /// <summary>
+        /// Sends SQL quty to database and gets a result in a form of DataTable 
+        /// </summary>
         public DataTable SendSqlRequest(string sql)
         {
             DataTable dt = new DataTable(); 
@@ -193,6 +249,9 @@ namespace SqlViewer.Models.AppBranches
             return dt; 
         }
 
+        /// <summary>
+        /// Clears temporary tables
+        /// </summary>
         public void ClearTempTable(string tableName)
         {
             try
@@ -204,5 +263,6 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+        #endregion  // Public methods
     }
 }
