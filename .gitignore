@@ -4,6 +4,8 @@
 obj 
 bin 
 
+packages 
+
 tests
 test.cmd 
 

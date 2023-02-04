@@ -85,6 +85,9 @@ Using this app, you can do the following things:
 
 - Windows OS; 
 - .NET Core 3.1; 
+- **cURL** (preinstalled in Windows 10); 
+- **tar.exe** (preinstalled in Windows 10); 
+- MinGW; 
 - One of the following data sources to be able to perform some operations with data (if you have more than one data sources installed on your computer, your user experience is going to be much better and productive): 
     - RDBMS (**SQLite**, **PostgreSQL**, **MySQL** or **Oracle**), 
     - MS Office (**Excel**), 
