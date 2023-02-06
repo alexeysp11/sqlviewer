@@ -36,20 +36,28 @@ namespace SqlViewer.Commands
                     this.MainVM.VisualVM.OpenView("SettingsView"); 
                     break;
 
-                case "Options":
-                    this.MainVM.VisualVM.OpenView("OptionsView"); 
-                    break;
-
                 case "Connections":
                     this.MainVM.VisualVM.OpenView("ConnectionsView"); 
                     break;
-
-                case "Network":
-                    this.MainVM.VisualVM.OpenView("NetworkView"); 
+                
+                case "About":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("About page", "User guide", $"{SqlViewer.Helpers.SettingsHelper.GetRootFolder()}\\docs\\About.html"); 
                     break;
 
-                case "CustomFiles":
-                    this.MainVM.VisualVM.OpenView("CustomFilesView"); 
+                case "SqliteDocs":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("SQLite documentation", "Common SQL docs", "https://www.sqlite.org/index.html");
+                    break;
+
+                case "PosgresDocs":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("PosgresSQL documentation", "Common SQL docs", "https://www.postgresql.org/");
+                    break;
+
+                case "MySqlDocs":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("MySQL documentation", "Common SQL docs", "https://dev.mysql.com/doc/"); 
+                    break;
+
+                case "OracleDocs":
+                    this.MainVM.VisualVM.OpenDocsInBrowser("Oracle documentation", "Common SQL docs", "https://docs.oracle.com/en/database/oracle/oracle-database/index.html"); 
                     break;
 
                 default:

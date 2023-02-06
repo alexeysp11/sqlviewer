@@ -1,16 +1,10 @@
 # sqlviewer 
 
-`sqlviewer` is a C# implementation of a GUI for retrieving and transfering data from the following sources: 
-- RDBMS (**SQLite**, **PostgreSQL**, **MySQL** and **Oracle**);  
-- Custom **JSON**/**XML**/**CSV** files; 
-- MS Office (**Excel**); 
-- LibreOffice/OpenOffice (**Calc**). 
-
-Web service features: 
-- HTTP, FTP, TCP; 
-- SOAP/WCF, gRPC, RESTful API; 
-- NNTP, IPFS; 
-- Instant messaging protocols (IMAP, IRC, POP, SMTP, XMPP, MQTP). 
+`sqlviewer` is a C# implementation of a GUI for retrieving and transfering data from the following RDBMS: 
+- **SQLite**, 
+- **PostgreSQL**, 
+- **MySQL**, 
+- **Oracle**. 
 
 It's available in 29 different languages, such as: 
 - English;
@@ -29,34 +23,6 @@ It's available in 29 different languages, such as:
 - Korean;
 - Japanese, etc. 
 
-<!--
-Add some more languages: 
-- Arabic; 
-- Catalan; 
-- Chinese (simplified); 
-- Chinese (traditional); 
-- Estonian; 
-- Filipino; 
-- Finnish; 
-- Hebrew; 
-- Hindi; 
-- Hungarian; 
-- Icelandic; 
-- Irish; 
-- Kyrgyz; 
-- Latvian; 
-- Lithuanian; 
-- Maltese; 
-- Mongolian; 
-- Nepali; 
-- Persian; 
-- Thai; 
-- Uzbek;  
-- Vietnamese;  
-- Welsh; 
-- Yidish. 
--->
-
 Using this app, you can do the following things: 
 
 - write and execute SQL queries:
@@ -71,27 +37,17 @@ Using this app, you can do the following things:
 
 ![Example (UI, connections)](docs/img/ui_connections.png)
 
-- connect to other computers and send data over the network:
-
-![Example (UI, network)](docs/img/ui_network.png)
-
-- get data from MS Excel or LibreOffice/OpenOffice Calc, and save it to a specific database: 
-
-![Example (UI, custom files)](docs/img/custom_files.png)
-
 ## Getting started 
 
 ### Prerequisites 
 
 - Windows OS; 
 - .NET Core 3.1; 
-- **cURL** (preinstalled in Windows 10); 
-- **tar.exe** (preinstalled in Windows 10); 
-- MinGW; 
-- One of the following data sources to be able to perform some operations with data (if you have more than one data sources installed on your computer, your user experience is going to be much better and productive): 
-    - RDBMS (**SQLite**, **PostgreSQL**, **MySQL** or **Oracle**), 
-    - MS Office (**Excel**), 
-    - LibreOffice/OpenOffice (**Calc**). 
+- One of the following data sources to be able to perform some operations with data: 
+    - **SQLite**, 
+    - **PostgreSQL**, 
+    - **MySQL**,
+    - **Oracle**. 
 
 ### Download and run 
 
@@ -132,7 +88,3 @@ This application is written in C# with **WPF** using **MVVM** pattern.
 Class diagram is shown below:
 
 ![Class diagram: SqlViewer](docs/img/sqlviewer_diagram.png)
-
-Class diagram of network extension: 
-
-![Class diagram: SqlViewerNetwork](docs/img/sqlviewernetwork_diagram.png)

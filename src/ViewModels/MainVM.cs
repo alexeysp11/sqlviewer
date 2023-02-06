@@ -10,6 +10,9 @@ using SqlViewer.Helpers;
 
 namespace SqlViewer.ViewModels
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MainVM
     {
         #region Properties
@@ -30,11 +33,7 @@ namespace SqlViewer.ViewModels
         /// <summary>
         /// 
         /// </summary>
-        public ICommand DbCommand { get; private set; } 
-        /// <summary>
-        /// 
-        /// </summary>
-        public ICommand HelpCommand { get; private set; } 
+        public ICommand DbCommand { get; private set; }
         /// <summary>
         /// 
         /// </summary>
@@ -61,7 +60,6 @@ namespace SqlViewer.ViewModels
             this.VisualVM = new VisualVM(this); 
             
             this.DbCommand = new DbCommand(this); 
-            this.HelpCommand = new HelpCommand(this); 
             this.RedirectCommand = new RedirectCommand(this); 
             this.AppCommand = new AppCommand(this); 
 
@@ -211,7 +209,6 @@ namespace SqlViewer.ViewModels
             if (System.Windows.MessageBox.Show(msg, "Exit the application", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 System.Windows.Application.Current.Shutdown();
-                //SqlViewer.Helpers.FileSysHelper.ExecuteCmd("taskkill /f /im SqlViewer.exe /t"); 
             }
         }
     }

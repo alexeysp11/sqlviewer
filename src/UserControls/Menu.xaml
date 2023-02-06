@@ -32,20 +32,20 @@
                     <MenuItem Name="miFileOpenView" Header="View" />
                     <MenuItem Name="miFileOpenTrigger" Header="Trigger" />
                 </MenuItem>
-                <MenuItem Name="miFileReopen" Header="Reopen" />
+                <MenuItem Name="miFileReopen" Header="Reopen" IsEnabled="False" />
                 <Separator/>
-                <MenuItem Name="miFileSave" Header="Save" />
-                <MenuItem Name="miFileSaveAll" Header="Save All" />
+                <MenuItem Name="miFileSave" Header="Save" IsEnabled="False" />
+                <MenuItem Name="miFileSaveAll" Header="Save All" IsEnabled="False" />
                 <Separator/>
-                <MenuItem Name="miFileClose" Header="Close" />
-                <MenuItem Name="miFileCloseAll" Header="Close All" />
+                <MenuItem Name="miFileClose" Header="Close" IsEnabled="False" />
+                <MenuItem Name="miFileCloseAll" Header="Close All" IsEnabled="False" />
                 <Separator/>
                 <MenuItem Name="miFileExit" Header="Exit" Command="{Binding AppCommand}" CommandParameter="ExitApplication" />
             </MenuItem>
 
             <MenuItem Name="miEdit" Header="Edit">
-                <MenuItem Name="miEditUndo" Header="Undo" />
-                <MenuItem Name="miEditRedo" Header="Redo" />
+                <MenuItem Name="miEditUndo" Header="Undo" IsEnabled="False" />
+                <MenuItem Name="miEditRedo" Header="Redo" IsEnabled="False" />
                 <Separator/>
                 <MenuItem Name="miEditSettings" Header="Settings" Command="{Binding RedirectCommand}" CommandParameter="Settings" />
             </MenuItem>
@@ -63,26 +63,25 @@
             </MenuItem>
 
             <MenuItem Name="miTools" Header="Tools">
-                <MenuItem Name="miToolsOptions" Header="Options" Command="{Binding RedirectCommand}" CommandParameter="Options" />
-                <MenuItem Name="miToolsToolbars" Header="Toolbars" />
+                <MenuItem Name="miToolsOptions" Header="Options" IsEnabled="False" Command="{Binding RedirectCommand}" CommandParameter="Options" />
+                <MenuItem Name="miToolsToolbars" Header="Toolbars" IsEnabled="False" />
                 <Separator/>
                 <MenuItem Name="miToolsConnections" Header="Connections" Command="{Binding RedirectCommand}" CommandParameter="Connections" />
-                <MenuItem Name="miToolsNetwork" Header="Network" Command="{Binding RedirectCommand}" CommandParameter="Network" />
-                <MenuItem Name="miToolsCustomFiles" Header="Custom files" Command="{Binding RedirectCommand}" CommandParameter="CustomFiles" />
             </MenuItem>
 
             <MenuItem Name="miHelp" Header="Help">
                 <MenuItem Name="miHelpDocs" Header="Common SQL docs">
-                    <MenuItem Name="miHelpDocsSqlite" Header="SQLite" Command="{Binding HelpCommand}" CommandParameter="SqliteDocs" />
-                    <MenuItem Name="miHelpDocsPostgres" Header="PostgreSQL" Command="{Binding HelpCommand}" CommandParameter="PosgresDocs" />
-                    <MenuItem Name="miHelpDocsMySql" Header="MySQL" Command="{Binding HelpCommand}" CommandParameter="MySqlDocs" />
+                    <MenuItem Name="miHelpDocsSqlite" Header="SQLite" Command="{Binding RedirectCommand}" CommandParameter="SqliteDocs" />
+                    <MenuItem Name="miHelpDocsPostgres" Header="PostgreSQL" Command="{Binding RedirectCommand}" CommandParameter="PosgresDocs" />
+                    <MenuItem Name="miHelpDocsMySql" Header="MySQL" Command="{Binding RedirectCommand}" CommandParameter="MySqlDocs" />
+                    <MenuItem Name="miHelpDocsOracle" Header="Oracle" Command="{Binding RedirectCommand}" CommandParameter="OracleDocs" />
                 </MenuItem>
                 <MenuItem Name="miHelpUserGuide" Header="User guide">
-                    <MenuItem Name="miHelpUserGuideAbout" Header="About" Command="{Binding HelpCommand}" CommandParameter="About" />
+                    <MenuItem Name="miHelpUserGuideAbout" Header="About" Command="{Binding RedirectCommand}" CommandParameter="About" />
                 </MenuItem>
                 <MenuItem Name="miHelpGithub" Header="GitHub repository" />
                 <Separator/>
-                <MenuItem Name="miHelpReport" Header="Report" />
+                <MenuItem Name="miHelpReport" Header="Report" IsEnabled="False" />
             </MenuItem>
         </Menu>
     </Grid>

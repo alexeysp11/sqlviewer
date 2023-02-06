@@ -2,6 +2,9 @@ using SqlViewer.Models.AppBranches;
 
 namespace SqlViewer.ViewModels
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class DataVM
     {
         /// <summary>
@@ -12,10 +15,6 @@ namespace SqlViewer.ViewModels
         /// 
         /// </summary>
         public InterDbBranch InterDbBranch { get; private set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public NetworkBranch NetworkBranch { get; private set; }
 
         /// <summary>
         /// 
@@ -24,7 +23,6 @@ namespace SqlViewer.ViewModels
         {
             this.MainDbBranch = new MainDbBranch(mainVM); 
             this.InterDbBranch = new InterDbBranch(); 
-            this.NetworkBranch = new NetworkBranch(); 
         }
     }
 }

@@ -114,10 +114,6 @@ namespace SqlViewer.Models.AppBranches
                         (this.UserRdbmsPreproc = new MysqlDbPreproc(this.MainVM)).InitUserDbConnection(); 
                         break;
 
-                    case RdbmsEnum.MSSQL: 
-                        (this.UserRdbmsPreproc = new MssqlDbPreproc(this.MainVM)).InitUserDbConnection(); 
-                        break;
-
                     case RdbmsEnum.Oracle: 
                         (this.UserRdbmsPreproc = new OracleDbPreproc(this.MainVM)).InitUserDbConnection(); 
                         break;
