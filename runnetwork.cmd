@@ -1,3 +1,3 @@
 @echo off 
 
-dotnet run --project ./extensions/SqlViewerNetwork/cs/SqlViewerNetwork.csproj 
+dotnet run --project ./extensions/SqlViewerNetwork/SqlViewerNetwork.csproj 

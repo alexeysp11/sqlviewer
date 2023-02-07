@@ -116,7 +116,7 @@ namespace SqlViewerConfig
         public void InitDatabases()
         {
             string rootFolder = GetRootFolder(); 
-            string sqliteInitFolder = System.IO.Path.Combine(rootFolder, "extensions/SqlViewerConfig/Queries/Sqlite/Init"); 
+            string sqliteInitFolder = System.IO.Path.Combine(rootFolder, "src/Queries/Sqlite/Init"); 
             
             bool isInit = false; 
             while (!isInit)
@@ -148,7 +148,7 @@ namespace SqlViewerConfig
         private string GetRootFolder()
         {
             if (string.IsNullOrEmpty(RootFolder))
-                RootFolder = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\..\\..\\.."); 
+                RootFolder = System.IO.Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "..\\..\\..\\..\\.."); 
             return RootFolder; 
         }
 
