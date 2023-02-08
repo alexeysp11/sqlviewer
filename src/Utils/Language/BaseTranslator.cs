@@ -5,7 +5,7 @@ using SqlViewerDatabase.DbConnections;
 namespace SqlViewer.Utils.Language
 {
     /// <summary>
-    /// 
+    /// Base class of Translator
     /// </summary>
     public abstract class BaseTranslator
     {
@@ -31,14 +31,14 @@ namespace SqlViewer.Utils.Language
             {
                 return this.AppDbConnection.ExecuteSqlCommand(sql); 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                throw ex; 
+                throw; 
             }
         }
 
         /// <summary>
-        /// 
+        /// Finds translation of an english word
         /// </summary>
         public string TranslateSingleWord(DataTable dt, string rowName, string wordEnglish)
         {
@@ -51,10 +51,7 @@ namespace SqlViewer.Utils.Language
                     .First(); 
                 result = row[rowName].ToString(); 
             }
-            catch (System.Exception ex)
-            {
-
-            }
+            catch (System.Exception) {}
             return result; 
         }
     }

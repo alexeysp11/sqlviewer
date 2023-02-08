@@ -15,22 +15,22 @@ namespace SqlViewer.Views
     public partial class SettingsView : Window
     {
         /// <summary>
-        /// 
+        /// Main ViewModel
         /// </summary>
         private MainVM MainVM { get; set; }
         
         /// <summary>
-        /// 
+        /// Entity of the view, that is used for translating visual elements 
         /// </summary>
         private SettingsEntity SettingsEntity { get; set; }
 
         /// <summary>
-        /// 
+        /// String variable for storing previously selected Active RDBMS 
         /// </summary>
         private string OldActiveRdbms { get; set; }
 
         /// <summary>
-        /// 
+        /// Constructor of SettingsView
         /// </summary>
         public SettingsView()
         {
@@ -47,7 +47,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// General method that initializes the view 
         /// </summary>
         public void Init()
         {
@@ -58,7 +58,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of editor preferences 
         /// </summary>
         private void InitPreferencesEditor()
         {
@@ -86,7 +86,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of database preferences 
         /// </summary>
         private void InitPreferencesDb()
         {
@@ -108,7 +108,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of buttons 
         /// </summary>
         private void InitButtons()
         {
@@ -118,7 +118,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of entering data about preferable database connection 
         /// </summary>
         private void InitDbCredentials()
         {
@@ -191,7 +191,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Cancels changes that are made on the view (is invoked from MainVM.CancelSettings() method)
         /// </summary>
         public void CancelChangesAppRepository()
         {
@@ -203,19 +203,19 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        private void SettingsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ((MainVM)this.DataContext).VisualVM.SettingsView = null; 
-        }
-
-        /// <summary>
-        /// 
+        /// Handles selection of active RDBMS 
         /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             InitDbCredentials(); 
+        }
+
+        /// <summary>
+        /// Event handler which sets the reference to itself in MainVM to null, when the view is closing 
+        /// </summary>
+        private void SettingsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ((MainVM)this.DataContext).VisualVM.SettingsView = null; 
         }
     }
 }

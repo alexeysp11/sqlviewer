@@ -10,11 +10,11 @@ namespace SqlViewer.UserControls
     /// </summary>
     public partial class DbGrid : UserControl
     {
-        public static readonly DependencyProperty HeightProperty
+        public static new readonly DependencyProperty HeightProperty
             = DependencyProperty.Register("Height", typeof(double), typeof(DbGrid),
                 new PropertyMetadata(0.0));
         
-        public static readonly DependencyProperty WidthProperty
+        public static new readonly DependencyProperty WidthProperty
             = DependencyProperty.Register("Width", typeof(double), typeof(DbGrid),
                 new PropertyMetadata(0.0));
         
@@ -30,7 +30,7 @@ namespace SqlViewer.UserControls
             = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(DbGrid),
                 new PropertyMetadata(null));
         
-        public double Height
+        public new double Height
         {
             get => (double)GetValue(HeightProperty);
             set 
@@ -40,7 +40,7 @@ namespace SqlViewer.UserControls
             }
         }
 
-        public double Width
+        public new double Width
         {
             get => (double)GetValue(WidthProperty);
             set 

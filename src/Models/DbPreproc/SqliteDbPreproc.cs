@@ -245,19 +245,6 @@ namespace SqlViewer.Models.DbPreproc
                 throw ex; 
             }
         }
-
-        public void ClearTempTable(string tableName)
-        {
-            string sqlRequest = $"DELETE FROM {tableName};";
-            try
-            {
-                base.AppDbConnection.ExecuteSqlCommand(sqlRequest);
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        }
         #endregion  // Low-level operations 
     } 
 }

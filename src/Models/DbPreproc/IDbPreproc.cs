@@ -19,7 +19,6 @@ namespace SqlViewer.Models.DbPreproc
 
         void SendSqlRequest(); 
         DataTable SendSqlRequest(string sql); 
-        void ClearTempTable(string tableName); 
 
         ICommonDbConnectionSV GetAppDbConnection(); 
         ICommonDbConnectionSV GetUserDbConnection(); 

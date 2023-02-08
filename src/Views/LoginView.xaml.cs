@@ -14,22 +14,22 @@ namespace SqlViewer.Views
     public partial class LoginView : Window
     {
         /// <summary>
-        /// 
+        /// Main ViewModel
         /// </summary>
         private MainVM MainVM { get; set; }
         
         /// <summary>
-        /// 
+        /// Entity of the view, that is used for translating visual elements 
         /// </summary>
         private LoginEntity LoginEntity { get; set; }
 
         /// <summary>
-        /// 
+        /// Boolean variable for getting if user logged on 
         /// </summary>
         private bool IsLoggedIn { get; set; } = false; 
 
         /// <summary>
-        /// 
+        /// Constructor of LoginView
         /// </summary>
         public LoginView()
         {
@@ -45,7 +45,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// General method that initializes the view 
         /// </summary>
         private void Init()
         {
@@ -65,7 +65,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of database preferences 
         /// </summary>
         private void InitPreferencesDb()
         {
@@ -78,7 +78,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of buttons 
         /// </summary>
         private void InitButtons()
         {
@@ -87,7 +87,7 @@ namespace SqlViewer.Views
         }
         
         /// <summary>
-        /// 
+        /// Initializes section of entering data about preferable database connection 
         /// </summary>
         private void InitDbCredentials()
         {
@@ -132,7 +132,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Handles click on the LogIn button 
         /// </summary>
         private void btnLogIn_Clicked(object sender, RoutedEventArgs e)
         {
@@ -150,7 +150,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Handles selection of active RDBMS 
         /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
@@ -158,7 +158,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Exits the application, if user is not logged in 
         /// </summary>
         private void LoginView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {

@@ -133,7 +133,6 @@ namespace SqlViewer.UserControls
 
                     default: 
                         throw new System.Exception("Incorrect OrdinalNum in UserControls.Connection: '" + OrdinalNum + "'"); 
-                        break; 
                 }
                 dbgSqlResult.ItemsSource = OrdinalNum == 1 ? di.InterDbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : di.InterDbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView; 
             }

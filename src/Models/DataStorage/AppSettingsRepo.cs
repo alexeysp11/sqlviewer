@@ -15,6 +15,8 @@ namespace SqlViewer.Models.DataStorage
     public class AppSettingsRepo
     {
         #region Properties
+        public ConfigSettings ConfigSettings { get; private set; }
+
         public LanguageEnum Language { get; private set; }
         public AutoSaveEnum AutoSave { get; private set; }
         public FontSizeEnum FontSize { get; private set; }
@@ -34,6 +36,12 @@ namespace SqlViewer.Models.DataStorage
         #endregion  // Properties
 
         #region Public methods 
+        public void SetConfigSettings(ConfigSettings configSettings)
+        {
+            if (configSettings == null) throw new System.Exception("Parameter 'configSettings' could not be null"); 
+            ConfigSettings = configSettings; 
+        }
+
         public void SetLanguage(string language) 
         {
             if (string.IsNullOrEmpty(language)) throw new System.Exception("Parameter 'language' could not be null or empty"); 

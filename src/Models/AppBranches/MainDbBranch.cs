@@ -20,7 +20,7 @@ namespace SqlViewer.Models.AppBranches
     {
         #region Properties
         /// <summary>
-        /// 
+        /// Main ViewModel 
         /// </summary>
         private MainVM MainVM { get; set; }
 
@@ -120,7 +120,6 @@ namespace SqlViewer.Models.AppBranches
 
                     default:
                         throw new System.Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
-                        break;
                 }
             }
             catch (System.Exception ex)
@@ -243,21 +242,6 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
             return dt; 
-        }
-
-        /// <summary>
-        /// Clears temporary tables
-        /// </summary>
-        public void ClearTempTable(string tableName)
-        {
-            try
-            {
-                AppRdbmsPreproc.ClearTempTable(tableName); 
-            }
-            catch (System.Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
         #endregion  // Public methods
     }

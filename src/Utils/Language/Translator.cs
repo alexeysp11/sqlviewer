@@ -9,13 +9,13 @@ using LanguageEnum = SqlViewer.Enums.Common.Language;
 namespace SqlViewer.Utils.Language
 {
     /// <summary>
-    /// 
+    /// Class that allows to translate the application 
     /// </summary>
-    public class Translator : BaseTranslator, ICommonMsgTranslator, ISettingsTranslator
+    public class Translator : BaseTranslator
     {
         #region Properties
         /// <summary>
-        /// 
+        /// Main ViewModel 
         /// </summary>
         private MainVM MainVM { get; set; }
 
