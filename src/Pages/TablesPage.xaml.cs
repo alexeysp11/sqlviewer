@@ -14,16 +14,16 @@ namespace SqlViewer.Pages
     public partial class TablesPage : UserControl
     {
         /// <summary>
-        /// 
+        /// Main ViewModel 
         /// </summary>
         private MainVM MainVM { get; set; }
         /// <summary>
-        /// 
+        /// Entity that stores data for translating the page 
         /// </summary>
         private TablesPageEntity TablesPageEntity { get; set; }
 
         /// <summary>
-        /// 
+        /// Constructor of TablesPage
         /// </summary>
         public TablesPage()
         {
@@ -39,7 +39,7 @@ namespace SqlViewer.Pages
         }
 
         /// <summary>
-        /// 
+        /// Initializes all the page 
         /// </summary>
         public void Init()
         {
@@ -54,7 +54,7 @@ namespace SqlViewer.Pages
         }
 
         /// <summary>
-        /// 
+        /// Displays headers of in the DataGrid correctly 
         /// </summary>
         private void ResultDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
@@ -63,7 +63,7 @@ namespace SqlViewer.Pages
         }
 
         /// <summary>
-        /// 
+        /// Displays information about selected table inside TableView 
         /// </summary>
         private void SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {

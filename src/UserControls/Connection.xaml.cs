@@ -18,21 +18,21 @@ namespace SqlViewer.UserControls
     public partial class Connection : UserControl
     {
         /// <summary>
-        /// 
+        /// Main ViewModel 
         /// </summary>
         private MainVM MainVM { get; set; }
         /// <summary>
-        /// 
+        /// Entity for storing data for translating visual elements on the UserControl 
         /// </summary>
         private ConnectionEntity ConnectionEntity { get; set; }
 
         /// <summary>
-        /// 
+        /// Ordinal number that allows to distinguish what database source it is necessary to connect to 
         /// </summary>
         private int OrdinalNum = 0; 
 
         /// <summary>
-        /// 
+        /// Constructor of Connection
         /// </summary>
         public Connection()
         {
@@ -48,7 +48,7 @@ namespace SqlViewer.UserControls
         
         #region Initialization
         /// <summary>
-        /// 
+        /// Initializes the UserControl 
         /// </summary>
         private void Init()
         {
@@ -58,7 +58,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Sets ordinal number of the UserControl 
         /// </summary>
         public void SetOrdinalNum(int ordinalNum) 
         {
@@ -77,7 +77,7 @@ namespace SqlViewer.UserControls
 
         #region Event processing
         /// <summary>
-        /// 
+        /// Opens local database if SQLite was selected 
         /// </summary>
         private void btnOpenSqliteDataSource_Clicked(object sender, RoutedEventArgs e)
         {
@@ -94,7 +94,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Displays an instruction on how to form DataSource string
         /// </summary>
         private void btnDataSource_Clicked(object sender, RoutedEventArgs e)
         {
@@ -103,17 +103,17 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Reinitializes visual elements when active RDBMS was selected 
         /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             tbDataSource.Text = System.String.Empty; 
-            btnOpenSqliteDataSource.IsEnabled = cbActiveRdbms.Text == "SQLite" ? true : false; 
+            btnOpenSqliteDataSource.IsEnabled = cbActiveRdbms.Text == nameof(RdbmsEnum.SQLite) ? true : false; 
             tbActiveRdbms.Text = cbActiveRdbms.Text; 
         }
 
         /// <summary>
-        /// 
+        /// Executes SQL script written in Multiline textbox 
         /// </summary>
         private void btnConnectionExecute_Clicked(object sender, System.EventArgs e)
         {
@@ -143,7 +143,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Transfers data from one database to another when the Transfer button was clicked 
         /// </summary>
         private void btnConnectionTransfer_Clicked(object sender, System.EventArgs e)
         {
@@ -165,7 +165,7 @@ namespace SqlViewer.UserControls
 
         #region Database methods
         /// <summary>
-        /// 
+        /// Transfers data from one database to another 
         /// </summary>
         private void TransferData(string tableName)
         {

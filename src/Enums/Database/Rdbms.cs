@@ -1,7 +1,7 @@
 namespace SqlViewer.Enums.Database
 {
     /// <summary>
-    /// 
+    /// Enumeration for storing all databases that the application could connect to 
     /// </summary>
     public enum Rdbms
     {

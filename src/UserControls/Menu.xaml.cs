@@ -14,16 +14,16 @@ namespace SqlViewer.UserControls
     public partial class Menu : UserControl
     {
         /// <summary>
-        /// 
+        /// Main ViewModel 
         /// </summary>
         private MainVM MainVM { get; set; }
         /// <summary>
-        /// 
+        /// Entity that stores data for translating the UserControl 
         /// </summary>
         private MenuEntity MenuEntity { get; set; }
 
         /// <summary>
-        /// 
+        /// Constructor of Menu
         /// </summary>
         public Menu()
         {
@@ -39,7 +39,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Initializes all the UserControl 
         /// </summary>
         public void Init()
         {
@@ -51,7 +51,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Initilizes File section 
         /// </summary>
         private void InitFile()
         {
@@ -102,7 +102,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Initilizes Edit section 
         /// </summary>
         private void InitEdit()
         {
@@ -113,7 +113,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Initilizes Pages section 
         /// </summary>
         private void InitPages()
         {
@@ -132,7 +132,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Initilizes Tools section 
         /// </summary>
         private void InitTools()
         {
@@ -143,7 +143,7 @@ namespace SqlViewer.UserControls
         }
 
         /// <summary>
-        /// 
+        /// Initilizes Help section 
         /// </summary>
         private void InitHelp()
         {
