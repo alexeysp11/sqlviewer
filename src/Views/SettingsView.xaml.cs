@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using SqlViewer.ViewModels;
 using SqlViewer.Entities.ViewsEntities; 
 using SqlViewer.Helpers; 
+using SqlViewer.Models.DataStorage; 
+using SqlViewer.ViewModels;
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
@@ -15,22 +16,22 @@ namespace SqlViewer.Views
     public partial class SettingsView : Window
     {
         /// <summary>
-        /// 
+        /// Main ViewModel
         /// </summary>
         private MainVM MainVM { get; set; }
         
         /// <summary>
-        /// 
+        /// Entity of the view, that is used for translating visual elements 
         /// </summary>
         private SettingsEntity SettingsEntity { get; set; }
 
         /// <summary>
-        /// 
+        /// String variable for storing previously selected Active RDBMS 
         /// </summary>
         private string OldActiveRdbms { get; set; }
 
         /// <summary>
-        /// 
+        /// Constructor of SettingsView
         /// </summary>
         public SettingsView()
         {
@@ -47,7 +48,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// General method that initializes the view 
         /// </summary>
         public void Init()
         {
@@ -58,7 +59,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of editor preferences 
         /// </summary>
         private void InitPreferencesEditor()
         {
@@ -86,7 +87,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of database preferences 
         /// </summary>
         private void InitPreferencesDb()
         {
@@ -108,7 +109,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of buttons 
         /// </summary>
         private void InitButtons()
         {
@@ -118,48 +119,22 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Initializes section of entering data about preferable database connection 
         /// </summary>
         private void InitDbCredentials()
         {
-            if (cbActiveRdbms.Text == "SQLite")
+            DbCredentialsVE dbCredentialsVE = new DbCredentialsVE()
             {
-                tbServer.IsEnabled = false; 
-                tbPort.IsEnabled = false; 
-                tbSchema.IsEnabled = false; 
-                tbUsername.IsEnabled = false; 
-                pbPassword.IsEnabled = false; 
-                btnDatabase.IsEnabled = true; 
-                
-                tbServer.Background = System.Windows.Media.Brushes.Gray; 
-                tbPort.Background = System.Windows.Media.Brushes.Gray; 
-                tbSchema.Background = System.Windows.Media.Brushes.Gray; 
-                tbUsername.Background = System.Windows.Media.Brushes.Gray; 
-                pbPassword.Background = System.Windows.Media.Brushes.Gray; 
-            }
-            else
-            {
-                tbServer.IsEnabled = true; 
-                tbPort.IsEnabled = true; 
-                tbSchema.IsEnabled = true; 
-                tbUsername.IsEnabled = true; 
-                pbPassword.IsEnabled = true; 
-                btnDatabase.IsEnabled = false; 
-                
-                tbServer.Background = System.Windows.Media.Brushes.White; 
-                tbPort.Background = System.Windows.Media.Brushes.White; 
-                tbSchema.Background = System.Windows.Media.Brushes.White; 
-                tbUsername.Background = System.Windows.Media.Brushes.White; 
-                pbPassword.Background = System.Windows.Media.Brushes.White; 
-            }
-            tbServer.Text = System.String.Empty; 
-            tbDatabase.Text = System.String.Empty; 
-            tbPort.Text = System.String.Empty; 
-            tbSchema.Text = System.String.Empty; 
-            tbUsername.Text = System.String.Empty; 
-            pbPassword.Password = System.String.Empty; 
-
-            RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
+                cbActiveRdbms = this.cbActiveRdbms, 
+                tbServer = this.tbServer, 
+                tbDatabase = this.tbDatabase, 
+                tbPort = this.tbPort, 
+                tbSchema = this.tbSchema, 
+                tbUsername = this.tbUsername, 
+                pbPassword = this.pbPassword, 
+                btnDatabase = this.btnDatabase
+            };
+            MainVM.VisualVM.InitDbCredentials(dbCredentialsVE); 
         }
 
         /// <summary>
@@ -191,7 +166,7 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
+        /// Cancels changes that are made on the view (is invoked from MainVM.CancelSettings() method)
         /// </summary>
         public void CancelChangesAppRepository()
         {
@@ -203,19 +178,19 @@ namespace SqlViewer.Views
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        private void SettingsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            ((MainVM)this.DataContext).VisualVM.SettingsView = null; 
-        }
-
-        /// <summary>
-        /// 
+        /// Handles selection of active RDBMS 
         /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             InitDbCredentials(); 
+        }
+
+        /// <summary>
+        /// Event handler which sets the reference to itself in MainVM to null, when the view is closing 
+        /// </summary>
+        private void SettingsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            ((MainVM)this.DataContext).VisualVM.SettingsView = null; 
         }
     }
 }

@@ -14,16 +14,16 @@ namespace SqlViewer.Pages
     public partial class SqlPage : UserControl
     {
         /// <summary>
-        /// 
+        /// Main ViewModel 
         /// </summary>
         private MainVM MainVM { get; set; }
         /// <summary>
-        /// 
+        /// Entity that stores data for translating the page 
         /// </summary>
         private SqlPageEntity SqlPageEntity { get; set; }
 
         /// <summary>
-        /// 
+        /// Constructor of SqlPage
         /// </summary>
         public SqlPage()
         {
@@ -39,7 +39,7 @@ namespace SqlViewer.Pages
         }
 
         /// <summary>
-        /// 
+        /// Initializes all the page 
         /// </summary>
         public void Init()
         {

@@ -20,7 +20,7 @@ namespace SqlViewer.Models.AppBranches
     {
         #region Properties
         /// <summary>
-        /// 
+        /// Main ViewModel 
         /// </summary>
         private MainVM MainVM { get; set; }
 
@@ -114,17 +114,12 @@ namespace SqlViewer.Models.AppBranches
                         (this.UserRdbmsPreproc = new MysqlDbPreproc(this.MainVM)).InitUserDbConnection(); 
                         break;
 
-                    case RdbmsEnum.MSSQL: 
-                        (this.UserRdbmsPreproc = new MssqlDbPreproc(this.MainVM)).InitUserDbConnection(); 
-                        break;
-
                     case RdbmsEnum.Oracle: 
                         (this.UserRdbmsPreproc = new OracleDbPreproc(this.MainVM)).InitUserDbConnection(); 
                         break;
 
                     default:
                         throw new System.Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
-                        break;
                 }
             }
             catch (System.Exception ex)
@@ -247,21 +242,6 @@ namespace SqlViewer.Models.AppBranches
                 System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
             return dt; 
-        }
-
-        /// <summary>
-        /// Clears temporary tables
-        /// </summary>
-        public void ClearTempTable(string tableName)
-        {
-            try
-            {
-                AppRdbmsPreproc.ClearTempTable(tableName); 
-            }
-            catch (System.Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
         }
         #endregion  // Public methods
     }

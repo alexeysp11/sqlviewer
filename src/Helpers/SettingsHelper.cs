@@ -39,22 +39,6 @@ namespace SqlViewer.Helpers
         }
 
         /// <summary>
-        /// 
-        /// </summary>
-        public static void GetLanguage()
-        {
-
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static void SetLanguage()
-        {
-
-        }
-
-        /// <summary>
         /// Gets string name of the active database management system 
         /// </summary>
         public static string GetActiveRdbmsString() 

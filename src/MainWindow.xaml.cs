@@ -10,8 +10,14 @@ namespace SqlViewer
     /// </summary>
     public partial class MainWindow : Window
     {
+        /// <summary>
+        /// Main ViewModel 
+        /// </summary>
         private MainVM MainVM { get; set; }
 
+        /// <summary>
+        /// Constructor of MainWindow
+        /// </summary>
         public MainWindow()
         {
             try
