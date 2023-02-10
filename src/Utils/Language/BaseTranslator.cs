@@ -5,25 +5,22 @@ using SqlViewerDatabase.DbConnections;
 namespace SqlViewer.Utils.Language
 {
     /// <summary>
-    /// 
+    /// Base class of Translator
     /// </summary>
     public abstract class BaseTranslator
     {
         /// <summary>
-        /// 
+        /// Database connection on the App layer 
         /// </summary>
         private SqliteDbConnection AppDbConnection { get; set; }
 
         /// <summary>
-        /// 
+        /// Sets database connection on the App layer 
         /// </summary>
-        public void SetAppDbConnection(SqliteDbConnection appDbConnection)
-        {
-            this.AppDbConnection = appDbConnection; 
-        }
+        public void SetAppDbConnection(SqliteDbConnection appDbConnection) => this.AppDbConnection = appDbConnection; 
 
         /// <summary>
-        /// 
+        /// Translates using input SQL script 
         /// </summary>
         public DataTable Translate(string sql)
         {
@@ -31,14 +28,14 @@ namespace SqlViewer.Utils.Language
             {
                 return this.AppDbConnection.ExecuteSqlCommand(sql); 
             }
-            catch (System.Exception ex)
+            catch (System.Exception)
             {
-                throw ex; 
+                throw; 
             }
         }
 
         /// <summary>
-        /// 
+        /// Finds translation of an english word
         /// </summary>
         public string TranslateSingleWord(DataTable dt, string rowName, string wordEnglish)
         {
@@ -51,10 +48,7 @@ namespace SqlViewer.Utils.Language
                     .First(); 
                 result = row[rowName].ToString(); 
             }
-            catch (System.Exception ex)
-            {
-
-            }
+            catch (System.Exception) {}
             return result; 
         }
     }

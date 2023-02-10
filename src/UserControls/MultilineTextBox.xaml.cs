@@ -9,11 +9,11 @@ namespace SqlViewer.UserControls
     /// </summary>
     public partial class MultilineTextBox : UserControl
     {
-        public static readonly DependencyProperty HeightProperty
+        public static new readonly DependencyProperty HeightProperty
             = DependencyProperty.Register("Height", typeof(double), typeof(MultilineTextBox),
                 new PropertyMetadata(0.0));
         
-        public static readonly DependencyProperty WidthProperty
+        public static new readonly DependencyProperty WidthProperty
             = DependencyProperty.Register("Width", typeof(double), typeof(MultilineTextBox),
                 new PropertyMetadata(0.0));
 
@@ -25,11 +25,11 @@ namespace SqlViewer.UserControls
             = DependencyProperty.Register("Text", typeof(string), typeof(MultilineTextBox),
                 new PropertyMetadata(string.Empty));
 
-        public static readonly DependencyProperty FontSizeProperty
+        public static new readonly DependencyProperty FontSizeProperty
             = DependencyProperty.Register("FontSize", typeof(double), typeof(MultilineTextBox),
                 new PropertyMetadata(12.0));
 
-        public double Height
+        public new double Height
         {
             get => (double)GetValue(HeightProperty);
             set 
@@ -41,7 +41,7 @@ namespace SqlViewer.UserControls
             }
         }
 
-        public double Width
+        public new double Width
         {
             get => (double)GetValue(WidthProperty);
             set 
@@ -77,7 +77,7 @@ namespace SqlViewer.UserControls
             }
         }
         
-        public double FontSize
+        public new double FontSize
         {
             get => (double)GetValue(FontSizeProperty);
             set 

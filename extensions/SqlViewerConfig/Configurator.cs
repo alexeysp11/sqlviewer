@@ -30,24 +30,9 @@ namespace SqlViewerConfig
 
             Settings = config.GetSection("Settings").Get<Settings>();
 
-            System.Console.WriteLine($"SelectedLanguage = {Settings.SelectedLanguage}");
             //System.Console.WriteLine($"KeyOne = {Settings.KeyOne}");
             //System.Console.WriteLine($"KeyTwo = {Settings.KeyTwo}");
             //System.Console.WriteLine($"KeyThree:Message = {Settings.KeyThree.Message}");
-        }
-
-        /// <summary>
-        /// Gets selected programming language from Settings
-        /// </summary>
-        public string GetSelectedLanguage()
-        {
-            return string.IsNullOrEmpty(Settings.SelectedLanguage) ? "cs" : Settings.SelectedLanguage; 
-        }
-
-        public void InvokeCppConfig()
-        {
-            string cppPath = System.IO.Path.Combine(GetRootFolder(), "extensions/SqlViewerConfig/cpp"); 
-            ExecuteCmd("mkdir \"" + cppPath + "/bin\" & g++ " + cppPath + "/src/*.cpp -o " + cppPath + "/bin/SqlViewerConfig.exe && \"" + cppPath + "/bin/SqlViewerConfig.exe\"");
         }
 
         /// <summary>
@@ -125,8 +110,6 @@ namespace SqlViewerConfig
                 {
                     ICommonDbConnection sqlite = new SqliteDbConnection(System.IO.Path.Combine(rootFolder, @"data\app.db")); 
                     sqlite.ExecuteSqlCommand(System.IO.File.ReadAllText(System.IO.Path.Combine(sqliteInitFolder, "InitAppDb.sql"))); 
-                    sqlite.ExecuteSqlCommand(System.IO.File.ReadAllText(System.IO.Path.Combine(sqliteInitFolder, "InitAppDbSettings.sql"))); 
-                    sqlite.ExecuteSqlCommand(System.IO.File.ReadAllText(System.IO.Path.Combine(sqliteInitFolder, "InitTranslation.sql"))); 
 
                     sqlite = new SqliteDbConnection(System.IO.Path.Combine(rootFolder, @"data\data.db")); 
                     sqlite.ExecuteSqlCommand(System.IO.File.ReadAllText(System.IO.Path.Combine(sqliteInitFolder, "InitDataDb.sql"))); 
@@ -134,9 +117,9 @@ namespace SqlViewerConfig
                     sqlite = new SqliteDbConnection(System.IO.Path.Combine(rootFolder, @"data\test.db")); 
                     sqlite.ExecuteSqlCommand(System.IO.File.ReadAllText(System.IO.Path.Combine(sqliteInitFolder, "InitTestDb.sql"))); 
                 }
-                catch (System.Exception)
+                catch (System.Exception ex)
                 {
-
+                    System.Console.WriteLine(ex.Message); 
                 }
                 isInit = true; 
             }
@@ -167,20 +150,6 @@ namespace SqlViewerConfig
             string second = (now.Second < 10 ? "0" : "") + now.Second.ToString(); 
 
             return year + month + day + hour + minute + second; 
-        }
-
-        /// <summary>
-        /// Executes a command using command line 
-        /// </summary>
-        private void ExecuteCmd(string cmdCommand)
-        {
-            System.Diagnostics.Process process = new System.Diagnostics.Process();
-            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
-            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = "/C " + cmdCommand;
-            process.StartInfo = startInfo;
-            process.Start();
         }
     }
 }

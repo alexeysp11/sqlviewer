@@ -4,21 +4,18 @@ using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnectio
 namespace SqlViewer.Models.AppBranches
 {
     /// <summary>
-    /// 
+    /// Branch of the application that allows to deal with two database connections
     /// </summary>
     public class InterDbBranch
     {
         /// <summary>
-        /// 
+        /// Intermediatory layer between InterDbBranch and databases 
         /// </summary>
         public DbInterconnection DbInterconnection { get; private set; }
 
         /// <summary>
-        /// 
+        /// Constructor of InterDbBranch, that initializes DbInterconnection
         /// </summary>
-        public InterDbBranch()
-        {
-            this.DbInterconnection = new DbInterconnection(); 
-        }
+        public InterDbBranch() => this.DbInterconnection = new DbInterconnection(); 
     }
 }

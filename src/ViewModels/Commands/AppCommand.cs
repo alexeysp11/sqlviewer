@@ -6,43 +6,14 @@ namespace SqlViewer.Commands
     {
         private MainVM MainVM; 
 
-        public AppCommand(MainVM mainVm)
-        {
-            this.MainVM = mainVm; 
-        }
+        public AppCommand(MainVM mainVm) => this.MainVM = mainVm; 
 
+#pragma warning disable 67
         public event System.EventHandler CanExecuteChanged; 
+#pragma warning restore 67
 
-        public bool CanExecute(object parameter)
-        {
-            return true; 
-        }
+        public bool CanExecute(object parameter) => true; 
 
-        public void Execute(object parameter)
-        {
-            string parameterString = parameter as string; 
-            switch (parameterString)
-            {
-                case "ExitApplication":
-                    this.MainVM.ExitApplication(); 
-                    break;
-                    
-                case "RecoverSettings":
-                    this.MainVM.RecoverSettings(); 
-                    break;
-                    
-                case "SaveSettings":
-                    this.MainVM.SaveSettings(); 
-                    break;
-                    
-                case "CancelSettings":
-                    this.MainVM.CancelSettings(); 
-                    break;
-                    
-                default: 
-                    System.Windows.MessageBox.Show($"Incorrect CommandParameter: '{parameterString}' inside AppCommand", "Exception"); 
-                    break; 
-            }
-        }
+        public void Execute(object parameter) => this.MainVM.PreprocCommandParameter((string)(parameter as string)); 
     }
 }

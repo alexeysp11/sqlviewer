@@ -174,11 +174,7 @@ namespace SqlViewer.Models.DbPreproc
             {
                 throw ex; 
             }
-        } 
-        public void ClearTempTable(string tableName)
-        {
-
-        } 
+        }
 
         public ICommonDbConnectionSV GetAppDbConnection()
         {
