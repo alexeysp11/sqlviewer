@@ -1,5 +1,6 @@
 using SqlViewer.Models.DataStorage; 
 using SqlViewer.Models.EnumOperations; 
+using SqlViewer.Models.Logging; 
 
 namespace SqlViewer.Helpers
 {
@@ -14,6 +15,11 @@ namespace SqlViewer.Helpers
         public static AppSettingsRepo AppSettingsRepo { get; private set; } = null; 
 
         /// <summary>
+        /// The way of writing logs 
+        /// </summary>
+        public static ILoggingWriter LoggingWriter { get; private set; } = null; 
+
+        /// <summary>
         /// Class for getting enums from string 
         /// </summary>
         public static EnumEncoder EnumEncoder { get; private set; } = new EnumEncoder(); 
@@ -26,5 +32,13 @@ namespace SqlViewer.Helpers
         /// Sets an instance of a class for app settings at the current moment 
         /// </summary>
         public static void SetAppSettingsRepo(AppSettingsRepo appSettingsRepo) => AppSettingsRepo = appSettingsRepo; 
+
+        /// <summary>
+        /// Sets an instance of a class for app settings at the current moment 
+        /// </summary>
+        public static void SetLoggingWriter()
+        {
+
+        }
     }
 }

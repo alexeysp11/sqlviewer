@@ -43,9 +43,9 @@ namespace SqlViewer.Pages
         /// </summary>
         public void Init()
         {
-            tbTablesPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ") : "DB: ";
+            tbTablesPageDb.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ") : "DB: ";
             tbTables.Text = SettingsHelper.TranslateUiElement(TablesPageEntity.TablesField.English, TablesPageEntity.TablesField.Translation); 
-            tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
+            tblDbName.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.DbName; 
             lblGeneralInfo.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.GeneralInfoField.English, TablesPageEntity.GeneralInfoField.Translation); 
             lblColumns.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.ColumnsField.English, TablesPageEntity.ColumnsField.Translation); 
             lblForeignKeys.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.ForeignKeysField.English, TablesPageEntity.ForeignKeysField.Translation); 
@@ -78,18 +78,18 @@ namespace SqlViewer.Pages
                     {
                         this.tbTableName.Text = tableName.Header.ToString(); 
                         
-                        this.MainVM.DataVM.MainDbBranch.GetAllDataFromTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.GetColumnsOfTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.GetForeignKeys(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.GetTriggers(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.GetSqlDefinition(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetAllDataFromTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetColumnsOfTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetForeignKeys(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetTriggers(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetSqlDefinition(tableName.Header.ToString()); 
                         break; 
                     }
                 }
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
     }

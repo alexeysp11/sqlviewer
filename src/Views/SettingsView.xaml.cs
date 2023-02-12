@@ -69,19 +69,19 @@ namespace SqlViewer.Views
             cbLanguage.Text = RepoHelper.AppSettingsRepo.Language.ToString();
 
             lblAutoSave.Content = SettingsHelper.TranslateUiElement(SettingsEntity.AutoSaveField.English, SettingsEntity.AutoSaveField.Translation); 
-            cbAutoSave.Text = RepoHelper.AppSettingsRepo.AutoSave.ToString();
+            cbAutoSave.Text = RepoHelper.AppSettingsRepo.EditorSettings.AutoSave.ToString();
             cbiAutoSaveEnabled.Content = SettingsHelper.TranslateUiElement(SettingsEntity.EnabledField.English, SettingsEntity.EnabledField.Translation); 
             cbiAutoSaveDisabled.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DisabledField.English, SettingsEntity.DisabledField.Translation); 
 
             lblFontSize.Content = SettingsHelper.TranslateUiElement(SettingsEntity.FontSizeField.English, SettingsEntity.FontSizeField.Translation); 
-            cbFontSize.Text = RepoHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize); 
+            cbFontSize.Text = RepoHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.EditorSettings.FontSize); 
             lblFontFamily.Content = SettingsHelper.TranslateUiElement(SettingsEntity.FontFamilyField.English, SettingsEntity.FontFamilyField.Translation); 
-            cbFontFamily.Text = RepoHelper.AppSettingsRepo.FontFamily.ToString(); 
+            cbFontFamily.Text = RepoHelper.AppSettingsRepo.EditorSettings.FontFamily.ToString(); 
             lblTabSize.Content = SettingsHelper.TranslateUiElement(SettingsEntity.TabSizeField.English, SettingsEntity.TabSizeField.Translation); 
-            cbTabSize.Text = RepoHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize); 
+            cbTabSize.Text = RepoHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.EditorSettings.TabSize); 
 
             lblWordWrap.Content = SettingsHelper.TranslateUiElement(SettingsEntity.WordWrapField.English, SettingsEntity.WordWrapField.Translation); 
-            cbWordWrap.Text = RepoHelper.AppSettingsRepo.WordWrap.ToString(); 
+            cbWordWrap.Text = RepoHelper.AppSettingsRepo.EditorSettings.WordWrap.ToString(); 
             cbiWordWrapEnabled.Content = SettingsHelper.TranslateUiElement(SettingsEntity.EnabledField.English, SettingsEntity.EnabledField.Translation); 
             cbiWordWrapDisabled.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DisabledField.English, SettingsEntity.DisabledField.Translation); 
         }
@@ -93,19 +93,19 @@ namespace SqlViewer.Views
         {
             lblPreferencesDb.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DbField.English, SettingsEntity.DbField.Translation); 
             lblDefaultRdbms.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DefaultRdbmsField.English, SettingsEntity.DefaultRdbmsField.Translation); 
-            cbDefaultRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            cbDefaultRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
             lblActiveRdbms.Content = SettingsHelper.TranslateUiElement(SettingsEntity.ActiveRdbmsField.English, SettingsEntity.ActiveRdbmsField.Translation); 
-            cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
 
             lblDatabase.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DatabaseField.English, SettingsEntity.DatabaseField.Translation); 
             lblSchema.Content = SettingsHelper.TranslateUiElement(SettingsEntity.SchemaField.English, SettingsEntity.SchemaField.Translation); 
             lblUsername.Content = SettingsHelper.TranslateUiElement(SettingsEntity.UsernameField.English, SettingsEntity.UsernameField.Translation); 
             lblPassword.Content = SettingsHelper.TranslateUiElement(SettingsEntity.PasswordField.English, SettingsEntity.PasswordField.Translation); 
             
-            tbDatabase.Text = RepoHelper.AppSettingsRepo.DbName; 
-            tbSchema.Text = RepoHelper.AppSettingsRepo.DbSchema; 
-            tbUsername.Text = RepoHelper.AppSettingsRepo.DbUsername; 
-            pbPassword.Password = RepoHelper.AppSettingsRepo.DbPassword; 
+            tbDatabase.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.DbName; 
+            tbSchema.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.DbSchema; 
+            tbUsername.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.DbUsername; 
+            pbPassword.Password = RepoHelper.AppSettingsRepo.DatabaseSettings.DbPassword; 
         }
 
         /// <summary>
@@ -145,19 +145,19 @@ namespace SqlViewer.Views
             try 
             {
                 RepoHelper.AppSettingsRepo.SetLanguage(cbLanguage.Text); 
-                RepoHelper.AppSettingsRepo.SetAutoSave(cbAutoSave.Text); 
-                RepoHelper.AppSettingsRepo.SetFontSize(System.Convert.ToInt32(cbFontSize.Text)); 
-                RepoHelper.AppSettingsRepo.SetFontFamily(cbFontFamily.Text); 
-                RepoHelper.AppSettingsRepo.SetTabSize(System.Convert.ToInt32(cbTabSize.Text)); 
-                RepoHelper.AppSettingsRepo.SetWordWrap(cbWordWrap.Text); 
-                RepoHelper.AppSettingsRepo.SetDefaultRdbms(cbDefaultRdbms.Text); 
-                RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
-                RepoHelper.AppSettingsRepo.SetDbHost(tbServer.Text); 
-                RepoHelper.AppSettingsRepo.SetDbName(tbDatabase.Text); 
-                RepoHelper.AppSettingsRepo.SetDbPort(tbPort.Text); 
-                RepoHelper.AppSettingsRepo.SetDbSchema(tbSchema.Text); 
-                RepoHelper.AppSettingsRepo.SetDbUsername(tbUsername.Text); 
-                RepoHelper.AppSettingsRepo.SetDbPassword(pbPassword.Password); 
+                RepoHelper.AppSettingsRepo.EditorSettings.SetAutoSave(cbAutoSave.Text); 
+                RepoHelper.AppSettingsRepo.EditorSettings.SetFontSize(System.Convert.ToInt32(cbFontSize.Text)); 
+                RepoHelper.AppSettingsRepo.EditorSettings.SetFontFamily(cbFontFamily.Text); 
+                RepoHelper.AppSettingsRepo.EditorSettings.SetTabSize(System.Convert.ToInt32(cbTabSize.Text)); 
+                RepoHelper.AppSettingsRepo.EditorSettings.SetWordWrap(cbWordWrap.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDefaultRdbms(cbDefaultRdbms.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetActiveRdbms(cbActiveRdbms.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDbHost(tbServer.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDbName(tbDatabase.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDbPort(tbPort.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDbSchema(tbSchema.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDbUsername(tbUsername.Text); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDbPassword(pbPassword.Password); 
             }
             catch (System.Exception ex)
             {
@@ -170,10 +170,10 @@ namespace SqlViewer.Views
         /// </summary>
         public void CancelChangesAppRepository()
         {
-            string activeRdbms = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            string activeRdbms = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
             if (activeRdbms != OldActiveRdbms)
             {
-                RepoHelper.AppSettingsRepo.SetActiveRdbms(OldActiveRdbms); 
+                RepoHelper.AppSettingsRepo.DatabaseSettings.SetActiveRdbms(OldActiveRdbms); 
             } 
         }
 

@@ -93,7 +93,7 @@ namespace SqlViewer.ViewModels
             dbCredentialsVE.tbUsername.Text = string.Empty; 
             dbCredentialsVE.pbPassword.Password = string.Empty; 
 
-            SqlViewer.Helpers.RepoHelper.AppSettingsRepo.SetActiveRdbms(dbCredentialsVE.cbActiveRdbms.Text); 
+            SqlViewer.Helpers.RepoHelper.AppSettingsRepo.DatabaseSettings.SetActiveRdbms(dbCredentialsVE.cbActiveRdbms.Text); 
         }
         #endregion  // Common UI methods 
 
@@ -112,7 +112,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -133,7 +133,7 @@ namespace SqlViewer.ViewModels
                 }
                 catch (System.Exception ex)
                 {
-                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                    System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
                 }
             }
         }
@@ -157,7 +157,7 @@ namespace SqlViewer.ViewModels
         /// </summary>
         public void RedirectToTables()
         {
-            this.MainVM.DataVM.MainDbBranch.DisplayTablesInDb();
+            this.MainVM.DataVM.MainDbBranch.DatabasePreproc.DisplayTablesInDb();
 
             HideAllPages();
             DisableAllPages();

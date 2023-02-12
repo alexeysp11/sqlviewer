@@ -60,7 +60,7 @@ namespace SqlViewer.ViewModels
             
             this.AppCommand = new AppCommand(this); 
 
-            (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewerDatabase.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.AppRdbmsPreproc.GetAppDbConnection()); 
+            (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewerDatabase.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.GetAppDbConnection()); 
         }
 
         #region Initialization 
@@ -71,7 +71,7 @@ namespace SqlViewer.ViewModels
         {
             try
             {
-                DataTable dt = this.DataVM.MainDbBranch.SendSqlRequest(this.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromSettings.sql")); 
+                DataTable dt = this.DataVM.MainDbBranch.RequestPreproc.SendSqlRequest(this.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromSettings.sql")); 
                 
                 var appSettingsRepo = new AppSettingsRepo(); 
 
@@ -82,26 +82,26 @@ namespace SqlViewer.ViewModels
                 appSettingsRepo.SetConfigSettings(config.GetSection("Settings").Get<ConfigSettings>()); 
 
                 appSettingsRepo.SetLanguage(dt.Rows[0]["language"].ToString()); 
-                appSettingsRepo.SetAutoSave(dt.Rows[0]["auto_save"].ToString()); 
-                appSettingsRepo.SetFontSize(System.Convert.ToInt32(dt.Rows[0]["font_size"])); 
-                appSettingsRepo.SetFontFamily(dt.Rows[0]["font_family"].ToString()); 
-                appSettingsRepo.SetTabSize(System.Convert.ToInt32(dt.Rows[0]["tab_size"])); 
-                appSettingsRepo.SetWordWrap(dt.Rows[0]["word_wrap"].ToString()); 
-                appSettingsRepo.SetDefaultRdbms(dt.Rows[0]["default_rdbms"].ToString()); 
-                appSettingsRepo.SetActiveRdbms(dt.Rows[0]["active_rdbms"].ToString()); 
-                appSettingsRepo.SetDbHost(dt.Rows[0]["server"].ToString()); 
-                appSettingsRepo.SetDbName(dt.Rows[0]["db_name"].ToString()); 
-                appSettingsRepo.SetDbPort(dt.Rows[0]["port"].ToString()); 
-                appSettingsRepo.SetDbSchema(dt.Rows[0]["schema_name"].ToString()); 
-                appSettingsRepo.SetDbUsername(dt.Rows[0]["db_username"].ToString()); 
-                appSettingsRepo.SetDbPassword(dt.Rows[0]["db_pswd"].ToString()); 
+                appSettingsRepo.EditorSettings.SetAutoSave(dt.Rows[0]["auto_save"].ToString()); 
+                appSettingsRepo.EditorSettings.SetFontSize(System.Convert.ToInt32(dt.Rows[0]["font_size"])); 
+                appSettingsRepo.EditorSettings.SetFontFamily(dt.Rows[0]["font_family"].ToString()); 
+                appSettingsRepo.EditorSettings.SetTabSize(System.Convert.ToInt32(dt.Rows[0]["tab_size"])); 
+                appSettingsRepo.EditorSettings.SetWordWrap(dt.Rows[0]["word_wrap"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetDefaultRdbms(dt.Rows[0]["default_rdbms"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetActiveRdbms(dt.Rows[0]["active_rdbms"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetDbHost(dt.Rows[0]["server"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetDbName(dt.Rows[0]["db_name"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetDbPort(dt.Rows[0]["port"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetDbSchema(dt.Rows[0]["schema_name"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetDbUsername(dt.Rows[0]["db_username"].ToString()); 
+                appSettingsRepo.DatabaseSettings.SetDbPassword(dt.Rows[0]["db_pswd"].ToString()); 
 
                 RepoHelper.SetAppSettingsRepo(appSettingsRepo); 
-                this.DataVM.MainDbBranch.InitUserDbConnection(); 
+                this.DataVM.MainDbBranch.DbConnectionPreproc.InitUserDbConnection(); 
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -121,7 +121,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion  // Initialization 
@@ -135,8 +135,8 @@ namespace SqlViewer.ViewModels
             string msg = "Are you sure to recover settings changes?"; 
             if (System.Windows.MessageBox.Show(msg, "Recover settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                string sql = this.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/RecoverSettings.sql"); 
-                this.DataVM.MainDbBranch.SendSqlRequest(sql); 
+                string sql = this.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/RecoverSettings.sql"); 
+                this.DataVM.MainDbBranch.RequestPreproc.SendSqlRequest(sql); 
                 InitAppRepository(); 
                 Translate(); 
                 this.VisualVM.InitUI(); 
@@ -157,17 +157,17 @@ namespace SqlViewer.ViewModels
                 {
                     ((SqlViewer.Views.SettingsView)this.VisualVM.SettingsView).UpdateAppRepository(); 
 
-                    string sql = this.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/UpdateSettingsEditor.sql"); 
-                    sql = string.Format(sql, RepoHelper.AppSettingsRepo.Language, RepoHelper.AppSettingsRepo.AutoSave, 
-                        RepoHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize), RepoHelper.AppSettingsRepo.FontFamily, 
-                        RepoHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize), RepoHelper.AppSettingsRepo.WordWrap); 
-                    this.DataVM.MainDbBranch.SendSqlRequest(sql); 
+                    string sql = this.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/UpdateSettingsEditor.sql"); 
+                    sql = string.Format(sql, RepoHelper.AppSettingsRepo.Language, RepoHelper.AppSettingsRepo.EditorSettings.AutoSave, 
+                        RepoHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.EditorSettings.FontSize), RepoHelper.AppSettingsRepo.EditorSettings.FontFamily, 
+                        RepoHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.EditorSettings.TabSize), RepoHelper.AppSettingsRepo.EditorSettings.WordWrap); 
+                    this.DataVM.MainDbBranch.RequestPreproc.SendSqlRequest(sql); 
 
-                    sql = this.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
-                    sql = string.Format(sql, RepoHelper.AppSettingsRepo.DefaultRdbms, RepoHelper.AppSettingsRepo.ActiveRdbms, 
-                        RepoHelper.AppSettingsRepo.DbHost, RepoHelper.AppSettingsRepo.DbName, RepoHelper.AppSettingsRepo.DbPort, 
-                        RepoHelper.AppSettingsRepo.DbSchema, RepoHelper.AppSettingsRepo.DbUsername, RepoHelper.AppSettingsRepo.DbPassword); 
-                    this.DataVM.MainDbBranch.SendSqlRequest(sql); 
+                    sql = this.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/UpdateSettingsDb.sql"); 
+                    sql = string.Format(sql, RepoHelper.AppSettingsRepo.DatabaseSettings.DefaultRdbms, RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms, 
+                        RepoHelper.AppSettingsRepo.DatabaseSettings.DbHost, RepoHelper.AppSettingsRepo.DatabaseSettings.DbName, RepoHelper.AppSettingsRepo.DatabaseSettings.DbPort, 
+                        RepoHelper.AppSettingsRepo.DatabaseSettings.DbSchema, RepoHelper.AppSettingsRepo.DatabaseSettings.DbUsername, RepoHelper.AppSettingsRepo.DatabaseSettings.DbPassword); 
+                    this.DataVM.MainDbBranch.RequestPreproc.SendSqlRequest(sql); 
 
                     InitAppRepository(); 
                     Translate(); 
@@ -177,7 +177,7 @@ namespace SqlViewer.ViewModels
                 }
                 catch (System.Exception ex)
                 {
-                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
@@ -236,15 +236,15 @@ namespace SqlViewer.ViewModels
             switch (parameter)
             {
                 case nameof(DbCommandEnum.SendSql):
-                    this.DataVM.MainDbBranch.SendSqlRequest(); 
+                    this.DataVM.MainDbBranch.RequestPreproc.SendSqlRequest(); 
                     break;
                     
                 case nameof(DbCommandEnum.New):
-                    this.DataVM.MainDbBranch.CreateDb(); 
+                    this.DataVM.MainDbBranch.DatabasePreproc.CreateDb(); 
                     break;
                     
                 case nameof(DbCommandEnum.Open):
-                    this.DataVM.MainDbBranch.OpenDb(); 
+                    this.DataVM.MainDbBranch.DatabasePreproc.OpenDb(); 
                     break;
 
                 default: 
