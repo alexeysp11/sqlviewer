@@ -17,7 +17,7 @@ namespace SqlViewer.Helpers
         /// <summary>
         /// The way of writing logs 
         /// </summary>
-        public static ILoggingWriter LoggingWriter { get; private set; } = null; 
+        public static ILoggingWriter[] LoggingWriter { get; private set; } = null; 
 
         /// <summary>
         /// Class for getting enums from string 

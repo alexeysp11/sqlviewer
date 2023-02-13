@@ -101,7 +101,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -113,6 +113,7 @@ namespace SqlViewer.ViewModels
             try
             {
                 this.Translator.SetLanguageEnum(RepoHelper.AppSettingsRepo.Language); 
+                //this.Translator.TranslateLanguage();
                 this.Translator.TranslateLogin();
                 this.Translator.TranslateMenu(); 
                 this.Translator.TranslateSettings(); 
@@ -121,7 +122,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
         #endregion  // Initialization 
@@ -177,7 +178,7 @@ namespace SqlViewer.ViewModels
                 }
                 catch (System.Exception ex)
                 {
-                    System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

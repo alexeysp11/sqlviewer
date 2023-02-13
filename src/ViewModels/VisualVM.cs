@@ -112,7 +112,7 @@ namespace SqlViewer.ViewModels
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -133,7 +133,7 @@ namespace SqlViewer.ViewModels
                 }
                 catch (System.Exception ex)
                 {
-                    System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
                 }
             }
         }

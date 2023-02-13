@@ -61,7 +61,7 @@ namespace SqlViewer.Views
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -74,8 +74,10 @@ namespace SqlViewer.Views
             cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
 
             lblDatabase.Content = SettingsHelper.TranslateUiElement(LoginEntity.DatabaseField.English, LoginEntity.DatabaseField.Translation); 
+            lblPort.Content = SettingsHelper.TranslateUiElement(LoginEntity.PortField.English, LoginEntity.PortField.Translation); 
             lblSchema.Content = SettingsHelper.TranslateUiElement(LoginEntity.SchemaField.English, LoginEntity.SchemaField.Translation); 
             lblUsername.Content = SettingsHelper.TranslateUiElement(LoginEntity.UsernameField.English, LoginEntity.UsernameField.Translation); 
+            lblPassword.Content = SettingsHelper.TranslateUiElement(LoginEntity.PasswordField.English, LoginEntity.PasswordField.Translation); 
         }
 
         /// <summary>

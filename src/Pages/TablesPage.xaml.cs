@@ -89,7 +89,7 @@ namespace SqlViewer.Pages
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
     }

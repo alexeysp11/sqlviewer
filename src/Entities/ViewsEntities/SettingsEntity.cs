@@ -56,6 +56,10 @@ namespace SqlViewer.Entities.ViewsEntities
         /// </summary>
         public Word DatabaseField { get; private set; } = new Word("Database"); 
         /// <summary>
+        /// Word 'Port' and its translation on the settings page
+        /// </summary>
+        public Word PortField { get; private set; } = new Word("Port"); 
+        /// <summary>
         /// Word 'Schema' and its translation on the settings page
         /// </summary>
         public Word SchemaField { get; private set; } = new Word("Schema"); 
@@ -150,6 +154,10 @@ namespace SqlViewer.Entities.ViewsEntities
         /// Sets translation for the word 'Database'
         /// </summary>
         public void TranslateDatabaseField(string value) => DatabaseField.SetTranslation(value); 
+        /// <summary>
+        /// Sets translation for the word 'Port'
+        /// </summary>
+        public void TranslatePortField(string value) => PortField.SetTranslation(value); 
         /// <summary>
         /// Sets translation for the word 'Schema'
         /// </summary>

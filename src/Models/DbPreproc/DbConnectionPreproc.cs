@@ -19,10 +19,7 @@ namespace SqlViewer.Models.DbPreproc
         /// </summary>
         private MainVM MainVM { get; set; }
 
-        public DbConnectionPreproc(MainVM mainVM)
-        {
-            MainVM = mainVM;
-        }
+        public DbConnectionPreproc(MainVM mainVM) => MainVM = mainVM;
         
         /// <summary>
         /// Database connection instance on the App layer  
@@ -67,7 +64,7 @@ namespace SqlViewer.Models.DbPreproc
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
 
@@ -98,7 +95,7 @@ namespace SqlViewer.Models.DbPreproc
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
     }

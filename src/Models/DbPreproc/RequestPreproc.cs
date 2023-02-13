@@ -17,12 +17,7 @@ namespace SqlViewer.Models.DbPreproc
         /// </summary>
         private MainVM MainVM { get; set; }
 
-        public RequestPreproc(MainVM mainVM)
-        {
-            this.MainVM = mainVM; 
-            //MainVM.DataVM.MainDbBranch.DbConnectionPreproc = MainVM.DataVM.MainDbBranch.MainVM.DataVM.MainDbBranch.DbConnectionPreproc; 
-            // MainVM.DataVM.MainDbBranch.DbConnectionPreproc.AppDbConnection = new SqliteDbConnection($"{SettingsHelper.GetRootFolder()}\\data\\app.db"); 
-        }
+        public RequestPreproc(MainVM mainVM) => this.MainVM = mainVM; 
 
         /// <summary>
         /// Sends SQL quty to database 
@@ -42,7 +37,7 @@ namespace SqlViewer.Models.DbPreproc
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
         }
         /// <summary>
@@ -59,7 +54,7 @@ namespace SqlViewer.Models.DbPreproc
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
             }
             return dt; 
         }

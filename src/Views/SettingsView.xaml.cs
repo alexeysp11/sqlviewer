@@ -98,6 +98,7 @@ namespace SqlViewer.Views
             cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
 
             lblDatabase.Content = SettingsHelper.TranslateUiElement(SettingsEntity.DatabaseField.English, SettingsEntity.DatabaseField.Translation); 
+            lblPort.Content = SettingsHelper.TranslateUiElement(SettingsEntity.PortField.English, SettingsEntity.PortField.Translation); 
             lblSchema.Content = SettingsHelper.TranslateUiElement(SettingsEntity.SchemaField.English, SettingsEntity.SchemaField.Translation); 
             lblUsername.Content = SettingsHelper.TranslateUiElement(SettingsEntity.UsernameField.English, SettingsEntity.UsernameField.Translation); 
             lblPassword.Content = SettingsHelper.TranslateUiElement(SettingsEntity.PasswordField.English, SettingsEntity.PasswordField.Translation); 

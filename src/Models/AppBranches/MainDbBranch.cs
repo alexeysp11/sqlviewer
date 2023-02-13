@@ -3,11 +3,12 @@ using System.Data;
 using System.Windows; 
 using System.Windows.Controls; 
 using Microsoft.Win32;
-using SqlViewerDatabase.DbConnections; 
+using SqlViewer.Models.Creational.DbPreproc; 
 using SqlViewer.Models.DbPreproc; 
 using SqlViewer.Models.DbTransfer; 
 using SqlViewer.Helpers; 
 using SqlViewer.ViewModels; 
+using SqlViewerDatabase.DbConnections; 
 using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.Models.AppBranches
@@ -34,6 +35,10 @@ namespace SqlViewer.Models.AppBranches
         /// 
         /// </summary>
         public RequestPreproc RequestPreproc { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public CenterDbPreprocFactory CenterDbPreprocFactory { get; private set; } 
         #endregion  // Properties
 
         #region Constructor
@@ -46,13 +51,20 @@ namespace SqlViewer.Models.AppBranches
             DatabasePreproc = new DatabasePreproc(mainVM); 
             TablePreproc = new TablePreproc(mainVM); 
             RequestPreproc = new RequestPreproc(mainVM); 
+            CenterDbPreprocFactory = new CenterDbPreprocFactory(mainVM); 
         }
         #endregion  // Constructor
 
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommonDbConnectionSV GetAppDbConnection()
         {
             return DbConnectionPreproc.AppDbConnection; 
         }
+        /// <summary>
+        /// 
+        /// </summary>
         public ICommonDbConnectionSV GetUserDbConnection()
         {
             return DbConnectionPreproc.UserDbConnection; 
