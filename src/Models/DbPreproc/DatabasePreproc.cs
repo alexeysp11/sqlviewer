@@ -19,6 +19,9 @@ namespace SqlViewer.Models.DbPreproc
         /// </summary>
         private MainVM MainVM { get; set; }
 
+        /// <summary>
+        /// Constructor of DatabasePreproc
+        /// </summary>
         public DatabasePreproc(MainVM mainVM)
         {
             this.MainVM = mainVM; 
@@ -58,12 +61,12 @@ namespace SqlViewer.Models.DbPreproc
         /// </summary>
         public void DisplayTablesInDb()
         {
-            if (MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection == null)
+            var mainDbBranch = MainVM.DataVM.MainDbBranch; 
+            if (mainDbBranch.DbConnectionPreproc.UserDbConnection == null)
                 return; 
             try
             {
-                string sqlRequest; 
-                DataTable dt = MainVM.DataVM.MainDbBranch.CenterDbPreprocFactory.DatabasePreprocFactory.GetDbDatabasePreproc().DisplayTablesInDb();
+                DataTable dt = mainDbBranch.CenterDbPreprocFactory.DatabasePreprocFactory.GetDbDatabasePreproc().DisplayTablesInDb();
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
                 {

@@ -15,10 +15,9 @@ namespace SqlViewer.Helpers
         public static AppSettingsRepo AppSettingsRepo { get; private set; } = null; 
 
         /// <summary>
-        /// The way of writing logs 
+        /// Class for managing logging functionality 
         /// </summary>
-        public static ILoggingWriter[] LoggingWriter { get; private set; } = null; 
-
+        public static LoggingHub LoggingHub { get; private set; } = new LoggingHub(); 
         /// <summary>
         /// Class for getting enums from string 
         /// </summary>
@@ -32,13 +31,5 @@ namespace SqlViewer.Helpers
         /// Sets an instance of a class for app settings at the current moment 
         /// </summary>
         public static void SetAppSettingsRepo(AppSettingsRepo appSettingsRepo) => AppSettingsRepo = appSettingsRepo; 
-
-        /// <summary>
-        /// Sets an instance of a class for app settings at the current moment 
-        /// </summary>
-        public static void SetLoggingWriter()
-        {
-
-        }
     }
 }

@@ -8,6 +8,16 @@ CREATE TABLE IF NOT EXISTS settings
     value VARCHAR(100)
 ); 
 
+CREATE TABLE IF NOT EXISTS dbg_log
+(
+    source_element VARCHAR(100), 
+    log_timestamp DATETIME, 
+    log_level VARCHAR(25), 
+    msg TEXT, 
+    add_description TEXT, 
+    stack_trace TEXT
+); 
+
 CREATE TABLE IF NOT EXISTS translation 
 (
     translation_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 

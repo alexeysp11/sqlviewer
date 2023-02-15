@@ -19,6 +19,9 @@ namespace SqlViewer.Models.DbPreproc
         /// </summary>
         private MainVM MainVM { get; set; }
 
+        /// <summary>
+        /// Constructor of DbConnectionPreproc
+        /// </summary>
         public DbConnectionPreproc(MainVM mainVM) => MainVM = mainVM;
         
         /// <summary>
@@ -37,13 +40,14 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                if (RepoHelper.AppSettingsRepo == null)
+                var appSettingsRepo = RepoHelper.AppSettingsRepo; 
+                if (appSettingsRepo == null)
                     throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned."); 
-                switch (RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms)
+                switch (appSettingsRepo.DatabaseSettings.ActiveRdbms)
                 {
                     case RdbmsEnum.SQLite: 
-                        if (!string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.DbName))
-                            UserDbConnection = new SqliteDbConnection(RepoHelper.AppSettingsRepo.DatabaseSettings.DbName);
+                        if (!string.IsNullOrEmpty(appSettingsRepo.DatabaseSettings.DbName))
+                            UserDbConnection = new SqliteDbConnection(appSettingsRepo.DatabaseSettings.DbName);
                         break; 
 
                     case RdbmsEnum.PostgreSQL: 
@@ -59,7 +63,7 @@ namespace SqlViewer.Models.DbPreproc
                         break;
 
                     default:
-                        throw new System.Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms}.");
+                        throw new System.Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {appSettingsRepo.DatabaseSettings.ActiveRdbms}.");
                 }
             }
             catch (System.Exception ex)
@@ -75,7 +79,8 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                if (RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms != RdbmsEnum.SQLite)
+                var databaseSettings = RepoHelper.AppSettingsRepo.DatabaseSettings; 
+                if (databaseSettings.ActiveRdbms != RdbmsEnum.SQLite)
                     throw new System.Exception("In order to initialize local database connection SQLite should be selected as an active RDBMS"); 
 
                 UserDbConnection = new SqliteDbConnection(path);
@@ -87,7 +92,7 @@ namespace SqlViewer.Models.DbPreproc
                 if (MainVM.VisualVM.LoginView != null)
                     ((LoginView)(MainVM.VisualVM.LoginView)).tbDatabase.Text = path; 
 
-                RepoHelper.AppSettingsRepo.DatabaseSettings.SetDbName(path); 
+                databaseSettings.SetDbName(path); 
                 
                 // ??? 
                 if (this.MainVM.VisualVM.Menu != null)

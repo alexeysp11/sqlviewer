@@ -53,14 +53,16 @@ namespace SqlViewer.ViewModels
         /// </summary>
         public MainVM(MainWindow mainWindow)
         {
-            this.MainWindow = mainWindow; 
+            RepoHelper.LoggingHub.WriteLog("Initializing MainVM: begin"); 
 
+            this.MainWindow = mainWindow; 
+            
             this.DataVM = new DataVM(this); 
             this.VisualVM = new VisualVM(this); 
-            
             this.AppCommand = new AppCommand(this); 
-
             (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewerDatabase.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.GetAppDbConnection()); 
+
+            RepoHelper.LoggingHub.WriteLog("Initializing MainVM: finished"); 
         }
 
         #region Initialization 
