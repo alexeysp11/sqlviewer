@@ -20,49 +20,46 @@ namespace SqlViewer.Utils.Language
         private MainVM MainVM { get; set; }
 
         /// <summary>
-        /// 
+        /// Selected language of the application 
         /// </summary>
         public LanguageEnum LanguageEnum { get; private set; }
 
         /// <summary>
-        /// 
+        /// Entity for translating Login 
         /// </summary>
         public LoginEntity LoginEntity { get; private set; } = new LoginEntity(); 
         /// <summary>
-        /// 
+        /// Entity for translating Menu 
         /// </summary>
         public MenuEntity MenuEntity { get; private set; } = new MenuEntity(); 
         /// <summary>
-        /// 
+        /// Entity for translating Settings 
         /// </summary>
         public SettingsEntity SettingsEntity { get; private set; } = new SettingsEntity(); 
         /// <summary>
-        /// 
+        /// Entity for translating SqlPage 
         /// </summary>
         public SqlPageEntity SqlPageEntity { get; private set; } = new SqlPageEntity(); 
         /// <summary>
-        /// 
+        /// Entity for translating TablesPage 
         /// </summary>
         public TablesPageEntity TablesPageEntity { get; private set; } = new TablesPageEntity(); 
         /// <summary>
-        /// 
+        /// Entity for translating Connection 
         /// </summary>
         public ConnectionEntity ConnectionEntity { get; private set; } = new ConnectionEntity(); 
         #endregion  // Properties
 
         #region Constructors
         /// <summary>
-        /// 
+        /// Constructor of Translator
         /// </summary>
-        public Translator(MainVM mainVM)
-        {
-            this.MainVM = mainVM;
-        }
+        public Translator(MainVM mainVM) => this.MainVM = mainVM;
         #endregion  // Constructors
 
         #region Public methods
         /// <summary>
-        /// 
+        /// Sets selected language 
         /// </summary>
         public void SetLanguageEnum(LanguageEnum language)
         {
@@ -87,7 +84,7 @@ namespace SqlViewer.Utils.Language
         }
 
         /// <summary>
-        /// 
+        /// Translates visual elements on Login
         /// </summary>
         public void TranslateLogin()
         {
@@ -117,7 +114,7 @@ namespace SqlViewer.Utils.Language
         }
 
         /// <summary>
-        /// 
+        /// Translates visual elements on Menu
         /// </summary>
         public void TranslateMenu()
         {
@@ -204,7 +201,7 @@ namespace SqlViewer.Utils.Language
         }
 
         /// <summary>
-        /// 
+        /// Translates visual elements on Settings
         /// </summary>
         public void TranslateSettings()
         {
@@ -264,7 +261,7 @@ namespace SqlViewer.Utils.Language
         }
 
         /// <summary>
-        /// 
+        /// Translates visual elements on Pages
         /// </summary>
         public void TranslatePages()
         {
@@ -300,7 +297,7 @@ namespace SqlViewer.Utils.Language
         }
 
         /// <summary>
-        /// 
+        /// Translates visual elements on Connection
         /// </summary>
         public void TranslateConnection()
         {

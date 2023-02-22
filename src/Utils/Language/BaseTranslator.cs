@@ -10,20 +10,17 @@ namespace SqlViewer.Utils.Language
     public abstract class BaseTranslator
     {
         /// <summary>
-        /// 
+        /// Database connection on the App layer 
         /// </summary>
         private SqliteDbConnection AppDbConnection { get; set; }
 
         /// <summary>
-        /// 
+        /// Sets database connection on the App layer 
         /// </summary>
-        public void SetAppDbConnection(SqliteDbConnection appDbConnection)
-        {
-            this.AppDbConnection = appDbConnection; 
-        }
+        public void SetAppDbConnection(SqliteDbConnection appDbConnection) => this.AppDbConnection = appDbConnection; 
 
         /// <summary>
-        /// 
+        /// Translates using input SQL script 
         /// </summary>
         public DataTable Translate(string sql)
         {

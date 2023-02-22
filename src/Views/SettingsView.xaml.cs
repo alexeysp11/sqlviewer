@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using SqlViewer.ViewModels;
 using SqlViewer.Entities.ViewsEntities; 
 using SqlViewer.Helpers; 
+using SqlViewer.Models.DataStorage; 
+using SqlViewer.ViewModels;
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
@@ -122,44 +123,18 @@ namespace SqlViewer.Views
         /// </summary>
         private void InitDbCredentials()
         {
-            if (cbActiveRdbms.Text == "SQLite")
+            DbCredentialsVE dbCredentialsVE = new DbCredentialsVE()
             {
-                tbServer.IsEnabled = false; 
-                tbPort.IsEnabled = false; 
-                tbSchema.IsEnabled = false; 
-                tbUsername.IsEnabled = false; 
-                pbPassword.IsEnabled = false; 
-                btnDatabase.IsEnabled = true; 
-                
-                tbServer.Background = System.Windows.Media.Brushes.Gray; 
-                tbPort.Background = System.Windows.Media.Brushes.Gray; 
-                tbSchema.Background = System.Windows.Media.Brushes.Gray; 
-                tbUsername.Background = System.Windows.Media.Brushes.Gray; 
-                pbPassword.Background = System.Windows.Media.Brushes.Gray; 
-            }
-            else
-            {
-                tbServer.IsEnabled = true; 
-                tbPort.IsEnabled = true; 
-                tbSchema.IsEnabled = true; 
-                tbUsername.IsEnabled = true; 
-                pbPassword.IsEnabled = true; 
-                btnDatabase.IsEnabled = false; 
-                
-                tbServer.Background = System.Windows.Media.Brushes.White; 
-                tbPort.Background = System.Windows.Media.Brushes.White; 
-                tbSchema.Background = System.Windows.Media.Brushes.White; 
-                tbUsername.Background = System.Windows.Media.Brushes.White; 
-                pbPassword.Background = System.Windows.Media.Brushes.White; 
-            }
-            tbServer.Text = System.String.Empty; 
-            tbDatabase.Text = System.String.Empty; 
-            tbPort.Text = System.String.Empty; 
-            tbSchema.Text = System.String.Empty; 
-            tbUsername.Text = System.String.Empty; 
-            pbPassword.Password = System.String.Empty; 
-
-            RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
+                cbActiveRdbms = this.cbActiveRdbms, 
+                tbServer = this.tbServer, 
+                tbDatabase = this.tbDatabase, 
+                tbPort = this.tbPort, 
+                tbSchema = this.tbSchema, 
+                tbUsername = this.tbUsername, 
+                pbPassword = this.pbPassword, 
+                btnDatabase = this.btnDatabase
+            };
+            MainVM.VisualVM.InitDbCredentials(dbCredentialsVE); 
         }
 
         /// <summary>

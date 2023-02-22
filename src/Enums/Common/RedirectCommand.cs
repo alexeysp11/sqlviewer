@@ -1,5 +1,8 @@
 namespace SqlViewer.Enums.Common
 {
+    /// <summary>
+    /// Enumeration for stroing possible parameters that could be passed for performing RedirectCommand functionality 
+    /// </summary>
     public enum RedirectCommand
     {
         SqlQuery = 1,

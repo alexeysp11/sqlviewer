@@ -23,6 +23,18 @@ It's available in 29 different languages, such as:
 - Korean;
 - Japanese, etc. 
 
+<!--
+- Add tests. 
+- Try to use RelayCommand. 
+- Check if you create some of the objects more than once. 
+- Rename DbConnection to DbAccess or DataSource? 
+- Use layer diagram to represent what your application consists of. 
+- Try to reduce repeating code. 
+- Use appconfig.json to notify a user about necessety of configuration of data folder for executing the program. 
+- In config extension, check if all folders and files were created. 
+- In config extension list all of the files, folders and databases in `appconfig.json`. 
+-->
+
 Using this app, you can do the following things: 
 
 - write and execute SQL queries:

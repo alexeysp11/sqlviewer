@@ -51,7 +51,7 @@ namespace SqlViewer.Views
         /// </summary>
         private void ConnectionsView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            ((MainVM)this.DataContext).VisualVM.ConnectionsView = null; 
+            MainVM.VisualVM.ConnectionsView = null; 
         }
     }
 }
