@@ -87,4 +87,4 @@ This application is written in C# with **WPF** using **MVVM** pattern.
 
 Class diagram is shown below:
 
-![Class diagram: SqlViewer](docs/img/sqlviewer_diagram.png)
+![Class diagram: SqlViewer](docs/img/sqlviewer_classdiagram.png)
