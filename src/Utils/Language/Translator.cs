@@ -64,9 +64,13 @@ namespace SqlViewer.Utils.Language
         public void SetLanguageEnum(LanguageEnum language)
         {
             LanguageEnum = language; 
+        }
+
+        public void TranslateLanguage()
+        {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -90,7 +94,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -100,6 +104,7 @@ namespace SqlViewer.Utils.Language
 
                 LoginEntity.TranslateActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.ActiveRdbmsField.English)); 
                 LoginEntity.TranslateDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.DatabaseField.English)); 
+                LoginEntity.TranslatePortField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.PortField.English)); 
                 LoginEntity.TranslateSchemaField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.SchemaField.English)); 
                 LoginEntity.TranslateUsernameField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.UsernameField.English)); 
                 LoginEntity.TranslatePasswordField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.PasswordField.English)); 
@@ -120,7 +125,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -207,7 +212,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -230,6 +235,7 @@ namespace SqlViewer.Utils.Language
                 SettingsEntity.TranslateDefaultRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DefaultRdbmsField.English)); 
                 SettingsEntity.TranslateActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.ActiveRdbmsField.English)); 
                 SettingsEntity.TranslateDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English)); 
+                SettingsEntity.TranslatePortField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.PortField.English)); 
                 SettingsEntity.TranslateSchemaField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SchemaField.English)); 
                 SettingsEntity.TranslateUsernameField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.UsernameField.English)); 
                 SettingsEntity.TranslatePasswordField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.PasswordField.English)); 
@@ -244,8 +250,8 @@ namespace SqlViewer.Utils.Language
                 dt = base.Translate(sql); 
 
                 SettingsEntity.TranslateDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English)); 
-                SettingsEntity.TranslateEnabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EnabledField.English)); 
-                SettingsEntity.TranslateDisabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DisabledField.English)); 
+                // SettingsEntity.TranslateEnabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EnabledField.English)); 
+                // SettingsEntity.TranslateDisabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DisabledField.English)); 
                 //
                 // Translate Language 
                 // 
@@ -267,7 +273,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -303,7 +309,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
