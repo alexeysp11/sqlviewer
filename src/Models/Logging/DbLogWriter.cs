@@ -25,7 +25,7 @@ namespace SqlViewer.Models.Logging
             foreach (ICommonDbConnectionSV dbConnection in DbConnections)
             {
                 string sqlRequest = System.IO.File.ReadAllText(System.IO.Path.Combine(SettingsHelper.GetRootFolder(), "extensions/SqlViewerDatabase/Queries/Sqlite/App/InsertIntoDbgLog.sql")); 
-                sqlRequest = string.Format(sqlRequest, msg); 
+                sqlRequest = string.Format(sqlRequest, msg.Replace("'", "''")); 
                 dbConnection.ExecuteSqlCommand(sqlRequest); 
             }
         }
