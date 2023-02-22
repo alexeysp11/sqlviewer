@@ -26,6 +26,7 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
+                // Check if sql is null or empty 
                 return this.AppDbConnection.ExecuteSqlCommand(sql); 
             }
             catch (System.Exception)
@@ -39,16 +40,27 @@ namespace SqlViewer.Utils.Language
         /// </summary>
         public string TranslateSingleWord(DataTable dt, string rowName, string wordEnglish)
         {
+            // Check if dt is null or empty 
+            // Check if rowName and wordEnglish are not null or empty 
             string result = string.Empty; 
             try
             {
                 var row = dt
                     .AsEnumerable()
                     .Where(row => row.Field<string>("english") == wordEnglish)
-                    .First(); 
+                    .FirstOrDefault(); 
                 result = row[rowName].ToString(); 
             }
-            catch (System.Exception) {}
+            catch (System.Exception ex) 
+            {
+                System.Windows.MessageBox.Show(ex.ToString()); 
+                string dtStr = string.Empty; 
+                foreach(DataRow row in dt.Rows)
+                {
+                    dtStr += $"rowName: '{rowName}', wordEnglish: '{wordEnglish}', row[rowName]: {row[rowName]}\n"; 
+                }
+                System.Windows.MessageBox.Show(dtStr, "Content of DataTable"); 
+            }
             return result; 
         }
     }

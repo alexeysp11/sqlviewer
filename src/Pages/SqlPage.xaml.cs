@@ -43,9 +43,9 @@ namespace SqlViewer.Pages
         /// </summary>
         public void Init()
         {
-            tbSqlPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": ") : "DB: "; 
-            tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
-            tbActiveRdbms.Text = RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            tbSqlPageDb.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": ") : "DB: "; 
+            tblDbName.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.DbName; 
+            tbActiveRdbms.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
             btnSqlPageExecute.Content = SettingsHelper.TranslateUiElement(SqlPageEntity.ExecuteField.English, SqlPageEntity.ExecuteField.Translation); 
         }
     }

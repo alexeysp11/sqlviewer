@@ -71,11 +71,13 @@ namespace SqlViewer.Views
         private void InitPreferencesDb()
         {
             lblActiveRdbms.Content = SettingsHelper.TranslateUiElement(LoginEntity.ActiveRdbmsField.English, LoginEntity.ActiveRdbmsField.Translation); 
-            cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
 
             lblDatabase.Content = SettingsHelper.TranslateUiElement(LoginEntity.DatabaseField.English, LoginEntity.DatabaseField.Translation); 
+            lblPort.Content = SettingsHelper.TranslateUiElement(LoginEntity.PortField.English, LoginEntity.PortField.Translation); 
             lblSchema.Content = SettingsHelper.TranslateUiElement(LoginEntity.SchemaField.English, LoginEntity.SchemaField.Translation); 
             lblUsername.Content = SettingsHelper.TranslateUiElement(LoginEntity.UsernameField.English, LoginEntity.UsernameField.Translation); 
+            lblPassword.Content = SettingsHelper.TranslateUiElement(LoginEntity.PasswordField.English, LoginEntity.PasswordField.Translation); 
         }
 
         /// <summary>
@@ -113,9 +115,9 @@ namespace SqlViewer.Views
         {
             this.IsLoggedIn = true; 
 
-            string sql = this.MainVM.DataVM.MainDbBranch.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
+            string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/UpdateSettingsDb.sql"); 
             sql = string.Format(sql, "SQLite", cbActiveRdbms.Text, tbServer.Text, tbDatabase.Text, tbPort.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password); 
-            this.MainVM.DataVM.MainDbBranch.SendSqlRequest(sql); 
+            this.MainVM.DataVM.MainDbBranch.RequestPreproc.SendSqlRequest(sql); 
             this.MainVM.InitAppRepository(); 
             this.MainVM.Translate(); 
 

@@ -1,4 +1,6 @@
-SELECT t.*
+SELECT 
+    t.*, 
+    CASE WHEN language IN ('Arabic', 'Persian', 'Hebrew', 'Yidish') THEN 1 ELSE 0 END AS f_right_to_left
 FROM (
     SELECT 
         CASE 

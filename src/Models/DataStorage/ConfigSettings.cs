@@ -13,5 +13,9 @@ namespace SqlViewer.Models.DataStorage
         /// Gets if the application can run using defalt data, in case of data folder is not configured 
         /// <summary>
         public bool RunWithoutDataConfiguration { get; set; }
+        /// <summary>
+        /// 
+        /// <summary>
+        public LoggingSettings LoggingSettings { get; set; }
     }
 }
