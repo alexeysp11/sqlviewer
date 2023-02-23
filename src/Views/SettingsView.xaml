@@ -13,7 +13,7 @@
         MinHeight="500" MaxHeight="500" MinWidth="600" MaxWidth="600"
         Closing="SettingsView_Closing">
     <Window.InputBindings>
-        <KeyBinding Command="{Binding AppCommand}" CommandParameter="AppCommand.CancelSettings" Key="Esc" />
+        <KeyBinding Command="{Binding AppMainCommand}" CommandParameter="AppMainCommand.CancelSettings" Key="Esc" />
     </Window.InputBindings>
     
     <Grid>
@@ -134,7 +134,7 @@
                     <Label Name="lblDatabase" Content="Database:" Width="150" />
                     <TextBox Name="tbDatabase" Width="200" Height="25" Margin="10,0,0,0" />
                     <Button Name="btnDatabase" Content="..." Width="25" Height="25" Cursor="Hand" Margin="5,0,0,0"
-                            Command="{Binding AppCommand}" CommandParameter="DbCommand.Open" />
+                            Command="{Binding AppMainCommand}" CommandParameter="DbCommand.Open" />
                 </StackPanel>
                 <StackPanel Name="spPreferencesPort" Orientation="Horizontal">
                     <Label Name="lblPort" Content="Port:" Width="150" />
@@ -158,11 +158,11 @@
         <Grid Name="grButtons" Grid.Row="1">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
                 <Button Name="btnRecover" Content="Recover" Width="75" Height="25" Cursor="Hand" Margin="5,0,0,0"
-                        Command="{Binding AppCommand}" CommandParameter="AppCommand.RecoverSettings" />
+                        Command="{Binding AppMainCommand}" CommandParameter="AppMainCommand.RecoverSettings" />
                 <Button Name="btnSave" Content="Save" Width="75" Height="25" Cursor="Hand" Margin="5,0,0,0" 
-                        Command="{Binding AppCommand}" CommandParameter="AppCommand.SaveSettings" />
+                        Command="{Binding AppMainCommand}" CommandParameter="AppMainCommand.SaveSettings" />
                 <Button Name="btnCancel" Content="Cancel" Width="75" Height="25" Cursor="Hand" Margin="5,0,0,0" 
-                        Command="{Binding AppCommand}" CommandParameter="AppCommand.CancelSettings" />
+                        Command="{Binding AppMainCommand}" CommandParameter="AppMainCommand.CancelSettings" />
             </StackPanel>
         </Grid>
     </Grid>

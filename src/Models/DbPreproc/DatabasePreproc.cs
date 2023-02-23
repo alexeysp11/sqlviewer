@@ -10,7 +10,7 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 namespace SqlViewer.Models.DbPreproc
 {
     /// <summary>
-    /// 
+    /// Performs database related operations 
     /// </summary>
     public class DatabasePreproc
     {

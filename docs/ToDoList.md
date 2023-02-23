@@ -19,7 +19,7 @@
     - Context from translation table may be stored in separate table; try to use transaction for db initialization. 
     - Translate messages and commonly used words (Enabled, Disabled etc) to each of the languages (add parameter in config file to get if the messages should be displayed in english or in the language that was selected by user). 
 6. Structure diagrams:
-    - Add AppCommand to the class diagram. 
+    - Add AppMainCommand to the class diagram. 
     - Add web version of the application (in this case you should write an additional module SqlViewerStartup to read the config file and run web or desktop app respectively, plus to separate WPF specific functionality from core functionality of the application). 
 7. UI: 
     - Implement UI representation for right to left scripts. 

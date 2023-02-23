@@ -20,30 +20,30 @@ namespace SqlViewer.Models.AppBranches
     {
         #region Properties
         /// <summary>
-        /// 
+        /// Instance of preproc class that performs database related operations 
         /// </summary>
         public DbConnectionPreproc DbConnectionPreproc { get; private set; }
         /// <summary>
-        /// 
+        /// Instance of preproc class that performs database connection related operations 
         /// </summary>
         public DatabasePreproc DatabasePreproc { get; private set; }
         /// <summary>
-        /// 
+        /// Instance of preproc class that performs table related operations 
         /// </summary>
         public TablePreproc TablePreproc { get; private set; }
         /// <summary>
-        /// 
+        /// Instance of preproc class that performs request related operations 
         /// </summary>
         public RequestPreproc RequestPreproc { get; private set; }
         /// <summary>
-        /// 
+        /// Instance of class that spearates precesses of creating database and table related preproc classes
         /// </summary>
         public CenterDbPreprocFactory CenterDbPreprocFactory { get; private set; } 
         #endregion  // Properties
 
         #region Constructor
         /// <summary>
-        /// 
+        /// Constructor of MainDbBranch
         /// </summary>
         public MainDbBranch(MainVM mainVM)
         {
@@ -56,18 +56,12 @@ namespace SqlViewer.Models.AppBranches
         #endregion  // Constructor
 
         /// <summary>
-        /// 
+        /// Gets app layer database connection 
         /// </summary>
-        public ICommonDbConnectionSV GetAppDbConnection()
-        {
-            return DbConnectionPreproc.AppDbConnection; 
-        }
+        public ICommonDbConnectionSV GetAppDbConnection() => DbConnectionPreproc.AppDbConnection; 
         /// <summary>
-        /// 
+        /// Gets user layer database connection 
         /// </summary>
-        public ICommonDbConnectionSV GetUserDbConnection()
-        {
-            return DbConnectionPreproc.UserDbConnection; 
-        }
+        public ICommonDbConnectionSV GetUserDbConnection() => DbConnectionPreproc.UserDbConnection; 
     }
 }

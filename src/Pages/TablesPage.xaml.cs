@@ -82,7 +82,7 @@ namespace SqlViewer.Pages
                         this.MainVM.DataVM.MainDbBranch.TablePreproc.GetColumnsOfTable(tableName.Header.ToString()); 
                         this.MainVM.DataVM.MainDbBranch.TablePreproc.GetForeignKeys(tableName.Header.ToString()); 
                         this.MainVM.DataVM.MainDbBranch.TablePreproc.GetTriggers(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetSqlDefinition(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetTableDefinition(tableName.Header.ToString()); 
                         break; 
                     }
                 }

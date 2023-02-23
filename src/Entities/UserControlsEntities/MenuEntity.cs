@@ -3,7 +3,7 @@ using SqlViewer.Entities.Language;
 namespace SqlViewer.Entities.UserControlsEntities
 {
     /// <summary>
-    /// 
+    /// Represents an entity of translating menu
     /// </summary>
     public class MenuEntity 
     {

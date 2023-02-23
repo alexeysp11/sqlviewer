@@ -4,7 +4,7 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 namespace SqlViewer.Models.DataStorage
 {
     /// <summary>
-    /// 
+    /// Class for storing database related settings
     /// </summary>
     public class DatabaseSettings
     {

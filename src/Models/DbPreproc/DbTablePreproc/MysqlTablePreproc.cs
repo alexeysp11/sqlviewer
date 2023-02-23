@@ -4,7 +4,7 @@ using SqlViewer.ViewModels;
 namespace SqlViewer.Models.DbPreproc.DbTablePreproc
 {
     /// <summary>
-    /// 
+    /// Performs table related operations for MySQL
     /// </summary>
     public class MysqlTablePreproc : IDbTablePreproc
     {
@@ -19,7 +19,7 @@ namespace SqlViewer.Models.DbPreproc.DbTablePreproc
         public MysqlTablePreproc(MainVM mainVM) => MainVM = mainVM; 
 
         /// <summary>
-        /// 
+        /// Gets SQL request for retrieving columns of a table 
         /// </summary>
         public string GetColumnsOfTableSql(string tableName)
         {
@@ -33,7 +33,7 @@ namespace SqlViewer.Models.DbPreproc.DbTablePreproc
             }
         }
         /// <summary>
-        /// 
+        /// Gets SQL request for retrieving foreign keys of a table 
         /// </summary>
         public string GetForeignKeysSql(string tableName)
         {
@@ -47,7 +47,7 @@ namespace SqlViewer.Models.DbPreproc.DbTablePreproc
             }
         }
         /// <summary>
-        /// 
+        /// Gets SQL request for retrieving triggers of a table 
         /// </summary>
         public string GetTriggersSql(string tableName)
         {
@@ -61,9 +61,9 @@ namespace SqlViewer.Models.DbPreproc.DbTablePreproc
             }
         }
         /// <summary>
-        /// 
+        /// Gets SQL request for retrieving definition of a table 
         /// </summary>
-        public string GetSqlDefinitionSql(string tableName)
+        public string GetTableDefinitionSql(string tableName)
         {
             try
             {

@@ -5,10 +5,13 @@ using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnectio
 
 namespace SqlViewer.Models.Logging
 {
+    /// <summary>
+    /// Class for writing logs into database 
+    /// </summary>
     public class DbLogWriter : ILoggingWriter
     {
         /// <summary>
-        /// 
+        /// List of database connections 
         /// </summary>
         public List<ICommonDbConnectionSV> DbConnections { get; protected set; }
 
@@ -18,7 +21,7 @@ namespace SqlViewer.Models.Logging
         public DbLogWriter(List<ICommonDbConnectionSV> dbConnections) => DbConnections = dbConnections; 
 
         /// <summary>
-        /// 
+        /// Writing logs using the list of database connections 
         /// </summary>
         public void WriteLog(string msg)
         {

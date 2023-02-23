@@ -8,7 +8,7 @@ using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnectio
 namespace SqlViewer.Models.DbPreproc
 {
     /// <summary>
-    /// 
+    /// Performs request related operations 
     /// </summary>
     public class RequestPreproc
     {
@@ -17,6 +17,9 @@ namespace SqlViewer.Models.DbPreproc
         /// </summary>
         private MainVM MainVM { get; set; }
 
+        /// <summary>
+        /// Constructor of RequestPreproc
+        /// </summary>
         public RequestPreproc(MainVM mainVM) => this.MainVM = mainVM; 
 
         /// <summary>

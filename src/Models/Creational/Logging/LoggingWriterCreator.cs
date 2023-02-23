@@ -7,12 +7,12 @@ using SqlViewerDatabase.DbConnections;
 namespace SqlViewer.Models.Creational.Logging
 {
     /// <summary>
-    /// 
+    /// Creates logging writers 
     /// </summary>
     public class LoggingWriterCreator : ILoggingWriterCreator
     {
         /// <summary>
-        /// 
+        /// Gets the list of created logging writers 
         /// </summary>
         public List<ILoggingWriter> GetLoggingWriters()
         {
@@ -29,7 +29,7 @@ namespace SqlViewer.Models.Creational.Logging
         }
 
         /// <summary>
-        /// 
+        /// Initializes database logging writers 
         /// </summary>
         private void InitDbLogWriters(ref List<ILoggingWriter> loggingWriters)
         {
@@ -47,7 +47,7 @@ namespace SqlViewer.Models.Creational.Logging
         }
 
         /// <summary>
-        /// 
+        /// Gets database connections for app.db
         /// </summary>
         private List<ICommonDbConnection> GetDbConnections()
         {

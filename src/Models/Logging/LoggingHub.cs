@@ -7,7 +7,7 @@ using SqlViewerDatabase.DbConnections;
 namespace SqlViewer.Models.Logging
 {
     /// <summary>
-    /// 
+    /// Intermediatory class for writing logs 
     /// </summary>
     public class LoggingHub
     {
