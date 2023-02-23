@@ -5,7 +5,7 @@ using SqlViewer.ViewModels;
 namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
 {
     /// <summary>
-    /// 
+    /// Performs database connection related operations for Oracle
     /// </summary>
     public class OracleDatabasePreproc : IDbDatabasePreproc
     {
@@ -15,26 +15,26 @@ namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
         private MainVM MainVM { get; set; }
 
         /// <summary>
-        /// 
+        /// Constructor of OracleDatabasePreproc
         /// </summary>
         public OracleDatabasePreproc(MainVM mainVM) => MainVM = mainVM; 
 
         /// <summary>
-        /// 
+        /// Creates database 
         /// </summary>
         public void CreateDb()
         {
             System.Windows.MessageBox.Show("Oracle CreateDb");
         }
         /// <summary>
-        /// 
+        /// Opens database 
         /// </summary>
         public void OpenDb()
         {
             System.Windows.MessageBox.Show("Oracle OpenDb");
         }
         /// <summary>
-        /// 
+        /// Displays tables in the database 
         /// </summary>
         public DataTable DisplayTablesInDb()
         {
@@ -49,7 +49,7 @@ namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
             }
         }
         /// <summary>
-        /// 
+        /// Gets connection string 
         /// </summary>
         private string GetConnString()
         {

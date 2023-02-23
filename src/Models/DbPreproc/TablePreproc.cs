@@ -89,11 +89,11 @@ namespace SqlViewer.Models.DbPreproc
         /// <summary>
         /// Gets SQL query for recreating a table  
         /// </summary>
-        public void GetSqlDefinition(string tableName)
+        public void GetTableDefinition(string tableName)
         {
             try
             {
-                string sqlRequest = MainVM.DataVM.MainDbBranch.CenterDbPreprocFactory.TablePreprocFactory.GetDbTablePreproc().GetSqlDefinitionSql(tableName); 
+                string sqlRequest = MainVM.DataVM.MainDbBranch.CenterDbPreprocFactory.TablePreprocFactory.GetDbTablePreproc().GetTableDefinitionSql(tableName); 
                 if (string.IsNullOrEmpty(sqlRequest))
                     throw new System.Exception("SQL request could not be empty after reading a file"); 
                 DataTable dt = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest);

@@ -83,8 +83,13 @@ run.cmd
 
 This application is written in C# with **WPF** using **MVVM** pattern. 
 
+### How to contribute
+
+1. [Click here](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) to read guide on how to contribute to GitHub projects. 
+2. Read [to-do list](docs/ToDoList.md). 
+
 ### Application structure 
 
 Class diagram is shown below:
 
-![Class diagram: SqlViewer](docs/img/sqlviewer_diagram.png)
+![Class diagram: SqlViewer](docs/img/sqlviewer_classdiagram.png)

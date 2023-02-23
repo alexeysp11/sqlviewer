@@ -10,7 +10,7 @@ using SqlViewer.Utils.Language;
 using SqlViewer.Helpers; 
 using Microsoft.Extensions.Configuration; 
 using CommandEnum = SqlViewer.Enums.Common.Command; 
-using AppCommandEnum = SqlViewer.Enums.Common.AppCommand; 
+using AppCommandEnum = SqlViewer.Enums.Common.AppMainCommand; 
 using DbCommandEnum = SqlViewer.Enums.Common.DbCommand; 
 using RedirectCommandEnum = SqlViewer.Enums.Common.RedirectCommand; 
 
@@ -40,7 +40,7 @@ namespace SqlViewer.ViewModels
         /// <summary>
         /// Main command of the application 
         /// </summary>
-        public ICommand AppCommand { get; private set; } 
+        public ICommand AppMainCommand { get; private set; } 
 
         /// <summary>
         /// Instance that performs translation for visual elements of the application 
@@ -59,7 +59,7 @@ namespace SqlViewer.ViewModels
             
             this.DataVM = new DataVM(this); 
             this.VisualVM = new VisualVM(this); 
-            this.AppCommand = new AppCommand(this); 
+            this.AppMainCommand = new AppMainCommand(this); 
             (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewerDatabase.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.GetAppDbConnection()); 
 
             RepoHelper.LoggingHub.WriteLog("MainVM.MainVM: finished"); 
@@ -230,7 +230,7 @@ namespace SqlViewer.ViewModels
 
         #region Common methods 
         /// <summary>
-        /// Preprocess input parameter of AppCommand 
+        /// Preprocess input parameter of AppMainCommand 
         /// </summary>
         private void PreprocAppCommand(string parameter)
         {
@@ -253,7 +253,7 @@ namespace SqlViewer.ViewModels
                     break;
                     
                 default: 
-                    System.Windows.MessageBox.Show($"Incorrect CommandParameter: '{parameter}' inside AppCommand", "Exception"); 
+                    System.Windows.MessageBox.Show($"Incorrect CommandParameter: '{parameter}' inside AppMainCommand", "Exception"); 
                     break; 
             }
         }
@@ -341,7 +341,7 @@ namespace SqlViewer.ViewModels
         }
 
         /// <summary>
-        /// Performs preprocessing of the parameter that was sent to the AppCommand 
+        /// Performs preprocessing of the parameter that was sent to the AppMainCommand 
         /// </summary>
         public void PreprocCommandParameter(string parameter)
         {
@@ -356,7 +356,7 @@ namespace SqlViewer.ViewModels
                     throw new System.Exception("Incorrect number of arguments inside a paramter string"); 
                 switch (subs[0])
                 {
-                    case nameof(CommandEnum.AppCommand): 
+                    case nameof(CommandEnum.AppMainCommand): 
                         PreprocAppCommand(subs[1]); 
                         break; 
                     

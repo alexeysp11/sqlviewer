@@ -59,7 +59,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Button Name="btnSqlPageExecute" Content="Execute" Grid.Column="0" Margin="0,5,0,0" Cursor="Hand"
-                                Command="{Binding AppCommand}" CommandParameter="DbCommand.SendSql" />
+                                Command="{Binding AppMainCommand}" CommandParameter="DbCommand.SendSql" />
                         <TextBlock Name="tbActiveRdbms" Text="SQLite" Grid.Column="1" Margin="15,8,0,0" />
                         <TextBlock Text="UTF-8" Grid.Column="2" Margin="0,8,0,0" />
                     </Grid>

@@ -6,29 +6,29 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 namespace SqlViewer.Models.Creational.DbPreproc
 {
     /// <summary>
-    /// 
+    /// Creates table related preproc classes 
     /// </summary>
     public class TablePreprocFactory
     {
         /// <summary>
-        /// 
+        /// Instance of table related preproc class for SQLite
         /// </summary>
         public IDbTablePreproc SqliteTablePreproc { get; private set; } 
         /// <summary>
-        /// 
+        /// Instance of table related preproc class for PostgreSQL
         /// </summary>
         public IDbTablePreproc PgTablePreproc { get; private set; } 
         /// <summary>
-        /// 
+        /// Instance of table related preproc class for MySQL
         /// </summary>
         public IDbTablePreproc MysqlTablePreproc { get; private set; } 
         /// <summary>
-        /// 
+        /// Instance of table related preproc class for Oracle
         /// </summary>
         public IDbTablePreproc OracleTablePreproc { get; private set; } 
 
         /// <summary>
-        /// 
+        /// Constructor of TablePreprocFactory
         /// </summary>
         public TablePreprocFactory(MainVM mainVM)
         {
@@ -39,7 +39,7 @@ namespace SqlViewer.Models.Creational.DbPreproc
         }
 
         /// <summary>
-        /// 
+        /// Gets instance of table related preproc class
         /// </summary>
         public IDbTablePreproc GetDbTablePreproc()
         {

@@ -1,7 +1,7 @@
 namespace SqlViewer.Models.DataStorage 
 {
     /// <summary>
-    /// 
+    /// Class for storing logging related settings
     /// <summary>
     public sealed class LoggingSettings
     {

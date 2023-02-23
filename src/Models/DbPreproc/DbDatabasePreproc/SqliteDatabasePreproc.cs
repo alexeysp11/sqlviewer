@@ -5,7 +5,7 @@ using SqlViewer.ViewModels;
 namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
 {
     /// <summary>
-    /// 
+    /// Performs database connection related operations for SQLite
     /// </summary>
     public class SqliteDatabasePreproc : IDbDatabasePreproc
     {
@@ -15,19 +15,19 @@ namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
         private MainVM MainVM { get; set; }
 
         /// <summary>
-        /// 
+        /// Constructor of SqliteDatabasePreproc
         /// </summary>
         public SqliteDatabasePreproc(MainVM mainVM) => MainVM = mainVM; 
 
         /// <summary>
-        /// 
+        /// Creates database 
         /// </summary>
         public void CreateDb()
         {
             SqlViewer.Helpers.FileSysHelper.SaveLocalFile(); 
         }
         /// <summary>
-        /// 
+        /// Opens database 
         /// </summary>
         public void OpenDb()
         {
@@ -44,7 +44,7 @@ namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
             }
         }
         /// <summary>
-        /// 
+        /// Displays tables in the database 
         /// </summary>
         public DataTable DisplayTablesInDb()
         {

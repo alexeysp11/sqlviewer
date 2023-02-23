@@ -5,7 +5,7 @@ namespace SqlViewer.Enums.Common
     /// </summary>
     public enum Command
     {
-        AppCommand = 1, 
+        AppMainCommand = 1, 
         DbCommand = 2, 
         RedirectCommand = 3
     }

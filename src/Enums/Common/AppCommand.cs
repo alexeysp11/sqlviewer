@@ -1,9 +1,9 @@
 namespace SqlViewer.Enums.Common
 {
     /// <summary>
-    /// Enumeration for stroing possible parameters that could be passed for performing AppCommand functionality 
+    /// Enumeration for stroing possible parameters that could be passed for performing AppMainCommand functionality 
     /// </summary>
-    public enum AppCommand
+    public enum AppMainCommand
     {
         ExitApplication = 1, 
         RecoverSettings = 2, 

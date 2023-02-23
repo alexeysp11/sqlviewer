@@ -8,7 +8,7 @@ using WordWrapEnum = SqlViewer.Enums.Editor.WordWrap;
 namespace SqlViewer.Models.DataStorage
 {
     /// <summary>
-    /// 
+    /// Class for storing editor related settings
     /// </summary>
     public class EditorSettings
     {
