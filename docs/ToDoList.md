@@ -21,6 +21,7 @@
 6. Structure diagrams:
     - Add AppMainCommand to the class diagram. 
     - Add web version of the application (in this case you should write an additional module SqlViewerStartup to read the config file and run web or desktop app respectively, plus to separate WPF specific functionality from core functionality of the application). 
+    - Check if all the classes are represented in the class diagram. 
 7. UI: 
     - Implement UI representation for right to left scripts. 
 8. Network: 
