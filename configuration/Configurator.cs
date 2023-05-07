@@ -29,10 +29,6 @@ namespace SqlViewerConfig
                 .Build();
 
             Settings = config.GetSection("Settings").Get<Settings>();
-
-            //System.Console.WriteLine($"KeyOne = {Settings.KeyOne}");
-            //System.Console.WriteLine($"KeyTwo = {Settings.KeyTwo}");
-            //System.Console.WriteLine($"KeyThree:Message = {Settings.KeyThree.Message}");
         }
 
         /// <summary>

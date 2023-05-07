@@ -53,7 +53,7 @@ namespace SqlViewer.Utils.Language
             }
             catch (System.Exception ex) 
             {
-                System.Windows.MessageBox.Show(ex.ToString()); 
+                System.Windows.MessageBox.Show(ex.Message.ToString()); 
                 string dtStr = string.Empty; 
                 foreach(DataRow row in dt.Rows)
                 {

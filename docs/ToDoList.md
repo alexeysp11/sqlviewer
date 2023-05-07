@@ -55,9 +55,10 @@
 10. Common: 
     - Add tests. 
     - Check if you create some of the objects more than once.
-    - Use layer diagram to represent what your application consists of. 
+    - Use layer diagram to represent what elements your application consists of. 
     - Try to reduce repeating code. 
     - Use appconfig.json to notify a user about necessety of configuration of data folder for executing the program. 
     - Give some explanations on how to add a new database, language or UI element into the application, how to translate UI element. 
     - Remove unnecessary usings. 
     - Display exceptions message (and stack trace) if the corresponding parameter is set in config file. 
+    - Write test-cases. 

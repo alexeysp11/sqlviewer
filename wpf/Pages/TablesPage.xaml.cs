@@ -69,14 +69,12 @@ namespace SqlViewer.Pages
         {
             try
             {
-                if (e.NewValue == null) 
-                    return; 
-                string selectedItem = (e.NewValue).ToString(); 
+                if (e.NewValue == null) return; 
                 foreach (TreeViewItem tableName in this.tvTables.Items)
                 {
-                    string tn = tableName.ToString(); 
-                    if (tn == selectedItem)
+                    if (tableName.ToString() == (e.NewValue).ToString())
                     {
+                        string tn = tableName.Header.ToString(); 
                         this.tbTableName.Text = tn; 
                         this.MainVM.VisualVM.DisplayAllDataFromTable(tn); 
                         this.MainVM.VisualVM.DisplayColumnsOfTable(tn); 
