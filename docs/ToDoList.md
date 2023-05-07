@@ -62,3 +62,4 @@
     - Remove unnecessary usings. 
     - Display exceptions message (and stack trace) if the corresponding parameter is set in config file. 
     - Write test-cases. 
+    - Add filtering by schema and search table using double quotation mark (for postgres). 
