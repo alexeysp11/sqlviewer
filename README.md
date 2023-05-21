@@ -49,17 +49,18 @@ Using this app, you can do the following things:
     - **MySQL**,
     - **Oracle**. 
 
-### Download and run 
+### How to download
 
 First of all, make sure if you have installed **.NET Core 3.1** on your computer. 
 [Click here](https://dotnet.microsoft.com/en-us/download/dotnet/3.1) to download it. 
 
-So, you can download this application from this GitHub repository in two ways:  
-- Using Git: 
+You can download this application the following way: 
 ```
 git clone https://github.com/alexeysp11/sqlviewer.git 
+git clone https://github.com/alexeysp11/workflow-lib.git 
 ```
-- Simply download ZIP. 
+
+### How to run 
 
 In order to run the application, you can use command line: 
 1. Go to the main folder of the repository: 

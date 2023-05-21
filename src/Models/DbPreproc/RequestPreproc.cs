@@ -2,8 +2,8 @@ using System.Data;
 using System.Windows; 
 using SqlViewer.Helpers; 
 using SqlViewer.ViewModels; 
-using SqlViewerDatabase.DbConnections; 
-using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
+using Cims.WorkflowLib.DbConnections; 
+using ICommonDbConnectionSV = Cims.WorkflowLib.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.Models.DbPreproc
 {
@@ -70,7 +70,7 @@ namespace SqlViewer.Models.DbPreproc
             string sqlRequest = string.Empty; 
             try
             {
-                sqlRequest = System.IO.File.ReadAllText($"{SettingsHelper.GetRootFolder()}\\extensions\\SqlViewerDatabase\\Queries\\{filename}"); 
+                sqlRequest = System.IO.File.ReadAllText(System.IO.Path.Combine(SettingsHelper.GetRootFolder(), $"queries/{filename}")); 
             }
             catch (System.Exception ex) 
             {

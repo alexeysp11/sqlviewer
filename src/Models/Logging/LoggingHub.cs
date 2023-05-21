@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Windows; 
 using SqlViewer.Helpers; 
 using SqlViewer.Models.Creational.Logging; 
-using SqlViewerDatabase.DbConnections; 
+using Cims.WorkflowLib.DbConnections; 
 
 namespace SqlViewer.Models.Logging
 {

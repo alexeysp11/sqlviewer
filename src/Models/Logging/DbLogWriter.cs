@@ -1,7 +1,7 @@
 using System.Collections.Generic; 
 using SqlViewer.Helpers; 
-using SqlViewerDatabase.DbConnections; 
-using ICommonDbConnectionSV = SqlViewerDatabase.DbConnections.ICommonDbConnection; 
+using Cims.WorkflowLib.DbConnections; 
+using ICommonDbConnectionSV = Cims.WorkflowLib.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.Models.Logging
 {
@@ -27,7 +27,7 @@ namespace SqlViewer.Models.Logging
         {
             foreach (ICommonDbConnectionSV dbConnection in DbConnections)
             {
-                string sqlRequest = System.IO.File.ReadAllText(System.IO.Path.Combine(SettingsHelper.GetRootFolder(), "extensions/SqlViewerDatabase/Queries/Sqlite/App/InsertIntoDbgLog.sql")); 
+                string sqlRequest = System.IO.File.ReadAllText(System.IO.Path.Combine(SettingsHelper.GetRootFolder(), "queries/Sqlite/App/InsertIntoDbgLog.sql")); 
                 sqlRequest = string.Format(sqlRequest, msg.Replace("'", "''")); 
                 dbConnection.ExecuteSqlCommand(sqlRequest); 
             }

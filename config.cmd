@@ -1,9 +1,6 @@
-@echo off 
-
 echo Configuration is started 
 
 echo Restoring C# projects 
-dotnet restore ./extensions/SqlViewerDatabase/SqlViewerDatabase.csproj
 dotnet restore ./extensions/SqlViewerConfig/SqlViewerConfig.csproj
 dotnet restore ./src/SqlViewer.csproj
 echo All C# projects are restored 

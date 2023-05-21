@@ -1,4 +1,4 @@
-using SqlViewerDatabase.DbConnections; 
+using Cims.WorkflowLib.DbConnections; 
 using Microsoft.Extensions.Configuration; 
 
 namespace SqlViewerConfig
@@ -101,7 +101,7 @@ namespace SqlViewerConfig
         public void InitDatabases()
         {
             string rootFolder = GetRootFolder(); 
-            string sqliteInitFolder = System.IO.Path.Combine(rootFolder, "extensions/SqlViewerDatabase/Queries/Sqlite/Init"); 
+            string sqliteInitFolder = System.IO.Path.Combine(rootFolder, "queries/Sqlite/Init"); 
             
             bool isInit = false; 
             while (!isInit)
