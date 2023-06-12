@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SqlViewer.Pages"
         xmlns:vm="clr-namespace:SqlViewer.ViewModels"
-        xmlns:uc="clr-namespace:SqlViewer.UserControls">
+        xmlns:uc="clr-namespace:SqlViewer.UserControls"
+        xmlns:ucc="clr-namespace:Cims.WorkflowLib.Wpf.UserControls;assembly=Cims.WorkflowLib.Wpf">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="250" />
@@ -31,7 +32,7 @@
                         <TextBlock Name="tblDbName" Margin="5,0,0,0" />
                     </StackPanel>
 
-                    <uc:DbGrid x:Name="dbgSqlResult" Height="215" Width="760" IsReadOnly="True" AutoGenerateColumns="True" />
+                    <ucc:DbGrid x:Name="dbgSqlResult" Height="215" Width="760" IsReadOnly="True" AutoGenerateColumns="True" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -50,7 +51,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="0,5,0,0">
-                    <uc:MultilineTextBox x:Name="mtbSqlRequest" IsReadOnly="False" FontSize="14" Height="165" Width="760" />
+                    <ucc:MultilineTextBox x:Name="mtbSqlRequest" IsReadOnly="False" FontSize="14" Height="165" Width="760" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100" />
