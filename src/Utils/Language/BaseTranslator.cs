@@ -27,7 +27,7 @@ namespace SqlViewer.Utils.Language
             try
             {
                 // Check if sql is null or empty 
-                return this.AppDbConnection.ExecuteSqlCommand(sql); 
+                return this.AppDbConnection.ExecuteSqlCommand(sql).DataTableResult; 
             }
             catch (System.Exception)
             {

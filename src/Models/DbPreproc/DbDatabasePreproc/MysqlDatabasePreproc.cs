@@ -41,7 +41,7 @@ namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
             try
             {
                 string sqlRequest = string.Format(MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Mysql\\TableInfo\\DisplayTablesInDb.sql"), RepoHelper.AppSettingsRepo.DatabaseSettings.DbName); 
-                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.SetConnString(GetConnString()).ExecuteSqlCommand(sqlRequest);
+                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.SetConnString(GetConnString()).ExecuteSqlCommand(sqlRequest).DataTableResult;
             }
             catch (System.Exception ex)
             {

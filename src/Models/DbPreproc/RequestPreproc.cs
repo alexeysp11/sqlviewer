@@ -32,7 +32,7 @@ namespace SqlViewer.Models.DbPreproc
                 if (MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection == null)
                     throw new System.Exception("Database is not opened."); 
 
-                DataTable resultCollection = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
+                DataTable resultCollection = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text).DataTableResult;
                 MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = resultCollection.DefaultView;
 
                 MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
@@ -53,7 +53,7 @@ namespace SqlViewer.Models.DbPreproc
             {
                 if (MainVM.DataVM.MainDbBranch.DbConnectionPreproc.AppDbConnection == null)
                     throw new System.Exception("System RDBMS is not assigned."); 
-                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.AppDbConnection.ExecuteSqlCommand(sql);
+                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.AppDbConnection.ExecuteSqlCommand(sql).DataTableResult;
             }
             catch (System.Exception ex)
             {

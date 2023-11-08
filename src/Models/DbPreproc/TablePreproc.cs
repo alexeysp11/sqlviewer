@@ -28,7 +28,7 @@ namespace SqlViewer.Models.DbPreproc
             try
             {
                 string sqlRequest = $"SELECT * FROM {tableName}"; 
-                MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DataTableResult.DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -45,7 +45,7 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = MainVM.DataVM.MainDbBranch.CenterDbPreprocFactory.TablePreprocFactory.GetDbTablePreproc().GetColumnsOfTableSql(tableName); 
                 if (string.IsNullOrEmpty(sqlRequest))
                     throw new System.Exception("SQL request could not be empty after reading a file"); 
-                MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DataTableResult.DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -62,7 +62,7 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = MainVM.DataVM.MainDbBranch.CenterDbPreprocFactory.TablePreprocFactory.GetDbTablePreproc().GetForeignKeysSql(tableName); 
                 if (string.IsNullOrEmpty(sqlRequest))
                     throw new System.Exception("SQL request could not be empty after reading a file"); 
-                MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DataTableResult.DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -79,7 +79,7 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = MainVM.DataVM.MainDbBranch.CenterDbPreprocFactory.TablePreprocFactory.GetDbTablePreproc().GetTriggersSql(tableName); 
                 if (string.IsNullOrEmpty(sqlRequest))
                     throw new System.Exception("SQL request could not be empty after reading a file"); 
-                MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+                MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DataTableResult.DefaultView;
             }
             catch (System.Exception ex)
             {
@@ -96,7 +96,7 @@ namespace SqlViewer.Models.DbPreproc
                 string sqlRequest = MainVM.DataVM.MainDbBranch.CenterDbPreprocFactory.TablePreprocFactory.GetDbTablePreproc().GetTableDefinitionSql(tableName); 
                 if (string.IsNullOrEmpty(sqlRequest))
                     throw new System.Exception("SQL request could not be empty after reading a file"); 
-                DataTable dt = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest);
+                DataTable dt = MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DataTableResult;
                 if (dt.Rows.Count > 0) 
                 {
                     DataRow row = dt.Rows[0];

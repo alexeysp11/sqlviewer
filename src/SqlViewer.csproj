@@ -14,6 +14,7 @@
   
   <ItemGroup>
     <ProjectReference Include="../../workflow-lib/src/Cims.WorkflowLib.csproj" />
+    <ProjectReference Include="../../workflow-lib/wpf/Cims.WorkflowLib.Wpf.csproj" />
   </ItemGroup>
 
   <ItemGroup>
