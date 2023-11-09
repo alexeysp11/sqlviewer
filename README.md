@@ -2,7 +2,11 @@
 
 [English](README.md) | [Русский](README.ru.md)
 
-`sqlviewer` is a C# implementation of a GUI for retrieving and transfering data from the following RDBMS: 
+`sqlviewer` is a multilingual C# application that provides a user-friendly interface for interacting with different RDBMS and performing various database operations.
+
+## Overall description 
+
+This project is a C# implementation of a GUI for retrieving and transfering data from the following RDBMS: 
 - **SQLite**, 
 - **PostgreSQL**, 
 - **MySQL**, 
@@ -38,6 +42,26 @@ Using this app, you can do the following things:
 - transfer data from one database to another:
 
 ![Example (UI, connections)](docs/img/ui_connections.png)
+
+### Goal
+
+The goal of the project is to create a C# GUI application for retrieving and transferring data from various RDBMS, including SQLite, PostgreSQL, MySQL, and Oracle.
+
+### Scope
+
+The scope of the project includes implementing a GUI for executing SQL queries, viewing database information, and transferring data between different databases.
+
+### Who can use this project
+
+This project can be used by database administrators, developers, and anyone who needs to work with multiple RDBMS and perform data management tasks.
+
+### Similar open-source projects
+
+Similar open-source projects include [DBeaver](https://github.com/dbeaver/dbeaver) and [SQuirreL SQL](https://github.com/squirrel-sql-client), but there are also similar projects written in C# such as [SQL Server Management Studio (SSMS)](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15) and [LINQPad](http://linqpad.net/).
+
+### Possible limitations
+
+Possible limitations of this project could include compatibility issues with certain RDBMS, performance issues when dealing with large datasets, and potential security vulnerabilities when transferring data between databases.
 
 ## Getting started 
 
