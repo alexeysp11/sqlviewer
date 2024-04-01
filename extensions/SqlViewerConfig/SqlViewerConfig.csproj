@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../workflow-lib/src/WorkflowLib.csproj" />
+    <ProjectReference Include="../../../workflow-lib/src/DbConnections/WorkflowLib.DbConnections.csproj" />
   </ItemGroup>
 
   <ItemGroup>
