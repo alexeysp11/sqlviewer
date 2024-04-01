@@ -51,7 +51,7 @@ namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
             try
             {
                 string sqlRequest = MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
-                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest).DataTableResult;
+                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.ExecuteSqlCommand(sqlRequest);
             }
             catch (System.Exception ex)
             {

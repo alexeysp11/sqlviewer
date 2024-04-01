@@ -41,7 +41,7 @@ namespace SqlViewer.Models.DbPreproc.DbDatabasePreproc
             try
             {
                 string sqlRequest = MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Postgres\\TableInfo\\DisplayTablesInDb.sql"); 
-                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.SetConnString(GetConnString()).ExecuteSqlCommand(sqlRequest).DataTableResult;
+                return MainVM.DataVM.MainDbBranch.DbConnectionPreproc.UserDbConnection.SetConnString(GetConnString()).ExecuteSqlCommand(sqlRequest);
             }
             catch (System.Exception ex)
             {
