@@ -1,5 +1,5 @@
-using Cims.WorkflowLib.DbConnections;
-using ICommonDbConnectionSV = Cims.WorkflowLib.DbConnections.ICommonDbConnection; 
+using WorkflowLib.DbConnections;
+using ICommonDbConnectionSV = WorkflowLib.DbConnections.ICommonDbConnection; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
 namespace SqlViewer.Models.DbTransfer

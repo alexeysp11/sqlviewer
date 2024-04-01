@@ -1,14 +1,14 @@
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-using Cims.WorkflowLib.DbConnections;
+using WorkflowLib.DbConnections;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
 using SqlViewer.Helpers; 
 using SqlViewer.Entities.UserControlsEntities; 
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
-using ICommonDbConnectionSV = Cims.WorkflowLib.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = WorkflowLib.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.UserControls
 {

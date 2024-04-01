@@ -2,9 +2,9 @@ using System.Windows;
 using SqlViewer.Helpers; 
 using SqlViewer.ViewModels; 
 using SqlViewer.Views; 
-using Cims.WorkflowLib.DbConnections; 
+using WorkflowLib.DbConnections; 
 using UserControlsMenu = SqlViewer.UserControls.Menu; 
-using ICommonDbConnectionSV = Cims.WorkflowLib.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = WorkflowLib.DbConnections.ICommonDbConnection; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
 namespace SqlViewer.Models.DbPreproc
