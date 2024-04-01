@@ -1,4 +1,4 @@
-using Cims.WorkflowLib.DbConnections; 
+using WorkflowLib.DbConnections; 
 using Microsoft.Extensions.Configuration; 
 
 namespace SqlViewerConfig

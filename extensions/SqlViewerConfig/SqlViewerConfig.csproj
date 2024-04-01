@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../workflow-lib/src/Cims.WorkflowLib.csproj" />
+    <ProjectReference Include="../../../workflow-lib/src/WorkflowLib.csproj" />
   </ItemGroup>
 
   <ItemGroup>
