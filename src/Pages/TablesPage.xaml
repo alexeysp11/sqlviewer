@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:SqlViewer.Pages"
         xmlns:vm="clr-namespace:SqlViewer.ViewModels"
         xmlns:uc="clr-namespace:SqlViewer.UserControls"
-        xmlns:ucc="clr-namespace:WorkflowLib.Wpf.UserControls;assembly=WorkflowLib.Wpf">
+        xmlns:ucc="clr-namespace:WorkflowLib.WpfExtensions.UserControls;assembly=WorkflowLib.WpfExtensions">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />

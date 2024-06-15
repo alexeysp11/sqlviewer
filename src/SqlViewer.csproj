@@ -14,7 +14,7 @@
   
   <ItemGroup>
     <ProjectReference Include="../../workflow-lib/src/DbConnections/WorkflowLib.DbConnections.csproj" />
-    <ProjectReference Include="../../workflow-lib/src/Wpf/WorkflowLib.Wpf.csproj" />
+    <ProjectReference Include="../../workflow-lib/src/WpfExtensions/WorkflowLib.WpfExtensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
