@@ -7,7 +7,7 @@ using SqlViewer.Helpers;
 using SqlViewer.Entities.UserControlsEntities;
 using LanguageEnum = SqlViewer.Enums.Common.Language;
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
-using ICommonDbConnectionSV = WorkflowLib.Shared.DbConnections.ICommonDbConnection;
+using ICommonDbConnectionSV = VelocipedeUtils.Shared.DbConnections.ICommonDbConnection;
 
 namespace SqlViewer.UserControls
 {

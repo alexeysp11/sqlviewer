@@ -1,5 +1,5 @@
-using WorkflowLib.Shared.DbConnections;
-using ICommonDbConnectionSV = WorkflowLib.Shared.DbConnections.ICommonDbConnection; 
+using VelocipedeUtils.Shared.DbConnections;
+using ICommonDbConnectionSV = VelocipedeUtils.Shared.DbConnections.ICommonDbConnection; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
 namespace SqlViewer.Models.DbTransfer

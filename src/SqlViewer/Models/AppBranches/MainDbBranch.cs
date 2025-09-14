@@ -1,7 +1,7 @@
 using SqlViewer.Models.Creational.DbPreproc;
 using SqlViewer.Models.DbPreproc;
 using SqlViewer.ViewModels;
-using ICommonDbConnectionSV = WorkflowLib.Shared.DbConnections.ICommonDbConnection;
+using ICommonDbConnectionSV = VelocipedeUtils.Shared.DbConnections.ICommonDbConnection;
 
 namespace SqlViewer.Models.AppBranches
 {

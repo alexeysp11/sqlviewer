@@ -1,5 +1,5 @@
 using Microsoft.Extensions.Configuration;
-using WorkflowLib.Shared.DbConnections;
+using VelocipedeUtils.Shared.DbConnections;
 
 namespace SqlViewerConfig
 {

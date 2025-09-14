@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Windows;
 using SqlViewer.Helpers;
 using SqlViewer.Models.Logging;
-using WorkflowLib.Shared.DbConnections;
+using VelocipedeUtils.Shared.DbConnections;
 
 namespace SqlViewer.Models.Creational.Logging
 {

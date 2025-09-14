@@ -60,7 +60,7 @@ namespace SqlViewer.ViewModels
             this.DataVM = new DataVM(this); 
             this.VisualVM = new VisualVM(this); 
             this.AppMainCommand = new AppMainCommand(this); 
-            (this.Translator = new Translator(this)).SetAppDbConnection((WorkflowLib.Shared.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.GetAppDbConnection()); 
+            (this.Translator = new Translator(this)).SetAppDbConnection((VelocipedeUtils.Shared.DbConnections.SqliteDbConnection)this.DataVM.MainDbBranch.GetAppDbConnection()); 
 
             RepoHelper.LoggingHub.WriteLog("MainVM.MainVM: finished"); 
         }

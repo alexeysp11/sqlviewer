@@ -2,9 +2,9 @@ using System.Windows;
 using SqlViewer.Helpers; 
 using SqlViewer.ViewModels; 
 using SqlViewer.Views; 
-using WorkflowLib.Shared.DbConnections; 
+using VelocipedeUtils.Shared.DbConnections; 
 using UserControlsMenu = SqlViewer.UserControls.Menu;
-using ICommonDbConnectionSV = WorkflowLib.Shared.DbConnections.ICommonDbConnection; 
+using ICommonDbConnectionSV = VelocipedeUtils.Shared.DbConnections.ICommonDbConnection; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
 namespace SqlViewer.Models.DbPreproc

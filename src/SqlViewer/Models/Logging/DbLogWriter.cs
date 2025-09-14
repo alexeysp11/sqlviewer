@@ -1,7 +1,7 @@
 using System.Collections.Generic; 
 using SqlViewer.Helpers; 
-using WorkflowLib.Shared.DbConnections; 
-using ICommonDbConnectionSV = WorkflowLib.Shared.DbConnections.ICommonDbConnection; 
+using VelocipedeUtils.Shared.DbConnections; 
+using ICommonDbConnectionSV = VelocipedeUtils.Shared.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.Models.Logging
 {
