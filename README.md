@@ -7,9 +7,9 @@
 ## Overall description 
 
 This project is a C# implementation of a GUI for retrieving and transfering data from the following RDBMS: 
-- **SQLite**, 
-- **PostgreSQL**, 
-- **MySQL**, 
+- **SQLite**,
+- **PostgreSQL**,
+- **MySQL**,
 - **Oracle**. 
 
 It's available in 29 different languages, such as: 
@@ -63,15 +63,15 @@ Similar open-source projects include [DBeaver](https://github.com/dbeaver/dbeave
 
 Possible limitations of this project could include compatibility issues with certain RDBMS, performance issues when dealing with large datasets, and potential security vulnerabilities when transferring data between databases.
 
-## Getting started 
+## Getting started
 
-### Prerequisites 
+### Prerequisites
 
 - Windows OS; 
 - .NET Core 3.1; 
 - One of the following data sources to be able to perform some operations with data: 
-    - **SQLite**, 
-    - **PostgreSQL**, 
+    - **SQLite**,
+    - **PostgreSQL**,
     - **MySQL**,
     - **Oracle**. 
 
