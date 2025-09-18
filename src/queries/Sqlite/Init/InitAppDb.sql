@@ -2,42 +2,42 @@
  
 CREATE TABLE IF NOT EXISTS settings
 (
-    settings_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    name VARCHAR(25) NOT NULL, 
-    description VARCHAR(100), 
+    settings_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name VARCHAR(25) NOT NULL,
+    description VARCHAR(100),
     value VARCHAR(100)
-); 
+);
 
 CREATE TABLE IF NOT EXISTS dbg_log
 (
-    source_element VARCHAR(100), 
-    log_timestamp DATETIME, 
-    log_level VARCHAR(25), 
-    msg TEXT, 
-    add_description TEXT, 
+    source_element VARCHAR(100),
+    log_timestamp DATETIME,
+    log_level VARCHAR(25),
+    msg TEXT,
+    add_description TEXT,
     stack_trace TEXT
-); 
+);
 
 CREATE TABLE IF NOT EXISTS translation 
 (
-    translation_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
-    context VARCHAR(75) NOT NULL, -- Name of UI element or module 
-    english TEXT NOT NULL, 
-    german TEXT, 
-    russian TEXT, 
-    spanish TEXT, 
-    portuguese TEXT, 
-    italian TEXT, 
-    french TEXT, 
-    ukranian TEXT, 
-    dutch TEXT, 
+    translation_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    context VARCHAR(75) NOT NULL, -- Name of UI element or module
+    english TEXT NOT NULL,
+    german TEXT,
+    russian TEXT,
+    spanish TEXT,
+    portuguese TEXT,
+    italian TEXT,
+    french TEXT,
+    ukranian TEXT,
+    dutch TEXT,
     polish TEXT,
-    czech TEXT, 
-    serbian TEXT, 
-    croatian TEXT, 
-    swedish TEXT, 
-    norwegian TEXT, 
-    danish TEXT, 
+    czech TEXT,
+    serbian TEXT,
+    croatian TEXT,
+    swedish TEXT,
+    norwegian TEXT,
+    danish TEXT,
     afrikaans TEXT,
     turkish TEXT,
     kazakh TEXT,
@@ -46,31 +46,31 @@ CREATE TABLE IF NOT EXISTS translation
     romanian TEXT,
     bulgarian TEXT,
     albanian TEXT,
-    greek TEXT, 
-    indonesian TEXT, 
-    malay TEXT, 
-    korean TEXT, 
+    greek TEXT,
+    indonesian TEXT,
+    malay TEXT,
+    korean TEXT,
     japanese TEXT
-); 
+);
 
 -- Insert data into tables 
 
-INSERT INTO settings (name) SELECT 'language' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'language') = 0; 
-INSERT INTO settings (name) SELECT 'auto_save' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'auto_save') = 0; 
-INSERT INTO settings (name) SELECT 'font_size' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'font_size') = 0; 
-INSERT INTO settings (name) SELECT 'font_family' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'font_family') = 0; 
-INSERT INTO settings (name) SELECT 'tab_size' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'tab_size') = 0; 
-INSERT INTO settings (name) SELECT 'word_wrap' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'word_wrap') = 0; 
-INSERT INTO settings (name) SELECT 'default_rdbms' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'default_rdbms') = 0; 
-INSERT INTO settings (name) SELECT 'active_rdbms' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'active_rdbms') = 0; 
+INSERT INTO settings (name) SELECT 'language' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'language') = 0;
+INSERT INTO settings (name) SELECT 'auto_save' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'auto_save') = 0;
+INSERT INTO settings (name) SELECT 'font_size' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'font_size') = 0;
+INSERT INTO settings (name) SELECT 'font_family' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'font_family') = 0;
+INSERT INTO settings (name) SELECT 'tab_size' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'tab_size') = 0;
+INSERT INTO settings (name) SELECT 'word_wrap' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'word_wrap') = 0;
+INSERT INTO settings (name) SELECT 'default_rdbms' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'default_rdbms') = 0;
+INSERT INTO settings (name) SELECT 'active_rdbms' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'active_rdbms') = 0;
 INSERT INTO settings (name) SELECT 'server' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'server') = 0;
 INSERT INTO settings (name) SELECT 'database' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'database') = 0;
 INSERT INTO settings (name) SELECT 'port' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'port') = 0;
-INSERT INTO settings (name) SELECT 'schema' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'schema') = 0; 
-INSERT INTO settings (name) SELECT 'username' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'username') = 0; 
-INSERT INTO settings (name) SELECT 'password' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'password') = 0; 
+INSERT INTO settings (name) SELECT 'schema' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'schema') = 0;
+INSERT INTO settings (name) SELECT 'username' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'username') = 0;
+INSERT INTO settings (name) SELECT 'password' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'password') = 0;
 
-DELETE FROM settings WHERE name IN (SELECT name FROM settings GROUP BY name HAVING COUNT(*) > 1); 
+DELETE FROM settings WHERE name IN (SELECT name FROM settings GROUP BY name HAVING COUNT(*) > 1);
 
 INSERT INTO translation VALUES(1,'Login','Active RDBMS','Aktives RDBMS','Активная БД','RDBMS activo','RDBMS ativo','RDBMS attivo','SGBDR actif','Активна СУБД','Actieve RDBMS','Aktywny RDBMS','Aktivní RDBMS','Ацтиве РДБМС','Aktivni RDBMS','Aktiv RDBMS','Aktiv RDBMS','Aktiv RDBMS','Aktiewe RDBMS','Aktif RDBMS','Белсенді RDBMS','Ակտիվ RDBMS','აქტიური RDBMS','RDBMS activ','Активна RDBMS','RDBMS aktive','Ενεργό RDBMS','RDBMS Aktif','RDBMS aktif','활성 RDBMS','アクティブな RDBMS');
 INSERT INTO translation VALUES(2,'Login','Database','Datenbank','База данных','Base de datos','Base de dados','Banca dati','Base de données','База даних','Database','Baza danych','Databáze','База података','Baza podataka','Databas','Database','Database','Databasis','Veri tabanı','Дерекқор','Տվյալների բազա','Მონაცემთა ბაზა','Bază de date','База данни','Baza e të dhënave','Βάση δεδομένων','Basis data','Pangkalan data','데이터 베이스','データベース');
