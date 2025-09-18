@@ -47,11 +47,7 @@ Using this app, you can do the following things:
 
 The goal of the project is to create a C# GUI application for retrieving and transferring data from various RDBMS, including SQLite, PostgreSQL, MySQL, and Oracle.
 
-### Scope
-
 The scope of the project includes implementing a GUI for executing SQL queries, viewing database information, and transferring data between different databases.
-
-### Who can use this project
 
 This project can be used by database administrators, developers, and anyone who needs to work with multiple RDBMS and perform data management tasks.
 
@@ -73,18 +69,7 @@ Possible limitations of this project could include compatibility issues with cer
     - **SQLite**,
     - **PostgreSQL**,
     - **MySQL**,
-    - **Oracle**. 
-
-### How to download
-
-First of all, make sure if you have installed **.NET Core 3.1** on your computer. 
-[Click here](https://dotnet.microsoft.com/en-us/download/dotnet/3.1) to download it. 
-
-You can download this application the following way: 
-```
-git clone https://github.com/alexeysp11/sqlviewer.git 
-git clone https://github.com/alexeysp11/workflow-lib.git 
-```
+    - **Oracle**.
 
 ### How to run 
 
