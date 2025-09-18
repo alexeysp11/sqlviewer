@@ -98,7 +98,7 @@ run.cmd
 ### Как контрибьютить 
 
 1. [Кликните здесь](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) для того, чтобы прочитать общий гайд по тому, как можно контрибьютить на GitHub (общий для любого GitHub проекта). 
-2. Прочитать [to-do list](docs/ToDoList.md). 
+2. Прочитать [to-do list](docs/TODO.md). 
 
 ### Структура проекта 
 
