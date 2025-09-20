@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SqlViewer.Pages"
         xmlns:vm="clr-namespace:SqlViewer.ViewModels"
-        xmlns:uc="clr-namespace:SqlViewer.UserControls"
-        xmlns:ucc="clr-namespace:VelocipedeUtils.Shared.WpfExtensions.UserControls;assembly=VelocipedeUtils.Shared.WpfExtensions" xmlns:ucc1="clr-namespace:VelocipedeUtils.Shared.WpfExtensions.UserControls;assembly=VelocipedeUtils.Shared.WpfExtensions">
+        xmlns:uc="clr-namespace:SqlViewer.UserControls">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="25" />
@@ -64,7 +63,7 @@
                             </StackPanel>
 
                             <Label Content="SQL" />
-                            <ucc:MultilineTextBox x:Name="mtbSqlTableDefinition" IsReadOnly="True"
+                            <uc:MultilineTextBox x:Name="mtbSqlTableDefinition" IsReadOnly="True"
                                     FontSize="12" Height="165" Width="263" />
                         </StackPanel>
                     </ScrollViewer>
@@ -73,7 +72,7 @@
                 <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" BorderThickness="0.5">
                     <StackPanel Orientation="Vertical">
                         <Label Name="lblColumns" Content="Columns" />
-                        <ucc:DbGrid x:Name="dgrColumns" Height="175" Width="283"
+                        <uc:DbGrid x:Name="dgrColumns" Height="175" Width="283"
                             IsReadOnly="True" AutoGenerateColumns="True" />
                     </StackPanel>
                 </Border>
@@ -86,10 +85,10 @@
                             Width="280">
                         <StackPanel Orientation="Vertical">
                             <Label Name="lblForeignKeys" Content="Foreign keys" />
-                            <ucc:DbGrid x:Name="dgrForeignKeys" Height="125" Width="263"
+                            <uc:DbGrid x:Name="dgrForeignKeys" Height="125" Width="263"
                                 IsReadOnly="True" AutoGenerateColumns="True" />
                             <Label Name="lblTriggers" Content="Triggers" />
-                            <ucc:DbGrid x:Name="dgrTriggers" Height="150" Width="263"
+                            <uc:DbGrid x:Name="dgrTriggers" Height="150" Width="263"
                                 IsReadOnly="True" AutoGenerateColumns="True" />
                         </StackPanel>
                     </ScrollViewer>
@@ -98,7 +97,7 @@
                 <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="0.5">
                     <StackPanel Orientation="Vertical">
                         <Label Name="lblData" Content="Data" />
-                        <ucc:DbGrid x:Name="dgrAllData" Height="175" Width="283"
+                        <uc:DbGrid x:Name="dgrAllData" Height="175" Width="283"
                                 IsReadOnly="True" AutoGenerateColumns="True" />
                     </StackPanel>
                 </Border>

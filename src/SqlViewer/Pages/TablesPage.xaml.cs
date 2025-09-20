@@ -13,18 +13,9 @@ namespace SqlViewer.Pages
     /// </summary>
     public partial class TablesPage : UserControl
     {
-        /// <summary>
-        /// Main ViewModel 
-        /// </summary>
         private MainVM MainVM { get; set; }
-        /// <summary>
-        /// Entity that stores data for translating the page 
-        /// </summary>
         private TablesPageEntity TablesPageEntity { get; set; }
 
-        /// <summary>
-        /// Constructor of TablesPage
-        /// </summary>
         public TablesPage()
         {
             InitializeComponent();
@@ -38,33 +29,24 @@ namespace SqlViewer.Pages
             }; 
         }
 
-        /// <summary>
-        /// Initializes all the page 
-        /// </summary>
         public void Init()
         {
-            tbTablesPageDb.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ") : "DB: ";
-            tbTables.Text = SettingsHelper.TranslateUiElement(TablesPageEntity.TablesField.English, TablesPageEntity.TablesField.Translation); 
-            tblDbName.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.DbName; 
-            lblGeneralInfo.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.GeneralInfoField.English, TablesPageEntity.GeneralInfoField.Translation); 
-            lblColumns.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.ColumnsField.English, TablesPageEntity.ColumnsField.Translation); 
-            lblForeignKeys.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.ForeignKeysField.English, TablesPageEntity.ForeignKeysField.Translation); 
-            lblTriggers.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.TriggersField.English, TablesPageEntity.TriggersField.Translation); 
-            lblData.Content = SettingsHelper.TranslateUiElement(TablesPageEntity.DataField.English, TablesPageEntity.DataField.Translation); 
+            tbTablesPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.PathField.Translation) ? TablesPageEntity.PathField.English + ": " : TablesPageEntity.PathField.Translation + ": ") : "DB: ";
+            tbTables.Text = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.TablesField.Translation) ? TablesPageEntity.TablesField.English : TablesPageEntity.TablesField.Translation;
+            tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
+            lblGeneralInfo.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.GeneralInfoField.Translation) ? TablesPageEntity.GeneralInfoField.English : TablesPageEntity.GeneralInfoField.Translation; 
+            lblColumns.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ColumnsField.Translation) ? TablesPageEntity.ColumnsField.English : TablesPageEntity.ColumnsField.Translation; 
+            lblForeignKeys.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.ForeignKeysField.Translation) ? TablesPageEntity.ForeignKeysField.English : TablesPageEntity.ForeignKeysField.Translation; 
+            lblTriggers.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.TriggersField.Translation) ? TablesPageEntity.TriggersField.English : TablesPageEntity.TriggersField.Translation; 
+            lblData.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(TablesPageEntity.DataField.Translation) ? TablesPageEntity.DataField.English : TablesPageEntity.DataField.Translation; 
         }
 
-        /// <summary>
-        /// Displays headers of in the DataGrid correctly 
-        /// </summary>
         private void ResultDataGrid_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
         {
             string header = e.Column.Header.ToString();
             e.Column.Header = header.Replace("_", "__");
         }
 
-        /// <summary>
-        /// Displays information about selected table inside TableView 
-        /// </summary>
         private void SelectionChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
             try
@@ -78,11 +60,11 @@ namespace SqlViewer.Pages
                     {
                         this.tbTableName.Text = tableName.Header.ToString(); 
                         
-                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetAllDataFromTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetColumnsOfTable(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetForeignKeys(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetTriggers(tableName.Header.ToString()); 
-                        this.MainVM.DataVM.MainDbBranch.TablePreproc.GetTableDefinition(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetAllDataFromTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetColumnsOfTable(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetForeignKeys(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetTriggers(tableName.Header.ToString()); 
+                        this.MainVM.DataVM.GetSqlDefinition(tableName.Header.ToString()); 
                         break; 
                     }
                 }

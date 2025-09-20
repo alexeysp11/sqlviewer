@@ -8,69 +8,30 @@ using LanguageEnum = SqlViewer.Enums.Common.Language;
 
 namespace SqlViewer.Utils.Language
 {
-    /// <summary>
-    /// Class that allows to translate the application 
-    /// </summary>
-    public class Translator : BaseTranslator
+    public class Translator : BaseTranslator, ICommonMsgTranslator, ISettingsTranslator
     {
-        #region Properties
-        /// <summary>
-        /// Main ViewModel 
-        /// </summary>
         private MainVM MainVM { get; set; }
 
-        /// <summary>
-        /// Selected language of the application 
-        /// </summary>
         public LanguageEnum LanguageEnum { get; private set; }
 
-        /// <summary>
-        /// Entity for translating Login 
-        /// </summary>
         public LoginEntity LoginEntity { get; private set; } = new LoginEntity(); 
-        /// <summary>
-        /// Entity for translating Menu 
-        /// </summary>
         public MenuEntity MenuEntity { get; private set; } = new MenuEntity(); 
-        /// <summary>
-        /// Entity for translating Settings 
-        /// </summary>
         public SettingsEntity SettingsEntity { get; private set; } = new SettingsEntity(); 
-        /// <summary>
-        /// Entity for translating SqlPage 
-        /// </summary>
         public SqlPageEntity SqlPageEntity { get; private set; } = new SqlPageEntity(); 
-        /// <summary>
-        /// Entity for translating TablesPage 
-        /// </summary>
         public TablesPageEntity TablesPageEntity { get; private set; } = new TablesPageEntity(); 
-        /// <summary>
-        /// Entity for translating Connection 
-        /// </summary>
         public ConnectionEntity ConnectionEntity { get; private set; } = new ConnectionEntity(); 
-        #endregion  // Properties
 
-        #region Constructors
-        /// <summary>
-        /// Constructor of Translator
-        /// </summary>
-        public Translator(MainVM mainVM) => this.MainVM = mainVM;
-        #endregion  // Constructors
+        public Translator(MainVM mainVM)
+        {
+            this.MainVM = mainVM;
+        }
 
-        #region Public methods
-        /// <summary>
-        /// Sets selected language 
-        /// </summary>
         public void SetLanguageEnum(LanguageEnum language)
         {
             LanguageEnum = language; 
-        }
-
-        public void TranslateLanguage()
-        {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -79,7 +40,7 @@ namespace SqlViewer.Utils.Language
                 DataTable dt = base.Translate(sql); 
 
                 var languageWord = new Word(LanguageEnum.ToString()); 
-                SettingsEntity.TranslateChosenLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), languageWord.English)); 
+                SettingsEntity.SetChosenLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), languageWord.English)); 
             }
             catch (System.Exception ex)
             {
@@ -87,14 +48,11 @@ namespace SqlViewer.Utils.Language
             }
         }
 
-        /// <summary>
-        /// Translates visual elements on Login
-        /// </summary>
         public void TranslateLogin()
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -102,15 +60,14 @@ namespace SqlViewer.Utils.Language
                 sql = string.Format(sql, LanguageEnum.ToString(), "LOGIN");
                 DataTable dt = base.Translate(sql); 
 
-                LoginEntity.TranslateActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.ActiveRdbmsField.English)); 
-                LoginEntity.TranslateDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.DatabaseField.English)); 
-                LoginEntity.TranslatePortField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.PortField.English)); 
-                LoginEntity.TranslateSchemaField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.SchemaField.English)); 
-                LoginEntity.TranslateUsernameField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.UsernameField.English)); 
-                LoginEntity.TranslatePasswordField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.PasswordField.English)); 
+                LoginEntity.SetActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.ActiveRdbmsField.English)); 
+                LoginEntity.SetDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.DatabaseField.English)); 
+                LoginEntity.SetSchemaField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.SchemaField.English)); 
+                LoginEntity.SetUsernameField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.UsernameField.English)); 
+                LoginEntity.SetPasswordField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.PasswordField.English)); 
                 
-                LoginEntity.TranslateLogInField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.LogInField.English)); 
-                LoginEntity.TranslateCancelField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.CancelField.English)); 
+                LoginEntity.SetLogInField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.LogInField.English)); 
+                LoginEntity.SetCancelField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.CancelField.English)); 
             }
             catch (System.Exception ex)
             {
@@ -118,86 +75,83 @@ namespace SqlViewer.Utils.Language
             }
         }
 
-        /// <summary>
-        /// Translates visual elements on Menu
-        /// </summary>
         public void TranslateMenu()
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
                 sql = string.Format(sql, LanguageEnum.ToString(), "MENU");
                 DataTable dt = base.Translate(sql); 
-                //
-                // Translate File
-                //
-                MenuEntity.TranslateFileField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileField.English)); 
-                
-                MenuEntity.TranslateFileNewField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewField.English)); 
-                MenuEntity.TranslateFileNewSqlFileField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewSqlFileField.English)); 
-                MenuEntity.TranslateFileNewFunctionField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewFunctionField.English)); 
-                MenuEntity.TranslateFileNewProcedureField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewProcedureField.English)); 
-                MenuEntity.TranslateFileNewTestField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewTestField.English)); 
-                MenuEntity.TranslateFileNewDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewDatabaseField.English)); 
-                MenuEntity.TranslateFileNewTableField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewTableField.English)); 
-                MenuEntity.TranslateFileNewSequenceField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewSequenceField.English)); 
-                MenuEntity.TranslateFileNewViewField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewViewField.English)); 
-                MenuEntity.TranslateFileNewTriggerField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewTriggerField.English)); 
-                                
-                MenuEntity.TranslateFileOpenField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenField.English)); 
-                MenuEntity.TranslateFileOpenSqlFileField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenSqlFileField.English));
-                MenuEntity.TranslateFileOpenFunctionField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenFunctionField.English));
-                MenuEntity.TranslateFileOpenProcedureField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenProcedureField.English));
-                MenuEntity.TranslateFileOpenTestField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenTestField.English));
-                MenuEntity.TranslateFileOpenDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenDatabaseField.English));
-                MenuEntity.TranslateFileOpenTableField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenTableField.English));
-                MenuEntity.TranslateFileOpenSequenceField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenSequenceField.English));
-                MenuEntity.TranslateFileOpenViewField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenViewField.English));
-                MenuEntity.TranslateFileOpenTriggerField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenTriggerField.English));
 
-                MenuEntity.TranslateFileReopenField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileReopenField.English));
-                MenuEntity.TranslateFileSaveField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileSaveField.English));
-                MenuEntity.TranslateFileSaveAllField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileSaveAllField.English));
-                MenuEntity.TranslateFileCloseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileCloseField.English));
-                MenuEntity.TranslateFileCloseAllField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileCloseAllField.English));
-                MenuEntity.TranslateFileExitField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileExitField.English));
-                //
-                // Translate Edit
-                //
-                MenuEntity.TranslateEditField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditField.English)); 
-                MenuEntity.TranslateEditUndoField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditUndoField.English)); 
-                MenuEntity.TranslateEditRedoField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditRedoField.English)); 
-                MenuEntity.TranslateEditSettingsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditSettingsField.English)); 
-                //
-                // Translate Pages
-                //
-                MenuEntity.TranslatePagesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesField.English)); 
-                MenuEntity.TranslatePagesSqlQueryField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesSqlQueryField.English)); 
-                MenuEntity.TranslatePagesCommandLineField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesCommandLineField.English)); 
-                MenuEntity.TranslatePagesFunctionsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesFunctionsField.English)); 
-                MenuEntity.TranslatePagesProceduresField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesProceduresField.English)); 
-                MenuEntity.TranslatePagesTestsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesTestsField.English)); 
-                MenuEntity.TranslatePagesDatabasesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesDatabasesField.English)); 
-                MenuEntity.TranslatePagesTablesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesTablesField.English)); 
-                //
-                // Translate Tools
-                //
-                MenuEntity.TranslateToolsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsField.English)); 
-                MenuEntity.TranslateToolsOptionsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsOptionsField.English)); 
-                MenuEntity.TranslateToolsToolbarsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsToolbarsField.English)); 
-                MenuEntity.TranslateToolsConnectionsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsConnectionsField.English)); 
-                //
-                // Translate Help
-                //
-                MenuEntity.TranslateHelpField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpField.English)); 
-                MenuEntity.TranslateHelpDocsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpDocsField.English)); 
-                MenuEntity.TranslateHelpUserGuideField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpUserGuideField.English)); 
-                MenuEntity.TranslateHelpGithubField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpGithubField.English)); 
-                MenuEntity.TranslateHelpReportField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpReportField.English)); 
+                #region Translate File
+                MenuEntity.SetFileField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileField.English)); 
+                
+                MenuEntity.SetFileNewField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewField.English)); 
+                MenuEntity.SetFileNewSqlFileField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewSqlFileField.English)); 
+                MenuEntity.SetFileNewFunctionField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewFunctionField.English)); 
+                MenuEntity.SetFileNewProcedureField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewProcedureField.English)); 
+                MenuEntity.SetFileNewTestField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewTestField.English)); 
+                MenuEntity.SetFileNewDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewDatabaseField.English)); 
+                MenuEntity.SetFileNewTableField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewTableField.English)); 
+                MenuEntity.SetFileNewSequenceField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewSequenceField.English)); 
+                MenuEntity.SetFileNewViewField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewViewField.English)); 
+                MenuEntity.SetFileNewTriggerField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewTriggerField.English)); 
+                                
+                MenuEntity.SetFileOpenField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenField.English)); 
+                MenuEntity.SetFileOpenSqlFileField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenSqlFileField.English));
+                MenuEntity.SetFileOpenFunctionField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenFunctionField.English));
+                MenuEntity.SetFileOpenProcedureField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenProcedureField.English));
+                MenuEntity.SetFileOpenTestField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenTestField.English));
+                MenuEntity.SetFileOpenDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenDatabaseField.English));
+                MenuEntity.SetFileOpenTableField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenTableField.English));
+                MenuEntity.SetFileOpenSequenceField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenSequenceField.English));
+                MenuEntity.SetFileOpenViewField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenViewField.English));
+                MenuEntity.SetFileOpenTriggerField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenTriggerField.English));
+
+                MenuEntity.SetFileReopenField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileReopenField.English));
+                MenuEntity.SetFileSaveField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileSaveField.English));
+                MenuEntity.SetFileSaveAllField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileSaveAllField.English));
+                MenuEntity.SetFileCloseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileCloseField.English));
+                MenuEntity.SetFileCloseAllField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileCloseAllField.English));
+                MenuEntity.SetFileExitField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileExitField.English));
+                #endregion  // Translate File
+
+                #region Translate Edit 
+                MenuEntity.SetEditField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditField.English)); 
+                MenuEntity.SetEditUndoField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditUndoField.English)); 
+                MenuEntity.SetEditRedoField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditRedoField.English)); 
+                MenuEntity.SetEditSettingsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.EditSettingsField.English)); 
+                #endregion  // Translate Edit
+
+                #region Translate Pages
+                MenuEntity.SetPagesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesField.English)); 
+                MenuEntity.SetPagesSqlQueryField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesSqlQueryField.English)); 
+                MenuEntity.SetPagesCommandLineField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesCommandLineField.English)); 
+                MenuEntity.SetPagesFunctionsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesFunctionsField.English)); 
+                MenuEntity.SetPagesProceduresField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesProceduresField.English)); 
+                MenuEntity.SetPagesTestsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesTestsField.English)); 
+                MenuEntity.SetPagesDatabasesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesDatabasesField.English)); 
+                MenuEntity.SetPagesTablesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.PagesTablesField.English)); 
+                #endregion  // Translate Pages
+
+                #region Translate Tools
+                MenuEntity.SetToolsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsField.English)); 
+                MenuEntity.SetToolsOptionsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsOptionsField.English)); 
+                MenuEntity.SetToolsToolbarsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsToolbarsField.English)); 
+                MenuEntity.SetToolsConnectionsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.ToolsConnectionsField.English)); 
+                #endregion  // Translate Tools
+
+                #region Translate Help
+                MenuEntity.SetHelpField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpField.English)); 
+                MenuEntity.SetHelpDocsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpDocsField.English)); 
+                MenuEntity.SetHelpUserGuideField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpUserGuideField.English)); 
+                MenuEntity.SetHelpGithubField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpGithubField.English)); 
+                MenuEntity.SetHelpReportField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.HelpReportField.English)); 
+                #endregion  // Translate Help
             }
             catch (System.Exception ex)
             {
@@ -205,60 +159,55 @@ namespace SqlViewer.Utils.Language
             }
         }
 
-        /// <summary>
-        /// Translates visual elements on Settings
-        /// </summary>
         public void TranslateSettings()
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
-                //
-                // Translate Settings 
-                //
+                #region Translate Settings  
                 sql = string.Format(sql, LanguageEnum.ToString(), "SETTINGS");
                 DataTable dt = base.Translate(sql); 
 
-                SettingsEntity.TranslateEditorField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EditorField.English)); 
-                SettingsEntity.TranslateLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.LanguageField.English)); 
-                SettingsEntity.TranslateAutoSaveField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.AutoSaveField.English)); 
-                SettingsEntity.TranslateFontSizeField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.FontSizeField.English)); 
-                SettingsEntity.TranslateFontFamilyField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.FontFamilyField.English)); 
-                SettingsEntity.TranslateTabSizeField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.TabSizeField.English)); 
-                SettingsEntity.TranslateWordWrapField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.WordWrapField.English)); 
+                SettingsEntity.SetEditorField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EditorField.English)); 
+                SettingsEntity.SetLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.LanguageField.English)); 
+                SettingsEntity.SetAutoSaveField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.AutoSaveField.English)); 
+                SettingsEntity.SetFontSizeField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.FontSizeField.English)); 
+                SettingsEntity.SetFontFamilyField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.FontFamilyField.English)); 
+                SettingsEntity.SetTabSizeField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.TabSizeField.English)); 
+                SettingsEntity.SetWordWrapField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.WordWrapField.English)); 
 
-                SettingsEntity.TranslateDbField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DbField.English)); 
-                SettingsEntity.TranslateDefaultRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DefaultRdbmsField.English)); 
-                SettingsEntity.TranslateActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.ActiveRdbmsField.English)); 
-                SettingsEntity.TranslateDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English)); 
-                SettingsEntity.TranslatePortField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.PortField.English)); 
-                SettingsEntity.TranslateSchemaField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SchemaField.English)); 
-                SettingsEntity.TranslateUsernameField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.UsernameField.English)); 
-                SettingsEntity.TranslatePasswordField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.PasswordField.English)); 
+                SettingsEntity.SetDbField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DbField.English)); 
+                SettingsEntity.SetDefaultRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DefaultRdbmsField.English)); 
+                SettingsEntity.SetActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.ActiveRdbmsField.English)); 
+                SettingsEntity.SetDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English)); 
+                SettingsEntity.SetSchemaField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SchemaField.English)); 
+                SettingsEntity.SetUsernameField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.UsernameField.English)); 
+                SettingsEntity.SetPasswordField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.PasswordField.English)); 
                 
-                SettingsEntity.TranslateRecoverField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.RecoverField.English)); 
-                SettingsEntity.TranslateSaveField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SaveField.English)); 
-                SettingsEntity.TranslateCancelField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.CancelField.English)); 
-                //
-                // Translate Common 
-                //
+                SettingsEntity.SetRecoverField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.RecoverField.English)); 
+                SettingsEntity.SetSaveField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SaveField.English)); 
+                SettingsEntity.SetCancelField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.CancelField.English)); 
+                #endregion  // Translate Settings  
+
+                #region Translate Common 
                 sql = string.Format(sql, LanguageEnum.ToString(), "COMMON");
                 dt = base.Translate(sql); 
 
-                SettingsEntity.TranslateDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English)); 
-                // SettingsEntity.TranslateEnabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EnabledField.English)); 
-                // SettingsEntity.TranslateDisabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DisabledField.English)); 
-                //
-                // Translate Language 
-                // 
+                SettingsEntity.SetDatabaseField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English)); 
+                SettingsEntity.SetEnabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EnabledField.English)); 
+                SettingsEntity.SetDisabledField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DisabledField.English)); 
+                #endregion  // Translate Common 
+
+                #region Translate Language 
                 sql = string.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
                 dt = base.Translate(sql); 
 
-                SettingsEntity.TranslateChosenLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.ChosenLanguageField.English)); 
+                SettingsEntity.SetChosenLanguageField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.ChosenLanguageField.English)); 
+                #endregion  // Translate Language 
             }
             catch (System.Exception ex)
             {
@@ -266,35 +215,32 @@ namespace SqlViewer.Utils.Language
             }
         }
 
-        /// <summary>
-        /// Translates visual elements on Pages
-        /// </summary>
         public void TranslatePages()
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
                 }
                 sql = string.Format(sql, LanguageEnum.ToString(), "PAGES");
                 DataTable dt = base.Translate(sql); 
-                //
-                // Translate SQL page 
-                // 
-                SqlPageEntity.TranslatePathField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SqlPageEntity.PathField.English)); 
-                SqlPageEntity.TranslateExecuteField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SqlPageEntity.ExecuteField.English)); 
-                //
-                // Translate Tables page 
-                // 
-                TablesPageEntity.TranslatePathField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.PathField.English)); 
-                TablesPageEntity.TranslateTablesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.TablesField.English)); 
-                TablesPageEntity.TranslateGeneralInfoField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.GeneralInfoField.English)); 
-                TablesPageEntity.TranslateColumnsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.ColumnsField.English)); 
-                TablesPageEntity.TranslateForeignKeysField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.ForeignKeysField.English)); 
-                TablesPageEntity.TranslateTriggersField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.TriggersField.English)); 
-                TablesPageEntity.TranslateDataField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.DataField.English)); 
+
+                #region Translate SQL page
+                SqlPageEntity.SetPathField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SqlPageEntity.PathField.English)); 
+                SqlPageEntity.SetExecuteField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), SqlPageEntity.ExecuteField.English)); 
+                #endregion  // Translate SQL page 
+
+                #region Translate Tables page
+                TablesPageEntity.SetPathField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.PathField.English)); 
+                TablesPageEntity.SetTablesField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.TablesField.English)); 
+                TablesPageEntity.SetGeneralInfoField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.GeneralInfoField.English)); 
+                TablesPageEntity.SetColumnsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.ColumnsField.English)); 
+                TablesPageEntity.SetForeignKeysField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.ForeignKeysField.English)); 
+                TablesPageEntity.SetTriggersField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.TriggersField.English)); 
+                TablesPageEntity.SetDataField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.DataField.English)); 
+                #endregion  // Translate Tables page 
             }
             catch (System.Exception ex)
             {
@@ -302,14 +248,11 @@ namespace SqlViewer.Utils.Language
             }
         }
 
-        /// <summary>
-        /// Translates visual elements on Connection
-        /// </summary>
         public void TranslateConnection()
         {
             try
             {
-                string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -317,15 +260,14 @@ namespace SqlViewer.Utils.Language
                 sql = string.Format(sql, LanguageEnum.ToString(), "CONNECTION");
                 DataTable dt = base.Translate(sql); 
 
-                ConnectionEntity.TranslateActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ActiveRdbmsField.English)); 
-                ConnectionEntity.TranslateExecuteField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ExecuteField.English)); 
-                ConnectionEntity.TranslateTransferField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.TransferField.English)); 
+                ConnectionEntity.SetActiveRdbmsField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ActiveRdbmsField.English)); 
+                ConnectionEntity.SetExecuteField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ExecuteField.English)); 
+                ConnectionEntity.SetTransferField(base.TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.TransferField.English)); 
             }
             catch (System.Exception ex)
             {
                 throw ex; 
             }
         }
-        #endregion  // Public methods
     }
 }

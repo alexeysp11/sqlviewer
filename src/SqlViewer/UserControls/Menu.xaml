@@ -14,7 +14,7 @@
                     <MenuItem Name="miFileNewProcedure" Header="Procedure" />
                     <MenuItem Name="miFileNewTest" Header="Test" />
                     <Separator/>
-                    <MenuItem Name="miFileNewDatabase" Header="Database" Command="{Binding AppMainCommand}" CommandParameter="DbCommand.New" />
+                    <MenuItem Name="miFileNewDatabase" Header="Database" Command="{Binding DbCommand}" CommandParameter="New" />
                     <MenuItem Name="miFileNewTable" Header="Table" />
                     <MenuItem Name="miFileNewSequence" Header="Sequence" />
                     <MenuItem Name="miFileNewView" Header="View" />
@@ -26,32 +26,32 @@
                     <MenuItem Name="miFileOpenProcedure" Header="Procedure" />
                     <MenuItem Name="miFileOpenTest" Header="Test" />
                     <Separator/>
-                    <MenuItem Name="miFileOpenDatabase" Header="Database" Command="{Binding AppMainCommand}" CommandParameter="DbCommand.Open" />
+                    <MenuItem Name="miFileOpenDatabase" Header="Database" Command="{Binding DbCommand}" CommandParameter="Open" />
                     <MenuItem Name="miFileOpenTable" Header="Table" />
                     <MenuItem Name="miFileOpenSequence" Header="Sequence" />
                     <MenuItem Name="miFileOpenView" Header="View" />
                     <MenuItem Name="miFileOpenTrigger" Header="Trigger" />
                 </MenuItem>
-                <MenuItem Name="miFileReopen" Header="Reopen" IsEnabled="False" />
+                <MenuItem Name="miFileReopen" Header="Reopen" />
                 <Separator/>
-                <MenuItem Name="miFileSave" Header="Save" IsEnabled="False" />
-                <MenuItem Name="miFileSaveAll" Header="Save All" IsEnabled="False" />
+                <MenuItem Name="miFileSave" Header="Save" />
+                <MenuItem Name="miFileSaveAll" Header="Save All" />
                 <Separator/>
-                <MenuItem Name="miFileClose" Header="Close" IsEnabled="False" />
-                <MenuItem Name="miFileCloseAll" Header="Close All" IsEnabled="False" />
+                <MenuItem Name="miFileClose" Header="Close" />
+                <MenuItem Name="miFileCloseAll" Header="Close All" />
                 <Separator/>
-                <MenuItem Name="miFileExit" Header="Exit" Command="{Binding AppMainCommand}" CommandParameter="AppMainCommand.ExitApplication" />
+                <MenuItem Name="miFileExit" Header="Exit" Command="{Binding AppCommand}" CommandParameter="ExitApplication" />
             </MenuItem>
 
             <MenuItem Name="miEdit" Header="Edit">
-                <MenuItem Name="miEditUndo" Header="Undo" IsEnabled="False" />
-                <MenuItem Name="miEditRedo" Header="Redo" IsEnabled="False" />
+                <MenuItem Name="miEditUndo" Header="Undo" />
+                <MenuItem Name="miEditRedo" Header="Redo" />
                 <Separator/>
-                <MenuItem Name="miEditSettings" Header="Settings" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.Settings" />
+                <MenuItem Name="miEditSettings" Header="Settings" Command="{Binding RedirectCommand}" CommandParameter="Settings" />
             </MenuItem>
 
             <MenuItem Name="miPages" Header="Pages">
-                <MenuItem Name="miPagesSqlQuery" Header="SQL query" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.SqlQuery" />
+                <MenuItem Name="miPagesSqlQuery" Header="SQL query" Command="{Binding RedirectCommand}" CommandParameter="SqlQuery" />
                 <MenuItem Name="miPagesCommandLine" Header="Command line" />
                 <Separator/>
                 <MenuItem Name="miPagesFunctions" Header="Functions" />
@@ -59,29 +59,28 @@
                 <MenuItem Name="miPagesTests" Header="Tests" />
                 <Separator/>
                 <MenuItem Name="miPagesDatabases" Header="Databases" />
-                <MenuItem Name="miPagesTables" Header="Tables" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.Tables" />
+                <MenuItem Name="miPagesTables" Header="Tables" Command="{Binding RedirectCommand}" CommandParameter="Tables" />
             </MenuItem>
 
             <MenuItem Name="miTools" Header="Tools">
-                <MenuItem Name="miToolsOptions" Header="Options" IsEnabled="False" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.Options" />
-                <MenuItem Name="miToolsToolbars" Header="Toolbars" IsEnabled="False" />
+                <MenuItem Name="miToolsOptions" Header="Options" Command="{Binding RedirectCommand}" CommandParameter="Options" />
+                <MenuItem Name="miToolsToolbars" Header="Toolbars" />
                 <Separator/>
-                <MenuItem Name="miToolsConnections" Header="Connections" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.Connections" />
+                <MenuItem Name="miToolsConnections" Header="Connections" Command="{Binding RedirectCommand}" CommandParameter="Connections" />
             </MenuItem>
 
             <MenuItem Name="miHelp" Header="Help">
                 <MenuItem Name="miHelpDocs" Header="Common SQL docs">
-                    <MenuItem Name="miHelpDocsSqlite" Header="SQLite" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.SqliteDocs" />
-                    <MenuItem Name="miHelpDocsPostgres" Header="PostgreSQL" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.PosgresDocs" />
-                    <MenuItem Name="miHelpDocsMySql" Header="MySQL" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.MySqlDocs" />
-                    <MenuItem Name="miHelpDocsOracle" Header="Oracle" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.OracleDocs" />
+                    <MenuItem Name="miHelpDocsSqlite" Header="SQLite" Command="{Binding HelpCommand}" CommandParameter="SqliteDocs" />
+                    <MenuItem Name="miHelpDocsPostgres" Header="PostgreSQL" Command="{Binding HelpCommand}" CommandParameter="PosgresDocs" />
+                    <MenuItem Name="miHelpDocsMySql" Header="MySQL" Command="{Binding HelpCommand}" CommandParameter="MySqlDocs" />
                 </MenuItem>
                 <MenuItem Name="miHelpUserGuide" Header="User guide">
-                    <MenuItem Name="miHelpUserGuideAbout" Header="About" Command="{Binding AppMainCommand}" CommandParameter="RedirectCommand.About" />
+                    <MenuItem Name="miHelpUserGuideAbout" Header="About" Command="{Binding HelpCommand}" CommandParameter="About" />
                 </MenuItem>
                 <MenuItem Name="miHelpGithub" Header="GitHub repository" />
                 <Separator/>
-                <MenuItem Name="miHelpReport" Header="Report" IsEnabled="False" />
+                <MenuItem Name="miHelpReport" Header="Report" />
             </MenuItem>
         </Menu>
     </Grid>

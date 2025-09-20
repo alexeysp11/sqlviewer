@@ -1,0 +1,1 @@
+INSERT INTO tmp_settings (name, value) VALUES ('{0}', '{1}')

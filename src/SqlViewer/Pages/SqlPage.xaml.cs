@@ -13,18 +13,9 @@ namespace SqlViewer.Pages
     /// </summary>
     public partial class SqlPage : UserControl
     {
-        /// <summary>
-        /// Main ViewModel 
-        /// </summary>
         private MainVM MainVM { get; set; }
-        /// <summary>
-        /// Entity that stores data for translating the page 
-        /// </summary>
         private SqlPageEntity SqlPageEntity { get; set; }
 
-        /// <summary>
-        /// Constructor of SqlPage
-        /// </summary>
         public SqlPage()
         {
             InitializeComponent();
@@ -38,15 +29,12 @@ namespace SqlViewer.Pages
             }; 
         }
 
-        /// <summary>
-        /// Initializes all the page 
-        /// </summary>
         public void Init()
         {
-            tbSqlPageDb.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": ") : "DB: "; 
-            tblDbName.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.DbName; 
-            tbActiveRdbms.Text = RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
-            btnSqlPageExecute.Content = SettingsHelper.TranslateUiElement(SqlPageEntity.ExecuteField.English, SqlPageEntity.ExecuteField.Translation); 
+            tbSqlPageDb.Text = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? (RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.PathField.Translation) ? SqlPageEntity.PathField.English + ": " : SqlPageEntity.PathField.Translation + ": ") : "DB: "; 
+            tblDbName.Text = RepoHelper.AppSettingsRepo.DbName; 
+            tbActiveRdbms.Text = RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
+            btnSqlPageExecute.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SqlPageEntity.ExecuteField.Translation) ? SqlPageEntity.ExecuteField.English : SqlPageEntity.ExecuteField.Translation; 
         }
     }
 }

@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SqlViewer.Pages"
         xmlns:vm="clr-namespace:SqlViewer.ViewModels"
-        xmlns:uc="clr-namespace:SqlViewer.UserControls"
-        xmlns:ucc="clr-namespace:VelocipedeUtils.Shared.WpfExtensions.UserControls;assembly=VelocipedeUtils.Shared.WpfExtensions">
+        xmlns:uc="clr-namespace:SqlViewer.UserControls">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="250" />
@@ -32,7 +31,7 @@
                         <TextBlock Name="tblDbName" Margin="5,0,0,0" />
                     </StackPanel>
 
-                    <ucc:DbGrid x:Name="dbgSqlResult" Height="215" Width="760" IsReadOnly="True" AutoGenerateColumns="True" />
+                    <uc:DbGrid x:Name="dbgSqlResult" Height="215" Width="760" IsReadOnly="True" AutoGenerateColumns="True" />
                 </StackPanel>
             </Grid>
         </Border>
@@ -51,7 +50,7 @@
                 </Grid.ColumnDefinitions>
                 
                 <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="0,5,0,0">
-                    <ucc:MultilineTextBox x:Name="mtbSqlRequest" IsReadOnly="False" FontSize="14" Height="165" Width="760" />
+                    <uc:MultilineTextBox x:Name="mtbSqlRequest" IsReadOnly="False" FontSize="14" Height="165" Width="760" />
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="100" />
@@ -60,7 +59,7 @@
                         </Grid.ColumnDefinitions>
 
                         <Button Name="btnSqlPageExecute" Content="Execute" Grid.Column="0" Margin="0,5,0,0" Cursor="Hand"
-                                Command="{Binding AppMainCommand}" CommandParameter="DbCommand.SendSql" />
+                                Command="{Binding DbCommand}" CommandParameter="SendSql" />
                         <TextBlock Name="tbActiveRdbms" Text="SQLite" Grid.Column="1" Margin="15,8,0,0" />
                         <TextBlock Text="UTF-8" Grid.Column="2" Margin="0,8,0,0" />
                     </Grid>

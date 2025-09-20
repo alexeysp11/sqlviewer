@@ -1,8 +1,5 @@
 namespace SqlViewer.Enums.Common
 {
-    /// <summary>
-    /// Enumeration for storing all languages that the application could be translated 
-    /// </summary>
     public enum Language
     {
         English = 1, 

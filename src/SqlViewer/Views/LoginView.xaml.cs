@@ -1,9 +1,8 @@
 using System.Windows;
 using System.Windows.Controls;
+using SqlViewer.ViewModels;
 using SqlViewer.Entities.ViewsEntities; 
 using SqlViewer.Helpers; 
-using SqlViewer.Models.DataStorage; 
-using SqlViewer.ViewModels;
 using LanguageEnum = SqlViewer.Enums.Common.Language; 
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
 
@@ -14,24 +13,12 @@ namespace SqlViewer.Views
     /// </summary>
     public partial class LoginView : Window
     {
-        /// <summary>
-        /// Main ViewModel
-        /// </summary>
         private MainVM MainVM { get; set; }
         
-        /// <summary>
-        /// Entity of the view, that is used for translating visual elements 
-        /// </summary>
         private LoginEntity LoginEntity { get; set; }
 
-        /// <summary>
-        /// Boolean variable for getting if user logged on 
-        /// </summary>
         private bool IsLoggedIn { get; set; } = false; 
 
-        /// <summary>
-        /// Constructor of LoginView
-        /// </summary>
         public LoginView()
         {
             InitializeComponent();
@@ -45,9 +32,6 @@ namespace SqlViewer.Views
             }; 
         }
 
-        /// <summary>
-        /// General method that initializes the view 
-        /// </summary>
         private void Init()
         {
             try
@@ -65,59 +49,72 @@ namespace SqlViewer.Views
             }
         }
 
-        /// <summary>
-        /// Initializes section of database preferences 
-        /// </summary>
         private void InitPreferencesDb()
         {
-            lblActiveRdbms.Content = SettingsHelper.TranslateUiElement(LoginEntity.ActiveRdbmsField.English, LoginEntity.ActiveRdbmsField.Translation); 
-            cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.DatabaseSettings.ActiveRdbms.ToString(); 
+            lblActiveRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.ActiveRdbmsField.Translation) ? LoginEntity.ActiveRdbmsField.English : LoginEntity.ActiveRdbmsField.Translation; 
+            cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString(); 
 
-            lblDatabase.Content = SettingsHelper.TranslateUiElement(LoginEntity.DatabaseField.English, LoginEntity.DatabaseField.Translation); 
-            lblPort.Content = SettingsHelper.TranslateUiElement(LoginEntity.PortField.English, LoginEntity.PortField.Translation); 
-            lblSchema.Content = SettingsHelper.TranslateUiElement(LoginEntity.SchemaField.English, LoginEntity.SchemaField.Translation); 
-            lblUsername.Content = SettingsHelper.TranslateUiElement(LoginEntity.UsernameField.English, LoginEntity.UsernameField.Translation); 
-            lblPassword.Content = SettingsHelper.TranslateUiElement(LoginEntity.PasswordField.English, LoginEntity.PasswordField.Translation); 
+            lblDatabase.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.DatabaseField.Translation) ? LoginEntity.DatabaseField.English : LoginEntity.DatabaseField.Translation; 
+            lblSchema.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.SchemaField.Translation) ? LoginEntity.SchemaField.English : LoginEntity.SchemaField.Translation; 
+            lblUsername.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.UsernameField.Translation) ? LoginEntity.UsernameField.English : LoginEntity.UsernameField.Translation; 
+            lblPassword.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.PasswordField.Translation) ? LoginEntity.PasswordField.English : LoginEntity.PasswordField.Translation; 
         }
 
-        /// <summary>
-        /// Initializes section of buttons 
-        /// </summary>
         private void InitButtons()
         {
-            btnLogIn.Content = SettingsHelper.TranslateUiElement(LoginEntity.LogInField.English, LoginEntity.LogInField.Translation); 
-            btnCancel.Content = SettingsHelper.TranslateUiElement(LoginEntity.CancelField.English, LoginEntity.CancelField.Translation); 
+            btnLogIn.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.LogInField.Translation) ? LoginEntity.LogInField.English : LoginEntity.LogInField.Translation; 
+            btnCancel.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.CancelField.Translation) ? LoginEntity.CancelField.English : LoginEntity.CancelField.Translation; 
         }
         
-        /// <summary>
-        /// Initializes section of entering data about preferable database connection 
-        /// </summary>
         private void InitDbCredentials()
         {
-            DbCredentialsVE dbCredentialsVE = new DbCredentialsVE()
+            if (cbActiveRdbms.Text == "SQLite")
             {
-                cbActiveRdbms = this.cbActiveRdbms, 
-                tbServer = this.tbServer, 
-                tbDatabase = this.tbDatabase, 
-                tbPort = this.tbPort, 
-                tbSchema = this.tbSchema, 
-                tbUsername = this.tbUsername, 
-                pbPassword = this.pbPassword, 
-                btnDatabase = this.btnDatabase
-            };
-            MainVM.VisualVM.InitDbCredentials(dbCredentialsVE); 
+                tbServer.IsEnabled = false; 
+                tbPort.IsEnabled = false; 
+                tbSchema.IsEnabled = false; 
+                tbUsername.IsEnabled = false; 
+                pbPassword.IsEnabled = false; 
+                btnDatabase.IsEnabled = true; 
+
+                tbServer.Background = System.Windows.Media.Brushes.Gray; 
+                tbPort.Background = System.Windows.Media.Brushes.Gray; 
+                tbSchema.Background = System.Windows.Media.Brushes.Gray; 
+                tbUsername.Background = System.Windows.Media.Brushes.Gray; 
+                pbPassword.Background = System.Windows.Media.Brushes.Gray; 
+            }
+            else
+            {
+                tbServer.IsEnabled = true; 
+                tbPort.IsEnabled = true; 
+                tbSchema.IsEnabled = true; 
+                tbUsername.IsEnabled = true; 
+                pbPassword.IsEnabled = true;
+                btnDatabase.IsEnabled = false; 
+
+                tbServer.Background = System.Windows.Media.Brushes.White; 
+                tbPort.Background = System.Windows.Media.Brushes.White; 
+                tbSchema.Background = System.Windows.Media.Brushes.White; 
+                tbUsername.Background = System.Windows.Media.Brushes.White; 
+                pbPassword.Background = System.Windows.Media.Brushes.White; 
+            }
+            tbServer.Text = System.String.Empty; 
+            tbDatabase.Text = System.String.Empty; 
+            tbPort.Text = System.String.Empty; 
+            tbSchema.Text = System.String.Empty; 
+            tbUsername.Text = System.String.Empty; 
+            pbPassword.Password = System.String.Empty; 
+
+            RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text); 
         }
 
-        /// <summary>
-        /// Handles click on the LogIn button 
-        /// </summary>
         private void btnLogIn_Clicked(object sender, RoutedEventArgs e)
         {
             this.IsLoggedIn = true; 
 
-            string sql = this.MainVM.DataVM.MainDbBranch.RequestPreproc.GetSqlRequestFromFile("Sqlite/App/UpdateSettingsDb.sql"); 
+            string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/UpdateSettingsDb.sql"); 
             sql = string.Format(sql, "SQLite", cbActiveRdbms.Text, tbServer.Text, tbDatabase.Text, tbPort.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password); 
-            this.MainVM.DataVM.MainDbBranch.RequestPreproc.SendSqlRequest(sql); 
+            this.MainVM.DataVM.SendSqlRequest(sql); 
             this.MainVM.InitAppRepository(); 
             this.MainVM.Translate(); 
 
@@ -126,17 +123,11 @@ namespace SqlViewer.Views
             this.Close(); 
         }
 
-        /// <summary>
-        /// Handles selection of active RDBMS 
-        /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             InitDbCredentials(); 
         }
 
-        /// <summary>
-        /// Exits the application, if user is not logged in 
-        /// </summary>
         private void LoginView_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!IsLoggedIn)

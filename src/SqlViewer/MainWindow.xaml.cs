@@ -10,19 +10,15 @@ namespace SqlViewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        /// <summary>
-        /// Main ViewModel 
-        /// </summary>
         private MainVM MainVM { get; set; }
 
-        /// <summary>
-        /// Constructor of MainWindow
-        /// </summary>
         public MainWindow()
         {
             try
             {
                 this.MainVM = new MainVM(this); 
+
+                this.MainVM.ConfigHelper.Initialize(); 
 
                 this.MainVM.VisualVM.OpenView("LoginView"); 
                 InitializeComponent();

@@ -1,13 +1,15 @@
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
+using Microsoft.Win32;
+using SqlViewer.Models.DbConnections;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
-using SqlViewer.Helpers;
-using SqlViewer.Entities.UserControlsEntities;
-using LanguageEnum = SqlViewer.Enums.Common.Language;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
-using ICommonDbConnectionSV = VelocipedeUtils.Shared.DbConnections.ICommonDbConnection;
+using SqlViewer.Helpers; 
+using SqlViewer.Entities.UserControlsEntities; 
+using LanguageEnum = SqlViewer.Enums.Common.Language; 
+using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
+using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
 
 namespace SqlViewer.UserControls
 {
@@ -16,23 +18,11 @@ namespace SqlViewer.UserControls
     /// </summary>
     public partial class Connection : UserControl
     {
-        /// <summary>
-        /// Main ViewModel 
-        /// </summary>
         private MainVM MainVM { get; set; }
-        /// <summary>
-        /// Entity for storing data for translating visual elements on the UserControl 
-        /// </summary>
         private ConnectionEntity ConnectionEntity { get; set; }
 
-        /// <summary>
-        /// Ordinal number that allows to distinguish what database source it is necessary to connect to 
-        /// </summary>
         private int OrdinalNum = 0; 
 
-        /// <summary>
-        /// Constructor of Connection
-        /// </summary>
         public Connection()
         {
             InitializeComponent();
@@ -46,9 +36,6 @@ namespace SqlViewer.UserControls
         }
         
         #region Initialization
-        /// <summary>
-        /// Initializes the UserControl 
-        /// </summary>
         private void Init()
         {
             lblActiveRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(ConnectionEntity.ActiveRdbmsField.Translation) ? ConnectionEntity.ActiveRdbmsField.English + ":" : ConnectionEntity.ActiveRdbmsField.Translation + ":"; 
@@ -56,9 +43,6 @@ namespace SqlViewer.UserControls
             btnConnectionTransfer.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(ConnectionEntity.TransferField.Translation) ? ConnectionEntity.TransferField.English : ConnectionEntity.TransferField.Translation; 
         }
 
-        /// <summary>
-        /// Sets ordinal number of the UserControl 
-        /// </summary>
         public void SetOrdinalNum(int ordinalNum) 
         {
             try
@@ -75,14 +59,15 @@ namespace SqlViewer.UserControls
         #endregion  // Initialization
 
         #region Event processing
-        /// <summary>
-        /// Opens local database if SQLite was selected 
-        /// </summary>
         private void btnOpenSqliteDataSource_Clicked(object sender, RoutedEventArgs e)
         {
             try
             {
-                string path = SqlViewer.Helpers.FileSysHelper.OpenLocalFile(); 
+                OpenFileDialog ofd = new OpenFileDialog(); 
+                ofd.Filter = SettingsHelper.GetFilterFileSystemDb();
+                if (ofd.ShowDialog() == true) {}
+
+                string path = ofd.FileName; 
                 if (path == string.Empty) return; 
                 tbDataSource.Text = path;
             }
@@ -92,48 +77,50 @@ namespace SqlViewer.UserControls
             }
         }
 
-        /// <summary>
-        /// Displays an instruction on how to form DataSource string
-        /// </summary>
         private void btnDataSource_Clicked(object sender, RoutedEventArgs e)
         {
-            string msg = SqlViewer.Helpers.SettingsHelper.GetHelpDataSourceString(); 
+            string msg = @"SQLite: specify the full path to the local database (for example, 'C:\projects\sqlviewer\data\app.db').
+
+PostgreSQL: specify server, username, database, port and password (for example, 'Server=localhost;Username=username;Database=database;Port=800;Password=password').
+
+Oracle: specify protocol, host, port, service name, user ID and password (for example, 'Data Source=(DESCRIPTION =
+    (ADDRESS_LIST =
+      (ADDRESS = (PROTOCOL = TCP)(HOST = localhost)(PORT = 1521))
+    )
+    (CONNECT_DATA =
+      (SERVICE_NAME = service_name)
+    )
+  ); User ID=user_id;Password=password;')"; 
             System.Windows.MessageBox.Show(msg, "Instruction: How to form DataSource (DS) string", MessageBoxButton.OK, MessageBoxImage.Information); 
         }
 
-        /// <summary>
-        /// Reinitializes visual elements when active RDBMS was selected 
-        /// </summary>
         private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
         {
             tbDataSource.Text = System.String.Empty; 
-            btnOpenSqliteDataSource.IsEnabled = cbActiveRdbms.Text == nameof(RdbmsEnum.SQLite) ? true : false; 
+            btnOpenSqliteDataSource.IsEnabled = cbActiveRdbms.Text == "SQLite" ? true : false; 
             tbActiveRdbms.Text = cbActiveRdbms.Text; 
         }
 
-        /// <summary>
-        /// Executes SQL script written in Multiline textbox 
-        /// </summary>
         private void btnConnectionExecute_Clicked(object sender, System.EventArgs e)
         {
             try
             {
-                var di = this.MainVM.DataVM.InterDbBranch.DbInterconnection; 
-                ICommonDbConnectionSV dbConnection = di.GetDbConnection(cbActiveRdbms.Text, tbDataSource.Text); 
+                ICommonDbConnectionSV dbConnection = GetDbConnection(); 
                 switch (OrdinalNum)
                 {
                     case 1:
-                        di.SetInterDbConnection1(dbConnection); 
+                        this.MainVM.DataVM.DbInterconnection.SetDbConnection1(dbConnection); 
                         break;
                 
                     case 2:
-                        di.SetInterDbConnection2(dbConnection); 
+                        this.MainVM.DataVM.DbInterconnection.SetDbConnection2(dbConnection); 
                         break;
 
                     default: 
                         throw new System.Exception("Incorrect OrdinalNum in UserControls.Connection: '" + OrdinalNum + "'"); 
+                        break; 
                 }
-                dbgSqlResult.ItemsSource = OrdinalNum == 1 ? di.InterDbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : di.InterDbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView; 
+                dbgSqlResult.ItemsSource = OrdinalNum == 1 ? this.MainVM.DataVM.DbInterconnection.DbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : this.MainVM.DataVM.DbInterconnection.DbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView; 
             }
             catch (System.Exception ex)
             {
@@ -141,9 +128,6 @@ namespace SqlViewer.UserControls
             }
         }
 
-        /// <summary>
-        /// Transfers data from one database to another when the Transfer button was clicked 
-        /// </summary>
         private void btnConnectionTransfer_Clicked(object sender, System.EventArgs e)
         {
             try
@@ -151,7 +135,7 @@ namespace SqlViewer.UserControls
                 if (OrdinalNum != 1 && OrdinalNum != 2)
                     throw new System.Exception("Incorrect OrdinalNum in UserControls.Connection: '" + OrdinalNum + "'"); 
 
-                string tableName = SettingsHelper.GetTmpTableTransferString(); 
+                string tableName = SettingsHelper.GetTmpTableTransfer(); 
                 TransferData(tableName); 
                 System.Windows.MessageBox.Show("Data successfully transferred!\nTable name: " + tableName, "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
             }
@@ -163,9 +147,34 @@ namespace SqlViewer.UserControls
         #endregion  // Event processing
 
         #region Database methods
-        /// <summary>
-        /// Transfers data from one database to another 
-        /// </summary>
+        private ICommonDbConnectionSV GetDbConnection()
+        {
+            ICommonDbConnectionSV dbConnection; 
+            switch (cbActiveRdbms.Text)
+            {
+                case "SQLite":
+                    dbConnection = new SqliteDbConnection(tbDataSource.Text); 
+                    break;
+            
+                case "PostgreSQL":
+                    dbConnection = new PgDbConnection(tbDataSource.Text); 
+                    break;
+            
+                case "MySQL":
+                    dbConnection = new MysqlDbConnection(tbDataSource.Text); 
+                    break;
+            
+                case "Oracle":
+                    dbConnection = new OracleDbConnection(tbDataSource.Text); 
+                    break;
+
+                default: 
+                    throw new System.Exception("Incorrect ActiveRdbms in UserControls.Connection: '" + cbActiveRdbms.Text + "'"); 
+                    break; 
+            }
+            return dbConnection; 
+        }
+
         private void TransferData(string tableName)
         {
             try
@@ -176,7 +185,7 @@ namespace SqlViewer.UserControls
                 if ( !(connectionView.CheckDataGrids()) ) 
                     throw new System.Exception("None of DataGrids should be empty"); 
                 
-                ICommonDbConnectionSV dbConnection = OrdinalNum == 1 ? this.MainVM.DataVM.InterDbBranch.DbInterconnection.InterDbConnection2 : this.MainVM.DataVM.InterDbBranch.DbInterconnection.InterDbConnection1; 
+                ICommonDbConnectionSV dbConnection = OrdinalNum == 1 ? this.MainVM.DataVM.DbInterconnection.DbConnection2 : this.MainVM.DataVM.DbInterconnection.DbConnection1; 
                 DataTable dt = ((DataView)(dbgSqlResult.ItemsSource)).Table; 
                 dbConnection.ExecuteSqlCommand(dbConnection.GetSqlFromDataTable(dt, tableName)); 
             }
