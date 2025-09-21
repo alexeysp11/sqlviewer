@@ -16,10 +16,12 @@
 - [ ] Add NLog, log4net, or Serilog;
 - [ ] Add PostgreSQL, MySQL and Oracle for logging.
 
-## Extensions
+## Configureations
 
 - [ ] In config extension, check if all folders and files were created.
 - [ ] In config extension list all of the files, folders and databases in `appconfig.json`.
+- [ ] Add a description of how to configure the application. Perhaps we could add this functionality to the application and prompt the user to initialize the database whenever the database is not found in the config file.
+- [ ] File paths (SQL, databases, etc.) should not be hardcoded. Instead, consider using `appsettings.json` and restoring the file name using a "key" from the config file.
 
 ## Translation
 
