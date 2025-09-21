@@ -38,7 +38,6 @@ namespace SqlViewer.Models.DbPreproc
             return UserDbConnection; 
         }
 
-        #region Primary DB operations
         /// <summary>
         /// Creates a local DB 
         /// </summary>
@@ -78,9 +77,7 @@ namespace SqlViewer.Models.DbPreproc
                 throw ex; 
             }
         }
-        #endregion  // Primary DB operations
 
-        #region DbConnection initialization
         public void InitUserDbConnection()
         {
             try
@@ -125,9 +122,7 @@ namespace SqlViewer.Models.DbPreproc
                 throw ex; 
             }
         }
-        #endregion  // DbConnection initialization
 
-        #region DB information 
         public void DisplayTablesInDb()
         {
             if (UserDbConnection == null)
@@ -137,7 +132,13 @@ namespace SqlViewer.Models.DbPreproc
 
             try
             {
-                string sqlRequest = MainVM.DataVM.GetSqlRequest("Sqlite\\TableInfo\\DisplayTablesInDb.sql"); 
+                string sqlRequest = @"
+SELECT name FROM sqlite_master
+WHERE type IN ('table','view') AND name NOT LIKE 'sqlite_%'
+UNION ALL
+SELECT name FROM sqlite_temp_master
+WHERE type IN ('table','view')
+ORDER BY 1"; 
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
                 foreach (DataRow row in dt.Rows)
@@ -211,7 +212,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             try
             {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Sqlite\\TableInfo\\GetSqlDefinition.sql"), tableName);
+                string sqlRequest = string.Format(@"SELECT sql FROM sqlite_master WHERE type='table' AND name LIKE '{0}'", tableName);
                 DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
                 if (dt.Rows.Count > 0) 
                 {
@@ -228,9 +229,7 @@ namespace SqlViewer.Models.DbPreproc
                 throw ex; 
             }
         }
-        #endregion  // DB information  
 
-        #region Low-level operations
         public void SendSqlRequest()
         {
             try
@@ -276,6 +275,5 @@ namespace SqlViewer.Models.DbPreproc
                 throw ex; 
             }
         }
-        #endregion  // Low-level operations 
     } 
 }

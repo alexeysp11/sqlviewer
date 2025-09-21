@@ -12,8 +12,8 @@ namespace SqlViewer.Helpers
 
         public ConfigHelper(MainVM mainVM, string rootFolder)
         {
-            this.MainVM = mainVM; 
-            this.RootFolder = rootFolder; 
+            this.MainVM = mainVM;
+            this.RootFolder = rootFolder;
         }
 
         public void Initialize()
@@ -22,18 +22,17 @@ namespace SqlViewer.Helpers
             //CreateAllShortcuts(); // Not supported yet 
         }
 
-        #region File system methods
         public void CreateDataFolder()
         {
-            string dataFolderPath = $"{RootFolder}\\data"; 
-            CreateFolderIfNotExists(dataFolderPath); 
+            string dataFolderPath = $"{RootFolder}\\data";
+            CreateFolderIfNotExists(dataFolderPath);
 
-            string sqlFolderPath = $"{RootFolder}\\src\\Queries\\Sqlite\\Init"; 
-            CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDb.sql"); 
-            CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDbSettings.sql"); 
-            CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\RecoverSettings.sql"); 
-            CreateLocalDbIfNotExists($"{dataFolderPath}\\data.db", $"{sqlFolderPath}\\InitDataDb.sql"); 
-            CreateLocalDbIfNotExists($"{dataFolderPath}\\test.db", $"{sqlFolderPath}\\InitTestDb.sql"); 
+            string sqlFolderPath = $"{RootFolder}\\src\\Queries\\Sqlite\\Init";
+            CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDb.sql");
+            CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\InitAppDbSettings.sql");
+            CreateLocalDbIfNotExists($"{dataFolderPath}\\app.db", $"{sqlFolderPath}\\RecoverSettings.sql");
+            CreateLocalDbIfNotExists($"{dataFolderPath}\\data.db", $"{sqlFolderPath}\\InitDataDb.sql");
+            CreateLocalDbIfNotExists($"{dataFolderPath}\\test.db", $"{sqlFolderPath}\\InitTestDb.sql");
         }
 
         private void CreateFolderIfNotExists(string folderPath)
@@ -48,18 +47,16 @@ namespace SqlViewer.Helpers
         {
             if ( !(System.IO.File.Exists(localDbPath)) )
             {
-                System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
+                System.Windows.MessageBox.Show("CreateLocalDbIfNotExists");
                 this.MainVM.DataVM.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(this.MainVM.DataVM.GetSqlRequest(sqlScriptPath)); 
-                System.Windows.MessageBox.Show("CreateLocalDbIfNotExists"); 
+                System.Windows.MessageBox.Show("CreateLocalDbIfNotExists");
             }
         }
-        #endregion  // File system methods
 
-        #region Shortcuts methods
         public void CreateAllShortcuts()
         {
-            CreateShortcutInFolder(); 
-            CreateShortcutOnDesktop(); 
+            CreateShortcutInFolder();
+            CreateShortcutOnDesktop();
         }
 
         private void CreateShortcutInFolder()
@@ -116,6 +113,5 @@ namespace SqlViewer.Helpers
                 writer.Flush();
             }
         }
-        #endregion  // Shortcuts methods
     }
 }

@@ -31,7 +31,10 @@ namespace SqlViewer.Utils.Language
             LanguageEnum = language; 
             try
             {
-                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = @"
+SELECT t.english, t.{0}
+FROM translation t
+WHERE UPPER(t.context) LIKE UPPER('{1}');";
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -52,7 +55,10 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = @"
+SELECT t.english, t.{0}
+FROM translation t
+WHERE UPPER(t.context) LIKE UPPER('{1}');";
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -79,7 +85,10 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = @"
+SELECT t.english, t.{0}
+FROM translation t
+WHERE UPPER(t.context) LIKE UPPER('{1}');";
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -163,7 +172,10 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = @"
+SELECT t.english, t.{0}
+FROM translation t
+WHERE UPPER(t.context) LIKE UPPER('{1}');";
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -219,7 +231,10 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = @"
+SELECT t.english, t.{0}
+FROM translation t
+WHERE UPPER(t.context) LIKE UPPER('{1}');";
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
@@ -252,7 +267,10 @@ namespace SqlViewer.Utils.Language
         {
             try
             {
-                string sql = this.MainVM.DataVM.GetSqlRequest("Sqlite/App/SelectFromTranslation.sql"); 
+                string sql = @"
+SELECT t.english, t.{0}
+FROM translation t
+WHERE UPPER(t.context) LIKE UPPER('{1}');";
                 if (sql == string.Empty)
                 {
                     throw new System.Exception("Error while translation: SQL request should not be empty."); 
