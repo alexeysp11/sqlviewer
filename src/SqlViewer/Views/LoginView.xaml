@@ -1,0 +1,68 @@
+<Window x:Class="SqlViewer.Views.LoginView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlViewer.Views"
+        xmlns:vm="clr-namespace:SqlViewer.ViewModels"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen" 
+        Title="sqlviewer: SQL Database Viewer (for Windows) [Log In]" 
+        Icon="../Resources/icon.ico"
+        MinHeight="275" MaxHeight="275" MinWidth="500" MaxWidth="500"
+        Closing="LoginView_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="200" />
+            <RowDefinition Height="35" />
+        </Grid.RowDefinitions>
+
+        <Grid Name="grMain" Grid.Row="0">
+            <StackPanel Name="spPreferences" Orientation="Vertical" Margin="5,5,0,0">
+                <StackPanel Name="spPreferencesActiveRdbms" Orientation="Horizontal">
+                    <Label Name="lblActiveRdbms" Content="Active RDBMS:" Width="150" />
+                    <ComboBox Name="cbActiveRdbms" Width="200" Height="25" Margin="10,0,0,0" SelectedIndex="0" Cursor="Hand" DropDownClosed="cbActiveRdbms_DropDownClosed">
+                        <ComboBoxItem Content="SQLite" Cursor="Hand" />
+                        <ComboBoxItem Content="PostgreSQL" Cursor="Hand" />
+                        <ComboBoxItem Content="MySQL" Cursor="Hand" />
+                        <ComboBoxItem Content="Oracle" Cursor="Hand" />
+                    </ComboBox>
+                </StackPanel>
+                <StackPanel Name="spPreferencesServer" Orientation="Horizontal">
+                    <Label Name="lblServer" Content="Server:" Width="150" />
+                    <TextBox Name="tbServer" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesDatabase" Orientation="Horizontal">
+                    <Label Name="lblDatabase" Content="Database:" Width="150" />
+                    <TextBox Name="tbDatabase" Width="200" Height="25" Margin="10,0,0,0" />
+                    <Button Name="btnDatabase" Content="..." Width="25" Height="25" Margin="5,0,0,0" Cursor="Hand"
+                            Command="{Binding DbCommand}" CommandParameter="Open" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesPort" Orientation="Horizontal">
+                    <Label Name="lblPort" Content="Port:" Width="150" />
+                    <TextBox Name="tbPort" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesSchema" Orientation="Horizontal">
+                    <Label Name="lblSchema" Content="Schema:" Width="150" />
+                    <TextBox Name="tbSchema" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesUsername" Orientation="Horizontal">
+                    <Label Name="lblUsername" Content="Username:" Width="150" />
+                    <TextBox Name="tbUsername" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+                <StackPanel Name="spPreferencesPassword" Orientation="Horizontal">
+                    <Label Name="lblPassword" Content="Password:" Width="150" />
+                    <PasswordBox Name="pbPassword" Width="200" Height="25" Margin="10,0,0,0" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid Name="grButtons" Grid.Row="1">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,5,0">
+                <Button Name="btnLogIn" Content="Log In" Width="75" Height="25" Cursor="Hand" Margin="5,0,0,0" Click="btnLogIn_Clicked" />
+                <Button Name="btnCancel" Content="Cancel" Width="75" Height="25" Cursor="Hand" Margin="5,0,0,0" 
+                        Command="{Binding AppCommand}" CommandParameter="ExitApplication" />
+            </StackPanel>
+        </Grid>
+    </Grid>
+</Window>

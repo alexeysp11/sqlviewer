@@ -7,9 +7,9 @@
 ## Overall description 
 
 This project is a C# implementation of a GUI for retrieving and transfering data from the following RDBMS: 
-- **SQLite**, 
-- **PostgreSQL**, 
-- **MySQL**, 
+- **SQLite**,
+- **PostgreSQL**,
+- **MySQL**,
 - **Oracle**. 
 
 It's available in 29 different languages, such as: 
@@ -47,11 +47,7 @@ Using this app, you can do the following things:
 
 The goal of the project is to create a C# GUI application for retrieving and transferring data from various RDBMS, including SQLite, PostgreSQL, MySQL, and Oracle.
 
-### Scope
-
 The scope of the project includes implementing a GUI for executing SQL queries, viewing database information, and transferring data between different databases.
-
-### Who can use this project
 
 This project can be used by database administrators, developers, and anyone who needs to work with multiple RDBMS and perform data management tasks.
 
@@ -63,28 +59,17 @@ Similar open-source projects include [DBeaver](https://github.com/dbeaver/dbeave
 
 Possible limitations of this project could include compatibility issues with certain RDBMS, performance issues when dealing with large datasets, and potential security vulnerabilities when transferring data between databases.
 
-## Getting started 
+## Getting started
 
-### Prerequisites 
+### Prerequisites
 
 - Windows OS; 
 - .NET Core 3.1; 
 - One of the following data sources to be able to perform some operations with data: 
-    - **SQLite**, 
-    - **PostgreSQL**, 
+    - **SQLite**,
+    - **PostgreSQL**,
     - **MySQL**,
-    - **Oracle**. 
-
-### How to download
-
-First of all, make sure if you have installed **.NET Core 3.1** on your computer. 
-[Click here](https://dotnet.microsoft.com/en-us/download/dotnet/3.1) to download it. 
-
-You can download this application the following way: 
-```
-git clone https://github.com/alexeysp11/sqlviewer.git 
-git clone https://github.com/alexeysp11/workflow-lib.git 
-```
+    - **Oracle**.
 
 ### How to run 
 
@@ -113,7 +98,7 @@ This application is written in C# with **WPF** using **MVVM** pattern.
 ### How to contribute
 
 1. [Click here](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) to read guide on how to contribute to GitHub projects (common for any GitHub project). 
-2. Read [to-do list](docs/ToDoList.md). 
+2. Read [to-do list](docs/TODO.md). 
 
 ### Application structure 
 
