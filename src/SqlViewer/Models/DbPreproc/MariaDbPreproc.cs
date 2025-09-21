@@ -9,14 +9,14 @@ using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.DbPreproc
 {
-    public class MariadbDbPreproc : IDbPreproc
+    public class MariaDbPreproc : IDbPreproc
     {
         private MainVM MainVM { get; set; }
 
         public ICommonDbConnectionSV AppDbConnection { get; private set; }
         public ICommonDbConnectionSV UserDbConnection { get; private set; }
 
-        public MariadbDbPreproc(MainVM mainVM)
+        public MariaDbPreproc(MainVM mainVM)
         {
             this.MainVM = mainVM; 
         }
