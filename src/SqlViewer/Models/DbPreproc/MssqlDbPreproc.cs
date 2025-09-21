@@ -5,7 +5,8 @@ using SqlViewer.Helpers;
 using SqlViewer.ViewModels; 
 using SqlViewer.Models.DbConnections; 
 using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
+using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using System;
 
 namespace SqlViewer.Models.DbPreproc
 {
@@ -33,151 +34,108 @@ namespace SqlViewer.Models.DbPreproc
 
         public void InitUserDbConnection()
         {
-            try
-            {
-                if (RepoHelper.AppSettingsRepo == null)
-                    throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned."); 
-                if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.MSSQL)
-                    throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: '{RepoHelper.AppSettingsRepo.ActiveRdbms}'.");
+            if (RepoHelper.AppSettingsRepo == null)
+                throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned."); 
+            if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.MSSQL)
+                throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: '{RepoHelper.AppSettingsRepo.ActiveRdbms}'.");
                 
-                if (RepoHelper.AppSettingsRepo != null)
-                    UserDbConnection = new MssqlDbConnection();
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
+            if (RepoHelper.AppSettingsRepo != null)
+                UserDbConnection = new MssqlDbConnection();
         }
 
         public void DisplayTablesInDb()
         {
+            throw new NotImplementedException();
+
             if (UserDbConnection == null)
             {
                 return; 
             }
 
-            try
+            string sqlRequest = "";
+            DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
+            MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
+            foreach (DataRow row in dt.Rows)
             {
-                string sqlRequest = MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\DisplayTablesInDb.sql"); 
-                DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
-                MainVM.MainWindow.TablesPage.tvTables.Items.Clear();
-                foreach (DataRow row in dt.Rows)
-                {
-                    TreeViewItem item = new TreeViewItem(); 
-                    item.Header = row["name"].ToString();
-                    MainVM.MainWindow.TablesPage.tvTables.Items.Add(item); 
-                }
-                MainVM.MainWindow.TablesPage.tvTables.IsEnabled = true; 
-                MainVM.MainWindow.TablesPage.tvTables.Visibility = Visibility.Visible; 
+                TreeViewItem item = new TreeViewItem(); 
+                item.Header = row["name"].ToString();
+                MainVM.MainWindow.TablesPage.tvTables.Items.Add(item); 
             }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        } 
+            MainVM.MainWindow.TablesPage.tvTables.IsEnabled = true;
+            MainVM.MainWindow.TablesPage.tvTables.Visibility = Visibility.Visible;
+        }
+
         public void GetAllDataFromTable(string tableName)
         {
-            try
-            {
-                string sqlRequest = $"SELECT * FROM {tableName}"; 
-                MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        } 
+            string sqlRequest = $"SELECT * FROM {tableName}"; 
+            MainVM.MainWindow.TablesPage.dgrAllData.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+        }
+
         public void GetColumnsOfTable(string tableName)
         {
+            throw new NotImplementedException();
+
             string[] tn = tableName.Split('.');
-            try
-            {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\GetColumns.sql"), tn[0], tn[1]); 
-                MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
+            string sqlRequest = string.Format("", tn[0], tn[1]); 
+            MainVM.MainWindow.TablesPage.dgrColumns.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
         } 
+
         public void GetForeignKeys(string tableName)
         {
-            try
-            {
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\GetForeignKeys.sql"), tableName);;
-                MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        } 
+            throw new NotImplementedException();
+
+            string sqlRequest = string.Format("", tableName);;
+            MainVM.MainWindow.TablesPage.dgrForeignKeys.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+        }
+
         public void GetTriggers(string tableName)
         {
-            try
-            {
-                string sqlRequest = $"SELECT * FROM information_schema.triggers WHERE event_object_table LIKE '{tableName}';";
-                MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        } 
+            throw new NotImplementedException();
+
+            string sqlRequest = $"SELECT * FROM information_schema.triggers WHERE event_object_table LIKE '{tableName}';";
+            MainVM.MainWindow.TablesPage.dgrTriggers.ItemsSource = UserDbConnection.ExecuteSqlCommand(sqlRequest).DefaultView;
+        }
+
         public void GetSqlDefinition(string tableName)
         {
-            try
+            throw new NotImplementedException();
+
+            string[] tn = tableName.Split('.');
+            string sqlRequest = string.Format("", tn[0], tn[1]);
+            DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
+            if (dt.Rows.Count > 0) 
             {
-                string[] tn = tableName.Split('.');
-                string sqlRequest = string.Format(MainVM.DataVM.GetSqlRequest("Mssql\\TableInfo\\GetSqlDefinition.sql"), tn[0], tn[1]);
-                DataTable dt = UserDbConnection.ExecuteSqlCommand(sqlRequest);
-                if (dt.Rows.Count > 0) 
-                {
-                    DataRow row = dt.Rows[0];
-                    MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
-                }
-                else 
-                {
-                    MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
-                }
+                DataRow row = dt.Rows[0];
+                MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
             }
-            catch (System.Exception ex)
+            else 
             {
-                throw ex; 
+                MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
             }
         }
 
         public void SendSqlRequest()
         {
-            try
-            {
-                if (UserDbConnection == null)
-                    throw new System.Exception("Database is not opened."); 
+            throw new NotImplementedException();
 
-                DataTable resultCollection = UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
-                MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = resultCollection.DefaultView;
+            if (UserDbConnection == null)
+                throw new System.Exception("Database is not opened."); 
 
-                MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible; 
-                MainVM.MainWindow.SqlPage.dbgSqlResult.IsEnabled = true; 
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        } 
+            DataTable resultCollection = UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
+            MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = resultCollection.DefaultView;
+
+            MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible;
+            MainVM.MainWindow.SqlPage.dbgSqlResult.IsEnabled = true;
+        }
+
         public DataTable SendSqlRequest(string sql)
         {
-            try
-            {
-                if (AppDbConnection == null)
-                    throw new System.Exception("System RDBMS is not assigned."); 
-                return AppDbConnection.ExecuteSqlCommand(sql);
-            }
-            catch (System.Exception ex)
-            {
-                throw ex; 
-            }
-        } 
+            if (AppDbConnection == null)
+                throw new System.Exception("System RDBMS is not assigned.");
+
+            return AppDbConnection.ExecuteSqlCommand(sql);
+        }
+
         public void ClearTempTable(string tableName)
         {
 
@@ -187,6 +145,7 @@ namespace SqlViewer.Models.DbPreproc
         {
             return AppDbConnection; 
         }
+
         public ICommonDbConnectionSV GetUserDbConnection()
         {
             return UserDbConnection; 
