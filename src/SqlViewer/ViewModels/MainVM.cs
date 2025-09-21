@@ -287,7 +287,6 @@ UPDATE settings SET value = '' WHERE name LIKE 'password';";
             {
                 try 
                 {
-                    this.DataVM.ClearTempTable("settings"); 
                     ((SqlViewer.Views.SettingsView)this.VisualVM.SettingsView).UpdateAppRepository(); 
 
                     string sql = @"

@@ -80,20 +80,13 @@ namespace SqlViewer.Models.DbPreproc
 
         public void InitUserDbConnection()
         {
-            try
-            {
-                if (RepoHelper.AppSettingsRepo == null)
-                    throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned."); 
-                if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.SQLite)
-                    throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
+            if (RepoHelper.AppSettingsRepo == null)
+                throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned."); 
+            if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.SQLite)
+                throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
                 
-                if (RepoHelper.AppSettingsRepo != null && !string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DbName))
-                    UserDbConnection = new SqliteDbConnection(RepoHelper.AppSettingsRepo.DbName);
-            }
-            catch (System.Exception ex)
-            {
-                throw ex;
-            }
+            if (!string.IsNullOrEmpty(RepoHelper.AppSettingsRepo?.DbName))
+                UserDbConnection = new SqliteDbConnection(RepoHelper.AppSettingsRepo.DbName);
         }
 
         /// <summary>
