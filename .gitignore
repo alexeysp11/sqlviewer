@@ -14,3 +14,5 @@ SqlViewer.lnk
 docs/ProcessDocs 
 data 
 whatsnew.txt 
+
+*.csproj.user
