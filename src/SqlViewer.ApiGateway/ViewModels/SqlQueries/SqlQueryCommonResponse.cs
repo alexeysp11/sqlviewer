@@ -3,11 +3,10 @@
 namespace SqlViewer.ApiGateway.ViewModels.SqlQueries;
 
 /// <summary>
-/// Response for executing SQL query.
+/// Common response for executing SQL query.
 /// </summary>
-public sealed class SqlQueryExecuteResponse
+public sealed class SqlQueryCommonResponse
 {
     public required SqlQueryExecuteStatus Status { get; init; }
-    public List<dynamic>? QueryResult { get; init; }
     public string? ErrorMessage { get; init; }
 }
