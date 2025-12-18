@@ -3,7 +3,7 @@
 /// <summary>
 /// Status of the executed query.
 /// </summary>
-public enum SqlQueryExecuteStatus
+public enum SqlOperationStatus
 {
     None = 0,
     Success = 1,
