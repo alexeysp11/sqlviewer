@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Enums;
+using SqlViewer.ApiGateway.ViewModels;
 using SqlViewer.ApiGateway.ViewModels.SqlQueries;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Factories;
@@ -9,14 +10,9 @@ namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class SqlApiController : ControllerBase
+public sealed class SqlApiController(ILogger<SqlApiController> logger) : ControllerBase
 {
-    private readonly ILogger<SqlApiController> _logger;
-
-    public SqlApiController(ILogger<SqlApiController> logger)
-    {
-        _logger = logger;
-    }
+    private readonly ILogger<SqlApiController> _logger = logger;
 
     [HttpPost]
     [Route("/api/sql/query")]
@@ -31,13 +27,14 @@ public class SqlApiController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError("{Message}", ex.Message);
             return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
         }
     }
 
     [HttpPost]
     [Route("/api/sql/execute")]
-    public async Task<SqlQueryResponse> ExecuteAsync([FromBody] SqlQueryRequest request)
+    public async Task<CommonResponse> ExecuteAsync([FromBody] SqlQueryRequest request)
     {
         try
         {
@@ -48,6 +45,7 @@ public class SqlApiController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError("{Message}", ex.Message);
             return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
         }
     }
@@ -76,6 +74,7 @@ public class SqlApiController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError("{Message}", ex.Message);
             return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
         }
     }
@@ -97,6 +96,7 @@ public class SqlApiController : ControllerBase
         }
         catch (Exception ex)
         {
+            _logger.LogError("{Message}", ex.Message);
             return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
         }
     }

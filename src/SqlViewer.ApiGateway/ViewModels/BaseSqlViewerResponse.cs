@@ -1,11 +1,11 @@
 ﻿using SqlViewer.ApiGateway.Enums;
 
-namespace SqlViewer.ApiGateway.ViewModels.SqlQueries;
+namespace SqlViewer.ApiGateway.ViewModels;
 
 /// <summary>
-/// Common response for executing SQL query.
+/// Abstract base response.
 /// </summary>
-public sealed class CommonResponse
+public abstract class BaseSqlViewerResponse
 {
     public required SqlOperationStatus Status { get; init; }
     public string? ErrorMessage { get; init; }
