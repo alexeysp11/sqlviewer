@@ -5,7 +5,6 @@ using SqlViewer.ViewModels;
 using SqlViewer.Models.DbConnections;
 using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection;
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
-using System;
 
 namespace SqlViewer.Models.DbPreproc;
 
@@ -31,7 +30,7 @@ public class MssqlDbPreproc(MainVM mainVM) : IDbPreproc
             throw new Exception("RepoHelper.AppSettingsRepo is not assigned.");
         if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.MSSQL)
             throw new Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: '{RepoHelper.AppSettingsRepo.ActiveRdbms}'.");
-            
+
         UserDbConnection = new MssqlDbConnection();
     }
 

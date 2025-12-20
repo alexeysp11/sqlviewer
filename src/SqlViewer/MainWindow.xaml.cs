@@ -29,7 +29,7 @@ public partial class MainWindow : Window
             SqlPage.DataContext = MainVM;
             TablesPage.DataContext = MainVM;
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }

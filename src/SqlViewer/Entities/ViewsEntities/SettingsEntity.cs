@@ -2,7 +2,7 @@ using SqlViewer.Entities.Language;
 
 namespace SqlViewer.Entities.ViewsEntities;
 
-public class SettingsEntity 
+public class SettingsEntity
 {
     #region Editor fields
     public Word EditorField { get; private set; } = new Word("Editor");

@@ -28,10 +28,10 @@ public class PgDbPreproc(MainVM mainVM) : IDbPreproc
     public void InitUserDbConnection()
     {
         if (RepoHelper.AppSettingsRepo == null)
-            throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned.");
+            throw new Exception("RepoHelper.AppSettingsRepo is not assigned.");
         if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.PostgreSQL)
-            throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: '{RepoHelper.AppSettingsRepo.ActiveRdbms}'.");
-        
+            throw new Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: '{RepoHelper.AppSettingsRepo.ActiveRdbms}'.");
+
         UserDbConnection = new PgDbConnection();
     }
 
@@ -164,7 +164,7 @@ SELECT fGetSqlFromTable('{0}', '{1}') AS sql;", tn[0], tn[1]);
             DataRow row = dt.Rows[0];
             MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
         }
-        else 
+        else
         {
             MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
         }
@@ -173,7 +173,7 @@ SELECT fGetSqlFromTable('{0}', '{1}') AS sql;", tn[0], tn[1]);
     public void SendSqlRequest()
     {
         if (UserDbConnection == null)
-            throw new System.Exception("Database is not opened.");
+            throw new Exception("Database is not opened.");
 
         DataTable resultCollection = UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
         MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = resultCollection.DefaultView;
@@ -185,7 +185,7 @@ SELECT fGetSqlFromTable('{0}', '{1}') AS sql;", tn[0], tn[1]);
     public DataTable SendSqlRequest(string sql)
     {
         if (AppDbConnection == null)
-            throw new System.Exception("System RDBMS is not assigned.");
+            throw new Exception("System RDBMS is not assigned.");
         return AppDbConnection.ExecuteSqlCommand(sql);
     }
 

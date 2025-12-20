@@ -2,7 +2,7 @@ using SqlViewer.Entities.Language;
 
 namespace SqlViewer.Entities.UserControlsEntities;
 
-public class MenuEntity 
+public class MenuEntity
 {
     #region File fields
     public Word FileField { get; private set; } = new Word("File");
@@ -72,7 +72,7 @@ public class MenuEntity
 
     #region File methods 
     public void SetFileField(string value) => FileField.SetTranslation(value);
-    
+
     public void SetFileNewField(string value) => FileNewField.SetTranslation(value);
     public void SetFileNewSqlFileField(string value) => FileNewSqlFileField.SetTranslation(value);
     public void SetFileNewFunctionField(string value) => FileNewFunctionField.SetTranslation(value);
@@ -83,7 +83,7 @@ public class MenuEntity
     public void SetFileNewSequenceField(string value) => FileNewSequenceField.SetTranslation(value);
     public void SetFileNewViewField(string value) => FileNewViewField.SetTranslation(value);
     public void SetFileNewTriggerField(string value) => FileNewTriggerField.SetTranslation(value);
-    
+
     public void SetFileOpenField(string value) => FileOpenField.SetTranslation(value);
     public void SetFileOpenSqlFileField(string value) => FileOpenSqlFileField.SetTranslation(value);
     public void SetFileOpenFunctionField(string value) => FileOpenFunctionField.SetTranslation(value);
@@ -94,7 +94,7 @@ public class MenuEntity
     public void SetFileOpenSequenceField(string value) => FileOpenSequenceField.SetTranslation(value);
     public void SetFileOpenViewField(string value) => FileOpenViewField.SetTranslation(value);
     public void SetFileOpenTriggerField(string value) => FileOpenTriggerField.SetTranslation(value);
-    
+
     public void SetFileReopenField(string value) => FileReopenField.SetTranslation(value);
     public void SetFileSaveField(string value) => FileSaveField.SetTranslation(value);
     public void SetFileSaveAllField(string value) => FileSaveAllField.SetTranslation(value);

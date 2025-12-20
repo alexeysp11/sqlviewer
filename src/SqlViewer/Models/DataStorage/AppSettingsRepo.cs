@@ -11,7 +11,7 @@ namespace SqlViewer.Models.DataStorage;
 
 public class AppSettingsRepo
 {
-    private EnumEncoder EnumEncoder {get; set; }
+    private EnumEncoder EnumEncoder { get; set; }
 
     public LanguageEnum Language { get; private set; }
     public AutoSaveEnum AutoSave { get; private set; }
@@ -30,14 +30,14 @@ public class AppSettingsRepo
     public string DbUsername { get; private set; }
     public string DbPassword { get; private set; }
 
-    public AppSettingsRepo(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily, 
+    public AppSettingsRepo(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily,
         int tabSize, string wordWrap, string defaultRdbms, string activeRdbms)
     {
         EnumEncoder = enumEncoder;
         AssignBasic(language, autoSave, fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms);
     }
 
-    public AppSettingsRepo(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily, 
+    public AppSettingsRepo(EnumEncoder enumEncoder, string language, string autoSave, int fontSize, string fontFamily,
         int tabSize, string wordWrap, string defaultRdbms, string activeRdbms, string server, string dbName, string port,
         string dbSchema, string dbUsername, string dbPassword)
     {
@@ -46,7 +46,7 @@ public class AppSettingsRepo
         AssignDbCredentials(server, dbName, port, dbSchema, dbUsername, dbPassword);
     }
 
-    private void AssignBasic(string language, string autoSave, int fontSize, string fontFamily, 
+    private void AssignBasic(string language, string autoSave, int fontSize, string fontFamily,
         int tabSize, string wordWrap, string defaultRdbms, string activeRdbms)
     {
         Language = EnumEncoder.GetLanguageEnum($"{language}");
@@ -69,8 +69,8 @@ public class AppSettingsRepo
         DbPassword = dbPassword;
     }
 
-    public void Update(string language, string autoSave, int fontSize, string fontFamily, int tabSize, 
-        string wordWrap, string defaultRdbms, string activeRdbms, string server, string dbName, string port, 
+    public void Update(string language, string autoSave, int fontSize, string fontFamily, int tabSize,
+        string wordWrap, string defaultRdbms, string activeRdbms, string server, string dbName, string port,
         string dbSchema, string dbUsername, string dbPassword)
     {
         AssignBasic(language, autoSave, fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms);
@@ -81,7 +81,7 @@ public class AppSettingsRepo
     {
         if (string.IsNullOrEmpty(activeRdbms))
         {
-            throw new System.Exception("Parameter 'activeRdbms' should not be null or empty");
+            throw new Exception("Parameter 'activeRdbms' should not be null or empty");
         }
         ActiveRdbms = EnumEncoder.GetRdbmsEnum($"{activeRdbms}");
     }
@@ -90,7 +90,7 @@ public class AppSettingsRepo
     {
         if (string.IsNullOrEmpty(dbName))
         {
-            throw new System.Exception("Parameter 'dbName' should not be null or empty");
+            throw new Exception("Parameter 'dbName' should not be null or empty");
         }
         DbName = dbName;
     }

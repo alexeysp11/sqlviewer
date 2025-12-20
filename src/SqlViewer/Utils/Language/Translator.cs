@@ -46,7 +46,7 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
         LoginEntity.SetSchemaField(TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.SchemaField.English));
         LoginEntity.SetUsernameField(TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.UsernameField.English));
         LoginEntity.SetPasswordField(TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.PasswordField.English));
-            
+
         LoginEntity.SetLogInField(TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.LogInField.English));
         LoginEntity.SetCancelField(TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.CancelField.English));
     }
@@ -62,7 +62,7 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
 
         #region Translate File
         MenuEntity.SetFileField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileField.English));
-            
+
         MenuEntity.SetFileNewField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewField.English));
         MenuEntity.SetFileNewSqlFileField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewSqlFileField.English));
         MenuEntity.SetFileNewFunctionField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewFunctionField.English));
@@ -73,7 +73,7 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
         MenuEntity.SetFileNewSequenceField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewSequenceField.English));
         MenuEntity.SetFileNewViewField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewViewField.English));
         MenuEntity.SetFileNewTriggerField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileNewTriggerField.English));
-                            
+
         MenuEntity.SetFileOpenField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenField.English));
         MenuEntity.SetFileOpenSqlFileField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenSqlFileField.English));
         MenuEntity.SetFileOpenFunctionField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileOpenFunctionField.English));
@@ -152,7 +152,7 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
         SettingsEntity.SetSchemaField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SchemaField.English));
         SettingsEntity.SetUsernameField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.UsernameField.English));
         SettingsEntity.SetPasswordField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.PasswordField.English));
-            
+
         SettingsEntity.SetRecoverField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.RecoverField.English));
         SettingsEntity.SetSaveField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SaveField.English));
         SettingsEntity.SetCancelField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.CancelField.English));

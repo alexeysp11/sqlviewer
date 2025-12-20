@@ -1,5 +1,4 @@
 using System.Data;
-using System.Linq;
 using SqlViewer.Models.DbConnections;
 
 namespace SqlViewer.Utils.Language;

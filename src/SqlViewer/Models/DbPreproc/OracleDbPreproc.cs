@@ -6,7 +6,6 @@ using SqlViewer.ViewModels;
 using SqlViewer.Models.DbConnections;
 using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection;
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
-using System;
 
 namespace SqlViewer.Models.DbPreproc;
 
@@ -32,7 +31,7 @@ public class OracleDbPreproc(MainVM mainVM) : IDbPreproc
             throw new Exception("RepoHelper.AppSettingsRepo is not assigned.");
         if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.Oracle)
             throw new Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: '{RepoHelper.AppSettingsRepo.ActiveRdbms}'.");
-            
+
         UserDbConnection = new OracleDbConnection();
     }
 
@@ -104,7 +103,7 @@ WHERE UPPER(ut.table_name) LIKE UPPER('{0}')", tableName);
             DataRow row = dt.Rows[0];
             MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
         }
-        else 
+        else
         {
             MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
         }

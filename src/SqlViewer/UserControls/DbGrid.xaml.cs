@@ -12,7 +12,7 @@ public partial class DbGrid : UserControl
     public static readonly DependencyProperty IsReadOnlyProperty
         = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(DbGrid),
             new PropertyMetadata(false));
-    
+
     public static readonly DependencyProperty AutoGenerateColumnsProperty
         = DependencyProperty.Register("AutoGenerateColumns", typeof(bool), typeof(DbGrid),
             new PropertyMetadata(false));
@@ -20,11 +20,11 @@ public partial class DbGrid : UserControl
     public static readonly DependencyProperty ItemsSourceProperty
         = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(DbGrid),
             new PropertyMetadata(null));
-    
+
     public bool IsReadOnly
     {
         get => (bool)GetValue(IsReadOnlyProperty);
-        set 
+        set
         {
             SetValue(IsReadOnlyProperty, value);
             dgrBrowse.IsReadOnly = value;
@@ -34,7 +34,7 @@ public partial class DbGrid : UserControl
     public bool AutoGenerateColumns
     {
         get => (bool)GetValue(AutoGenerateColumnsProperty);
-        set 
+        set
         {
             SetValue(AutoGenerateColumnsProperty, value);
             dgrBrowse.AutoGenerateColumns = value;
@@ -44,7 +44,7 @@ public partial class DbGrid : UserControl
     public IEnumerable ItemsSource
     {
         get => (IEnumerable)GetValue(ItemsSourceProperty);
-        set 
+        set
         {
             SetValue(ItemsSourceProperty, value);
             dgrBrowse.ItemsSource = value;
@@ -55,7 +55,7 @@ public partial class DbGrid : UserControl
     {
         InitializeComponent();
 
-        Loaded += (o, e) => 
+        Loaded += (o, e) =>
         {
             grBrowse.Height = Height;
             grBrowse.Width = Width;

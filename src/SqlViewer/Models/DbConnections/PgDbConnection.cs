@@ -19,7 +19,7 @@ public class PgDbConnection : ICommonDbConnection
     {
         DataTable table = new();
 
-        string connString = System.String.Format("Server={0};Username={1};Database={2};Port={3};Password={4}", 
+        string connString = System.String.Format("Server={0};Username={1};Database={2};Port={3};Password={4}",
             RepoHelper.AppSettingsRepo.DbHost,
             RepoHelper.AppSettingsRepo.DbUsername,
             RepoHelper.AppSettingsRepo.DbName,
@@ -50,11 +50,11 @@ public class PgDbConnection : ICommonDbConnection
             sqlInsert += column.ColumnName + (i != dt.Columns.Count - 1 ? "," : ")\nVALUES (");
             i += 1;
         }
-        foreach(DataRow row in dt.Rows)
+        foreach (DataRow row in dt.Rows)
         {
             i = 0;
             sqlRequest += sqlInsert;
-            foreach(DataColumn column in dt.Columns)
+            foreach (DataColumn column in dt.Columns)
             {
                 sqlRequest += "'" + row[column].ToString() + "'" + (i != dt.Columns.Count - 1 ? "," : ");\n");
                 i += 1;

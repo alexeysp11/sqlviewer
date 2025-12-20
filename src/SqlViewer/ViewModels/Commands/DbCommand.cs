@@ -4,7 +4,7 @@ public class DbCommand(MainVM mainVm) : System.Windows.Input.ICommand
 {
     private readonly MainVM MainVM = mainVm;
 
-    public event System.EventHandler CanExecuteChanged;
+    public event EventHandler CanExecuteChanged;
 
     public bool CanExecute(object parameter)
     {
@@ -19,16 +19,16 @@ public class DbCommand(MainVM mainVm) : System.Windows.Input.ICommand
             case "SendSql":
                 MainVM.DataVM.SendSqlRequest();
                 break;
-                
+
             case "New":
                 MainVM.DataVM.CreateDb();
                 break;
-                
+
             case "Open":
                 MainVM.DataVM.OpenDb();
                 break;
 
-            default: 
+            default:
                 System.Windows.MessageBox.Show($"Incorrect CommandParameter: '{parameterString}' inside DbCommand", "Exception");
                 break;
         }

@@ -20,11 +20,11 @@ public partial class TablesPage : UserControl
     {
         InitializeComponent();
 
-        Loaded += (o, e) => 
+        Loaded += (o, e) =>
         {
             MainVM = (MainVM)DataContext;
             MainVM.VisualVM.TablesPage = this;
-            TablesPageEntity = MainVM.Translator.TablesPageEntity;  
+            TablesPageEntity = MainVM.Translator.TablesPageEntity;
             Init();
         };
     }
@@ -53,13 +53,13 @@ public partial class TablesPage : UserControl
         {
             if (e.NewValue == null)
                 return;
-            string selectedItem = (e.NewValue).ToString();
+            string selectedItem = e.NewValue.ToString();
             foreach (TreeViewItem tableName in tvTables.Items)
             {
                 if (tableName.ToString() == selectedItem)
                 {
                     tbTableName.Text = tableName.Header.ToString();
-                    
+
                     MainVM.DataVM.GetAllDataFromTable(tableName.Header.ToString());
                     MainVM.DataVM.GetColumnsOfTable(tableName.Header.ToString());
                     MainVM.DataVM.GetForeignKeys(tableName.Header.ToString());
@@ -69,7 +69,7 @@ public partial class TablesPage : UserControl
                 }
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }

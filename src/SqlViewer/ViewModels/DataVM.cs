@@ -14,7 +14,7 @@ public class DataVM
 
     public IDbPreproc AppRdbmsPreproc { get; private set; }
     public IDbPreproc UserRdbmsPreproc { get; private set; }
-    
+
     public DbInterconnection DbInterconnection { get; private set; }
 
     public DataVM(MainVM mainVM)
@@ -31,7 +31,7 @@ public class DataVM
         {
             UserRdbmsPreproc.CreateDb();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -47,7 +47,7 @@ public class DataVM
             InitUserDbConnection();
             UserRdbmsPreproc.OpenDb();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -66,31 +66,31 @@ public class DataVM
         {
             switch (RepoHelper.AppSettingsRepo.ActiveRdbms)
             {
-                case RdbmsEnum.SQLite: 
+                case RdbmsEnum.SQLite:
                     (UserRdbmsPreproc = new SqliteDbPreproc(MainVM)).InitUserDbConnection();
                     break;
 
-                case RdbmsEnum.PostgreSQL: 
+                case RdbmsEnum.PostgreSQL:
                     (UserRdbmsPreproc = new PgDbPreproc(MainVM)).InitUserDbConnection();
                     break;
 
-                case RdbmsEnum.MySQL: 
+                case RdbmsEnum.MySQL:
                     (UserRdbmsPreproc = new MysqlDbPreproc(MainVM)).InitUserDbConnection();
                     break;
 
-                case RdbmsEnum.MSSQL: 
+                case RdbmsEnum.MSSQL:
                     (UserRdbmsPreproc = new MssqlDbPreproc(MainVM)).InitUserDbConnection();
                     break;
 
-                case RdbmsEnum.Oracle: 
+                case RdbmsEnum.Oracle:
                     (UserRdbmsPreproc = new OracleDbPreproc(MainVM)).InitUserDbConnection();
                     break;
 
                 default:
-                    throw new System.Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
+                    throw new Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -104,7 +104,7 @@ public class DataVM
         {
             UserRdbmsPreproc.DisplayTablesInDb();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -116,7 +116,7 @@ public class DataVM
         {
             UserRdbmsPreproc.GetAllDataFromTable(tableName);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -128,7 +128,7 @@ public class DataVM
         {
             UserRdbmsPreproc.GetColumnsOfTable(tableName);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -140,7 +140,7 @@ public class DataVM
         {
             UserRdbmsPreproc.GetForeignKeys(tableName);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -152,7 +152,7 @@ public class DataVM
         {
             UserRdbmsPreproc.GetTriggers(tableName);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -164,7 +164,7 @@ public class DataVM
         {
             UserRdbmsPreproc.GetSqlDefinition(tableName);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -178,7 +178,7 @@ public class DataVM
         {
             UserRdbmsPreproc.SendSqlRequest();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -191,7 +191,7 @@ public class DataVM
         {
             dt = AppRdbmsPreproc.SendSqlRequest(sql);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -204,7 +204,7 @@ public class DataVM
         {
             AppRdbmsPreproc.ClearTempTable(tableName);
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }

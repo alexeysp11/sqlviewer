@@ -2,7 +2,7 @@ namespace SqlViewer.ViewModels.Commands;
 
 public class HelpCommand : System.Windows.Input.ICommand
 {
-    public event System.EventHandler CanExecuteChanged;
+    public event EventHandler CanExecuteChanged;
 
     public bool CanExecute(object parameter)
     {

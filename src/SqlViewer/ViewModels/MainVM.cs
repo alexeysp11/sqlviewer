@@ -31,7 +31,7 @@ public class MainVM
         VisualVM = new VisualVM(this);
 
         ConfigHelper = new ConfigHelper(this, SettingsHelper.RootFolder);
-        
+
         DbCommand = new DbCommand(this);
         HelpCommand = new HelpCommand();
         RedirectCommand = new RedirectCommand(this);
@@ -203,7 +203,7 @@ FROM (
     LIMIT 1
 ) t;
 ");
-            
+
             string language = dt.Rows[0]["language"].ToString();
             string autoSave = dt.Rows[0]["auto_save"].ToString();
             int fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
@@ -220,12 +220,12 @@ FROM (
             string dbPswd = dt.Rows[0]["db_pswd"].ToString();
 
             Models.EnumOperations.EnumEncoder enumEncoder = EnumCodecHelper.EnumEncoder;
-            RepoHelper.SetAppSettingsRepo(new Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave, 
-                fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server, 
+            RepoHelper.SetAppSettingsRepo(new Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave,
+                fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server,
                 dbName, port, schemaName, dbUsername, dbPswd));
             DataVM.InitUserDbConnection();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -245,7 +245,7 @@ FROM (
             Translator.TranslatePages();
             Translator.TranslateConnection();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -257,7 +257,7 @@ FROM (
         if (MessageBox.Show(msg, "Recover settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
             DataVM.ClearTempTable("settings");
-            
+
             string sql = @"
 UPDATE settings SET value = 'English' WHERE name LIKE 'language';
 UPDATE settings SET value = 'Enabled' WHERE name LIKE 'auto_save';
@@ -285,7 +285,7 @@ UPDATE settings SET value = '' WHERE name LIKE 'password';";
         string msg = "Are you sure to save settings changes?";
         if (MessageBox.Show(msg, "Save settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-            try 
+            try
             {
                 ((Views.SettingsView)VisualVM.SettingsView).UpdateAppRepository();
 
@@ -333,7 +333,7 @@ UPDATE settings SET value = '{7}' WHERE UPPER(name) LIKE 'PASSWORD';";
                 MessageBox.Show("Settings saved", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
                 VisualVM.SettingsView.Close();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -346,7 +346,7 @@ UPDATE settings SET value = '{7}' WHERE UPPER(name) LIKE 'PASSWORD';";
         if (MessageBox.Show(msg, "Cancel settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
             DataVM.ClearTempTable("settings");
-            
+
             ((Views.SettingsView)VisualVM.SettingsView).CancelChangesAppRepository();
 
             MessageBox.Show("Settings cancelled", "Information", MessageBoxButton.OK, MessageBoxImage.Information);

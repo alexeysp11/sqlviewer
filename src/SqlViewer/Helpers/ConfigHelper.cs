@@ -29,7 +29,7 @@ public class ConfigHelper(MainVM mainVM, string rootFolder)
 
     private static void CreateFolderIfNotExists(string folderPath)
     {
-        if (!(System.IO.Directory.Exists(folderPath)))
+        if (!System.IO.Directory.Exists(folderPath))
         {
             System.IO.Directory.CreateDirectory(folderPath);
         }
@@ -37,7 +37,7 @@ public class ConfigHelper(MainVM mainVM, string rootFolder)
 
     private void CreateLocalDbIfNotExists(string localDbPath, string sqlScriptPath)
     {
-        if ( !(System.IO.File.Exists(localDbPath)) )
+        if (!System.IO.File.Exists(localDbPath))
         {
             System.Windows.MessageBox.Show("CreateLocalDbIfNotExists");
             MainVM.DataVM.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(DataVM.GetSqlRequest(sqlScriptPath));
@@ -63,7 +63,7 @@ public class ConfigHelper(MainVM mainVM, string rootFolder)
     {
         string deskDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
         string shortcutPath = $"{deskDir}\\SqlViewer.lnk";
-        if ( !(System.IO.File.Exists(shortcutPath)) )
+        if (!System.IO.File.Exists(shortcutPath))
         {
         }
     }

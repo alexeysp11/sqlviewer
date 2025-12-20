@@ -13,7 +13,7 @@ public class VisualVM(MainVM mainVM)
     public Window LoginView { get; set; }
     public Window SettingsView { get; set; }
     public Window ConnectionsView { get; set; }
-    
+
     public UserControl Menu { get; set; }
     public UserControl SqlPage { get; set; }
     public UserControl TablesPage { get; set; }
@@ -35,12 +35,12 @@ public class VisualVM(MainVM mainVM)
     {
         try
         {
-            System.Type type = System.Type.GetType("SqlViewer.Views." + viewName);
+            Type type = System.Type.GetType("SqlViewer.Views." + viewName);
             Window win = System.Activator.CreateInstance(type) as Window;
             win.DataContext = MainVM;
             win.Show();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -52,13 +52,13 @@ public class VisualVM(MainVM mainVM)
         if (MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
             System.Diagnostics.Process process = new();
-            try 
+            try
             {
                 process.StartInfo.UseShellExecute = true;
                 process.StartInfo.FileName = filePath;
                 process.Start();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }

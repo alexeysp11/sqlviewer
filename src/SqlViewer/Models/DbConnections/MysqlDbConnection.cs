@@ -21,7 +21,7 @@ public class MysqlDbConnection : ICommonDbConnection
         MySqlConnection connection = null;
         try
         {
-            string connString = string.Format("Server={0}; database={1}; UID={2}; password={3}",  
+            string connString = string.Format("Server={0}; database={1}; UID={2}; password={3}",
                 RepoHelper.AppSettingsRepo.DbHost,
                 RepoHelper.AppSettingsRepo.DbName,
                 RepoHelper.AppSettingsRepo.DbUsername,
@@ -29,7 +29,7 @@ public class MysqlDbConnection : ICommonDbConnection
                 RepoHelper.AppSettingsRepo.DbPassword);
             connection = new MySqlConnection(string.IsNullOrEmpty(DataSource) ? connString : DataSource);
             connection.Open();
-            MySqlDataReader reader = (new MySqlCommand(sqlRequest, connection)).ExecuteReader();
+            MySqlDataReader reader = new MySqlCommand(sqlRequest, connection).ExecuteReader();
             table = GetDataTable(reader);
         }
         finally
@@ -50,11 +50,11 @@ public class MysqlDbConnection : ICommonDbConnection
             sqlInsert += column.ColumnName + (i != dt.Columns.Count - 1 ? "," : ")\nVALUES (");
             i += 1;
         }
-        foreach(DataRow row in dt.Rows)
+        foreach (DataRow row in dt.Rows)
         {
             i = 0;
             sqlRequest += sqlInsert;
-            foreach(DataColumn column in dt.Columns)
+            foreach (DataColumn column in dt.Columns)
             {
                 sqlRequest += "'" + row[column].ToString() + "'" + (i != dt.Columns.Count - 1 ? "," : ");\n");
                 i += 1;

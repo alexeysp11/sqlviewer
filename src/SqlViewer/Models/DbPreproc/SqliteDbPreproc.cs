@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -54,7 +53,7 @@ public class SqliteDbPreproc(MainVM mainVM) : IDbPreproc
         {
             Filter = SettingsHelper.FilterFileSystemDb
         };
-        if (ofd.ShowDialog() == true) {}
+        if (ofd.ShowDialog() == true) { }
 
         string path = ofd.FileName;
         if (path == string.Empty) return;
@@ -65,10 +64,10 @@ public class SqliteDbPreproc(MainVM mainVM) : IDbPreproc
     public void InitUserDbConnection()
     {
         if (RepoHelper.AppSettingsRepo == null)
-            throw new System.Exception("RepoHelper.AppSettingsRepo is not assigned.");
+            throw new Exception("RepoHelper.AppSettingsRepo is not assigned.");
         if (RepoHelper.AppSettingsRepo.ActiveRdbms != RdbmsEnum.SQLite)
-            throw new System.Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
-            
+            throw new Exception($"Unable to initialize UserDbConnection, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
+
         if (!string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DbName))
             UserDbConnection = new SqliteDbConnection(RepoHelper.AppSettingsRepo.DbName);
     }
@@ -83,12 +82,12 @@ public class SqliteDbPreproc(MainVM mainVM) : IDbPreproc
         MainVM.MainWindow.TablesPage.tblDbName.Text = path;
 
         if (MainVM.VisualVM.SettingsView != null)
-            ((SettingsView)(MainVM.VisualVM.SettingsView)).tbDatabase.Text = path;
+            ((SettingsView)MainVM.VisualVM.SettingsView).tbDatabase.Text = path;
         if (MainVM.VisualVM.LoginView != null)
-            ((LoginView)(MainVM.VisualVM.LoginView)).tbDatabase.Text = path;
+            ((LoginView)MainVM.VisualVM.LoginView).tbDatabase.Text = path;
 
         RepoHelper.AppSettingsRepo.SetDbName(path);
-            
+
         if (MainVM.VisualVM.Menu != null)
             ((UserControlsMenu)MainVM.VisualVM.Menu).Init();
     }
@@ -154,7 +153,7 @@ ORDER BY 1";
             DataRow row = dt.Rows[0];
             MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = row["sql"].ToString();
         }
-        else 
+        else
         {
             MainVM.MainWindow.TablesPage.mtbSqlTableDefinition.Text = string.Empty;
         }
@@ -163,7 +162,7 @@ ORDER BY 1";
     public void SendSqlRequest()
     {
         if (UserDbConnection == null)
-            throw new System.Exception("Database is not opened.");
+            throw new Exception("Database is not opened.");
 
         ResultCollection = UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
         MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = ResultCollection.DefaultView;
@@ -175,7 +174,7 @@ ORDER BY 1";
     public DataTable SendSqlRequest(string sql)
     {
         if (AppDbConnection == null)
-            throw new System.Exception("System RDBMS is not assigned.");
+            throw new Exception("System RDBMS is not assigned.");
         return AppDbConnection.ExecuteSqlCommand(sql);
     }
 

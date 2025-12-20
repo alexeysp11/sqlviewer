@@ -7,7 +7,7 @@ namespace SqlViewer.Models.DbConnections;
 public class OracleDbConnection : ICommonDbConnection
 {
     private string DataSource { get; set; }
-    
+
     public OracleDbConnection() { }
 
     public OracleDbConnection(string dataSource)
@@ -43,11 +43,11 @@ public class OracleDbConnection : ICommonDbConnection
             sqlInsert += column.ColumnName + (i != dt.Columns.Count - 1 ? "," : ")\nVALUES (");
             i += 1;
         }
-        foreach(DataRow row in dt.Rows)
+        foreach (DataRow row in dt.Rows)
         {
             i = 0;
             sqlRequest += sqlInsert;
-            foreach(DataColumn column in dt.Columns)
+            foreach (DataColumn column in dt.Columns)
             {
                 sqlRequest += "'" + row[column].ToString() + "'" + (i != dt.Columns.Count - 1 ? "," : ");\n");
                 i += 1;

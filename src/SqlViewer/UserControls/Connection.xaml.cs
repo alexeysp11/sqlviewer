@@ -9,7 +9,6 @@ using SqlViewer.Helpers;
 using SqlViewer.Entities.UserControlsEntities;
 using LanguageEnum = SqlViewer.Enums.Common.Language;
 using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection;
-using System;
 
 namespace SqlViewer.UserControls;
 
@@ -27,14 +26,14 @@ public partial class Connection : UserControl
     {
         InitializeComponent();
 
-        Loaded += (o, e) => 
+        Loaded += (o, e) =>
         {
             MainVM = (MainVM)DataContext;
             ConnectionEntity = MainVM.Translator.ConnectionEntity;
             Init();
         };
     }
-    
+
     #region Initialization
     private void Init()
     {
@@ -67,7 +66,7 @@ public partial class Connection : UserControl
             {
                 Filter = SettingsHelper.FilterFileSystemDb
             };
-            if (ofd.ShowDialog() == true) {}
+            if (ofd.ShowDialog() == true) { }
 
             string path = ofd.FileName;
             if (path == string.Empty) return;
@@ -113,12 +112,12 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
                 case 1:
                     MainVM.DataVM.DbInterconnection.SetDbConnection1(dbConnection);
                     break;
-            
+
                 case 2:
                     MainVM.DataVM.DbInterconnection.SetDbConnection2(dbConnection);
                     break;
 
-                default: 
+                default:
                     throw new Exception("Incorrect OrdinalNum in UserControls.Connection: '" + OrdinalNum + "'");
             }
             dbgSqlResult.ItemsSource = OrdinalNum == 1 ? MainVM.DataVM.DbInterconnection.DbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : MainVM.DataVM.DbInterconnection.DbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView;
@@ -156,20 +155,20 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
             case "SQLite":
                 dbConnection = new SqliteDbConnection(tbDataSource.Text);
                 break;
-        
+
             case "PostgreSQL":
                 dbConnection = new PgDbConnection(tbDataSource.Text);
                 break;
-        
+
             case "MySQL":
                 dbConnection = new MysqlDbConnection(tbDataSource.Text);
                 break;
-        
+
             case "Oracle":
                 dbConnection = new OracleDbConnection(tbDataSource.Text);
                 break;
 
-            default: 
+            default:
                 throw new Exception("Incorrect ActiveRdbms in UserControls.Connection: '" + cbActiveRdbms.Text + "'");
         }
         return dbConnection;
@@ -177,14 +176,16 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
 
     private void TransferData(string tableName)
     {
-        ConnectionsView connectionView = (ConnectionsView)(MainVM.VisualVM.ConnectionsView);
-        if ( !(connectionView.CheckDataSources()) )
+        ConnectionsView connectionView = (ConnectionsView)MainVM.VisualVM.ConnectionsView;
+        if (!connectionView.CheckDataSources())
             throw new Exception("All DataSources should be assigned");
-        if ( !(ConnectionsView.CheckDataGrids()) )
+        if (!ConnectionsView.CheckDataGrids())
             throw new Exception("None of DataGrids should be empty");
-            
-        ICommonDbConnectionSV dbConnection = OrdinalNum == 1 ? MainVM.DataVM.DbInterconnection.DbConnection2 : MainVM.DataVM.DbInterconnection.DbConnection1;
-        DataTable dt = ((DataView)(dbgSqlResult.ItemsSource)).Table;
+
+        ICommonDbConnectionSV dbConnection = OrdinalNum == 1
+            ? MainVM.DataVM.DbInterconnection.DbConnection2
+            : MainVM.DataVM.DbInterconnection.DbConnection1;
+        DataTable dt = ((DataView)dbgSqlResult.ItemsSource).Table;
         dbConnection.ExecuteSqlCommand(dbConnection.GetSqlFromDataTable(dt, tableName));
     }
     #endregion  // Database methods

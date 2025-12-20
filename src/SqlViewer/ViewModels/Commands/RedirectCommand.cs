@@ -4,7 +4,7 @@ public class RedirectCommand(MainVM mainVm) : System.Windows.Input.ICommand
 {
     private readonly MainVM MainVM = mainVm;
 
-    public event System.EventHandler CanExecuteChanged;
+    public event EventHandler CanExecuteChanged;
 
     public bool CanExecute(object parameter)
     {

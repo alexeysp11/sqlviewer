@@ -14,7 +14,8 @@ public partial class ConnectionsView : Window
     {
         InitializeComponent();
 
-        Loaded += (o, e) => {
+        Loaded += (o, e) =>
+        {
             MainVM = (MainVM)DataContext;
             MainVM.VisualVM.ConnectionsView = this;
 
@@ -25,7 +26,7 @@ public partial class ConnectionsView : Window
 
     public bool CheckDataSources()
     {
-        return !(string.IsNullOrEmpty(Connection1.tbDataSource.Text)) && !(string.IsNullOrEmpty(Connection2.tbDataSource.Text));
+        return !string.IsNullOrEmpty(Connection1.tbDataSource.Text) && !string.IsNullOrEmpty(Connection2.tbDataSource.Text);
     }
 
     public static bool CheckDataGrids()

@@ -7,7 +7,7 @@ public class MssqlDbConnection : ICommonDbConnection
     public DataTable ExecuteSqlCommand(string sqlRequest)
     {
         DataTable table = new();
-        
+
         return table;
     }
 

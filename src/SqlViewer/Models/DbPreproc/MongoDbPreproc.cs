@@ -1,5 +1,5 @@
 using System.Data;
-using SqlViewer.ViewModels;  
+using SqlViewer.ViewModels;
 using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection;
 
 namespace SqlViewer.Models.DbPreproc;
@@ -22,7 +22,7 @@ public class MongoDbPreproc(MainVM mainVM) : IDbPreproc
 
     public void InitUserDbConnection()
     {
-        
+
     }
 
     public void DisplayTablesInDb()

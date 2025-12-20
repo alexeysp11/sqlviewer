@@ -13,7 +13,7 @@ namespace SqlViewer.Views;
 public partial class SettingsView : Window
 {
     private MainVM MainVM { get; set; }
-    
+
     private SettingsEntity SettingsEntity { get; set; }
 
     private string OldActiveRdbms { get; set; }
@@ -22,11 +22,11 @@ public partial class SettingsView : Window
     {
         InitializeComponent();
 
-        Loaded += (o, e) => 
+        Loaded += (o, e) =>
         {
             MainVM = (MainVM)DataContext;
             MainVM.VisualVM.SettingsView = this;
-            SettingsEntity = MainVM.Translator.SettingsEntity;  
+            SettingsEntity = MainVM.Translator.SettingsEntity;
             Init();
             OldActiveRdbms = cbActiveRdbms.Text;
         };
@@ -77,7 +77,7 @@ public partial class SettingsView : Window
         lblSchema.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.SchemaField.Translation) ? SettingsEntity.SchemaField.English : SettingsEntity.SchemaField.Translation;
         lblUsername.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.UsernameField.Translation) ? SettingsEntity.UsernameField.English : SettingsEntity.UsernameField.Translation;
         lblPassword.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.PasswordField.Translation) ? SettingsEntity.PasswordField.English : SettingsEntity.PasswordField.Translation;
-        
+
         tbDatabase.Text = RepoHelper.AppSettingsRepo.DbName;
         tbSchema.Text = RepoHelper.AppSettingsRepo.DbSchema;
         tbUsername.Text = RepoHelper.AppSettingsRepo.DbUsername;
@@ -101,7 +101,7 @@ public partial class SettingsView : Window
             tbUsername.IsEnabled = false;
             pbPassword.IsEnabled = false;
             btnDatabase.IsEnabled = true;
-            
+
             tbServer.Background = System.Windows.Media.Brushes.Gray;
             tbPort.Background = System.Windows.Media.Brushes.Gray;
             tbSchema.Background = System.Windows.Media.Brushes.Gray;
@@ -116,7 +116,7 @@ public partial class SettingsView : Window
             tbUsername.IsEnabled = true;
             pbPassword.IsEnabled = true;
             btnDatabase.IsEnabled = false;
-            
+
             tbServer.Background = System.Windows.Media.Brushes.White;
             tbPort.Background = System.Windows.Media.Brushes.White;
             tbSchema.Background = System.Windows.Media.Brushes.White;
@@ -135,8 +135,8 @@ public partial class SettingsView : Window
 
     public void UpdateAppRepository()
     {
-        RepoHelper.AppSettingsRepo.Update(cbLanguage.Text, cbAutoSave.Text, System.Convert.ToInt32(cbFontSize.Text), 
-            cbFontFamily.Text, System.Convert.ToInt32(cbTabSize.Text), cbWordWrap.Text, cbDefaultRdbms.Text, 
+        RepoHelper.AppSettingsRepo.Update(cbLanguage.Text, cbAutoSave.Text, System.Convert.ToInt32(cbFontSize.Text),
+            cbFontFamily.Text, System.Convert.ToInt32(cbTabSize.Text), cbWordWrap.Text, cbDefaultRdbms.Text,
             cbActiveRdbms.Text, tbServer.Text, tbDatabase.Text, tbPort.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password);
     }
 
@@ -154,7 +154,7 @@ public partial class SettingsView : Window
         ((MainVM)DataContext).VisualVM.SettingsView = null;
     }
 
-    private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
+    private void cbActiveRdbms_DropDownClosed(object sender, EventArgs e)
     {
         InitDbCredentials();
     }

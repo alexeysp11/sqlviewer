@@ -5,6 +5,6 @@ namespace SqlViewer.Models.DbConnections;
 public interface ICommonDbConnection
 {
     DataTable ExecuteSqlCommand(string sqlRequest);
-    
+
     string GetSqlFromDataTable(DataTable dt, string tableName);
 }

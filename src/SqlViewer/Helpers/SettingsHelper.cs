@@ -1,4 +1,3 @@
-using System;
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Helpers;
@@ -24,7 +23,7 @@ public static class SettingsHelper
         DateTime now = System.DateTime.UtcNow;
 
         string year = now.Year.ToString();
-        string month = (now.Month < 10 ? "0" : "")  + now.Month.ToString();
+        string month = (now.Month < 10 ? "0" : "") + now.Month.ToString();
         string day = (now.Day < 10 ? "0" : "") + now.Day.ToString();
         string hour = (now.Hour < 10 ? "0" : "") + now.Hour.ToString();
         string minute = (now.Minute < 10 ? "0" : "") + now.Minute.ToString();

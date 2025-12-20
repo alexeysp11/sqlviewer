@@ -13,7 +13,7 @@ namespace SqlViewer.Views;
 public partial class LoginView : Window
 {
     private MainVM MainVM { get; set; }
-    
+
     private LoginEntity LoginEntity { get; set; }
 
     private bool IsLoggedIn { get; set; }
@@ -22,9 +22,9 @@ public partial class LoginView : Window
     {
         InitializeComponent();
 
-        Loaded += (o, e) => 
+        Loaded += (o, e) =>
         {
-            MainVM = ((MainVM)DataContext);
+            MainVM = (MainVM)DataContext;
             LoginEntity = MainVM.Translator.LoginEntity;
             MainVM.VisualVM.LoginView = this;
             Init();
@@ -42,7 +42,7 @@ public partial class LoginView : Window
             InitButtons();
             InitDbCredentials();
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
@@ -64,7 +64,7 @@ public partial class LoginView : Window
         btnLogIn.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.LogInField.Translation) ? LoginEntity.LogInField.English : LoginEntity.LogInField.Translation;
         btnCancel.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.CancelField.Translation) ? LoginEntity.CancelField.English : LoginEntity.CancelField.Translation;
     }
-    
+
     private void InitDbCredentials()
     {
         if (cbActiveRdbms.Text == "SQLite")
@@ -130,7 +130,7 @@ UPDATE settings SET value = '{7}' WHERE UPPER(name) LIKE 'PASSWORD';";
         Close();
     }
 
-    private void cbActiveRdbms_DropDownClosed(object sender, System.EventArgs e)
+    private void cbActiveRdbms_DropDownClosed(object sender, EventArgs e)
     {
         InitDbCredentials();
     }

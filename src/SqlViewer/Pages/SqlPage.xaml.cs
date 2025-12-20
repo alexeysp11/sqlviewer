@@ -19,7 +19,7 @@ public partial class SqlPage : UserControl
     {
         InitializeComponent();
 
-        Loaded += (o, e) => 
+        Loaded += (o, e) =>
         {
             MainVM = (MainVM)DataContext;
             MainVM.VisualVM.SqlPage = this;

@@ -2,7 +2,7 @@ using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection
 
 namespace SqlViewer.Models.DbTransfer;
 
-public class DbInterconnection
+public sealed class DbInterconnection
 {
     public ICommonDbConnectionSV DbConnection1 { get; private set; }
     public ICommonDbConnectionSV DbConnection2 { get; private set; }

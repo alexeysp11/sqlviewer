@@ -1,4 +1,3 @@
-using System;
 using System.Data;
 using System.IO;
 using Microsoft.Data.Sqlite;
@@ -57,11 +56,11 @@ public class SqliteDbConnection : ICommonDbConnection
             sqlInsert += column.ColumnName + (i != dt.Columns.Count - 1 ? "," : ")\nVALUES (");
             i += 1;
         }
-        foreach(DataRow row in dt.Rows)
+        foreach (DataRow row in dt.Rows)
         {
             i = 0;
             sqlRequest += sqlInsert;
-            foreach(DataColumn column in dt.Columns)
+            foreach (DataColumn column in dt.Columns)
             {
                 sqlRequest += "'" + row[column].ToString() + "'" + (i != dt.Columns.Count - 1 ? "," : ");\n");
                 i += 1;

@@ -19,32 +19,32 @@ public partial class MultilineTextBox : UserControl
     public bool IsReadOnly
     {
         get => (bool)GetValue(IsReadOnlyProperty);
-        set 
+        set
         {
             SetValue(IsReadOnlyProperty, value);
             tbMultiline.IsReadOnly = value;
         }
     }
-    
+
     public string Text
     {
-        get 
+        get
         {
             SetValue(TextProperty, tbMultiline.Text);
             return (string)GetValue(TextProperty);
         }
-        set 
+        set
         {
             SetValue(TextProperty, value);
             tbMultiline.Text = value;
         }
     }
-    
+
     public MultilineTextBox()
     {
         InitializeComponent();
 
-        Loaded += (o, e) => 
+        Loaded += (o, e) =>
         {
             tbMultiline.MinHeight = Height;
             tbMultiline.MaxHeight = Height;

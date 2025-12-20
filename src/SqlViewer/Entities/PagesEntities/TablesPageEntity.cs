@@ -2,7 +2,7 @@ using SqlViewer.Entities.Language;
 
 namespace SqlViewer.Entities.PagesEntities;
 
-public class TablesPageEntity 
+public class TablesPageEntity
 {
     public Word PathField { get; private set; } = new Word("Path");
     public Word TablesField { get; private set; } = new Word("Tables");
