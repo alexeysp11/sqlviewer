@@ -1,6 +1,4 @@
-﻿using VelocipedeUtils.Shared.DbOperations.Enums;
-
-namespace SqlViewer.ApiGateway.ViewModels.Metadata;
+﻿namespace SqlViewer.ApiGateway.ViewModels.Metadata;
 
 /// <summary>
 /// Request for getting metadata.

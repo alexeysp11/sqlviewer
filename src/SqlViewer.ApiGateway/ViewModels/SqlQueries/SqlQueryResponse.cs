@@ -1,6 +1,4 @@
-﻿using SqlViewer.ApiGateway.Enums;
-
-namespace SqlViewer.ApiGateway.ViewModels.SqlQueries;
+﻿namespace SqlViewer.ApiGateway.ViewModels.SqlQueries;
 
 /// <summary>
 /// Response for executing SQL query.

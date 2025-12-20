@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Enums;
 using SqlViewer.ApiGateway.ViewModels.Metadata;
-using SqlViewer.ApiGateway.ViewModels.SqlQueries;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Factories;
 

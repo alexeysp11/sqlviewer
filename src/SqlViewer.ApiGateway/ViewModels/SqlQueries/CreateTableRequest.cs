@@ -1,5 +1,4 @@
-﻿using VelocipedeUtils.Shared.DbOperations.Enums;
-using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
+﻿using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
 namespace SqlViewer.ApiGateway.ViewModels.SqlQueries;
 
