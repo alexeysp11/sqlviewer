@@ -1,13 +1,13 @@
-namespace SqlViewer.Enums.Database
+namespace SqlViewer.Enums.Database;
+
+public enum Rdbms
 {
-    public enum Rdbms
-    {
-        SQLite = 1, 
-        PostgreSQL = 2, 
-        MSSQL = 3, 
-        MySQL = 4, 
-        MariaDB = 5, 
-        HSQLDB = 6,
-        Oracle = 7
-    }
+    None = 0,
+    SQLite = 1,
+    PostgreSQL = 2,
+    MSSQL = 3,
+    MySQL = 4,
+    MariaDB = 5,
+    HSQLDB = 6,
+    Oracle = 7
 }

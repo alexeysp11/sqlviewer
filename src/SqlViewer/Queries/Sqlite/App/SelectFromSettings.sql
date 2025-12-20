@@ -78,7 +78,7 @@ WITH tmp AS (
             WHERE s.name IS NOT NULL 
         ) t 
     ) tt 
-) 
+)
 SELECT 
     CASE 
         WHEN UPPER(tmp.language) LIKE '%ENGISH%' THEN 'English' 
@@ -117,7 +117,7 @@ SELECT
         ELSE 'Disabled'
     END AS auto_save, 
     CASE 
-        WHEN CAST(tmp.font_size AS INTEGER) IN (8,9,10,11,12,14,16,18,20) THEN CAST(tmp.font_size AS INTEGER) 
+        WHEN CAST(tmp.font_size AS INTEGER) IN (8,9,10,11,12,14,16,18,20) THEN CAST(tmp.font_size AS INTEGER)
         ELSE 8
     END AS font_size, 
     CASE 
@@ -125,7 +125,7 @@ SELECT
         ELSE 'Consolas'
     END AS font_family, 
     CASE 
-        WHEN CAST(tmp.tab_size AS INTEGER) BETWEEN 1 AND 8 THEN CAST(tmp.tab_size AS INTEGER) 
+        WHEN CAST(tmp.tab_size AS INTEGER) BETWEEN 1 AND 8 THEN CAST(tmp.tab_size AS INTEGER)
         ELSE 4
     END AS tab_size, 
     CASE 
@@ -147,4 +147,4 @@ SELECT
     CAST(tmp.db_username AS TEXT) AS db_username, 
     CAST(tmp.db_pswd AS TEXT) AS db_pswd
 FROM tmp 
-LIMIT 1; 
+LIMIT 1;

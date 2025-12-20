@@ -6,14 +6,14 @@ CREATE TABLE sys_param
 	name VARCHAR(50) NOT NULL, 
     short_name VARCHAR(25), 
     value VARCHAR(255) NOT NULL
-); 
+);
 
 CREATE TABLE sys_sql
 (
     sys_sql_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     name VARCHAR(50) NOT NULL, 
     sql TEXT NOT NULL
-); 
+);
 
 CREATE TABLE command 
 (
@@ -40,7 +40,7 @@ SELECT
         CASE out_param_type = 3 THEN path 
     END AS out_param  
 FROM command 
-WHERE name = '{0}' AND in_param = '{1}'; 
+WHERE name = '{0}' AND in_param = '{1}';
 */ 
 
 
@@ -50,7 +50,7 @@ CREATE TABLE user
     name VARCHAR(25) NOT NULL, 
     pswd VARCHAR(50), 
     role_id INTEGER 
-); 
+);
 
 CREATE TABLE role 
 (
@@ -59,15 +59,15 @@ CREATE TABLE role
     f_read NUMERIC(1), 
     f_write NUMERIC(1), 
     f_edit NUMERIC(1), 
-    f_delete NUMERIC(1) 
-); 
+    f_delete NUMERIC(1)
+);
 
 CREATE TABLE user_settings 
 (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, 
     settings_id INTEGER NOT NULL, 
     value INTEGER NOT NULL
-); 
+);
 
 /*
 Necessary tables: 

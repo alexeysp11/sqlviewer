@@ -1,46 +1,36 @@
-using SqlViewer.Helpers; 
-using SqlViewer.ViewModels; 
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms; 
+namespace SqlViewer.ViewModels.Commands;
 
-namespace SqlViewer.Commands
+public class DbCommand(MainVM mainVm) : System.Windows.Input.ICommand
 {
-    public class DbCommand : System.Windows.Input.ICommand
+    private readonly MainVM MainVM = mainVm;
+
+    public event EventHandler CanExecuteChanged;
+
+    public bool CanExecute(object parameter)
     {
-        private MainVM MainVM; 
+        return true;
+    }
 
-        public DbCommand(MainVM mainVm)
+    public void Execute(object parameter)
+    {
+        string parameterString = parameter as string;
+        switch (parameterString)
         {
-            this.MainVM = mainVm; 
-        }
+            case "SendSql":
+                MainVM.DataVM.SendSqlRequest();
+                break;
 
-        public event System.EventHandler CanExecuteChanged; 
+            case "New":
+                MainVM.DataVM.CreateDb();
+                break;
 
-        public bool CanExecute(object parameter)
-        {
-            return true; 
-        }
+            case "Open":
+                MainVM.DataVM.OpenDb();
+                break;
 
-        public void Execute(object parameter)
-        {
-            string parameterString = parameter as string; 
-            switch (parameterString)
-            {
-                case "SendSql":
-                    this.MainVM.DataVM.SendSqlRequest(); 
-                    break;
-                    
-                case "New":
-                    this.MainVM.DataVM.CreateDb(); 
-                    break;
-                    
-                case "Open":
-                    this.MainVM.DataVM.OpenDb(); 
-                    break;
-
-                default: 
-                    System.Windows.MessageBox.Show($"Incorrect CommandParameter: '{parameterString}' inside DbCommand", "Exception"); 
-                    break; 
-            }
+            default:
+                System.Windows.MessageBox.Show($"Incorrect CommandParameter: '{parameterString}' inside DbCommand", "Exception");
+                break;
         }
     }
 }

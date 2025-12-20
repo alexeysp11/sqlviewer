@@ -63,8 +63,8 @@ Possible limitations of this project could include compatibility issues with cer
 
 ### Prerequisites
 
-- Windows OS; 
-- .NET Core 3.1; 
+- Windows OS;
+- .NET Core 3.1;
 - One of the following data sources to be able to perform some operations with data: 
     - **SQLite**,
     - **PostgreSQL**,
