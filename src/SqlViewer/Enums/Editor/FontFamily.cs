@@ -1,7 +1,7 @@
-namespace SqlViewer.Enums.Editor
+namespace SqlViewer.Enums.Editor;
+
+public enum FontFamily
 {
-    public enum FontFamily
-    {
-        Consolas = 1
-    }
+    None = 0,
+    Consolas = 1
 }

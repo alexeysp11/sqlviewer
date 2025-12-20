@@ -1,53 +1,44 @@
-using SqlViewer.Views; 
-using SqlViewer.ViewModels; 
+namespace SqlViewer.ViewModels.Commands;
 
-namespace SqlViewer.Commands
+public class RedirectCommand(MainVM mainVm) : System.Windows.Input.ICommand
 {
-    public class RedirectCommand : System.Windows.Input.ICommand
+    private readonly MainVM MainVM = mainVm;
+
+    public event System.EventHandler CanExecuteChanged;
+
+    public bool CanExecute(object parameter)
     {
-        private MainVM MainVM; 
+        return true;
+    }
 
-        public RedirectCommand(MainVM mainVm)
+    public void Execute(object parameter)
+    {
+        string parameterString = parameter as string;
+        switch (parameterString)
         {
-            this.MainVM = mainVm; 
-        }
+            case "SqlQuery":
+                MainVM.VisualVM.RedirectToSqlQuery();
+                break;
 
-        public event System.EventHandler CanExecuteChanged; 
+            case "Tables":
+                MainVM.VisualVM.RedirectToTables();
+                break;
 
-        public bool CanExecute(object parameter)
-        {
-            return true; 
-        }
+            case "Settings":
+                MainVM.VisualVM.OpenView("SettingsView");
+                break;
 
-        public void Execute(object parameter)
-        {
-            string parameterString = parameter as string; 
-            switch (parameterString)
-            {
-                case "SqlQuery":
-                    this.MainVM.VisualVM.RedirectToSqlQuery(); 
-                    break;
+            case "Options":
+                MainVM.VisualVM.OpenView("OptionsView");
+                break;
 
-                case "Tables":
-                    this.MainVM.VisualVM.RedirectToTables(); 
-                    break;
+            case "Connections":
+                MainVM.VisualVM.OpenView("ConnectionsView");
+                break;
 
-                case "Settings":
-                    this.MainVM.VisualVM.OpenView("SettingsView"); 
-                    break;
-
-                case "Options":
-                    this.MainVM.VisualVM.OpenView("OptionsView"); 
-                    break;
-
-                case "Connections":
-                    this.MainVM.VisualVM.OpenView("ConnectionsView"); 
-                    break;
-
-                default:
-                    System.Windows.MessageBox.Show($"Incorrect parameter: '{parameterString}' in RedirectCommand", "Error"); 
-                    break;
-            }
+            default:
+                System.Windows.MessageBox.Show($"Incorrect parameter: '{parameterString}' in RedirectCommand", "Error");
+                break;
         }
     }
 }

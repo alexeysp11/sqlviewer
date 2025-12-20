@@ -1,53 +1,53 @@
 using System.Data;
 using System.Windows;
 using System.Windows.Input;
-using SqlViewer.Commands;
 using SqlViewer.Utils.Language;
 using SqlViewer.Helpers;
+using SqlViewer.ViewModels.Commands;
 
-namespace SqlViewer.ViewModels
+namespace SqlViewer.ViewModels;
+
+public class MainVM
 {
-    public class MainVM
+    public MainWindow MainWindow { get; private set; }
+
+    public DataVM DataVM { get; private set; }
+    public VisualVM VisualVM { get; private set; }
+
+    public ConfigHelper ConfigHelper { get; private set; }
+
+    public ICommand DbCommand { get; private set; }
+    public ICommand HelpCommand { get; private set; }
+    public ICommand RedirectCommand { get; private set; }
+    public ICommand AppCommand { get; private set; }
+
+    public Translator Translator { get; private set; }
+
+    public MainVM(MainWindow mainWindow)
     {
-        public MainWindow MainWindow { get; private set; }
+        MainWindow = mainWindow;
 
-        public DataVM DataVM { get; private set; }
-        public VisualVM VisualVM { get; private set; }
+        DataVM = new DataVM(this);
+        VisualVM = new VisualVM(this);
 
-        public ConfigHelper ConfigHelper { get; private set; }
+        ConfigHelper = new ConfigHelper(this, SettingsHelper.RootFolder);
+        
+        DbCommand = new DbCommand(this);
+        HelpCommand = new HelpCommand();
+        RedirectCommand = new RedirectCommand(this);
+        AppCommand = new AppCommand(this);
 
-        public ICommand DbCommand { get; private set; }
-        public ICommand HelpCommand { get; private set; }
-        public ICommand RedirectCommand { get; private set; }
-        public ICommand AppCommand { get; private set; }
+        (Translator = new Translator()).SetAppDbConnection((Models.DbConnections.SqliteDbConnection)DataVM.AppRdbmsPreproc.GetAppDbConnection());
+    }
 
-        public Translator Translator { get; private set; }
-
-        public MainVM(MainWindow mainWindow)
+    /// <summary>
+    /// Initializes AppRepository and UserDbConnection after getting settings from DB 
+    /// </summary>
+    public void InitAppRepository()
+    {
+        try
         {
-            this.MainWindow = mainWindow; 
-
-            this.DataVM = new DataVM(this); 
-            this.VisualVM = new VisualVM(this); 
-
-            this.ConfigHelper = new ConfigHelper(this, SettingsHelper.GetRootFolder()); 
-            
-            this.DbCommand = new DbCommand(this); 
-            this.HelpCommand = new HelpCommand(this); 
-            this.RedirectCommand = new RedirectCommand(this); 
-            this.AppCommand = new AppCommand(this); 
-
-            (this.Translator = new Translator(this)).SetAppDbConnection((SqlViewer.Models.DbConnections.SqliteDbConnection)this.DataVM.AppRdbmsPreproc.GetAppDbConnection()); 
-        }
-
-        /// <summary>
-        /// Initializes AppRepository and UserDbConnection after getting settings from DB 
-        /// </summary>
-        public void InitAppRepository()
-        {
-            try
-            {
-                DataTable dt = this.DataVM.SendSqlRequest(@"
+            DataTable dt = DataVM.SendSqlRequest(@"
 SELECT
     t.*,
     CASE WHEN language IN ('Arabic', 'Persian', 'Hebrew', 'Yidish') THEN 1 ELSE 0 END AS f_right_to_left
@@ -203,62 +203,62 @@ FROM (
     LIMIT 1
 ) t;
 ");
-                
-                string language = dt.Rows[0]["language"].ToString();
-                string autoSave = dt.Rows[0]["auto_save"].ToString();
-                int fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
-                string fontFamily = dt.Rows[0]["font_family"].ToString();
-                int tabSize = System.Convert.ToInt32(dt.Rows[0]["tab_size"]);
-                string wordWrap = dt.Rows[0]["word_wrap"].ToString();
-                string defaultRdbms = dt.Rows[0]["default_rdbms"].ToString();
-                string activeRdbms = dt.Rows[0]["active_rdbms"].ToString();
-                string server = dt.Rows[0]["server"].ToString();
-                string dbName = dt.Rows[0]["db_name"].ToString();
-                string port = dt.Rows[0]["port"].ToString();
-                string schemaName = dt.Rows[0]["schema_name"].ToString();
-                string dbUsername = dt.Rows[0]["db_username"].ToString();
-                string dbPswd = dt.Rows[0]["db_pswd"].ToString();
+            
+            string language = dt.Rows[0]["language"].ToString();
+            string autoSave = dt.Rows[0]["auto_save"].ToString();
+            int fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
+            string fontFamily = dt.Rows[0]["font_family"].ToString();
+            int tabSize = System.Convert.ToInt32(dt.Rows[0]["tab_size"]);
+            string wordWrap = dt.Rows[0]["word_wrap"].ToString();
+            string defaultRdbms = dt.Rows[0]["default_rdbms"].ToString();
+            string activeRdbms = dt.Rows[0]["active_rdbms"].ToString();
+            string server = dt.Rows[0]["server"].ToString();
+            string dbName = dt.Rows[0]["db_name"].ToString();
+            string port = dt.Rows[0]["port"].ToString();
+            string schemaName = dt.Rows[0]["schema_name"].ToString();
+            string dbUsername = dt.Rows[0]["db_username"].ToString();
+            string dbPswd = dt.Rows[0]["db_pswd"].ToString();
 
-                var enumEncoder = EnumCodecHelper.EnumEncoder; 
-                RepoHelper.SetAppSettingsRepo(new SqlViewer.Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave, 
-                    fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server, 
-                    dbName, port, schemaName, dbUsername, dbPswd)); 
-                this.DataVM.InitUserDbConnection(); 
-            }
-            catch (System.Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            Models.EnumOperations.EnumEncoder enumEncoder = EnumCodecHelper.EnumEncoder;
+            RepoHelper.SetAppSettingsRepo(new Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave, 
+                fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server, 
+                dbName, port, schemaName, dbUsername, dbPswd));
+            DataVM.InitUserDbConnection();
         }
-
-        /// <summary>
-        /// Translates all pages in the application 
-        /// </summary>
-        public void Translate()
+        catch (System.Exception ex)
         {
-            try
-            {
-                this.Translator.SetLanguageEnum(RepoHelper.AppSettingsRepo.Language); 
-                this.Translator.TranslateLogin();
-                this.Translator.TranslateMenu(); 
-                this.Translator.TranslateSettings(); 
-                this.Translator.TranslatePages(); 
-                this.Translator.TranslateConnection(); 
-            }
-            catch (System.Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
 
-        public void RecoverSettings()
+    /// <summary>
+    /// Translates all pages in the application 
+    /// </summary>
+    public void Translate()
+    {
+        try
         {
-            string msg = "Are you sure to recover settings changes?"; 
-            if (System.Windows.MessageBox.Show(msg, "Recover settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                this.DataVM.ClearTempTable("settings");
-                
-                string sql = @"
+            Translator.SetLanguageEnum(RepoHelper.AppSettingsRepo.Language);
+            Translator.TranslateLogin();
+            Translator.TranslateMenu();
+            Translator.TranslateSettings();
+            Translator.TranslatePages();
+            Translator.TranslateConnection();
+        }
+        catch (System.Exception ex)
+        {
+            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    public void RecoverSettings()
+    {
+        string msg = "Are you sure to recover settings changes?";
+        if (MessageBox.Show(msg, "Recover settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+        {
+            DataVM.ClearTempTable("settings");
+            
+            string sql = @"
 UPDATE settings SET value = 'English' WHERE name LIKE 'language';
 UPDATE settings SET value = 'Enabled' WHERE name LIKE 'auto_save';
 UPDATE settings SET value = '8' WHERE name LIKE 'font_size';
@@ -271,42 +271,42 @@ UPDATE settings SET value = '' WHERE name LIKE 'database';
 UPDATE settings SET value = '' WHERE name LIKE 'schema';
 UPDATE settings SET value = '' WHERE name LIKE 'username';
 UPDATE settings SET value = '' WHERE name LIKE 'password';";
-                this.DataVM.SendSqlRequest(sql); 
-                InitAppRepository(); 
-                Translate(); 
-                this.VisualVM.InitUI(); 
+            DataVM.SendSqlRequest(sql);
+            InitAppRepository();
+            Translate();
+            VisualVM.InitUI();
 
-                System.Windows.MessageBox.Show("Settings recovered", "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
-            }
+            MessageBox.Show("Settings recovered", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
         }
+    }
 
-        public void SaveSettings()
+    public void SaveSettings()
+    {
+        string msg = "Are you sure to save settings changes?";
+        if (MessageBox.Show(msg, "Save settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-            string msg = "Are you sure to save settings changes?"; 
-            if (System.Windows.MessageBox.Show(msg, "Save settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            try 
             {
-                try 
-                {
-                    ((SqlViewer.Views.SettingsView)this.VisualVM.SettingsView).UpdateAppRepository(); 
+                ((Views.SettingsView)VisualVM.SettingsView).UpdateAppRepository();
 
-                    string sql = @"
+                string sql = @"
 UPDATE settings SET value = '{0}' WHERE UPPER(name) LIKE 'LANGUAGE';
 UPDATE settings SET value = '{1}' WHERE UPPER(name) LIKE 'AUTO_SAVE';
 UPDATE settings SET value = '{2}' WHERE UPPER(name) LIKE 'FONT_SIZE';
 UPDATE settings SET value = '{3}' WHERE UPPER(name) LIKE 'FONT_FAMILY';
 UPDATE settings SET value = '{4}' WHERE UPPER(name) LIKE 'TAB_SIZE';
 UPDATE settings SET value = '{5}' WHERE UPPER(name) LIKE 'WORD_WRAP';";
-                    sql = string.Format(
-                        sql,
-                        RepoHelper.AppSettingsRepo.Language,
-                        RepoHelper.AppSettingsRepo.AutoSave,
-                        EnumCodecHelper.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize),
-                        RepoHelper.AppSettingsRepo.FontFamily,
-                        EnumCodecHelper.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize),
-                        RepoHelper.AppSettingsRepo.WordWrap); 
-                    this.DataVM.SendSqlRequest(sql);
+                sql = string.Format(
+                    sql,
+                    RepoHelper.AppSettingsRepo.Language,
+                    RepoHelper.AppSettingsRepo.AutoSave,
+                    Models.EnumOperations.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize),
+                    RepoHelper.AppSettingsRepo.FontFamily,
+                    Models.EnumOperations.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize),
+                    RepoHelper.AppSettingsRepo.WordWrap);
+                DataVM.SendSqlRequest(sql);
 
-                    sql = @"
+                sql = @"
 UPDATE settings SET value = '{0}' WHERE UPPER(name) LIKE 'DEFAULT_RDBMS';
 UPDATE settings SET value = '{1}' WHERE UPPER(name) LIKE 'ACTIVE_RDBMS';
 UPDATE settings SET value = '{2}' WHERE UPPER(name) LIKE 'SERVER';
@@ -315,52 +315,51 @@ UPDATE settings SET value = '{4}' WHERE UPPER(name) LIKE 'PORT';
 UPDATE settings SET value = '{5}' WHERE UPPER(name) LIKE 'SCHEMA';
 UPDATE settings SET value = '{6}' WHERE UPPER(name) LIKE 'USERNAME';
 UPDATE settings SET value = '{7}' WHERE UPPER(name) LIKE 'PASSWORD';";
-                    sql = string.Format(
-                        sql,
-                        RepoHelper.AppSettingsRepo.DefaultRdbms,
-                        RepoHelper.AppSettingsRepo.ActiveRdbms,
-                        RepoHelper.AppSettingsRepo.DbHost,
-                        RepoHelper.AppSettingsRepo.DbName,
-                        RepoHelper.AppSettingsRepo.DbPort,
-                        RepoHelper.AppSettingsRepo.DbSchema,
-                        RepoHelper.AppSettingsRepo.DbUsername,
-                        RepoHelper.AppSettingsRepo.DbPassword); 
-                    this.DataVM.SendSqlRequest(sql); 
+                sql = string.Format(
+                    sql,
+                    RepoHelper.AppSettingsRepo.DefaultRdbms,
+                    RepoHelper.AppSettingsRepo.ActiveRdbms,
+                    RepoHelper.AppSettingsRepo.DbHost,
+                    RepoHelper.AppSettingsRepo.DbName,
+                    RepoHelper.AppSettingsRepo.DbPort,
+                    RepoHelper.AppSettingsRepo.DbSchema,
+                    RepoHelper.AppSettingsRepo.DbUsername,
+                    RepoHelper.AppSettingsRepo.DbPassword);
+                DataVM.SendSqlRequest(sql);
 
-                    InitAppRepository(); 
-                    Translate(); 
-                    this.VisualVM.InitUI(); 
-                    System.Windows.MessageBox.Show("Settings saved", "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
-                    this.VisualVM.SettingsView.Close(); 
-                }
-                catch (System.Exception ex)
-                {
-                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                InitAppRepository();
+                Translate();
+                VisualVM.InitUI();
+                MessageBox.Show("Settings saved", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                VisualVM.SettingsView.Close();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+    }
 
-        public void CancelSettings()
+    public void CancelSettings()
+    {
+        string msg = "Are you sure to cancel settings changes?";
+        if (MessageBox.Show(msg, "Cancel settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-            string msg = "Are you sure to cancel settings changes?"; 
-            if (System.Windows.MessageBox.Show(msg, "Cancel settings", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                this.DataVM.ClearTempTable("settings"); 
-                
-                ((SqlViewer.Views.SettingsView)this.VisualVM.SettingsView).CancelChangesAppRepository(); 
-                
-                System.Windows.MessageBox.Show("Settings cancelled", "Information", MessageBoxButton.OK, MessageBoxImage.Information); 
-                this.VisualVM.SettingsView.Close(); 
-            }
+            DataVM.ClearTempTable("settings");
+            
+            ((Views.SettingsView)VisualVM.SettingsView).CancelChangesAppRepository();
+
+            MessageBox.Show("Settings cancelled", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+            VisualVM.SettingsView.Close();
         }
+    }
 
-        public void ExitApplication()
+    public static void ExitApplication()
+    {
+        string msg = "Are you sure to close the application?";
+        if (MessageBox.Show(msg, "Exit the application", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-            string msg = "Are you sure to close the application?"; 
-            if (System.Windows.MessageBox.Show(msg, "Exit the application", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                System.Windows.Application.Current.Shutdown();
-            }
+            Application.Current.Shutdown();
         }
     }
 }

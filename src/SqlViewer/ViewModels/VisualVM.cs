@@ -1,108 +1,102 @@
-using System.Windows; 
-using System.Windows.Controls; 
-using SqlViewer.Views; 
-using SqlViewer.Pages; 
-using UserControlsMenu = SqlViewer.UserControls.Menu; 
+using System.Windows;
+using System.Windows.Controls;
+using SqlViewer.Views;
+using SqlViewer.Pages;
+using UserControlsMenu = SqlViewer.UserControls.Menu;
 
-namespace SqlViewer.ViewModels
+namespace SqlViewer.ViewModels;
+
+public class VisualVM(MainVM mainVM)
 {
-    public class VisualVM
+    private MainVM MainVM { get; set; } = mainVM;
+
+    public Window LoginView { get; set; }
+    public Window SettingsView { get; set; }
+    public Window ConnectionsView { get; set; }
+    
+    public UserControl Menu { get; set; }
+    public UserControl SqlPage { get; set; }
+    public UserControl TablesPage { get; set; }
+
+    #region Common UI methods 
+    public void InitUI()
     {
-        private MainVM MainVM { get; set; }
+        ((SettingsView)SettingsView).Init();
 
-        public Window LoginView { get; set; }
-        public Window SettingsView { get; set; }
-        public Window ConnectionsView { get; set; }
-        
-        public UserControl Menu { get; set; }
-        public UserControl SqlPage { get; set; }
-        public UserControl TablesPage { get; set; }
+        ((UserControlsMenu)Menu).Init();
 
-        public VisualVM(MainVM mainVM)
+        ((SqlPage)SqlPage).Init();
+        ((TablesPage)TablesPage).Init();
+    }
+    #endregion  // Common UI methods 
+
+    #region Views methods
+    public void OpenView(string viewName)
+    {
+        try
         {
-            this.MainVM = mainVM; 
+            System.Type type = System.Type.GetType("SqlViewer.Views." + viewName);
+            Window win = System.Activator.CreateInstance(type) as Window;
+            win.DataContext = MainVM;
+            win.Show();
         }
-
-        #region Common UI methods 
-        public void InitUI()
+        catch (System.Exception ex)
         {
-            ((SettingsView)SettingsView).Init(); 
-
-            ((UserControlsMenu)Menu).Init(); 
-
-            ((SqlPage)SqlPage).Init(); 
-            ((TablesPage)TablesPage).Init(); 
+            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
-        #endregion  // Common UI methods 
+    }
 
-        #region Views methods
-        public void OpenView(string viewName)
+    public static void OpenDocsInBrowser(string docName, string title, string filePath)
+    {
+        string msg = "Do you want to open " + docName + " in your browser?";
+        if (MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
         {
-            try
+            System.Diagnostics.Process process = new();
+            try 
             {
-                var type = System.Type.GetType("SqlViewer.Views." + viewName); 
-                var win = System.Activator.CreateInstance(type) as System.Windows.Window; 
-                win.DataContext = this.MainVM;
-                win.Show();
+                process.StartInfo.UseShellExecute = true;
+                process.StartInfo.FileName = filePath;
+                process.Start();
             }
             catch (System.Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
+                MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-        public void OpenDocsInBrowser(string docName, string title, string filePath)
-        {
-            string msg = "Do you want to open " + docName + " in your browser?"; 
-            if (System.Windows.MessageBox.Show(msg, title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                System.Diagnostics.Process process = new System.Diagnostics.Process();
-                try 
-                {
-                    process.StartInfo.UseShellExecute = true;
-                    process.StartInfo.FileName = filePath;
-                    process.Start();
-                }
-                catch (System.Exception ex)
-                {
-                    System.Windows.MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error); 
-                }
-            }
-        }
-        #endregion  // Views methods
-
-        #region Pages methods
-        public void RedirectToSqlQuery()
-        {
-            HideAllPages();
-            DisableAllPages();
-
-            this.MainVM.MainWindow.SqlPage.Visibility = Visibility.Visible; 
-            this.MainVM.MainWindow.SqlPage.IsEnabled = true; 
-        }
-
-        public void RedirectToTables()
-        {
-            this.MainVM.DataVM.DisplayTablesInDb();
-
-            HideAllPages();
-            DisableAllPages();
-
-            this.MainVM.MainWindow.TablesPage.Visibility = Visibility.Visible; 
-            this.MainVM.MainWindow.TablesPage.IsEnabled = true; 
-        }
-
-        private void HideAllPages()
-        {
-            this.MainVM.MainWindow.SqlPage.Visibility = Visibility.Collapsed; 
-            this.MainVM.MainWindow.TablesPage.Visibility = Visibility.Collapsed; 
-        }
-
-        private void DisableAllPages()
-        {
-            this.MainVM.MainWindow.TablesPage.IsEnabled = false; 
-            this.MainVM.MainWindow.TablesPage.IsEnabled = false; 
-        }
-        #endregion  // Pages methods
     }
+    #endregion  // Views methods
+
+    #region Pages methods
+    public void RedirectToSqlQuery()
+    {
+        HideAllPages();
+        DisableAllPages();
+
+        MainVM.MainWindow.SqlPage.Visibility = Visibility.Visible;
+        MainVM.MainWindow.SqlPage.IsEnabled = true;
+    }
+
+    public void RedirectToTables()
+    {
+        MainVM.DataVM.DisplayTablesInDb();
+
+        HideAllPages();
+        DisableAllPages();
+
+        MainVM.MainWindow.TablesPage.Visibility = Visibility.Visible;
+        MainVM.MainWindow.TablesPage.IsEnabled = true;
+    }
+
+    private void HideAllPages()
+    {
+        MainVM.MainWindow.SqlPage.Visibility = Visibility.Collapsed;
+        MainVM.MainWindow.TablesPage.Visibility = Visibility.Collapsed;
+    }
+
+    private void DisableAllPages()
+    {
+        MainVM.MainWindow.TablesPage.IsEnabled = false;
+        MainVM.MainWindow.TablesPage.IsEnabled = false;
+    }
+    #endregion  // Pages methods
 }

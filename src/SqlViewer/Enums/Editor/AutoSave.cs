@@ -1,8 +1,7 @@
-namespace SqlViewer.Enums.Editor
+namespace SqlViewer.Enums.Editor;
+
+public enum AutoSave
 {
-    public enum AutoSave
-    {
-        Enabled = 0, 
-        Disabled = 1
-    }
+    Enabled = 0, 
+    Disabled = 1
 }

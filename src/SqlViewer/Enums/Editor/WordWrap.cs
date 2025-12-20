@@ -1,8 +1,7 @@
-namespace SqlViewer.Enums.Editor
+namespace SqlViewer.Enums.Editor;
+
+public enum WordWrap
 {
-    public enum WordWrap
-    {
-        Enabled = 0, 
-        Disabled = 1
-    }
+    Enabled = 0, 
+    Disabled = 1
 }

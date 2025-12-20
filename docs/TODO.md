@@ -39,29 +39,29 @@
 
 ## Languages
 
-- [ ] Arabic; 
-- [ ] Catalan; 
-- [ ] Chinese (simplified); 
-- [ ] Chinese (traditional); 
-- [ ] Estonian; 
-- [ ] Filipino; 
-- [ ] Finnish; 
-- [ ] Hebrew; 
-- [ ] Hindi; 
-- [ ] Hungarian; 
-- [ ] Icelandic; 
-- [ ] Irish; 
-- [ ] Kyrgyz; 
-- [ ] Latvian; 
-- [ ] Lithuanian; 
-- [ ] Maltese; 
-- [ ] Mongolian; 
-- [ ] Nepali; 
-- [ ] Persian; 
-- [ ] Thai; 
+- [ ] Arabic;
+- [ ] Catalan;
+- [ ] Chinese (simplified);
+- [ ] Chinese (traditional);
+- [ ] Estonian;
+- [ ] Filipino;
+- [ ] Finnish;
+- [ ] Hebrew;
+- [ ] Hindi;
+- [ ] Hungarian;
+- [ ] Icelandic;
+- [ ] Irish;
+- [ ] Kyrgyz;
+- [ ] Latvian;
+- [ ] Lithuanian;
+- [ ] Maltese;
+- [ ] Mongolian;
+- [ ] Nepali;
+- [ ] Persian;
+- [ ] Thai;
 - [ ] Uzbek;  
 - [ ] Vietnamese;  
-- [ ] Welsh; 
+- [ ] Welsh;
 - [ ] Yidish.
 
 ## Common

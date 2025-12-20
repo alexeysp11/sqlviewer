@@ -1,19 +1,18 @@
-using System.Data; 
+using System.Data;
 
-namespace SqlViewer.Models.DbConnections
+namespace SqlViewer.Models.DbConnections;
+
+public class MssqlDbConnection : ICommonDbConnection
 {
-    public class MssqlDbConnection : SqlViewer.Models.DbConnections.ICommonDbConnection
+    public DataTable ExecuteSqlCommand(string sqlRequest)
     {
-        public DataTable ExecuteSqlCommand(string sqlRequest)
-        {
-            DataTable table = new DataTable(); 
-            
-            return table; 
-        }
+        DataTable table = new();
+        
+        return table;
+    }
 
-        public string GetSqlFromDataTable(DataTable dt, string tableName)
-        {
-            return ""; 
-        }
+    public string GetSqlFromDataTable(DataTable dt, string tableName)
+    {
+        return "";
     }
 }

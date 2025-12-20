@@ -1,48 +1,38 @@
-using SqlViewer.ViewModels; 
+namespace SqlViewer.ViewModels.Commands;
 
-namespace SqlViewer.Commands
+public class HelpCommand : System.Windows.Input.ICommand
 {
-    public class HelpCommand : System.Windows.Input.ICommand
+    public event System.EventHandler CanExecuteChanged;
+
+    public bool CanExecute(object parameter)
     {
-        private MainVM MainVM; 
+        return true;
+    }
 
-        public HelpCommand(MainVM mainVm)
+    public void Execute(object parameter)
+    {
+        string parameterString = parameter as string;
+        switch (parameterString)
         {
-            this.MainVM = mainVm; 
-        }
+            case "About":
+                VisualVM.OpenDocsInBrowser("About page", "User guide", $"{Helpers.SettingsHelper.RootFolder}\\docs\\About.html");
+                break;
 
-        public event System.EventHandler CanExecuteChanged; 
+            case "SqliteDocs":
+                VisualVM.OpenDocsInBrowser("SQLite documentation", "Common SQL docs", "https://www.sqlite.org/index.html");
+                break;
 
-        public bool CanExecute(object parameter)
-        {
-            return true; 
-        }
+            case "PosgresDocs":
+                VisualVM.OpenDocsInBrowser("PosgresSQL documentation", "Common SQL docs", "https://www.postgresql.org/");
+                break;
 
-        public void Execute(object parameter)
-        {
-            string parameterString = parameter as string; 
-            switch (parameterString)
-            {
-                case "About":
-                    this.MainVM.VisualVM.OpenDocsInBrowser("About page", "User guide", $"{SqlViewer.Helpers.SettingsHelper.GetRootFolder()}\\docs\\About.html"); 
-                    break;
+            case "MySqlDocs":
+                VisualVM.OpenDocsInBrowser("MySQL documentation", "Common SQL docs", "https://dev.mysql.com/doc/");
+                break;
 
-                case "SqliteDocs":
-                    this.MainVM.VisualVM.OpenDocsInBrowser("SQLite documentation", "Common SQL docs", "https://www.sqlite.org/index.html");
-                    break;
-
-                case "PosgresDocs":
-                    this.MainVM.VisualVM.OpenDocsInBrowser("PosgresSQL documentation", "Common SQL docs", "https://www.postgresql.org/");
-                    break;
-
-                case "MySqlDocs":
-                    this.MainVM.VisualVM.OpenDocsInBrowser("MySQL documentation", "Common SQL docs", "https://dev.mysql.com/doc/"); 
-                    break;
-
-                default:
-                    System.Windows.MessageBox.Show($"Incorrect parameter: {parameterString}", "Error"); 
-                    break;
-            }
+            default:
+                System.Windows.MessageBox.Show($"Incorrect parameter: {parameterString}", "Error");
+                break;
         }
     }
 }

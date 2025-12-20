@@ -1,27 +1,26 @@
-using System.Data; 
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection; 
+using System.Data;
+using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection;
 
-namespace SqlViewer.Models.DbPreproc
+namespace SqlViewer.Models.DbPreproc;
+
+public interface IDbPreproc
 {
-    public interface IDbPreproc
-    {
-        void CreateDb();
-        void OpenDb(); 
+    void CreateDb();
+    void OpenDb();
 
-        void InitUserDbConnection(); 
+    void InitUserDbConnection();
 
-        void DisplayTablesInDb(); 
-        void GetAllDataFromTable(string tableName); 
-        void GetColumnsOfTable(string tableName); 
-        void GetForeignKeys(string tableName); 
-        void GetTriggers(string tableName); 
-        void GetSqlDefinition(string tableName); 
+    void DisplayTablesInDb();
+    void GetAllDataFromTable(string tableName);
+    void GetColumnsOfTable(string tableName);
+    void GetForeignKeys(string tableName);
+    void GetTriggers(string tableName);
+    void GetSqlDefinition(string tableName);
 
-        void SendSqlRequest(); 
-        DataTable SendSqlRequest(string sql); 
-        void ClearTempTable(string tableName); 
+    void SendSqlRequest();
+    DataTable SendSqlRequest(string sql);
+    void ClearTempTable(string tableName);
 
-        ICommonDbConnectionSV GetAppDbConnection(); 
-        ICommonDbConnectionSV GetUserDbConnection(); 
-    }
+    ICommonDbConnectionSV GetAppDbConnection();
+    ICommonDbConnectionSV GetUserDbConnection();
 }
