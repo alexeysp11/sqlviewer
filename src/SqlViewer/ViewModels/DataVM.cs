@@ -1,14 +1,23 @@
-using System.Data;
-using System.Windows;
+using Microsoft.Data.Sqlite;
+using Newtonsoft.Json;
 using SqlViewer.Models.DbPreproc;
 using SqlViewer.Models.DbTransfer;
 using SqlViewer.Helpers;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Models.DataStorage;
+using SqlViewer.Common.Enums;
+using System.Data;
 using System.IO;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Windows;
+using VelocipedeUtils.Shared.DbOperations.Enums;
+using VelocipedeUtils.Shared.DbOperations.Models;
+using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.ViewModels;
 
-public class DataVM
+public sealed class DataVM
 {
     private MainVM MainVM { get; set; }
 
@@ -17,6 +26,11 @@ public class DataVM
 
     public DbInterconnection DbInterconnection { get; private set; }
 
+    private static readonly HttpClient _httpClient = new()
+    {
+        Timeout = TimeSpan.FromSeconds(10)
+    };
+
     public DataVM(MainVM mainVM)
     {
         MainVM = mainVM;
@@ -24,17 +38,9 @@ public class DataVM
         DbInterconnection = new DbInterconnection();
     }
 
-    #region Primary DB operations 
     public void CreateDb()
     {
-        try
-        {
-            UserRdbmsPreproc.CreateDb();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        UserRdbmsPreproc.CreateDb();
     }
 
     /// <summary>
@@ -42,146 +48,136 @@ public class DataVM
     /// </summary>
     public void OpenDb()
     {
-        try
-        {
-            InitUserDbConnection();
-            UserRdbmsPreproc.OpenDb();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        InitUserDbConnection();
+        UserRdbmsPreproc.OpenDb();
     }
 
     public static string GetSqlRequest(string filename)
     {
         return File.ReadAllText($"{SettingsHelper.RootFolder}\\Queries\\{filename}");
     }
-    #endregion  // Primary DB operations 
 
-    #region Initialization 
     public void InitUserDbConnection()
     {
-        try
+        switch (RepoHelper.AppSettingsRepo.ActiveRdbms)
         {
-            switch (RepoHelper.AppSettingsRepo.ActiveRdbms)
-            {
-                case RdbmsEnum.SQLite:
-                    (UserRdbmsPreproc = new SqliteDbPreproc(MainVM)).InitUserDbConnection();
-                    break;
+            case RdbmsEnum.SQLite:
+                (UserRdbmsPreproc = new SqliteDbPreproc(MainVM)).InitUserDbConnection();
+                break;
 
-                case RdbmsEnum.PostgreSQL:
-                    (UserRdbmsPreproc = new PgDbPreproc(MainVM)).InitUserDbConnection();
-                    break;
+            case RdbmsEnum.PostgreSQL:
+                (UserRdbmsPreproc = new PgDbPreproc(MainVM)).InitUserDbConnection();
+                break;
 
-                case RdbmsEnum.MySQL:
-                    (UserRdbmsPreproc = new MysqlDbPreproc(MainVM)).InitUserDbConnection();
-                    break;
+            case RdbmsEnum.MySQL:
+                (UserRdbmsPreproc = new MysqlDbPreproc(MainVM)).InitUserDbConnection();
+                break;
 
-                case RdbmsEnum.MSSQL:
-                    (UserRdbmsPreproc = new MssqlDbPreproc(MainVM)).InitUserDbConnection();
-                    break;
+            case RdbmsEnum.MSSQL:
+                (UserRdbmsPreproc = new MssqlDbPreproc(MainVM)).InitUserDbConnection();
+                break;
 
-                case RdbmsEnum.Oracle:
-                    (UserRdbmsPreproc = new OracleDbPreproc(MainVM)).InitUserDbConnection();
-                    break;
+            case RdbmsEnum.Oracle:
+                (UserRdbmsPreproc = new OracleDbPreproc(MainVM)).InitUserDbConnection();
+                break;
 
-                default:
-                    throw new Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            default:
+                throw new Exception($"Unable to call RDBMS preprocessing unit, incorrect ActiveRdbms: {RepoHelper.AppSettingsRepo.ActiveRdbms}.");
         }
     }
-    #endregion  // Initialization 
 
-    #region // DB information 
     public void DisplayTablesInDb()
     {
-        try
-        {
-            UserRdbmsPreproc.DisplayTablesInDb();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        UserRdbmsPreproc.DisplayTablesInDb();
     }
 
     public void GetAllDataFromTable(string tableName)
     {
-        try
-        {
-            UserRdbmsPreproc.GetAllDataFromTable(tableName);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        UserRdbmsPreproc.GetAllDataFromTable(tableName);
     }
 
     public void GetColumnsOfTable(string tableName)
     {
-        try
-        {
-            UserRdbmsPreproc.GetColumnsOfTable(tableName);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        UserRdbmsPreproc.GetColumnsOfTable(tableName);
     }
 
     public void GetForeignKeys(string tableName)
     {
-        try
-        {
-            UserRdbmsPreproc.GetForeignKeys(tableName);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        UserRdbmsPreproc.GetForeignKeys(tableName);
     }
 
     public void GetTriggers(string tableName)
     {
-        try
-        {
-            UserRdbmsPreproc.GetTriggers(tableName);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        UserRdbmsPreproc.GetTriggers(tableName);
     }
 
     public void GetSqlDefinition(string tableName)
     {
-        try
+        UserRdbmsPreproc.GetSqlDefinition(tableName);
+    }
+
+    public static async Task<DataTable> QueryAsync(string connectionString, string query)
+    {
+        SqlQueryRequestDto requestDto = new()
         {
-            UserRdbmsPreproc.GetSqlDefinition(tableName);
-        }
-        catch (Exception ex)
+            DatabaseType = RepoHelper.AppSettingsRepo.ActiveRdbms switch
+            {
+                RdbmsEnum.SQLite => VelocipedeDatabaseType.SQLite,
+                RdbmsEnum.PostgreSQL => VelocipedeDatabaseType.PostgreSQL,
+                RdbmsEnum.MSSQL => VelocipedeDatabaseType.MSSQL,
+                _ => throw new NotImplementedException()
+            },
+            ConnectionString = connectionString,
+            Query = query
+        };
+        string url = "http://localhost:5293/api/sql/query";
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+
+        string jsonResponse = await response.Content
+            .ReadAsStringAsync()
+            .ConfigureAwait(false);
+
+        SqlQueryResponseDto responseDto = JsonConvert.DeserializeObject<SqlQueryResponseDto>(jsonResponse);
+        if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
+            throw new InvalidOperationException("Unable to get response DTO");
+        if (responseDto.Status is SqlOperationStatus.Failed)
+            throw new InvalidOperationException(responseDto.ErrorMessage);
+
+        return responseDto.QueryResult.ToDataTable();
+    }
+
+    public static string GetConnectionStringFromSettings(AppSettingsRepo settingsRepo)
+    {
+        switch (settingsRepo.ActiveRdbms)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            case RdbmsEnum.SQLite:
+                SqliteConnectionStringBuilder sqliteBuilder = [];
+                sqliteBuilder.DataSource = settingsRepo.DbName;
+                return sqliteBuilder.ConnectionString;
+
+            //case RdbmsEnum.:
+            //    SqliteConnectionStringBuilder sqliteBuilder = [];
+            //    sqliteBuilder.DataSource = settingsRepo.DbName;
+            //    return sqliteBuilder.ConnectionString;
+
+            default:
+                throw new NotImplementedException();
         }
     }
-    #endregion  // DB information 
 
-    #region Low-level operations
     public void SendSqlRequest()
     {
-        try
-        {
-            UserRdbmsPreproc.SendSqlRequest();
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        string connectionString = GetConnectionStringFromSettings(RepoHelper.AppSettingsRepo);
+        string sql = MainVM.MainWindow.SqlPage.mtbSqlRequest.Text;
+
+        DataTable dtResult = QueryAsync(connectionString, sql)
+            .GetAwaiter()
+            .GetResult();
+
+        MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = dtResult.DefaultView;
+        MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible;
+        MainVM.MainWindow.SqlPage.dbgSqlResult.IsEnabled = true;
     }
 
     public DataTable SendSqlRequest(string sql)
@@ -193,21 +189,13 @@ public class DataVM
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
         return dt;
     }
 
     public void ClearTempTable(string tableName)
     {
-        try
-        {
-            AppRdbmsPreproc.ClearTempTable(tableName);
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
-        }
+        AppRdbmsPreproc.ClearTempTable(tableName);
     }
-    #endregion  // Low-level operations 
 }

@@ -164,7 +164,9 @@ ORDER BY 1";
         if (UserDbConnection == null)
             throw new Exception("Database is not opened.");
 
-        ResultCollection = UserDbConnection.ExecuteSqlCommand(MainVM.MainWindow.SqlPage.mtbSqlRequest.Text);
+        string sql = MainVM.MainWindow.SqlPage.mtbSqlRequest.Text;
+
+        ResultCollection = UserDbConnection.ExecuteSqlCommand(sql);
         MainVM.MainWindow.SqlPage.dbgSqlResult.ItemsSource = ResultCollection.DefaultView;
 
         MainVM.MainWindow.SqlPage.dbgSqlResult.Visibility = Visibility.Visible;

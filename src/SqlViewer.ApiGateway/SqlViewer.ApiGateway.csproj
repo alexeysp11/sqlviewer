@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
-    <PackageReference Include="VelocipedeUtils.Shared.DbOperations" Version="1.0.0-alpha" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SqlViewer.Common\SqlViewer.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,9 +1,9 @@
-﻿namespace SqlViewer.ApiGateway.ViewModels.Docs;
+﻿namespace SqlViewer.Common.Dtos.Docs;
 
 /// <summary>
 /// Response for getting database provider docs.
 /// </summary>
-public sealed class SqlViewerDocsResponse : BaseSqlViewerResponse
+public sealed class SqlViewerDocsResponseDto : BaseSqlViewerResponseDto
 {
     public string? Url { get; set; }
 }

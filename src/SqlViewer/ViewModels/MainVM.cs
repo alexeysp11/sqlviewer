@@ -227,7 +227,7 @@ FROM (
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -247,7 +247,7 @@ FROM (
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -335,7 +335,7 @@ UPDATE settings SET value = '{7}' WHERE UPPER(name) LIKE 'PASSWORD';";
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

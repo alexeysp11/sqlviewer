@@ -1,9 +1,9 @@
-﻿namespace SqlViewer.ApiGateway.ViewModels.SqlQueries;
+﻿namespace SqlViewer.Common.Dtos.SqlQueries;
 
 /// <summary>
 /// Request for droping a table.
 /// </summary>
-public sealed class DropTableRequest : BaseSqlViewerRequest
+public sealed class DropTableRequestDto : BaseSqlViewerRequestDto
 {
     public required string TableName { get; init; }
 }

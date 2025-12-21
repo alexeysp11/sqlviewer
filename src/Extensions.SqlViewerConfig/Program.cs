@@ -1,4 +1,4 @@
-﻿namespace SqlViewerConfig;
+﻿namespace Extensions.SqlViewerConfig;
 
 class Program
 {

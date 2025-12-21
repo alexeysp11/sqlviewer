@@ -1,3 +1,4 @@
+using System.Windows;
 using SqlViewer.ViewModels;
 
 namespace SqlViewer.Helpers;
@@ -39,9 +40,9 @@ public class ConfigHelper(MainVM mainVM, string rootFolder)
     {
         if (!System.IO.File.Exists(localDbPath))
         {
-            System.Windows.MessageBox.Show("CreateLocalDbIfNotExists");
+            MessageBox.Show("CreateLocalDbIfNotExists");
             MainVM.DataVM.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(DataVM.GetSqlRequest(sqlScriptPath));
-            System.Windows.MessageBox.Show("CreateLocalDbIfNotExists");
+            MessageBox.Show("CreateLocalDbIfNotExists");
         }
     }
 

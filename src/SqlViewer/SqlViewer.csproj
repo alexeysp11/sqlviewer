@@ -10,6 +10,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.11" />
     <PackageReference Include="MySql.Data" Version="9.5.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Npgsql" Version="10.0.1" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.0" />
   </ItemGroup>
@@ -17,6 +18,11 @@
   <ItemGroup>
     <None Remove="Resources/icon.ico" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SqlViewer.Common\SqlViewer.Common.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Resources/icon.ico" />
   </ItemGroup>

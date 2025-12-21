@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.Enums;
-using SqlViewer.ApiGateway.ViewModels.Docs;
+using SqlViewer.Common.Dtos.Docs;
+using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ApiGateway.Controllers;
@@ -13,7 +13,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
 
     [HttpPost]
     [Route("/api/docs/db-providers")]
-    public SqlViewerDocsResponse GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
+    public SqlViewerDocsResponseDto GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
     {
         try
         {

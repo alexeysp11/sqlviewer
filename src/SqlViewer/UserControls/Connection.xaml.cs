@@ -52,7 +52,7 @@ public partial class Connection : UserControl
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
     #endregion  // Initialization
@@ -74,7 +74,7 @@ public partial class Connection : UserControl
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -124,7 +124,7 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -141,7 +141,7 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
     #endregion  // Event processing

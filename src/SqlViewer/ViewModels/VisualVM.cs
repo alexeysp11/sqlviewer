@@ -42,7 +42,7 @@ public class VisualVM(MainVM mainVM)
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+            MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -60,7 +60,7 @@ public class VisualVM(MainVM mainVM)
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString(), "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(ex.Message, "Exception", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

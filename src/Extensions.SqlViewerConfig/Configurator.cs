@@ -1,8 +1,9 @@
 using System.IO;
+using Extensions.SqlViewerConfig.DataModels;
 using Microsoft.Extensions.Configuration;
 using VelocipedeUtils.Shared.DbConnections;
 
-namespace SqlViewerConfig;
+namespace Extensions.SqlViewerConfig;
 
 /// <summary>
 /// Class for initial configuration of the project (creates all necessary databases, folders and files)

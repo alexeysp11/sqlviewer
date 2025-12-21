@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.Enums;
-using SqlViewer.ApiGateway.ViewModels;
-using SqlViewer.ApiGateway.ViewModels.SqlQueries;
+using SqlViewer.Common.Dtos;
+using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Factories;
 using VelocipedeUtils.Shared.DbOperations.QueryBuilders;
@@ -16,7 +16,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
 
     [HttpPost]
     [Route("/api/sql/query")]
-    public async Task<SqlQueryResponse> QueryAsync([FromBody] SqlQueryRequest request)
+    public async Task<SqlQueryResponseDto> QueryAsync([FromBody] SqlQueryRequestDto request)
     {
         try
         {
@@ -34,7 +34,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
 
     [HttpPost]
     [Route("/api/sql/execute")]
-    public async Task<CommonResponse> ExecuteAsync([FromBody] SqlQueryRequest request)
+    public async Task<CommonResponseDto> ExecuteAsync([FromBody] SqlQueryRequestDto request)
     {
         try
         {
@@ -52,7 +52,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
 
     [HttpPost]
     [Route("/api/sql/create-table")]
-    public async Task<CommonResponse> CreateTableAsync([FromBody] CreateTableRequest request)
+    public async Task<CommonResponseDto> CreateTableAsync([FromBody] CreateTableRequestDto request)
     {
         try
         {
@@ -81,7 +81,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
 
     [HttpPost]
     [Route("/api/sql/drop-table")]
-    public async Task<CommonResponse> DropTableAsync([FromBody] DropTableRequest request)
+    public async Task<CommonResponseDto> DropTableAsync([FromBody] DropTableRequestDto request)
     {
         try
         {

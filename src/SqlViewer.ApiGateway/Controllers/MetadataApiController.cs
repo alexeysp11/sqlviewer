@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.Enums;
-using SqlViewer.ApiGateway.ViewModels.Metadata;
+using SqlViewer.Common.Dtos.Metadata;
+using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Factories;
 
@@ -14,7 +14,7 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger)
 
     [HttpPost]
     [Route("/api/metadata/tables")]
-    public async Task<MetadataTablesResponse> GetTablesAsync([FromBody] MetadataRequest request)
+    public async Task<MetadataTablesResponseDto> GetTablesAsync([FromBody] MetadataRequestDto request)
     {
         try
         {

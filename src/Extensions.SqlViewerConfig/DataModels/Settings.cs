@@ -1,4 +1,4 @@
-namespace SqlViewerConfig;
+namespace Extensions.SqlViewerConfig.DataModels;
 
 public sealed class Settings
 {

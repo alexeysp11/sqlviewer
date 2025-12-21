@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.ApiGateway.Enums;
+﻿namespace SqlViewer.Common.Enums;
 
 /// <summary>
 /// Status of the executed query.
