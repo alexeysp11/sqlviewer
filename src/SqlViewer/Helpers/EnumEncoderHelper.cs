@@ -6,11 +6,10 @@ using TabSizeEnum = SqlViewer.Enums.Editor.TabSize;
 using WordWrapEnum = SqlViewer.Enums.Editor.WordWrap;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Models.EnumOperations;
+namespace SqlViewer.Helpers;
 
-public sealed class EnumEncoder
+public static class EnumEncoderHelper
 {
-    #region Common 
     public static LanguageEnum GetLanguageEnum(string language) => language switch
     {
         "English" => LanguageEnum.English,
@@ -44,9 +43,7 @@ public sealed class EnumEncoder
         "Japanese" => LanguageEnum.Japanese,
         _ => throw new Exception("Unable to find language enum")
     };
-    #endregion  // Common 
 
-    #region Editor
     public static AutoSaveEnum GetAutoSaveEnum(string autoSave) => autoSave switch
     {
         "Enabled" => AutoSaveEnum.Enabled,
@@ -93,9 +90,7 @@ public sealed class EnumEncoder
         "Disabled" => WordWrapEnum.Disabled,
         _ => throw new Exception("Unable to find wordWrap enum")
     };
-    #endregion  // Editor
 
-    #region Database 
     public static VelocipedeDatabaseType GetRdbmsEnum(string rdbms) => rdbms switch
     {
         "SQLite" => VelocipedeDatabaseType.SQLite,
@@ -104,5 +99,4 @@ public sealed class EnumEncoder
         "Oracle" => VelocipedeDatabaseType.Oracle,
         _ => throw new Exception("Unable to find rdbms enum")
     };
-    #endregion  // Database 
 }

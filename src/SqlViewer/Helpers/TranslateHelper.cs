@@ -1,18 +1,9 @@
 using System.Data;
 
-namespace SqlViewer.Utils.Language;
+namespace SqlViewer.Helpers;
 
-public abstract class BaseTranslator
+public abstract class TranslateHelper
 {
-    //private SqliteDbConnection AppDbConnection { get; set; }
-
-    //public void SetAppDbConnection(SqliteDbConnection appDbConnection)
-    //{
-    //    AppDbConnection = appDbConnection;
-    //}
-
-    //public DataTable Translate(string sql) => AppDbConnection.ExecuteSqlCommand(sql);
-
     public static string TranslateSingleWord(DataTable dt, string rowName, string wordEnglish)
     {
         if (dt is null || !dt.Columns.Contains(rowName))

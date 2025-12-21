@@ -1,9 +1,9 @@
 using FontSizeEnum = SqlViewer.Enums.Editor.FontSize;
 using TabSizeEnum = SqlViewer.Enums.Editor.TabSize;
 
-namespace SqlViewer.Models.EnumOperations;
+namespace SqlViewer.Helpers;
 
-public sealed class EnumDecoder
+public static class EnumDecoderHelper
 {
     public static string GetFontSizeName(FontSizeEnum fontSize) => fontSize switch
     {
