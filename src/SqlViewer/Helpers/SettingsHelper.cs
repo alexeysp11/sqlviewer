@@ -1,4 +1,4 @@
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Helpers;
 
@@ -15,7 +15,7 @@ public static class SettingsHelper
 
     public static string GetActiveRdbmsString()
     {
-        return string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
+        return string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? VelocipedeDatabaseType.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
     }
 
     public static string GetTmpTableTransfer()

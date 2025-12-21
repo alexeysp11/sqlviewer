@@ -5,7 +5,7 @@ using FontSizeEnum = SqlViewer.Enums.Editor.FontSize;
 using FontFamilyEnum = SqlViewer.Enums.Editor.FontFamily;
 using TabSizeEnum = SqlViewer.Enums.Editor.TabSize;
 using WordWrapEnum = SqlViewer.Enums.Editor.WordWrap;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Models.DataStorage;
 
@@ -20,8 +20,8 @@ public class AppSettingsRepo
     public TabSizeEnum TabSize { get; private set; }
     public WordWrapEnum WordWrap { get; private set; }
 
-    public RdbmsEnum DefaultRdbms { get; private set; }
-    public RdbmsEnum ActiveRdbms { get; private set; }
+    public VelocipedeDatabaseType DefaultRdbms { get; private set; }
+    public VelocipedeDatabaseType ActiveRdbms { get; private set; }
 
     public string DbHost { get; private set; }
     public string DbPort { get; private set; }

@@ -3,7 +3,7 @@ using SqlViewer.ViewModels;
 using SqlViewer.Entities.ViewsEntities;
 using SqlViewer.Helpers;
 using LanguageEnum = SqlViewer.Enums.Common.Language;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Views;
 
@@ -51,7 +51,7 @@ public partial class LoginView : Window
     private void InitPreferencesDb()
     {
         lblActiveRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.ActiveRdbmsField.Translation) ? LoginEntity.ActiveRdbmsField.English : LoginEntity.ActiveRdbmsField.Translation;
-        cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
+        cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? VelocipedeDatabaseType.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
 
         lblDatabase.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.DatabaseField.Translation) ? LoginEntity.DatabaseField.English : LoginEntity.DatabaseField.Translation;
         lblSchema.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(LoginEntity.SchemaField.Translation) ? LoginEntity.SchemaField.English : LoginEntity.SchemaField.Translation;

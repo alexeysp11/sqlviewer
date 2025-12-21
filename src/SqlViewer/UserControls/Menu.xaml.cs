@@ -3,7 +3,7 @@ using SqlViewer.ViewModels;
 using SqlViewer.Entities.UserControlsEntities;
 using SqlViewer.Helpers;
 using LanguageEnum = SqlViewer.Enums.Common.Language;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.UserControls;
 
@@ -44,11 +44,11 @@ public partial class Menu : UserControl
         miFileNew.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileNewField.Translation) ? MenuEntity.FileNewField.English : MenuEntity.FileNewField.Translation;
         miFileNewSQL.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileNewSqlFileField.Translation) ? MenuEntity.FileNewSqlFileField.English : MenuEntity.FileNewSqlFileField.Translation;
         miFileNewFunction.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileNewFunctionField.Translation) ? MenuEntity.FileNewFunctionField.English : MenuEntity.FileNewFunctionField.Translation;
-        miFileNewFunction.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miFileNewFunction.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miFileNewProcedure.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileNewProcedureField.Translation) ? MenuEntity.FileNewProcedureField.English : MenuEntity.FileNewProcedureField.Translation;
-        miFileNewProcedure.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miFileNewProcedure.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miFileNewTest.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileNewTestField.Translation) ? MenuEntity.FileNewTestField.English : MenuEntity.FileNewTestField.Translation;
-        miFileNewTest.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miFileNewTest.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miFileNewDatabase.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileNewDatabaseField.Translation) ? MenuEntity.FileNewDatabaseField.English : MenuEntity.FileNewDatabaseField.Translation;
         miFileNewTable.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileNewTableField.Translation) ? MenuEntity.FileNewTableField.English : MenuEntity.FileNewTableField.Translation;
         miFileNewTable.IsEnabled = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DbName) ? false : true;
@@ -62,11 +62,11 @@ public partial class Menu : UserControl
         miFileOpen.Header = MenuEntity.FileOpenField.Translation;
         miFileOpenSQL.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileOpenSqlFileField.Translation) ? MenuEntity.FileOpenSqlFileField.English : MenuEntity.FileOpenSqlFileField.Translation;
         miFileOpenFunction.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileOpenFunctionField.Translation) ? MenuEntity.FileOpenFunctionField.English : MenuEntity.FileOpenFunctionField.Translation;
-        miFileOpenFunction.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miFileOpenFunction.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miFileOpenProcedure.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileOpenProcedureField.Translation) ? MenuEntity.FileOpenProcedureField.English : MenuEntity.FileOpenProcedureField.Translation;
-        miFileOpenProcedure.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miFileOpenProcedure.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miFileOpenTest.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileOpenTestField.Translation) ? MenuEntity.FileOpenTestField.English : MenuEntity.FileOpenTestField.Translation;
-        miFileOpenTest.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miFileOpenTest.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miFileOpenDatabase.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileOpenDatabaseField.Translation) ? MenuEntity.FileOpenDatabaseField.English : MenuEntity.FileOpenDatabaseField.Translation;
         miFileOpenTable.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.FileOpenTableField.Translation) ? MenuEntity.FileOpenTableField.English : MenuEntity.FileOpenTableField.Translation;
         miFileOpenTable.IsEnabled = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.DbName) ? false : true;
@@ -99,13 +99,13 @@ public partial class Menu : UserControl
         miPagesSqlQuery.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.PagesSqlQueryField.Translation) ? MenuEntity.PagesSqlQueryField.English : MenuEntity.PagesSqlQueryField.Translation;
         miPagesCommandLine.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.PagesCommandLineField.Translation) ? MenuEntity.PagesCommandLineField.English : MenuEntity.PagesCommandLineField.Translation;
         miPagesFunctions.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.PagesFunctionsField.Translation) ? MenuEntity.PagesFunctionsField.English : MenuEntity.PagesFunctionsField.Translation;
-        miPagesFunctions.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miPagesFunctions.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miPagesProcedures.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.PagesProceduresField.Translation) ? MenuEntity.PagesProceduresField.English : MenuEntity.PagesProceduresField.Translation;
-        miPagesProcedures.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miPagesProcedures.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miPagesTests.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.PagesTestsField.Translation) ? MenuEntity.PagesTestsField.English : MenuEntity.PagesTestsField.Translation;
-        miPagesTests.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miPagesTests.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miPagesDatabases.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.PagesDatabasesField.Translation) ? MenuEntity.PagesDatabasesField.English : MenuEntity.PagesDatabasesField.Translation;
-        miPagesDatabases.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == RdbmsEnum.SQLite ? false : true;
+        miPagesDatabases.IsEnabled = RepoHelper.AppSettingsRepo.ActiveRdbms == VelocipedeDatabaseType.SQLite ? false : true;
         miPagesTables.Header = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(MenuEntity.PagesTablesField.Translation) ? MenuEntity.PagesTablesField.English : MenuEntity.PagesTablesField.Translation;
     }
 

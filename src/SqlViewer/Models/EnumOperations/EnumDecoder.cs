@@ -1,59 +1,10 @@
-using LanguageEnum = SqlViewer.Enums.Common.Language;
-using AutoSaveEnum = SqlViewer.Enums.Editor.AutoSave;
 using FontSizeEnum = SqlViewer.Enums.Editor.FontSize;
-using FontFamilyEnum = SqlViewer.Enums.Editor.FontFamily;
 using TabSizeEnum = SqlViewer.Enums.Editor.TabSize;
-using WordWrapEnum = SqlViewer.Enums.Editor.WordWrap;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 
 namespace SqlViewer.Models.EnumOperations;
 
 public sealed class EnumDecoder
 {
-    #region Common 
-    public static string GetLanguageName(LanguageEnum language) => language switch
-    {
-        LanguageEnum.English => "English",
-        LanguageEnum.German => "German",
-        LanguageEnum.Russian => "Russian",
-        LanguageEnum.Spanish => "Spanish",
-        LanguageEnum.Portuguese => "Portuguese",
-        LanguageEnum.Italian => "Italian",
-        LanguageEnum.French => "French",
-        LanguageEnum.Ukranian => "Ukranian",
-        LanguageEnum.Dutch => "Dutch",
-        LanguageEnum.Polish => "Polish",
-        LanguageEnum.Czech => "Czech",
-        LanguageEnum.Serbian => "Serbian",
-        LanguageEnum.Croatian => "Croatian",
-        LanguageEnum.Swedish => "Swedish",
-        LanguageEnum.Norwegian => "Norwegian",
-        LanguageEnum.Danish => "Danish",
-        LanguageEnum.Afrikaans => "Afrikaans",
-        LanguageEnum.Turkish => "Turkish",
-        LanguageEnum.Kazakh => "Kazakh",
-        LanguageEnum.Armenian => "Armenian",
-        LanguageEnum.Georgian => "Georgian",
-        LanguageEnum.Romanian => "Romanian",
-        LanguageEnum.Bulgarian => "Bulgarian",
-        LanguageEnum.Albanian => "Albanian",
-        LanguageEnum.Greek => "Greek",
-        LanguageEnum.Indonesian => "Indonesian",
-        LanguageEnum.Malay => "Malay",
-        LanguageEnum.Korean => "Korean",
-        LanguageEnum.Japanese => "Japanese",
-        _ => throw new Exception("Unable to find language name")
-    };
-    #endregion  // Common 
-
-    #region Editor
-    public static string GetAutoSaveName(AutoSaveEnum autoSave) => autoSave switch
-    {
-        AutoSaveEnum.Enabled => "Enabled",
-        AutoSaveEnum.Disabled => "Disabled",
-        _ => throw new Exception("Unable to find autoSave name")
-    };
-
     public static string GetFontSizeName(FontSizeEnum fontSize) => fontSize switch
     {
         FontSizeEnum.FontSize8 => "8",
@@ -68,12 +19,6 @@ public sealed class EnumDecoder
         _ => throw new Exception("Unable to find fontSize name")
     };
 
-    public static string GetFontFamilyName(FontFamilyEnum fontFamily) => fontFamily switch
-    {
-        FontFamilyEnum.Consolas => "Consolas",
-        _ => throw new Exception("Unable to find fontFamily name")
-    };
-
     public static string GetTabSizeName(TabSizeEnum tabSize) => tabSize switch
     {
         TabSizeEnum.TabSize1 => "1",
@@ -86,23 +31,4 @@ public sealed class EnumDecoder
         TabSizeEnum.TabSize8 => "8",
         _ => throw new Exception("Unable to find tabSize name")
     };
-
-    public static string GetWordWrapName(WordWrapEnum wordWrap) => wordWrap switch
-    {
-        WordWrapEnum.Enabled => "Enabled",
-        WordWrapEnum.Disabled => "Disabled",
-        _ => throw new Exception("Unable to find wordWrap name")
-    };
-    #endregion  // Editor
-
-    #region Database 
-    public static string GetRdbmsName(RdbmsEnum rdbms) => rdbms switch
-    {
-        RdbmsEnum.SQLite => "SQLite",
-        RdbmsEnum.PostgreSQL => "PostgreSQL",
-        RdbmsEnum.MySQL => "MySQL",
-        RdbmsEnum.Oracle => "Oracle",
-        _ => throw new Exception("Unable to find rdbms name")
-    };
-    #endregion  // Database 
 }

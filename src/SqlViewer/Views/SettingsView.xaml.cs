@@ -3,7 +3,7 @@ using SqlViewer.ViewModels;
 using SqlViewer.Entities.ViewsEntities;
 using SqlViewer.Helpers;
 using LanguageEnum = SqlViewer.Enums.Common.Language;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Views;
 
@@ -69,9 +69,9 @@ public partial class SettingsView : Window
     {
         lblPreferencesDb.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DbField.Translation) ? SettingsEntity.DbField.English : SettingsEntity.DbField.Translation;
         lblDefaultRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DefaultRdbmsField.Translation) ? SettingsEntity.DefaultRdbmsField.English : SettingsEntity.DefaultRdbmsField.Translation;
-        cbDefaultRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
+        cbDefaultRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? VelocipedeDatabaseType.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
         lblActiveRdbms.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.ActiveRdbmsField.Translation) ? SettingsEntity.ActiveRdbmsField.English : SettingsEntity.ActiveRdbmsField.Translation;
-        cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
+        cbActiveRdbms.Text = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? VelocipedeDatabaseType.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
 
         lblDatabase.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.DatabaseField.Translation) ? SettingsEntity.DatabaseField.English : SettingsEntity.DatabaseField.Translation;
         lblSchema.Content = RepoHelper.AppSettingsRepo.Language == LanguageEnum.English || string.IsNullOrEmpty(SettingsEntity.SchemaField.Translation) ? SettingsEntity.SchemaField.English : SettingsEntity.SchemaField.Translation;
@@ -142,7 +142,7 @@ public partial class SettingsView : Window
 
     public void CancelChangesAppRepository()
     {
-        string activeRdbms = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? RdbmsEnum.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
+        string activeRdbms = string.IsNullOrEmpty(RepoHelper.AppSettingsRepo.ActiveRdbms.ToString()) ? VelocipedeDatabaseType.SQLite.ToString() : RepoHelper.AppSettingsRepo.ActiveRdbms.ToString();
         if (activeRdbms != OldActiveRdbms)
         {
             RepoHelper.AppSettingsRepo.SetActiveRdbms(OldActiveRdbms);

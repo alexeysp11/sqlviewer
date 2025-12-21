@@ -4,7 +4,7 @@ using FontSizeEnum = SqlViewer.Enums.Editor.FontSize;
 using FontFamilyEnum = SqlViewer.Enums.Editor.FontFamily;
 using TabSizeEnum = SqlViewer.Enums.Editor.TabSize;
 using WordWrapEnum = SqlViewer.Enums.Editor.WordWrap;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Models.EnumOperations;
 
@@ -96,12 +96,12 @@ public sealed class EnumEncoder
     #endregion  // Editor
 
     #region Database 
-    public static RdbmsEnum GetRdbmsEnum(string rdbms) => rdbms switch
+    public static VelocipedeDatabaseType GetRdbmsEnum(string rdbms) => rdbms switch
     {
-        "SQLite" => RdbmsEnum.SQLite,
-        "PostgreSQL" => RdbmsEnum.PostgreSQL,
-        "MySQL" => RdbmsEnum.MySQL,
-        "Oracle" => RdbmsEnum.Oracle,
+        "SQLite" => VelocipedeDatabaseType.SQLite,
+        "PostgreSQL" => VelocipedeDatabaseType.PostgreSQL,
+        "MySQL" => VelocipedeDatabaseType.MySQL,
+        "Oracle" => VelocipedeDatabaseType.Oracle,
         _ => throw new Exception("Unable to find rdbms enum")
     };
     #endregion  // Database 

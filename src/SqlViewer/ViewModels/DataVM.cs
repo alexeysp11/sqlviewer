@@ -11,7 +11,6 @@ using System.Net.Http.Json;
 using System.Windows;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;
-using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
 using Npgsql;
 
 namespace SqlViewer.ViewModels;
@@ -48,23 +47,23 @@ public sealed class DataVM(MainVM mainVM)
     {
         switch (RepoHelper.AppSettingsRepo.ActiveRdbms)
         {
-            case RdbmsEnum.SQLite:
+            case VelocipedeDatabaseType.SQLite:
                 //(UserRdbmsPreproc = new SqliteDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
-            case RdbmsEnum.PostgreSQL:
+            case VelocipedeDatabaseType.PostgreSQL:
                 //(UserRdbmsPreproc = new PgDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
-            case RdbmsEnum.MySQL:
+            case VelocipedeDatabaseType.MySQL:
                 //(UserRdbmsPreproc = new MysqlDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
-            case RdbmsEnum.MSSQL:
+            case VelocipedeDatabaseType.MSSQL:
                 //(UserRdbmsPreproc = new MssqlDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
-            case RdbmsEnum.Oracle:
+            case VelocipedeDatabaseType.Oracle:
                 //(UserRdbmsPreproc = new OracleDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
@@ -105,9 +104,9 @@ public sealed class DataVM(MainVM mainVM)
         {
             DatabaseType = RepoHelper.AppSettingsRepo.ActiveRdbms switch
             {
-                RdbmsEnum.SQLite => VelocipedeDatabaseType.SQLite,
-                RdbmsEnum.PostgreSQL => VelocipedeDatabaseType.PostgreSQL,
-                RdbmsEnum.MSSQL => VelocipedeDatabaseType.MSSQL,
+                VelocipedeDatabaseType.SQLite => VelocipedeDatabaseType.SQLite,
+                VelocipedeDatabaseType.PostgreSQL => VelocipedeDatabaseType.PostgreSQL,
+                VelocipedeDatabaseType.MSSQL => VelocipedeDatabaseType.MSSQL,
                 _ => throw new NotImplementedException()
             },
             ConnectionString = connectionString,
@@ -134,12 +133,12 @@ public sealed class DataVM(MainVM mainVM)
     {
         switch (settingsRepo.ActiveRdbms)
         {
-            case RdbmsEnum.SQLite:
+            case VelocipedeDatabaseType.SQLite:
                 SqliteConnectionStringBuilder sqliteBuilder = [];
                 sqliteBuilder.DataSource = settingsRepo.DbName;
                 return sqliteBuilder.ConnectionString;
 
-            case RdbmsEnum.PostgreSQL:
+            case VelocipedeDatabaseType.PostgreSQL:
                 NpgsqlConnectionStringBuilder postgresBuilder = new()
                 {
                     Host = settingsRepo.DbHost,
