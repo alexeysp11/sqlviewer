@@ -123,12 +123,12 @@ public partial class SettingsView : Window
             tbUsername.Background = System.Windows.Media.Brushes.White;
             pbPassword.Background = System.Windows.Media.Brushes.White;
         }
-        tbServer.Text = System.String.Empty;
-        tbDatabase.Text = System.String.Empty;
-        tbPort.Text = System.String.Empty;
-        tbSchema.Text = System.String.Empty;
-        tbUsername.Text = System.String.Empty;
-        pbPassword.Password = System.String.Empty;
+        tbServer.Text = string.Empty;
+        tbDatabase.Text = string.Empty;
+        tbPort.Text = string.Empty;
+        tbSchema.Text = string.Empty;
+        tbUsername.Text = string.Empty;
+        pbPassword.Password = string.Empty;
 
         RepoHelper.AppSettingsRepo.SetActiveRdbms(cbActiveRdbms.Text);
     }

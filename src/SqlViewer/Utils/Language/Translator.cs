@@ -21,12 +21,13 @@ public class Translator : BaseTranslator
     public void SetLanguageEnum(LanguageEnum language)
     {
         LanguageEnum = language;
-        string sql = @"
-SELECT t.english, t.{0}
-FROM translation t
-WHERE UPPER(t.context) LIKE UPPER('{1}');";
-        sql = string.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
-        DataTable dt = Translate(sql);
+//        string sql = @"
+//SELECT t.english, t.{0}
+//FROM translation t
+//WHERE UPPER(t.context) LIKE UPPER('{1}');";
+//        sql = string.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
+        //DataTable dt = Translate(sql);
+        DataTable dt = new();
 
         Word languageWord = new(LanguageEnum.ToString());
         SettingsEntity.SetChosenLanguageField(TranslateSingleWord(dt, LanguageEnum.ToString(), languageWord.English));
@@ -34,12 +35,13 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
 
     public void TranslateLogin()
     {
-        string sql = @"
-SELECT t.english, t.{0}
-FROM translation t
-WHERE UPPER(t.context) LIKE UPPER('{1}');";
-        sql = string.Format(sql, LanguageEnum.ToString(), "LOGIN");
-        DataTable dt = Translate(sql);
+//        string sql = @"
+//SELECT t.english, t.{0}
+//FROM translation t
+//WHERE UPPER(t.context) LIKE UPPER('{1}');";
+//        sql = string.Format(sql, LanguageEnum.ToString(), "LOGIN");
+        //DataTable dt = Translate(sql);
+        DataTable dt = new();
 
         LoginEntity.SetActiveRdbmsField(TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.ActiveRdbmsField.English));
         LoginEntity.SetDatabaseField(TranslateSingleWord(dt, LanguageEnum.ToString(), LoginEntity.DatabaseField.English));
@@ -53,12 +55,12 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
 
     public void TranslateMenu()
     {
-        string sql = @"
-SELECT t.english, t.{0}
-FROM translation t
-WHERE UPPER(t.context) LIKE UPPER('{1}');";
-        sql = string.Format(sql, LanguageEnum.ToString(), "MENU");
-        DataTable dt = Translate(sql);
+//        string sql = @"
+//SELECT t.english, t.{0}
+//FROM translation t
+//WHERE UPPER(t.context) LIKE UPPER('{1}');";
+//        sql = string.Format(sql, LanguageEnum.ToString(), "MENU");
+        DataTable dt = new();
 
         #region Translate File
         MenuEntity.SetFileField(TranslateSingleWord(dt, LanguageEnum.ToString(), MenuEntity.FileField.English));
@@ -129,13 +131,14 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
 
     public void TranslateSettings()
     {
-        string sql = @"
-SELECT t.english, t.{0}
-FROM translation t
-WHERE UPPER(t.context) LIKE UPPER('{1}');";
-        #region Translate Settings  
-        sql = string.Format(sql, LanguageEnum.ToString(), "SETTINGS");
-        DataTable dt = Translate(sql);
+//        string sql = @"
+//SELECT t.english, t.{0}
+//FROM translation t
+//WHERE UPPER(t.context) LIKE UPPER('{1}');";
+
+        //sql = string.Format(sql, LanguageEnum.ToString(), "SETTINGS");
+        //DataTable dt = Translate(sql);
+        DataTable dt = new();
 
         SettingsEntity.SetEditorField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EditorField.English));
         SettingsEntity.SetLanguageField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.LanguageField.English));
@@ -156,40 +159,36 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
         SettingsEntity.SetRecoverField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.RecoverField.English));
         SettingsEntity.SetSaveField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.SaveField.English));
         SettingsEntity.SetCancelField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.CancelField.English));
-        #endregion  // Translate Settings  
 
         #region Translate Common 
-        sql = string.Format(sql, LanguageEnum.ToString(), "COMMON");
-        dt = Translate(sql);
+        //sql = string.Format(sql, LanguageEnum.ToString(), "COMMON");
+        //dt = Translate(sql);
 
         SettingsEntity.SetDatabaseField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DatabaseField.English));
         SettingsEntity.SetEnabledField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.EnabledField.English));
         SettingsEntity.SetDisabledField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.DisabledField.English));
         #endregion  // Translate Common 
 
-        #region Translate Language 
-        sql = string.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
-        dt = Translate(sql);
+        //sql = string.Format(sql, LanguageEnum.ToString(), "LANGUAGE");
+        //dt = Translate(sql);
 
         SettingsEntity.SetChosenLanguageField(TranslateSingleWord(dt, LanguageEnum.ToString(), SettingsEntity.ChosenLanguageField.English));
-        #endregion  // Translate Language
     }
 
     public void TranslatePages()
     {
-        string sql = @"
-SELECT t.english, t.{0}
-FROM translation t
-WHERE UPPER(t.context) LIKE UPPER('{1}');";
-        sql = string.Format(sql, LanguageEnum.ToString(), "PAGES");
-        DataTable dt = Translate(sql);
+//        string sql = @"
+//SELECT t.english, t.{0}
+//FROM translation t
+//WHERE UPPER(t.context) LIKE UPPER('{1}');";
+//        sql = string.Format(sql, LanguageEnum.ToString(), "PAGES");
+        //DataTable dt = Translate(sql);
+        DataTable dt = new();
 
-        #region Translate SQL page
         SqlPageEntity.SetPathField(TranslateSingleWord(dt, LanguageEnum.ToString(), SqlPageEntity.PathField.English));
         SqlPageEntity.SetExecuteField(TranslateSingleWord(dt, LanguageEnum.ToString(), SqlPageEntity.ExecuteField.English));
-        #endregion  // Translate SQL page 
 
-        #region Translate Tables page
+        // Translate Tables page
         TablesPageEntity.SetPathField(TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.PathField.English));
         TablesPageEntity.SetTablesField(TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.TablesField.English));
         TablesPageEntity.SetGeneralInfoField(TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.GeneralInfoField.English));
@@ -197,17 +196,17 @@ WHERE UPPER(t.context) LIKE UPPER('{1}');";
         TablesPageEntity.SetForeignKeysField(TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.ForeignKeysField.English));
         TablesPageEntity.SetTriggersField(TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.TriggersField.English));
         TablesPageEntity.SetDataField(TranslateSingleWord(dt, LanguageEnum.ToString(), TablesPageEntity.DataField.English));
-        #endregion  // Translate Tables page
     }
 
     public void TranslateConnection()
     {
-        string sql = @"
-SELECT t.english, t.{0}
-FROM translation t
-WHERE UPPER(t.context) LIKE UPPER('{1}');";
-        sql = string.Format(sql, LanguageEnum.ToString(), "CONNECTION");
-        DataTable dt = Translate(sql);
+//        string sql = @"
+//SELECT t.english, t.{0}
+//FROM translation t
+//WHERE UPPER(t.context) LIKE UPPER('{1}');";
+//        sql = string.Format(sql, LanguageEnum.ToString(), "CONNECTION");
+//        DataTable dt = Translate(sql);
+        DataTable dt = new();
 
         ConnectionEntity.SetActiveRdbmsField(TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ActiveRdbmsField.English));
         ConnectionEntity.SetExecuteField(TranslateSingleWord(dt, LanguageEnum.ToString(), ConnectionEntity.ExecuteField.English));

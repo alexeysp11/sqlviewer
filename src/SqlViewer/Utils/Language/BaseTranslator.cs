@@ -1,18 +1,17 @@
 using System.Data;
-using SqlViewer.Models.DbConnections;
 
 namespace SqlViewer.Utils.Language;
 
 public abstract class BaseTranslator
 {
-    private SqliteDbConnection AppDbConnection { get; set; }
+    //private SqliteDbConnection AppDbConnection { get; set; }
 
-    public void SetAppDbConnection(SqliteDbConnection appDbConnection)
-    {
-        AppDbConnection = appDbConnection;
-    }
+    //public void SetAppDbConnection(SqliteDbConnection appDbConnection)
+    //{
+    //    AppDbConnection = appDbConnection;
+    //}
 
-    public DataTable Translate(string sql) => AppDbConnection.ExecuteSqlCommand(sql);
+    //public DataTable Translate(string sql) => AppDbConnection.ExecuteSqlCommand(sql);
 
     public static string TranslateSingleWord(DataTable dt, string rowName, string wordEnglish)
     {

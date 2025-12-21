@@ -1,14 +1,11 @@
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
-using SqlViewer.Models.DbConnections;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
 using SqlViewer.Helpers;
 using SqlViewer.Entities.UserControlsEntities;
 using LanguageEnum = SqlViewer.Enums.Common.Language;
-using ICommonDbConnectionSV = SqlViewer.Models.DbConnections.ICommonDbConnection;
 
 namespace SqlViewer.UserControls;
 
@@ -97,7 +94,7 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
 
     private void cbActiveRdbms_DropDownClosed(object sender, EventArgs e)
     {
-        tbDataSource.Text = System.String.Empty;
+        tbDataSource.Text = string.Empty;
         btnOpenSqliteDataSource.IsEnabled = cbActiveRdbms.Text == "SQLite" ? true : false;
         tbActiveRdbms.Text = cbActiveRdbms.Text;
     }
@@ -106,21 +103,21 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
     {
         try
         {
-            ICommonDbConnectionSV dbConnection = GetDbConnection();
+            //ICommonDbConnectionSV dbConnection = GetDbConnection();
             switch (OrdinalNum)
             {
                 case 1:
-                    MainVM.DataVM.DbInterconnection.SetDbConnection1(dbConnection);
+                    //MainVM.DataVM.DbInterconnection.SetDbConnection1(dbConnection);
                     break;
 
                 case 2:
-                    MainVM.DataVM.DbInterconnection.SetDbConnection2(dbConnection);
+                    //MainVM.DataVM.DbInterconnection.SetDbConnection2(dbConnection);
                     break;
 
                 default:
                     throw new Exception("Incorrect OrdinalNum in UserControls.Connection: '" + OrdinalNum + "'");
             }
-            dbgSqlResult.ItemsSource = OrdinalNum == 1 ? MainVM.DataVM.DbInterconnection.DbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : MainVM.DataVM.DbInterconnection.DbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView;
+            //dbgSqlResult.ItemsSource = OrdinalNum == 1 ? MainVM.DataVM.DbInterconnection.DbConnection1.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView : MainVM.DataVM.DbInterconnection.DbConnection2.ExecuteSqlCommand(mtbSqlRequest.Text).DefaultView;
         }
         catch (Exception ex)
         {
@@ -147,34 +144,10 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
     #endregion  // Event processing
 
     #region Database methods
-    private ICommonDbConnectionSV GetDbConnection()
-    {
-        ICommonDbConnectionSV dbConnection;
-        switch (cbActiveRdbms.Text)
-        {
-            case "SQLite":
-                dbConnection = new SqliteDbConnection(tbDataSource.Text);
-                break;
 
-            case "PostgreSQL":
-                dbConnection = new PgDbConnection(tbDataSource.Text);
-                break;
-
-            case "MySQL":
-                dbConnection = new MysqlDbConnection(tbDataSource.Text);
-                break;
-
-            case "Oracle":
-                dbConnection = new OracleDbConnection(tbDataSource.Text);
-                break;
-
-            default:
-                throw new Exception("Incorrect ActiveRdbms in UserControls.Connection: '" + cbActiveRdbms.Text + "'");
-        }
-        return dbConnection;
-    }
-
+#pragma warning disable IDE0060 // Remove unused parameter
     private void TransferData(string tableName)
+#pragma warning restore IDE0060 // Remove unused parameter
     {
         ConnectionsView connectionView = (ConnectionsView)MainVM.VisualVM.ConnectionsView;
         if (!connectionView.CheckDataSources())
@@ -182,11 +155,11 @@ Oracle: specify protocol, host, port, service name, user ID and password (for ex
         if (!ConnectionsView.CheckDataGrids())
             throw new Exception("None of DataGrids should be empty");
 
-        ICommonDbConnectionSV dbConnection = OrdinalNum == 1
-            ? MainVM.DataVM.DbInterconnection.DbConnection2
-            : MainVM.DataVM.DbInterconnection.DbConnection1;
-        DataTable dt = ((DataView)dbgSqlResult.ItemsSource).Table;
-        dbConnection.ExecuteSqlCommand(dbConnection.GetSqlFromDataTable(dt, tableName));
+        //ICommonDbConnectionSV dbConnection = OrdinalNum == 1
+        //    ? MainVM.DataVM.DbInterconnection.DbConnection2
+        //    : MainVM.DataVM.DbInterconnection.DbConnection1;
+        //DataTable dt = ((DataView)dbgSqlResult.ItemsSource).Table;
+        //dbConnection.ExecuteSqlCommand(dbConnection.GetSqlFromDataTable(dt, tableName));
     }
     #endregion  // Database methods
 }

@@ -5,7 +5,9 @@ namespace SqlViewer.Helpers;
 
 public class ConfigHelper(MainVM mainVM, string rootFolder)
 {
+#pragma warning disable IDE0051 // Remove unused private members
     private MainVM MainVM { get; set; } = mainVM;
+#pragma warning restore IDE0051 // Remove unused private members
 
     private string RootFolder { get; set; } = rootFolder;
 
@@ -35,12 +37,16 @@ public class ConfigHelper(MainVM mainVM, string rootFolder)
         }
     }
 
+#pragma warning disable CA1822 // Mark members as static
+#pragma warning disable IDE0060 // Remove unused parameter
     private void CreateLocalDbIfNotExists(string localDbPath, string sqlScriptPath)
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore CA1822 // Mark members as static
     {
         if (!System.IO.File.Exists(localDbPath))
         {
             MessageBox.Show("CreateLocalDbIfNotExists");
-            MainVM.DataVM.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(DataVM.GetSqlRequest(sqlScriptPath));
+            //MainVM.DataVM.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(DataVM.GetSqlRequest(sqlScriptPath));
             MessageBox.Show("CreateLocalDbIfNotExists");
         }
     }

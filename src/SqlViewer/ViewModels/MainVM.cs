@@ -38,7 +38,7 @@ public class MainVM
         RedirectCommand = new RedirectCommand(this);
         AppCommand = new AppCommand(this);
 
-        (Translator = new Translator()).SetAppDbConnection((Models.DbConnections.SqliteDbConnection)DataVM.AppRdbmsPreproc.GetAppDbConnection());
+        //(Translator = new Translator()).SetAppDbConnection((Models.DbConnections.SqliteDbConnection)DataVM.AppRdbmsPreproc.GetAppDbConnection());
     }
 
     /// <summary>

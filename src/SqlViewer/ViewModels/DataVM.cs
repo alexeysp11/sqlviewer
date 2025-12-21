@@ -1,7 +1,5 @@
 using Microsoft.Data.Sqlite;
 using Newtonsoft.Json;
-using SqlViewer.Models.DbPreproc;
-using SqlViewer.Models.DbTransfer;
 using SqlViewer.Helpers;
 using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Models.DataStorage;
@@ -18,36 +16,27 @@ using Npgsql;
 
 namespace SqlViewer.ViewModels;
 
-public sealed class DataVM
+public sealed class DataVM(MainVM mainVM)
 {
-    private MainVM MainVM { get; set; }
+    private MainVM MainVM { get; set; } = mainVM;
 
-    public IDbPreproc AppRdbmsPreproc { get; private set; }
-    public IDbPreproc UserRdbmsPreproc { get; private set; }
-
-    public DbInterconnection DbInterconnection { get; private set; }
 
     private static readonly HttpClient _httpClient = new()
     {
         Timeout = TimeSpan.FromSeconds(10)
     };
 
-    public DataVM(MainVM mainVM)
-    {
-        MainVM = mainVM;
-        AppRdbmsPreproc = new SqliteDbPreproc(MainVM);
-        DbInterconnection = new DbInterconnection();
-    }
-
+#pragma warning disable CA1822 // Mark members as static
+#pragma warning disable IDE0060 // Remove unused parameter
     public void CreateDb()
     {
-        UserRdbmsPreproc.CreateDb();
+        //UserRdbmsPreproc.CreateDb();
     }
 
     public void OpenDb()
     {
         InitUserDbConnection();
-        UserRdbmsPreproc.OpenDb();
+        //UserRdbmsPreproc.OpenDb();
     }
 
     public static string GetSqlRequest(string filename)
@@ -60,23 +49,23 @@ public sealed class DataVM
         switch (RepoHelper.AppSettingsRepo.ActiveRdbms)
         {
             case RdbmsEnum.SQLite:
-                (UserRdbmsPreproc = new SqliteDbPreproc(MainVM)).InitUserDbConnection();
+                //(UserRdbmsPreproc = new SqliteDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
             case RdbmsEnum.PostgreSQL:
-                (UserRdbmsPreproc = new PgDbPreproc(MainVM)).InitUserDbConnection();
+                //(UserRdbmsPreproc = new PgDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
             case RdbmsEnum.MySQL:
-                (UserRdbmsPreproc = new MysqlDbPreproc(MainVM)).InitUserDbConnection();
+                //(UserRdbmsPreproc = new MysqlDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
             case RdbmsEnum.MSSQL:
-                (UserRdbmsPreproc = new MssqlDbPreproc(MainVM)).InitUserDbConnection();
+                //(UserRdbmsPreproc = new MssqlDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
             case RdbmsEnum.Oracle:
-                (UserRdbmsPreproc = new OracleDbPreproc(MainVM)).InitUserDbConnection();
+                //(UserRdbmsPreproc = new OracleDbPreproc(MainVM)).InitUserDbConnection();
                 break;
 
             default:
@@ -86,33 +75,29 @@ public sealed class DataVM
 
     public void DisplayTablesInDb()
     {
-        UserRdbmsPreproc.DisplayTablesInDb();
     }
 
     public void GetAllDataFromTable(string tableName)
     {
-        UserRdbmsPreproc.GetAllDataFromTable(tableName);
     }
 
     public void GetColumnsOfTable(string tableName)
     {
-        UserRdbmsPreproc.GetColumnsOfTable(tableName);
     }
 
     public void GetForeignKeys(string tableName)
     {
-        UserRdbmsPreproc.GetForeignKeys(tableName);
     }
 
     public void GetTriggers(string tableName)
     {
-        UserRdbmsPreproc.GetTriggers(tableName);
     }
 
     public void GetSqlDefinition(string tableName)
     {
-        UserRdbmsPreproc.GetSqlDefinition(tableName);
     }
+#pragma warning restore CA1822 // Mark members as static
+#pragma warning restore IDE0060 // Remove unused parameter
 
     public static async Task<DataTable> QueryAsync(string connectionString, string query)
     {
@@ -185,12 +170,16 @@ public sealed class DataVM
         MainVM.MainWindow.SqlPage.dbgSqlResult.IsEnabled = true;
     }
 
+#pragma warning disable CA1822 // Mark members as static
+#pragma warning disable IDE0060 // Remove unused parameter
     public DataTable SendSqlRequest(string sql)
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore CA1822 // Mark members as static
     {
         DataTable dt = new();
         try
         {
-            dt = AppRdbmsPreproc.SendSqlRequest(sql);
+            //dt = AppRdbmsPreproc.SendSqlRequest(sql);
         }
         catch (Exception ex)
         {
@@ -199,8 +188,12 @@ public sealed class DataVM
         return dt;
     }
 
+#pragma warning disable CA1822 // Mark members as static
+#pragma warning disable IDE0060 // Remove unused parameter
     public void ClearTempTable(string tableName)
+#pragma warning restore IDE0060 // Remove unused parameter
+#pragma warning restore CA1822 // Mark members as static
     {
-        AppRdbmsPreproc.ClearTempTable(tableName);
+        //AppRdbmsPreproc.ClearTempTable(tableName);
     }
 }
