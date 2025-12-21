@@ -35,8 +35,8 @@ public class VisualVM(MainVM mainVM)
     {
         try
         {
-            Type type = System.Type.GetType("SqlViewer.Views." + viewName);
-            Window win = System.Activator.CreateInstance(type) as Window;
+            Type type = Type.GetType("SqlViewer.Views." + viewName);
+            Window win = Activator.CreateInstance(type) as Window;
             win.DataContext = MainVM;
             win.Show();
         }

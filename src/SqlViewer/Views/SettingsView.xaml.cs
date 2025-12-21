@@ -135,8 +135,8 @@ public partial class SettingsView : Window
 
     public void UpdateAppRepository()
     {
-        RepoHelper.AppSettingsRepo.Update(cbLanguage.Text, cbAutoSave.Text, System.Convert.ToInt32(cbFontSize.Text),
-            cbFontFamily.Text, System.Convert.ToInt32(cbTabSize.Text), cbWordWrap.Text, cbDefaultRdbms.Text,
+        RepoHelper.AppSettingsRepo.Update(cbLanguage.Text, cbAutoSave.Text, Convert.ToInt32(cbFontSize.Text),
+            cbFontFamily.Text, Convert.ToInt32(cbTabSize.Text), cbWordWrap.Text, cbDefaultRdbms.Text,
             cbActiveRdbms.Text, tbServer.Text, tbDatabase.Text, tbPort.Text, tbSchema.Text, tbUsername.Text, pbPassword.Password);
     }
 

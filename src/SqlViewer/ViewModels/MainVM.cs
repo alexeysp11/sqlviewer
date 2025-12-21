@@ -4,6 +4,7 @@ using System.Windows.Input;
 using SqlViewer.Utils.Language;
 using SqlViewer.Helpers;
 using SqlViewer.ViewModels.Commands;
+using SqlViewer.Models.EnumOperations;
 
 namespace SqlViewer.ViewModels;
 
@@ -206,9 +207,9 @@ FROM (
 
             string language = dt.Rows[0]["language"].ToString();
             string autoSave = dt.Rows[0]["auto_save"].ToString();
-            int fontSize = System.Convert.ToInt32(dt.Rows[0]["font_size"]);
+            int fontSize = Convert.ToInt32(dt.Rows[0]["font_size"]);
             string fontFamily = dt.Rows[0]["font_family"].ToString();
-            int tabSize = System.Convert.ToInt32(dt.Rows[0]["tab_size"]);
+            int tabSize = Convert.ToInt32(dt.Rows[0]["tab_size"]);
             string wordWrap = dt.Rows[0]["word_wrap"].ToString();
             string defaultRdbms = dt.Rows[0]["default_rdbms"].ToString();
             string activeRdbms = dt.Rows[0]["active_rdbms"].ToString();
@@ -219,7 +220,7 @@ FROM (
             string dbUsername = dt.Rows[0]["db_username"].ToString();
             string dbPswd = dt.Rows[0]["db_pswd"].ToString();
 
-            Models.EnumOperations.EnumEncoder enumEncoder = EnumCodecHelper.EnumEncoder;
+            EnumEncoder enumEncoder = EnumCodecHelper.EnumEncoder;
             RepoHelper.SetAppSettingsRepo(new Models.DataStorage.AppSettingsRepo(enumEncoder, language, autoSave,
                 fontSize, fontFamily, tabSize, wordWrap, defaultRdbms, activeRdbms, server,
                 dbName, port, schemaName, dbUsername, dbPswd));
@@ -289,42 +290,24 @@ UPDATE settings SET value = '' WHERE name LIKE 'password';";
             {
                 ((Views.SettingsView)VisualVM.SettingsView).UpdateAppRepository();
 
-                string sql = @"
-UPDATE settings SET value = '{0}' WHERE UPPER(name) LIKE 'LANGUAGE';
-UPDATE settings SET value = '{1}' WHERE UPPER(name) LIKE 'AUTO_SAVE';
-UPDATE settings SET value = '{2}' WHERE UPPER(name) LIKE 'FONT_SIZE';
-UPDATE settings SET value = '{3}' WHERE UPPER(name) LIKE 'FONT_FAMILY';
-UPDATE settings SET value = '{4}' WHERE UPPER(name) LIKE 'TAB_SIZE';
-UPDATE settings SET value = '{5}' WHERE UPPER(name) LIKE 'WORD_WRAP';";
-                sql = string.Format(
-                    sql,
-                    RepoHelper.AppSettingsRepo.Language,
-                    RepoHelper.AppSettingsRepo.AutoSave,
-                    Models.EnumOperations.EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize),
-                    RepoHelper.AppSettingsRepo.FontFamily,
-                    Models.EnumOperations.EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize),
-                    RepoHelper.AppSettingsRepo.WordWrap);
+                string sql = $@"
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.Language}' WHERE UPPER(name) LIKE 'LANGUAGE';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.AutoSave}' WHERE UPPER(name) LIKE 'AUTO_SAVE';
+UPDATE settings SET value = '{EnumDecoder.GetFontSizeName(RepoHelper.AppSettingsRepo.FontSize)}' WHERE UPPER(name) LIKE 'FONT_SIZE';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.FontFamily}' WHERE UPPER(name) LIKE 'FONT_FAMILY';
+UPDATE settings SET value = '{EnumDecoder.GetTabSizeName(RepoHelper.AppSettingsRepo.TabSize)}' WHERE UPPER(name) LIKE 'TAB_SIZE';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.WordWrap}' WHERE UPPER(name) LIKE 'WORD_WRAP';";
                 DataVM.SendSqlRequest(sql);
 
-                sql = @"
-UPDATE settings SET value = '{0}' WHERE UPPER(name) LIKE 'DEFAULT_RDBMS';
-UPDATE settings SET value = '{1}' WHERE UPPER(name) LIKE 'ACTIVE_RDBMS';
-UPDATE settings SET value = '{2}' WHERE UPPER(name) LIKE 'SERVER';
-UPDATE settings SET value = '{3}' WHERE UPPER(name) LIKE 'DATABASE';
-UPDATE settings SET value = '{4}' WHERE UPPER(name) LIKE 'PORT';
-UPDATE settings SET value = '{5}' WHERE UPPER(name) LIKE 'SCHEMA';
-UPDATE settings SET value = '{6}' WHERE UPPER(name) LIKE 'USERNAME';
-UPDATE settings SET value = '{7}' WHERE UPPER(name) LIKE 'PASSWORD';";
-                sql = string.Format(
-                    sql,
-                    RepoHelper.AppSettingsRepo.DefaultRdbms,
-                    RepoHelper.AppSettingsRepo.ActiveRdbms,
-                    RepoHelper.AppSettingsRepo.DbHost,
-                    RepoHelper.AppSettingsRepo.DbName,
-                    RepoHelper.AppSettingsRepo.DbPort,
-                    RepoHelper.AppSettingsRepo.DbSchema,
-                    RepoHelper.AppSettingsRepo.DbUsername,
-                    RepoHelper.AppSettingsRepo.DbPassword);
+                sql = $@"
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.DefaultRdbms}' WHERE UPPER(name) LIKE 'DEFAULT_RDBMS';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.ActiveRdbms}' WHERE UPPER(name) LIKE 'ACTIVE_RDBMS';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.DbHost}' WHERE UPPER(name) LIKE 'SERVER';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.DbName}' WHERE UPPER(name) LIKE 'DATABASE';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.DbPort}' WHERE UPPER(name) LIKE 'PORT';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.DbSchema}' WHERE UPPER(name) LIKE 'SCHEMA';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.DbUsername}' WHERE UPPER(name) LIKE 'USERNAME';
+UPDATE settings SET value = '{RepoHelper.AppSettingsRepo.DbPassword}' WHERE UPPER(name) LIKE 'PASSWORD';";
                 DataVM.SendSqlRequest(sql);
 
                 InitAppRepository();

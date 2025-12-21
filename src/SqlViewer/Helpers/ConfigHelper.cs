@@ -12,7 +12,6 @@ public class ConfigHelper(MainVM mainVM, string rootFolder)
     public void Initialize()
     {
         CreateDataFolder();
-        //CreateAllShortcuts(); // Not supported yet 
     }
 
     public void CreateDataFolder()
@@ -43,29 +42,6 @@ public class ConfigHelper(MainVM mainVM, string rootFolder)
             MessageBox.Show("CreateLocalDbIfNotExists");
             MainVM.DataVM.AppRdbmsPreproc.GetAppDbConnection().ExecuteSqlCommand(DataVM.GetSqlRequest(sqlScriptPath));
             MessageBox.Show("CreateLocalDbIfNotExists");
-        }
-    }
-
-    public void CreateAllShortcuts()
-    {
-        CreateShortcutInFolder();
-        CreateShortcutOnDesktop();
-    }
-
-    private void CreateShortcutInFolder()
-    {
-        string shortcutPath = $"{RootFolder}\\SqlViewer.lnk";
-        if (!System.IO.File.Exists(shortcutPath))
-        {
-        }
-    }
-
-    private static void CreateShortcutOnDesktop()
-    {
-        string deskDir = System.Environment.GetFolderPath(System.Environment.SpecialFolder.DesktopDirectory);
-        string shortcutPath = $"{deskDir}\\SqlViewer.lnk";
-        if (!System.IO.File.Exists(shortcutPath))
-        {
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Windows;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;
 using RdbmsEnum = SqlViewer.Enums.Database.Rdbms;
+using Npgsql;
 
 namespace SqlViewer.ViewModels;
 
@@ -43,9 +44,6 @@ public sealed class DataVM
         UserRdbmsPreproc.CreateDb();
     }
 
-    /// <summary>
-    /// Opens DB 
-    /// </summary>
     public void OpenDb()
     {
         InitUserDbConnection();
@@ -156,10 +154,17 @@ public sealed class DataVM
                 sqliteBuilder.DataSource = settingsRepo.DbName;
                 return sqliteBuilder.ConnectionString;
 
-            //case RdbmsEnum.:
-            //    SqliteConnectionStringBuilder sqliteBuilder = [];
-            //    sqliteBuilder.DataSource = settingsRepo.DbName;
-            //    return sqliteBuilder.ConnectionString;
+            case RdbmsEnum.PostgreSQL:
+                NpgsqlConnectionStringBuilder postgresBuilder = new()
+                {
+                    Host = settingsRepo.DbHost,
+                    Port = 5432,
+                    Database = settingsRepo.DbName,
+                    Username = settingsRepo.DbUsername,
+                    Password = settingsRepo.DbPassword,
+                    SslMode = SslMode.Allow,
+                };
+                return postgresBuilder.ConnectionString;
 
             default:
                 throw new NotImplementedException();

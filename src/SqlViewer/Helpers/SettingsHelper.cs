@@ -20,7 +20,7 @@ public static class SettingsHelper
 
     public static string GetTmpTableTransfer()
     {
-        DateTime now = System.DateTime.UtcNow;
+        DateTime now = DateTime.UtcNow;
 
         string year = now.Year.ToString();
         string month = (now.Month < 10 ? "0" : "") + now.Month.ToString();
