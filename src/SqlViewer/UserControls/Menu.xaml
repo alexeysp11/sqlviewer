@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="SqlViewer.UserControls.Menu"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlViewer.UserControls">
+    <Grid>
+        <Menu>
+            <MenuItem Header="_File">
+                <MenuItem Header="New">
+                    <MenuItem Header="Database" Command="{Binding NewDatabaseCommand}" />
+                    <MenuItem Header="Table" Command="{Binding NewTableCommand}" />
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+            </MenuItem>
+
+            <MenuItem Header="_Run">
+                <MenuItem Header="_Query (F5)" Command="{Binding ExecuteQuery}" />
+                <MenuItem Header="_Command (Ctrl + F5)" Command="{Binding ExecuteCommand}" />
+                <MenuItem Header="_Stop" Command="{Binding CancelQueryCommand}" />
+            </MenuItem>
+
+            <MenuItem Header="_Metadata" Command="{Binding OpenMetadataCommand}" />
+
+            <MenuItem Header="_ETL" Command="{Binding OpenEtlCommand}" />
+
+            <MenuItem Header="_Help">
+                <MenuItem Header="Common SQL docs">
+                    <MenuItem Header="SQLite" Command="{Binding HelpCommand}" CommandParameter="SqliteDocs" />
+                    <MenuItem Header="PostgreSQL" Command="{Binding HelpCommand}" CommandParameter="PosgresDocs" />
+                    <MenuItem Header="MySQL" Command="{Binding HelpCommand}" CommandParameter="MySqlDocs" />
+                </MenuItem>
+                <MenuItem Header="User guide">
+                    <MenuItem Header="About" Command="{Binding HelpCommand}" CommandParameter="About" />
+                </MenuItem>
+            </MenuItem>
+        </Menu>
+    </Grid>
+</UserControl>
