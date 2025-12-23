@@ -1,18 +1,18 @@
-# sqlviewer 
+# sqlviewer
 
 [English](README.md) | [Русский](README.ru.md)
 
 `sqlviewer` is a multilingual C# application that provides a user-friendly interface for interacting with different RDBMS and performing various database operations.
 
-## Overall description 
+## Overall description
 
-Using this app, you can do the following things: 
+Using this app, you can do the following things:
 
 - write and execute SQL queries:
 
 ![Example (UI, query)](docs/img/ui_query.png)
 
-- watch information about all tables inside your database (SQL definition, columns, foreign keys, triggers and all data inside a paticular table): 
+- watch information about all tables inside your database (SQL definition, columns, foreign keys, triggers and all data inside a paticular table):
 
 ![Example (UI, tables)](docs/img/ui_tables.png)
 

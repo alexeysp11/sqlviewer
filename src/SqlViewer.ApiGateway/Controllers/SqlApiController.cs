@@ -58,7 +58,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
         {
             using IVelocipedeDbConnection dbConnection
                 = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            
+
             IVelocipedeQueryBuilder queryBuilder = dbConnection.GetQueryBuilder();
             string? sql = queryBuilder
                 .CreateTable(request.TableName)

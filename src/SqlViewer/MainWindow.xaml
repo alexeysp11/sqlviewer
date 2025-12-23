@@ -6,56 +6,78 @@
         xmlns:local="clr-namespace:SqlViewer"
         xmlns:uc="clr-namespace:SqlViewer.UserControls"
         mc:Ignorable="d"
-        WindowStartupLocation="CenterScreen" 
-        Title="sqlviewer: SQL Database Viewer (for Windows)" 
+        WindowStartupLocation="CenterScreen"
+        Title="sqlviewer: SQL Database Viewer (for Windows)"
         MinHeight="525" MinWidth="800"
-        Height="525" Width="800">
+        Height="600" Width="900">
+
     <Window.InputBindings>
-        <KeyBinding Command="{Binding DbCommand}" 
-            CommandParameter="SendSql" Key="Enter" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding DbCommand}" 
-            CommandParameter="New" Key="N" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding DbCommand}" 
-            CommandParameter="Open" Key="O" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding RedirectCommand}" 
-            CommandParameter="SqlQuery" Key="Q" Modifiers="Ctrl" />
-        <KeyBinding Command="{Binding RedirectCommand}" 
-            CommandParameter="Tables" Key="T" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding QuerySqlCommand}" Key="F5" />
+        <KeyBinding Command="{Binding ExecuteSqlCommand}" Key="F5" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding NewConnectionCommand}" Key="N" Modifiers="Ctrl" />
+        <KeyBinding Command="{Binding OpenFileCommand}" Key="O" Modifiers="Ctrl" />
     </Window.InputBindings>
+
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="250"/>
         </Grid.RowDefinitions>
 
-        <uc:Menu Grid.Row="0" x:Name="Menu" />
-        
+        <uc:Menu Grid.Row="0" />
+
         <Grid Grid.Row="1" Margin="5">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="100" />
-                <ColumnDefinition Width="110" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <ComboBox Name="tbActiveRdbms" Grid.Column="0" SelectedIndex="0" VerticalContentAlignment="Center">
-                <ComboBoxItem>SQLite</ComboBoxItem>
-                <ComboBoxItem>PostgreSQL</ComboBoxItem>
-                <ComboBoxItem>SQL Server</ComboBoxItem>
-            </ComboBox>
-            <TextBlock Name="tbConnectionString" Text="Connection string:" Grid.Column="1" Margin="5,0,5,0" />
-            <TextBox Name="txtConnectionString" Grid.Column="2" Margin="5,0,5,0" />
+            <ComboBox Grid.Column="0"
+                      ItemsSource="{Binding AvailableRdbms}"
+                      SelectedItem="{Binding SelectedRdbms}"
+                      VerticalContentAlignment="Center"/>
+
+            <TextBlock Text="Connection string:" Grid.Column="1" Margin="10,0,5,0" VerticalAlignment="Center"/>
+
+            <TextBox Grid.Column="2"
+                     Text="{Binding ConnectionString, UpdateSourceTrigger=PropertyChanged}"
+                     VerticalContentAlignment="Center" />
         </Grid>
-        
-        <TextBox Grid.Row="2" AcceptsReturn="True" Margin="5" Text="{Binding SqlQuery}" />
-        
-        <TabControl Grid.Row="3">
+
+        <TextBox Grid.Row="2"
+                 AcceptsReturn="True"
+                 Margin="5"
+                 FontFamily="Consolas"
+                 FontSize="14"
+                 Text="{Binding SqlQuery, UpdateSourceTrigger=PropertyChanged}"
+                 SpellCheck.IsEnabled="False"/>
+
+        <GridSplitter Grid.Row="3" Height="5" HorizontalAlignment="Stretch" Background="#EEE"/>
+
+        <TabControl Grid.Row="4">
             <TabItem Header="Result">
-                <uc:DbGrid x:Name="dbgSqlResult" MinHeight="200" MinWidth="760" Height="200" Width="Auto" IsReadOnly="True" AutoGenerateColumns="True" BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}" Background="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" Grid.IsSharedSizeScope="True" />
+                <uc:DbGrid ItemsSource="{Binding QueryResults}"
+                    MinHeight="200"
+                    MinWidth="760"
+                    Height="200"
+                    Width="Auto"
+                    IsReadOnly="True"
+                    AutoGenerateColumns="True"
+                    BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}"
+                    Background="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                    Grid.IsSharedSizeScope="True" />
             </TabItem>
             <TabItem Header="Logs">
-                <TextBox AcceptsReturn="True" Margin="5" Text="{Binding SqlCommandLogs}" IsReadOnly="True" />
+                <TextBox AcceptsReturn="True"
+                         Margin="5"
+                         Text="{Binding SqlCommandLogs, Mode=OneWay}"
+                         IsReadOnly="True"
+                         VerticalScrollBarVisibility="Auto"
+                         Background="#F9F9F9"/>
             </TabItem>
         </TabControl>
     </Grid>

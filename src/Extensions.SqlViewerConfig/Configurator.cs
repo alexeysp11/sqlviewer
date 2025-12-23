@@ -11,17 +11,17 @@ namespace Extensions.SqlViewerConfig;
 public class Configurator
 {
     /// <summary>
-    /// Model for stroing settings 
+    /// Model for stroing settings
     /// </summary>
     private Settings Settings { get; set; }
 
     /// <summary>
-    /// Folder where the project is located 
+    /// Folder where the project is located
     /// </summary>
     private string RootFolder { get; set; } = string.Empty;
-    
+
     /// <summary>
-    /// Gets settings from config file 
+    /// Gets settings from config file
     /// </summary>
     public void GetConfigSettings()
     {
@@ -34,7 +34,7 @@ public class Configurator
     }
 
     /// <summary>
-    /// Creates folders 
+    /// Creates folders
     /// </summary>
     public void CreateFolders()
     {
@@ -55,7 +55,7 @@ public class Configurator
     }
 
     /// <summary>
-    /// Creates local databases and config files for other extensions 
+    /// Creates local databases and config files for other extensions
     /// </summary>
     public void CreateLocalFiles()
     {
@@ -76,7 +76,7 @@ public class Configurator
     }
 
     /// <summary>
-    /// Makes a backup of local databases 
+    /// Makes a backup of local databases
     /// </summary>
     public void BackupData()
     {
@@ -94,17 +94,17 @@ public class Configurator
     }
 
     /// <summary>
-    /// Initializes databases 
+    /// Initializes databases
     /// </summary>
     public void InitDatabases()
     {
         string rootFolder = GetRootFolder();
         string sqliteInitFolder = Path.Combine(rootFolder, "queries/Sqlite/Init");
-        
+
         bool isInit = false;
         while (!isInit)
         {
-            try 
+            try
             {
                 SqliteDbConnection sqlite = new(Path.Combine(rootFolder, @"data\app.db"));
                 sqlite.ExecuteSqlCommand(File.ReadAllText(Path.Combine(sqliteInitFolder, "InitAppDb.sql")));
@@ -124,7 +124,7 @@ public class Configurator
     }
 
     /// <summary>
-    /// Gets folder where the projects is located 
+    /// Gets folder where the projects is located
     /// </summary>
     private string GetRootFolder()
     {

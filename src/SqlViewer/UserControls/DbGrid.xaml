@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SqlViewer.UserControls">
     <Grid Name="grBrowse" Background="Gray" HorizontalAlignment="Left">
-        <ScrollViewer ScrollViewer.CanContentScroll="True" 
+        <ScrollViewer ScrollViewer.CanContentScroll="True"
                 ScrollViewer.VerticalScrollBarVisibility="Auto"
                 ScrollViewer.HorizontalScrollBarVisibility="Auto">
-            <DataGrid Name="dgrBrowse" 
+            <DataGrid Name="dgrBrowse"
                     Background="Transparent"
                     AutoGeneratingColumn="dgrBrowse_AutoGeneratingColumn" />
         </ScrollViewer>

@@ -16,8 +16,8 @@
             </MenuItem>
 
             <MenuItem Header="_Run">
-                <MenuItem Header="_Query (F5)" Command="{Binding ExecuteQuery}" />
-                <MenuItem Header="_Command (Ctrl + F5)" Command="{Binding ExecuteCommand}" />
+                <MenuItem Header="_Query (F5)" Command="{Binding QuerySqlCommand}" />
+                <MenuItem Header="_Command (Ctrl + F5)" Command="{Binding ExecuteSqlCommand}" />
                 <MenuItem Header="_Stop" Command="{Binding CancelQueryCommand}" />
             </MenuItem>
 

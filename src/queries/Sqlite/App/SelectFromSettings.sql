@@ -87,27 +87,27 @@ FROM (
             MAX(tt.db_pswd) AS db_pswd
         FROM (
             SELECT
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%LANG%' OR UPPER(t.name) LIKE '%LANGUAGE%' THEN COALESCE(t.value, 'English')
                     ELSE ''
                 END AS language,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%AUTOSAVE%' OR UPPER(t.name) LIKE '%AUTO_SAVE%' THEN COALESCE(t.value, 'Enabled')
                     ELSE ''
                 END AS auto_save,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%FONT_SIZE%' THEN COALESCE(t.value, '8')
                     ELSE ''
                 END AS font_size,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%FONT_FAMILY%' THEN COALESCE(t.value, 'Consolas')
                     ELSE ''
                 END AS font_family,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%TAB_SIZE%' THEN COALESCE(t.value, '8')
                     ELSE ''
                 END AS tab_size,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%WORD_WRAP%' THEN COALESCE(t.value, 'Enabled')
                     ELSE ''
                 END AS word_wrap,
@@ -115,31 +115,31 @@ FROM (
                     WHEN UPPER(t.name) LIKE '%DEFAULT_RDBMS%' THEN COALESCE(t.value, 'SQLite')
                     ELSE ''
                 END AS default_rdbms,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%ACTIVE_RDBMS%' THEN COALESCE(t.value, 'SQLite')
                     ELSE ''
                 END AS active_rdbms,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%SERVER%' THEN COALESCE(t.value, '')
                     ELSE ''
                 END AS server,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%DATABASE%' THEN COALESCE(t.value, '')
                     ELSE ''
                 END AS db_name,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%PORT%' THEN COALESCE(t.value, '')
                     ELSE ''
                 END AS port,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%SCHEMA%' THEN COALESCE(t.value, '')
                     ELSE ''
                 END AS schema_name,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%USERNAME%' THEN COALESCE(t.value, '')
                     ELSE ''
                 END AS db_username,
-                CASE 
+                CASE
                     WHEN UPPER(t.name) LIKE '%PASSWORD%' OR UPPER(t.name) LIKE '%PSWD%' THEN COALESCE(t.value, '')
                     ELSE ''
                 END AS db_pswd

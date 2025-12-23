@@ -1,11 +1,11 @@
--- Create tables 
-CREATE TABLE names  
+-- Create tables
+CREATE TABLE names
 (
     name_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     name VARCHAR(50) NOT NULL
 );
 
--- Insert data 
+-- Insert data
 INSERT INTO names (name) VALUES ('Mark');
 INSERT INTO names (name) VALUES ('Steve');
 INSERT INTO names (name) VALUES ('Brian');

@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using SqlViewer.ViewModels;
 
 namespace SqlViewer;
 
@@ -12,7 +13,7 @@ public partial class MainWindow : Window
         try
         {
             InitializeComponent();
-            //Hide();
+            DataContext = new MainViewModel();
         }
         catch (Exception ex)
         {

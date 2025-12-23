@@ -1,7 +1,7 @@
 namespace SqlViewer.Helpers;
 
 /// <summary>
-/// Class for application settings 
+/// Class for application settings
 /// </summary>
 public static class SettingsHelper
 {
