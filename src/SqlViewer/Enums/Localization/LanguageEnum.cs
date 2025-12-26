@@ -1,6 +1,6 @@
-namespace SqlViewer.Enums.Common;
+namespace SqlViewer.Enums.Localization;
 
-public enum Language
+public enum LanguageEnum
 {
     None = 0,
     English = 1,

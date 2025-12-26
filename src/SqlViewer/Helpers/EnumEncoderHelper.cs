@@ -1,9 +1,5 @@
-using LanguageEnum = SqlViewer.Enums.Common.Language;
-using AutoSaveEnum = SqlViewer.Enums.Editor.AutoSave;
-using FontSizeEnum = SqlViewer.Enums.Editor.FontSize;
-using FontFamilyEnum = SqlViewer.Enums.Editor.FontFamily;
-using TabSizeEnum = SqlViewer.Enums.Editor.TabSize;
-using WordWrapEnum = SqlViewer.Enums.Editor.WordWrap;
+using SqlViewer.Enums.Editor;
+using SqlViewer.Enums.Localization;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Helpers;
@@ -48,7 +44,7 @@ public static class EnumEncoderHelper
     {
         "Enabled" => AutoSaveEnum.Enabled,
         "Disabled" => AutoSaveEnum.Disabled,
-        _ => throw new Exception("Unable to find autoSave enum")
+        _ => throw new Exception("Unable to find auto-save enum")
     };
 
     public static FontSizeEnum GetFontSizeEnum(string fontSize) => fontSize switch
@@ -62,13 +58,13 @@ public static class EnumEncoderHelper
         "16" => FontSizeEnum.FontSize16,
         "18" => FontSizeEnum.FontSize18,
         "20" => FontSizeEnum.FontSize20,
-        _ => throw new Exception("Unable to find fontSize enum")
+        _ => throw new Exception("Unable to find font size enum")
     };
 
     public static FontFamilyEnum GetFontFamilyEnum(string fontFamily) => fontFamily switch
     {
         "Consolas" => FontFamilyEnum.Consolas,
-        _ => throw new Exception("Unable to find fontFamily enum")
+        _ => throw new Exception("Unable to find font family enum")
     };
 
     public static TabSizeEnum GetTabSizeEnum(string tabSize) => tabSize switch
@@ -81,14 +77,14 @@ public static class EnumEncoderHelper
         "6" => TabSizeEnum.TabSize6,
         "7" => TabSizeEnum.TabSize7,
         "8" => TabSizeEnum.TabSize8,
-        _ => throw new Exception("Unable to find tabSize enum")
+        _ => throw new Exception("Unable to find tab size enum")
     };
 
     public static WordWrapEnum GetWordWrapEnum(string wordWrap) => wordWrap switch
     {
         "Enabled" => WordWrapEnum.Enabled,
         "Disabled" => WordWrapEnum.Disabled,
-        _ => throw new Exception("Unable to find wordWrap enum")
+        _ => throw new Exception("Unable to find word wrap enum")
     };
 
     public static VelocipedeDatabaseType GetRdbmsEnum(string rdbms) => rdbms switch
@@ -97,6 +93,6 @@ public static class EnumEncoderHelper
         "PostgreSQL" => VelocipedeDatabaseType.PostgreSQL,
         "MySQL" => VelocipedeDatabaseType.MySQL,
         "Oracle" => VelocipedeDatabaseType.Oracle,
-        _ => throw new Exception("Unable to find rdbms enum")
+        _ => throw new Exception("Unable to find RDBMS enum")
     };
 }

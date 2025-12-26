@@ -1,6 +1,6 @@
 namespace SqlViewer.Enums.Editor;
 
-public enum TabSize
+public enum TabSizeEnum
 {
     None = 0,
     TabSize1 = 1,

@@ -1,5 +1,4 @@
-using FontSizeEnum = SqlViewer.Enums.Editor.FontSize;
-using TabSizeEnum = SqlViewer.Enums.Editor.TabSize;
+using SqlViewer.Enums.Editor;
 
 namespace SqlViewer.Helpers;
 
@@ -16,7 +15,7 @@ public static class EnumDecoderHelper
         FontSizeEnum.FontSize16 => "16",
         FontSizeEnum.FontSize18 => "18",
         FontSizeEnum.FontSize20 => "20",
-        _ => throw new Exception("Unable to find fontSize name")
+        _ => throw new Exception("Unable to find font size enum")
     };
 
     public static string GetTabSizeName(TabSizeEnum tabSize) => tabSize switch
@@ -29,6 +28,6 @@ public static class EnumDecoderHelper
         TabSizeEnum.TabSize6 => "6",
         TabSizeEnum.TabSize7 => "7",
         TabSizeEnum.TabSize8 => "8",
-        _ => throw new Exception("Unable to find tabSize name")
+        _ => throw new Exception("Unable to find tab size enum")
     };
 }

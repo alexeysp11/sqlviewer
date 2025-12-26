@@ -1,6 +1,6 @@
 namespace SqlViewer.Enums.Editor;
 
-public enum FontSize
+public enum FontSizeEnum
 {
     None = 0,
     FontSize8 = 8,

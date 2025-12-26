@@ -1,6 +1,6 @@
 namespace SqlViewer.Enums.Editor;
 
-public enum WordWrap
+public enum AutoSaveEnum
 {
     Enabled = 0,
     Disabled = 1
