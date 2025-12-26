@@ -62,7 +62,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
             IVelocipedeQueryBuilder queryBuilder = dbConnection.GetQueryBuilder();
             string? sql = queryBuilder
                 .CreateTable(request.TableName)
-                .WithColumns(request.Columns)
+                .WithColumns(request.GetVelocipedeColumnInfos())
                 .ToString();
             if (string.IsNullOrEmpty(sql))
             {
