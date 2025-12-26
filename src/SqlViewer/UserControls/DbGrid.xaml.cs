@@ -4,71 +4,56 @@ using System.Windows.Controls;
 
 namespace SqlViewer.UserControls;
 
-/// <summary>
-/// Interaction logic for DbGrid.xaml
-/// </summary>
 public partial class DbGrid : UserControl
 {
+    public static readonly DependencyProperty ItemsSourceProperty
+        = DependencyProperty.Register(
+            nameof(ItemsSource),
+            typeof(IEnumerable),
+            typeof(DbGrid),
+            new PropertyMetadata(null, OnItemsSourceChanged));
+
     public static readonly DependencyProperty IsReadOnlyProperty
-        = DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(DbGrid),
-            new PropertyMetadata(false));
+        = DependencyProperty.Register(
+            nameof(IsReadOnly),
+            typeof(bool),
+            typeof(DbGrid),
+            new PropertyMetadata(false, OnIsReadOnlyChanged));
 
     public static readonly DependencyProperty AutoGenerateColumnsProperty
-        = DependencyProperty.Register("AutoGenerateColumns", typeof(bool), typeof(DbGrid),
-            new PropertyMetadata(false));
+        = DependencyProperty.Register(
+            nameof(AutoGenerateColumns),
+            typeof(bool),
+            typeof(DbGrid),
+            new PropertyMetadata(false, OnAutoGenerateColumnsChanged));
 
-    public static readonly DependencyProperty ItemsSourceProperty
-        = DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(DbGrid),
-            new PropertyMetadata(null));
+    public IEnumerable ItemsSource { get => (IEnumerable)GetValue(ItemsSourceProperty); set => SetValue(ItemsSourceProperty, value); }
+    public bool IsReadOnly { get => (bool)GetValue(IsReadOnlyProperty); set => SetValue(IsReadOnlyProperty, value); }
+    public bool AutoGenerateColumns { get => (bool)GetValue(AutoGenerateColumnsProperty); set => SetValue(AutoGenerateColumnsProperty, value); }
 
-    public bool IsReadOnly
+    private static void OnItemsSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        get => (bool)GetValue(IsReadOnlyProperty);
-        set
-        {
-            SetValue(IsReadOnlyProperty, value);
-            dgrBrowse.IsReadOnly = value;
-        }
+        if (d is DbGrid control) control.dgrBrowse.ItemsSource = e.NewValue as IEnumerable;
     }
 
-    public bool AutoGenerateColumns
+    private static void OnIsReadOnlyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        get => (bool)GetValue(AutoGenerateColumnsProperty);
-        set
-        {
-            SetValue(AutoGenerateColumnsProperty, value);
-            dgrBrowse.AutoGenerateColumns = value;
-        }
+        if (d is DbGrid control) control.dgrBrowse.IsReadOnly = (bool)e.NewValue;
     }
 
-    public IEnumerable ItemsSource
+    private static void OnAutoGenerateColumnsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-        get => (IEnumerable)GetValue(ItemsSourceProperty);
-        set
-        {
-            SetValue(ItemsSourceProperty, value);
-            dgrBrowse.ItemsSource = value;
-        }
+        if (d is DbGrid control) control.dgrBrowse.AutoGenerateColumns = (bool)e.NewValue;
     }
 
     public DbGrid()
     {
         InitializeComponent();
-
-        Loaded += (o, e) =>
-        {
-            grBrowse.Height = Height;
-            grBrowse.Width = Width;
-
-            dgrBrowse.AutoGenerateColumns = AutoGenerateColumns;
-            dgrBrowse.IsReadOnly = IsReadOnly;
-            dgrBrowse.ItemsSource = ItemsSource;
-        };
     }
 
     private void dgrBrowse_AutoGeneratingColumn(object sender, DataGridAutoGeneratingColumnEventArgs e)
     {
-        string header = e.Column.Header.ToString();
-        e.Column.Header = header.Replace("_", "__");
+        string header = e.Column.Header?.ToString();
+        if (header != null) e.Column.Header = header.Replace("_", "__");
     }
 }

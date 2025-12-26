@@ -35,12 +35,10 @@ public sealed class SqlApiService : ISqlApiService, IDisposable
             Query = query
         };
         string url = "http://localhost:5293/api/sql/query";
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto).ConfigureAwait(false);
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
 
-        string jsonResponse = await response.Content
-            .ReadAsStringAsync()
-            .ConfigureAwait(false);
+        string jsonResponse = await response.Content.ReadAsStringAsync();
 
         SqlQueryResponseDto responseDto = JsonConvert.DeserializeObject<SqlQueryResponseDto>(jsonResponse);
         if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
