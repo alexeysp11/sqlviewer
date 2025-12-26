@@ -1,8 +1,6 @@
 ﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Runtime.CompilerServices;
-using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SqlViewer.Constants;
 using SqlViewer.Services;
@@ -10,13 +8,25 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
 
-public class MainViewModel : INotifyPropertyChanged, IDisposable
+public partial class MainViewModel : ObservableObject, IDisposable
 {
-    private string _sqlQuery;
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(QuerySqlCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ExecuteSqlCommand))]
     private string _connectionString;
+
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(QuerySqlCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ExecuteSqlCommand))]
+    private string _sqlQuery;
+
+    [ObservableProperty]
     private string _sqlCommandLogs;
+
+    [ObservableProperty]
     private string _selectedRdbms;
 
+    [ObservableProperty]
     private DataTable _queryResults;
 
     private readonly SqlApiService _sqlApiService;
@@ -26,8 +36,8 @@ public class MainViewModel : INotifyPropertyChanged, IDisposable
         AvailableRdbms = [DatabaseTypeConstants.Sqlite, DatabaseTypeConstants.Postgres, DatabaseTypeConstants.SqlServer];
         SelectedRdbms = AvailableRdbms[0];
 
-        QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, () => !string.IsNullOrWhiteSpace(SqlQuery));
-        ExecuteSqlCommand = new RelayCommand(ExecuteSql, () => !string.IsNullOrWhiteSpace(SqlQuery));
+        QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, () => !string.IsNullOrWhiteSpace(SqlQuery) && !string.IsNullOrWhiteSpace(ConnectionString));
+        ExecuteSqlCommand = new RelayCommand(ExecuteSql, () => !string.IsNullOrWhiteSpace(SqlQuery) && !string.IsNullOrWhiteSpace(ConnectionString));
         //NewConnectionCommand = new RelayCommand();
         //OpenFileCommand = new RelayCommand();
 
@@ -36,58 +46,38 @@ public class MainViewModel : INotifyPropertyChanged, IDisposable
 
     public ObservableCollection<string> AvailableRdbms { get; }
 
-    public string SelectedRdbms
-    {
-        get => _selectedRdbms;
-        set { _selectedRdbms = value; OnPropertyChanged(); }
-    }
-
-    public string ConnectionString
-    {
-        get => _connectionString;
-        set { _connectionString = value; OnPropertyChanged(); }
-    }
-
-    public string SqlQuery
-    {
-        get => _sqlQuery;
-        set { _sqlQuery = value; OnPropertyChanged(); }
-    }
-
-    public string SqlCommandLogs
-    {
-        get => _sqlCommandLogs;
-        private set { _sqlCommandLogs = value; OnPropertyChanged(); }
-    }
-
-    public DataTable QueryResults
-    {
-        get => _queryResults;
-        set
-        {
-            _queryResults = value;
-            OnPropertyChanged(nameof(QueryResults));
-        }
-    }
-
     public IAsyncRelayCommand QuerySqlCommand { get; }
-    public ICommand ExecuteSqlCommand { get; }
-    public ICommand NewConnectionCommand { get; }
-    public ICommand OpenFileCommand { get; }
+    public IRelayCommand ExecuteSqlCommand { get; }
+    public IRelayCommand NewConnectionCommand { get; }
+    public IRelayCommand OpenFileCommand { get; }
 
     private async Task QuerySqlAsync()
     {
-        SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Querying data...";
+        try
+        {
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Querying data...";
 
-        VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
-        QueryResults = await _sqlApiService.QueryAsync(databaseType, ConnectionString, SqlQuery);
+            VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
+            QueryResults = await _sqlApiService.QueryAsync(databaseType, ConnectionString, SqlQuery);
 
-        SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Displaying data";
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Displaying data";
+        }
+        catch (Exception ex)
+        {
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
+        }
     }
 
     private void ExecuteSql()
     {
-        SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Executing command...";
+        try
+        {
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Executing command...";
+        }
+        catch (Exception ex)
+        {
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
+        }
     }
 
     private VelocipedeDatabaseType GetDatabaseTypeFromCombo()
@@ -99,12 +89,6 @@ public class MainViewModel : INotifyPropertyChanged, IDisposable
             DatabaseTypeConstants.SqlServer => VelocipedeDatabaseType.MSSQL,
             _ => throw new NotImplementedException("Incorrect database type")
         };
-    }
-
-    public event PropertyChangedEventHandler PropertyChanged;
-    protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
     public void Dispose()
