@@ -33,13 +33,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
     public MainViewModel()
     {
-        AvailableRdbms = [DatabaseTypeConstants.Sqlite, DatabaseTypeConstants.Postgres, DatabaseTypeConstants.SqlServer];
-        SelectedRdbms = AvailableRdbms[0];
+        AvailableRdbms =
+        [
+            DatabaseTypeConstants.Sqlite,
+            DatabaseTypeConstants.Postgres,
+            DatabaseTypeConstants.SqlServer,
+        ];
+        SelectedRdbms = AvailableRdbms.First();
 
-        QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, () => !string.IsNullOrWhiteSpace(SqlQuery) && !string.IsNullOrWhiteSpace(ConnectionString));
-        ExecuteSqlCommand = new RelayCommand(ExecuteSql, () => !string.IsNullOrWhiteSpace(SqlQuery) && !string.IsNullOrWhiteSpace(ConnectionString));
-        //NewConnectionCommand = new RelayCommand();
-        //OpenFileCommand = new RelayCommand();
+        QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
+        ExecuteSqlCommand = new RelayCommand(ExecuteSql, CanExecuteSql);
 
         _sqlApiService = new SqlApiService();
     }
@@ -80,19 +83,15 @@ public partial class MainViewModel : ObservableObject, IDisposable
         }
     }
 
-    private VelocipedeDatabaseType GetDatabaseTypeFromCombo()
+    private VelocipedeDatabaseType GetDatabaseTypeFromCombo() => SelectedRdbms switch
     {
-        return SelectedRdbms switch
-        {
-            DatabaseTypeConstants.Sqlite => VelocipedeDatabaseType.SQLite,
-            DatabaseTypeConstants.Postgres => VelocipedeDatabaseType.PostgreSQL,
-            DatabaseTypeConstants.SqlServer => VelocipedeDatabaseType.MSSQL,
-            _ => throw new NotImplementedException("Incorrect database type")
-        };
-    }
+        DatabaseTypeConstants.Sqlite => VelocipedeDatabaseType.SQLite,
+        DatabaseTypeConstants.Postgres => VelocipedeDatabaseType.PostgreSQL,
+        DatabaseTypeConstants.SqlServer => VelocipedeDatabaseType.MSSQL,
+        _ => throw new NotImplementedException("Incorrect database type")
+    };
 
-    public void Dispose()
-    {
-        _sqlApiService?.Dispose();
-    }
+    private bool CanExecuteSql() => !string.IsNullOrWhiteSpace(SqlQuery) && !string.IsNullOrWhiteSpace(ConnectionString);
+
+    public void Dispose() => _sqlApiService?.Dispose();
 }
