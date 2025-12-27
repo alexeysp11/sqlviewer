@@ -6,9 +6,6 @@ bin
 
 packages
 
-tests
-test.cmd
-
 SqlViewer.lnk
 
 docs/ProcessDocs
