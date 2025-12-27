@@ -7,12 +7,13 @@
     <Grid>
         <Menu>
             <MenuItem Header="_File">
-                <MenuItem Header="New">
-                    <MenuItem Header="Database" Command="{Binding NewDatabaseCommand}" />
-                    <MenuItem Header="Table" Command="{Binding NewTableCommand}" />
+                <MenuItem Header="_New">
+                    <MenuItem Header="_Database" Command="{Binding NewDatabaseCommand}" />
+                    <MenuItem Header="_Table" Command="{Binding NewTableCommand}" />
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Exit" Command="{Binding ExitCommand}" />
+                <MenuItem Header="_Clear logs" Command="{Binding ClearLogsCommand}" />
+                <MenuItem Header="_Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
 
             <MenuItem Header="_Run">

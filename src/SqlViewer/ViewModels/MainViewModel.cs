@@ -40,6 +40,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         SelectedRdbms = AvailableRdbms.First();
 
         QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
+        ClearLogsCommand = new RelayCommand(ClearLogs);
 
         _sqlApiService = new SqlApiService();
     }
@@ -49,6 +50,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public IAsyncRelayCommand QuerySqlCommand { get; }
     public IRelayCommand NewConnectionCommand { get; }
     public IRelayCommand OpenFileCommand { get; }
+    public IRelayCommand ClearLogsCommand { get; }
 
     private async Task QuerySqlAsync()
     {
@@ -66,6 +68,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
             SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
         }
     }
+
+    private void ClearLogs() => SqlCommandLogs = string.Empty;
 
     private VelocipedeDatabaseType GetDatabaseTypeFromCombo() => SelectedRdbms switch
     {
