@@ -13,6 +13,8 @@ public sealed class SqlApiService : ISqlApiService, IDisposable
 {
     private readonly HttpClient _httpClient;
 
+    private const string QueryPath = "api/sql/query";
+
     public SqlApiService()
     {
         _httpClient = new()
@@ -40,7 +42,7 @@ public sealed class SqlApiService : ISqlApiService, IDisposable
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = "api/sql/query",
+            Path = QueryPath,
         };
         string url = uriBuilder.Uri.ToString();
 
