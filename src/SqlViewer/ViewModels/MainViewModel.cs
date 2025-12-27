@@ -12,12 +12,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(QuerySqlCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ExecuteSqlCommand))]
     private string _connectionString;
 
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(QuerySqlCommand))]
-    [NotifyCanExecuteChangedFor(nameof(ExecuteSqlCommand))]
     private string _sqlQuery;
 
     [ObservableProperty]
@@ -42,7 +40,6 @@ public partial class MainViewModel : ObservableObject, IDisposable
         SelectedRdbms = AvailableRdbms.First();
 
         QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
-        ExecuteSqlCommand = new RelayCommand(ExecuteSql, CanExecuteSql);
 
         _sqlApiService = new SqlApiService();
     }
@@ -50,7 +47,6 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public ObservableCollection<string> AvailableRdbms { get; }
 
     public IAsyncRelayCommand QuerySqlCommand { get; }
-    public IRelayCommand ExecuteSqlCommand { get; }
     public IRelayCommand NewConnectionCommand { get; }
     public IRelayCommand OpenFileCommand { get; }
 
@@ -58,24 +54,12 @@ public partial class MainViewModel : ObservableObject, IDisposable
     {
         try
         {
-            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Querying data...";
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Executing query...";
 
             VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
             QueryResults = await _sqlApiService.QueryAsync(databaseType, ConnectionString, SqlQuery);
 
-            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Displaying data";
-        }
-        catch (Exception ex)
-        {
-            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
-        }
-    }
-
-    private void ExecuteSql()
-    {
-        try
-        {
-            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Executing command...";
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Query executed";
         }
         catch (Exception ex)
         {

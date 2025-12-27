@@ -13,7 +13,6 @@
 
     <Window.InputBindings>
         <KeyBinding Command="{Binding QuerySqlCommand}" Key="F5" />
-        <KeyBinding Command="{Binding ExecuteSqlCommand}" Key="F5" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding NewConnectionCommand}" Key="N" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding OpenFileCommand}" Key="O" Modifiers="Ctrl" />
     </Window.InputBindings>
