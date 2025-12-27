@@ -34,7 +34,16 @@ public sealed class SqlApiService : ISqlApiService, IDisposable
             ConnectionString = connectionString,
             Query = query
         };
-        string url = "http://localhost:5293/api/sql/query";
+
+        UriBuilder uriBuilder = new()
+        {
+            Scheme = App.AppSettings.ServerScheme,
+            Host = App.AppSettings.ServerHost,
+            Port = App.AppSettings.ServerPort,
+            Path = "api/sql/query",
+        };
+        string url = uriBuilder.Uri.ToString();
+
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
 
