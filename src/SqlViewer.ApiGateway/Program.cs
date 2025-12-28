@@ -1,4 +1,3 @@
-
 using SqlViewer.ApiGateway.Factories;
 using SqlViewer.ApiGateway.Services;
 
@@ -13,6 +12,7 @@ public static class Program
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddScoped<ISqlQueryService, SqlQueryService>();
+        builder.Services.AddScoped<IMetadataService, MetadataService>();
         builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

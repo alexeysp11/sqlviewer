@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Common.Tests", "t
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.ApiGateway.Tests", "tests\SqlViewer.ApiGateway.Tests\SqlViewer.ApiGateway.Tests.csproj", "{B510A8C8-6468-4AB4-918A-576D4F74C5F4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Tests", "tests\SqlViewer.Tests\SqlViewer.Tests.csproj", "{7ACA6A43-DEC7-4168-A5EA-63364FAC97BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,6 +50,10 @@ Global
 		{B510A8C8-6468-4AB4-918A-576D4F74C5F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B510A8C8-6468-4AB4-918A-576D4F74C5F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B510A8C8-6468-4AB4-918A-576D4F74C5F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7ACA6A43-DEC7-4168-A5EA-63364FAC97BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7ACA6A43-DEC7-4168-A5EA-63364FAC97BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7ACA6A43-DEC7-4168-A5EA-63364FAC97BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7ACA6A43-DEC7-4168-A5EA-63364FAC97BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +64,7 @@ Global
 		{83C7A44D-3BC8-4988-BB76-CD1764215FD8} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{3544C17B-3D69-48D2-A995-64D86E792588} = {C468FFF0-F521-4F67-A0B5-27C777B164B5}
 		{B510A8C8-6468-4AB4-918A-576D4F74C5F4} = {C468FFF0-F521-4F67-A0B5-27C777B164B5}
+		{7ACA6A43-DEC7-4168-A5EA-63364FAC97BA} = {C468FFF0-F521-4F67-A0B5-27C777B164B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {970E3C9B-23BB-4829-A788-C199135EB72A}

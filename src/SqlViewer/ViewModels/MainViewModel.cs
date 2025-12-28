@@ -2,6 +2,7 @@
 using System.Data;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using SqlViewer.ApiHandlers;
 using SqlViewer.Constants;
 using SqlViewer.Services;
 using VelocipedeUtils.Shared.DbOperations.Enums;
@@ -42,7 +43,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
         QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
         ClearLogsCommand = new RelayCommand(ClearLogs);
 
-        _sqlApiService = new SqlApiService();
+        HttpHandler httpHandler = new();
+        _sqlApiService = new SqlApiService(httpHandler);
     }
 
     public ObservableCollection<string> AvailableRdbms { get; }
