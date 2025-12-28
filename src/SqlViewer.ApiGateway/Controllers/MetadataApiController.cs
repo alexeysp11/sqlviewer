@@ -1,16 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Enums;
-using VelocipedeUtils.Shared.DbOperations.DbConnections;
-using VelocipedeUtils.Shared.DbOperations.Factories;
 
 namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public sealed class MetadataApiController(ILogger<MetadataApiController> logger) : ControllerBase
+public sealed class MetadataApiController(ILogger<MetadataApiController> logger, IMetadataService metadataService) : ControllerBase
 {
     private readonly ILogger<MetadataApiController> _logger = logger;
+    private readonly IMetadataService _metadataService = metadataService;
 
     [HttpPost]
     [Route("/api/metadata/tables")]
@@ -18,9 +18,9 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger)
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            List<string> result = await dbConnection.GetTablesInDbAsync();
+            List<string> result = await _metadataService.GetTablesAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString);
             return new() { Status = SqlOperationStatus.Success, Tables = result, };
         }
         catch (Exception ex)

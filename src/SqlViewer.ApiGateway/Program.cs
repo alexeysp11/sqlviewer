@@ -1,4 +1,7 @@
 
+using SqlViewer.ApiGateway.Factories;
+using SqlViewer.ApiGateway.Services;
+
 namespace SqlViewer.ApiGateway;
 
 public static class Program
@@ -8,13 +11,15 @@ public static class Program
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
         builder.Services.AddControllers();
+        builder.Services.AddScoped<ISqlQueryService, SqlQueryService>();
+        builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        var app = builder.Build();
+        WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -24,9 +29,7 @@ public static class Program
         }
 
         app.UseHttpsRedirection();
-
         app.UseAuthorization();
-
 
         app.MapControllers();
 
