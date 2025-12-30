@@ -29,17 +29,14 @@ Using this app, you can do the following things:
     "tableName": "NewCreatedTable",
     "columns": [
         {
-            "databaseType": 3,
             "columnName": "Id",
             "columnType": 12
         },
         {
-            "databaseType": 3,
             "columnName": "Column1",
             "columnType": 16
         },
         {
-            "databaseType": 3,
             "columnName": "Column2",
             "columnType": 16
         }
