@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Data;
+using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SqlViewer.ApiHandlers;
@@ -44,6 +45,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
         ClearLogsCommand = new RelayCommand(ClearLogs);
+        ExitCommand = new RelayCommand(Exit);
         HelpCommand = new AsyncRelayCommand<string>(GetHelpAsync);
 
         HttpHandler httpHandler = new();
@@ -57,6 +59,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public IRelayCommand NewConnectionCommand { get; }
     public IRelayCommand OpenFileCommand { get; }
     public IRelayCommand ClearLogsCommand { get; }
+    public IRelayCommand ExitCommand { get; }
     public IAsyncRelayCommand<string> HelpCommand { get; }
 
     private async Task QuerySqlAsync()
@@ -77,6 +80,22 @@ public partial class MainViewModel : ObservableObject, IDisposable
     }
 
     private void ClearLogs() => SqlCommandLogs = string.Empty;
+
+    private void Exit()
+    {
+        try
+        {
+            string msg = "Are you sure to close the application?";
+            if (MessageBox.Show(msg, "Exit", MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                Application.Current.Shutdown();
+            }
+        }
+        catch (Exception ex)
+        {
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
+        }
+    }
 
     private async Task GetHelpAsync(string parameter)
     {
