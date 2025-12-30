@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SqlViewer.ApiHandlers;
 using SqlViewer.Constants;
+using SqlViewer.Helpers;
 using SqlViewer.Services;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
@@ -29,6 +30,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private DataTable _queryResults;
 
     private readonly SqlApiService _sqlApiService;
+    private readonly DocsApiService _docsApiService;
 
     public MainViewModel()
     {
@@ -42,9 +44,11 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
         ClearLogsCommand = new RelayCommand(ClearLogs);
+        HelpCommand = new AsyncRelayCommand<string>(GetHelpAsync);
 
         HttpHandler httpHandler = new();
         _sqlApiService = new SqlApiService(httpHandler);
+        _docsApiService = new DocsApiService(httpHandler);
     }
 
     public ObservableCollection<string> AvailableRdbms { get; }
@@ -53,6 +57,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public IRelayCommand NewConnectionCommand { get; }
     public IRelayCommand OpenFileCommand { get; }
     public IRelayCommand ClearLogsCommand { get; }
+    public IAsyncRelayCommand<string> HelpCommand { get; }
 
     private async Task QuerySqlAsync()
     {
@@ -72,6 +77,35 @@ public partial class MainViewModel : ObservableObject, IDisposable
     }
 
     private void ClearLogs() => SqlCommandLogs = string.Empty;
+
+    private async Task GetHelpAsync(string parameter)
+    {
+        try
+        {
+            if (parameter is HelpCommandParameter.About)
+            {
+                // TODO: get about page from backend.
+                string filePath = DocsHelper.SaveContentAsFile("Hello", "about.html");
+                DocsHelper.OpenDocsInBrowser("About info", filePath);
+            }
+            else
+            {
+                VelocipedeDatabaseType databaseType = parameter switch
+                {
+                    HelpCommandParameter.SqliteDocs => VelocipedeDatabaseType.SQLite,
+                    HelpCommandParameter.PostgresDocs => VelocipedeDatabaseType.PostgreSQL,
+                    HelpCommandParameter.SqlServerDocs => VelocipedeDatabaseType.MSSQL,
+                    _ => throw new NotSupportedException($"Unable to convert help command parameter to database type"),
+                };
+                string url = await _docsApiService.GetDbProviderDocs(databaseType);
+                DocsHelper.OpenDocsInBrowser($"{databaseType} documentation", url);
+            }
+        }
+        catch (Exception ex)
+        {
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
+        }
+    }
 
     private VelocipedeDatabaseType GetDatabaseTypeFromCombo() => SelectedRdbms switch
     {

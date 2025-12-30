@@ -91,6 +91,7 @@ public static class EnumEncoderHelper
     {
         "SQLite" => VelocipedeDatabaseType.SQLite,
         "PostgreSQL" => VelocipedeDatabaseType.PostgreSQL,
+        "SQL Server" => VelocipedeDatabaseType.MSSQL,
         "MySQL" => VelocipedeDatabaseType.MySQL,
         "Oracle" => VelocipedeDatabaseType.Oracle,
         _ => throw new Exception("Unable to find RDBMS enum")

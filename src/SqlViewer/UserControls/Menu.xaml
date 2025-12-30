@@ -28,8 +28,8 @@
             <MenuItem Header="_Help">
                 <MenuItem Header="Common SQL docs">
                     <MenuItem Header="SQLite" Command="{Binding HelpCommand}" CommandParameter="SqliteDocs" />
-                    <MenuItem Header="PostgreSQL" Command="{Binding HelpCommand}" CommandParameter="PosgresDocs" />
-                    <MenuItem Header="MySQL" Command="{Binding HelpCommand}" CommandParameter="MySqlDocs" />
+                    <MenuItem Header="PostgreSQL" Command="{Binding HelpCommand}" CommandParameter="PostgresDocs" />
+                    <MenuItem Header="SQL Server" Command="{Binding HelpCommand}" CommandParameter="SqlServerDocs" />
                 </MenuItem>
                 <MenuItem Header="User guide">
                     <MenuItem Header="About" Command="{Binding HelpCommand}" CommandParameter="About" />
