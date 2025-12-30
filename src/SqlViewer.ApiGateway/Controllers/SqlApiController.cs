@@ -1,18 +1,17 @@
 using Microsoft.AspNetCore.Mvc;
+using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Common.Enums;
-using VelocipedeUtils.Shared.DbOperations.DbConnections;
-using VelocipedeUtils.Shared.DbOperations.Factories;
-using VelocipedeUtils.Shared.DbOperations.QueryBuilders;
 
 namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public sealed class SqlApiController(ILogger<SqlApiController> logger) : ControllerBase
+public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQueryService sqlQueryService) : ControllerBase
 {
     private readonly ILogger<SqlApiController> _logger = logger;
+    private readonly ISqlQueryService _sqlQueryService = sqlQueryService;
 
     [HttpPost]
     [Route("/api/sql/query")]
@@ -20,9 +19,10 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            List<dynamic> result = await dbConnection.QueryAsync<dynamic>(request.Query);
+            List<dynamic> result = await _sqlQueryService.QueryAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                query: request.Query);
             return new() { Status = SqlOperationStatus.Success, QueryResult = result, };
         }
         catch (Exception ex)
@@ -38,9 +38,10 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            await dbConnection.ExecuteAsync(request.Query);
+            await _sqlQueryService.ExecuteAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                query: request.Query);
             return new() { Status = SqlOperationStatus.Success, };
         }
         catch (Exception ex)
@@ -56,20 +57,11 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            
-            IVelocipedeQueryBuilder queryBuilder = dbConnection.GetQueryBuilder();
-            string? sql = queryBuilder
-                .CreateTable(request.TableName)
-                .WithColumns(request.Columns)
-                .ToString();
-            if (string.IsNullOrEmpty(sql))
-            {
-                throw new InvalidOperationException("Query builder generated empty SQL");
-            }
-            await dbConnection.ExecuteAsync(sql);
-
+            await _sqlQueryService.CreateTableAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                tableName: request.TableName,
+                columnInfos: request.GetVelocipedeColumnInfos());
             return new() { Status = SqlOperationStatus.Success, };
         }
         catch (Exception ex)
@@ -85,13 +77,10 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger) : Control
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-
-            IVelocipedeQueryBuilder queryBuilder = dbConnection.GetQueryBuilder();
-            string sql = $@"drop table ""{request.TableName}""";
-            await dbConnection.ExecuteAsync(sql);
-
+            await _sqlQueryService.DropTableAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                tableName: request.TableName);
             return new() { Status = SqlOperationStatus.Success, };
         }
         catch (Exception ex)

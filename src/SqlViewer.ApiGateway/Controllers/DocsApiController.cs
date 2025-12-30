@@ -11,7 +11,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
 {
     private readonly ILogger<DocsApiController> _logger = logger;
 
-    [HttpPost]
+    [HttpGet]
     [Route("/api/docs/db-providers")]
     public SqlViewerDocsResponseDto GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
     {
@@ -21,6 +21,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
             {
                 VelocipedeDatabaseType.SQLite => "https://www.sqlite.org/index.html",
                 VelocipedeDatabaseType.PostgreSQL => "https://www.postgresql.org/",
+                VelocipedeDatabaseType.MSSQL => "https://learn.microsoft.com/en-us/sql/sql-server",
                 VelocipedeDatabaseType.MySQL => "https://dev.mysql.com/doc/",
                 _ => throw new NotImplementedException()
             };

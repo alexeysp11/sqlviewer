@@ -59,8 +59,8 @@
 - [ ] Nepali;
 - [ ] Persian;
 - [ ] Thai;
-- [ ] Uzbek;  
-- [ ] Vietnamese;  
+- [ ] Uzbek;
+- [ ] Vietnamese;
 - [ ] Welsh;
 - [ ] Yidish.
 

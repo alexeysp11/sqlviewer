@@ -1,5 +1,5 @@
--- Create tables 
- 
+-- Create tables
+
 CREATE TABLE IF NOT EXISTS settings
 (
     settings_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS dbg_log
     stack_trace TEXT
 );
 
-CREATE TABLE IF NOT EXISTS translation 
+CREATE TABLE IF NOT EXISTS translation
 (
     translation_id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     context VARCHAR(75) NOT NULL, -- Name of UI element or module
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS translation
     japanese TEXT
 );
 
--- Insert data into tables 
+-- Insert data into tables
 
 INSERT INTO settings (name) SELECT 'language' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'language') = 0;
 INSERT INTO settings (name) SELECT 'auto_save' WHERE (SELECT COUNT(*) FROM settings WHERE name LIKE 'auto_save') = 0;
