@@ -5,7 +5,7 @@ using System.Data;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;
 
-namespace SqlViewer.Services;
+namespace SqlViewer.Services.Implementations;
 
 public sealed class SqlApiService(IHttpHandler httpHandler) : ISqlApiService
 {

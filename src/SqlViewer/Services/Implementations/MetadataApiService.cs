@@ -3,7 +3,7 @@ using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Services;
+namespace SqlViewer.Services.Implementations;
 
 public sealed class MetadataApiService(IHttpHandler httpHandler) : IMetadataApiService
 {

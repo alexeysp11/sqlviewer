@@ -6,7 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using SqlViewer.ApiHandlers;
 using SqlViewer.Constants;
 using SqlViewer.Helpers;
-using SqlViewer.Services;
+using SqlViewer.Services.Implementations;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;

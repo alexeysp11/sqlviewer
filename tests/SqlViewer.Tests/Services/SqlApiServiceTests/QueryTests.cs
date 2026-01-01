@@ -4,7 +4,7 @@ using Moq;
 using SqlViewer.ApiHandlers;
 using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Common.Enums;
-using SqlViewer.Services;
+using SqlViewer.Services.Implementations;
 using SqlViewer.Tests.Infrastructure.Models;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;

@@ -3,7 +3,7 @@ using SqlViewer.Common.Dtos.Docs;
 using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Services;
+namespace SqlViewer.Services.Implementations;
 
 public sealed class DocsApiService(IHttpHandler httpHandler) : IDocsApiService
 {
