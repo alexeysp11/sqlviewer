@@ -19,10 +19,10 @@ public sealed class GetTablesTests
 
     #region Test case
 #pragma warning disable CA1024 // Use properties where appropriate
-    public static TheoryData<TestCaseMetadataTables> GetTestCasesMetadataTables()
+    public static TheoryData<TestCaseGetMetadata> GetTestCasesMetadataTables()
 #pragma warning restore CA1024 // Use properties where appropriate
     {
-        static TestCaseMetadataTables[] GetTestCases(string connectionString) =>
+        static TestCaseGetMetadata[] GetTestCases(string connectionString) =>
         [
             new() { DatabaseType = VelocipedeDatabaseType.None, ConnectionString = connectionString },
             new() { DatabaseType = VelocipedeDatabaseType.InMemory, ConnectionString = connectionString },
@@ -31,7 +31,7 @@ public sealed class GetTablesTests
             new() { DatabaseType = VelocipedeDatabaseType.MSSQL, ConnectionString = connectionString },
         ];
 
-        TheoryData<TestCaseMetadataTables> result = [];
+        TheoryData<TestCaseGetMetadata> result = [];
 #nullable disable
         result.AddRange(GetTestCases(connectionString: null));
         result.AddRange(GetTestCases(connectionString: ""));
@@ -63,7 +63,7 @@ public sealed class GetTablesTests
 
     [Theory]
     [MemberData(nameof(GetTestCasesMetadataTables))]
-    public async Task GetTablesAsync(TestCaseMetadataTables testCase)
+    public async Task GetTablesAsync(TestCaseGetMetadata testCase)
     {
         // Arrange.
         MetadataService sut = new(_connectionFactory);
