@@ -11,8 +11,10 @@
                     <MenuItem Header="_Database" Command="{Binding NewDatabaseCommand}" />
                     <MenuItem Header="_Table" Command="{Binding NewTableCommand}" />
                 </MenuItem>
+                <MenuItem Header="Connect to database" Command="{Binding ConnectCommand}" />
                 <Separator/>
                 <MenuItem Header="_Clear logs" Command="{Binding ClearLogsCommand}" />
+                <Separator/>
                 <MenuItem Header="_Exit" Command="{Binding ExitCommand}" />
             </MenuItem>
 

@@ -7,7 +7,7 @@ namespace SqlViewer.Common.Dtos.Metadata;
 /// <summary>
 /// Column info DTO.
 /// </summary>
-public sealed record ColumnInfoDto
+public record ColumnInfoDto
 {
     /// <summary>
     /// Column name.

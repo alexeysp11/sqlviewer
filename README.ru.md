@@ -12,10 +12,6 @@
 
 ![Example (UI, query)](docs/img/ui_query.png)
 
-- Просматривать информацию обо всех таблицах внутри БД (SQL-определение таблицы, колонки/поля, внешние ключи, триггеры и все данные внутри конкретной таблицы):
-
-![Example (UI, tables)](docs/img/ui_tables.png)
-
 - перенос данных из одной БД в другую:
 
 ![Example (UI, connections)](docs/img/ui_connections.png)

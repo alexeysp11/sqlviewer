@@ -11,7 +11,7 @@ public sealed class MetadataColumnsResponseDto : BaseSqlViewerResponseDto
 {
     public required VelocipedeDatabaseType DatabaseType { get; init; }
     public required string? TableName { get; init; }
-    public IEnumerable<ColumnInfoDto>? Columns { get; init; }
+    public IEnumerable<ColumnInfoResponseDto>? Columns { get; init; }
 
     /// <summary>
     /// Convert <see cref="Columns"/> field to the collection of <see cref="VelocipedeColumnInfo"/>.

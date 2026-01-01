@@ -12,10 +12,6 @@ Using this app, you can do the following things:
 
 ![Example (UI, query)](docs/img/ui_query.png)
 
-- watch information about all tables inside your database (SQL definition, columns, foreign keys, triggers and all data inside a paticular table):
-
-![Example (UI, tables)](docs/img/ui_tables.png)
-
 - transfer data from one database to another:
 
 ![Example (UI, connections)](docs/img/ui_connections.png)

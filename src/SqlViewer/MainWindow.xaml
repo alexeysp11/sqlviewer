@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SqlViewer"
         xmlns:uc="clr-namespace:SqlViewer.UserControls"
+        xmlns:vm="clr-namespace:SqlViewer.ViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="sqlviewer: SQL Database Viewer (for Windows)"
@@ -16,6 +17,21 @@
         <KeyBinding Command="{Binding NewConnectionCommand}" Key="N" Modifiers="Ctrl" />
         <KeyBinding Command="{Binding OpenFileCommand}" Key="O" Modifiers="Ctrl" />
     </Window.InputBindings>
+
+    <Window.Resources>
+        <HierarchicalDataTemplate DataType="{x:Type vm:TableViewModel}" ItemsSource="{Binding Columns}">
+            <StackPanel Orientation="Horizontal">
+                <Image Source="TableIcon.png" Width="16" Margin="0,0,5,0"/>
+                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+            </StackPanel>
+        </HierarchicalDataTemplate>
+
+        <DataTemplate DataType="{x:Type vm:ColumnViewModel}">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Name}" Foreground="Black" FontStyle="Italic"/>
+            </StackPanel>
+        </DataTemplate>
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -53,7 +69,12 @@
             </Grid.ColumnDefinitions>
 
             <GroupBox Header="Metadata Explorer" Grid.Column="0" Margin="5">
-                <TreeView ItemsSource="{Binding DatabaseMetadataTree}">
+                <TreeView ItemsSource="{Binding DatabaseTables}">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
                 </TreeView>
             </GroupBox>
 

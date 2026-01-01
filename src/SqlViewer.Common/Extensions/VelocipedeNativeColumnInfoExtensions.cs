@@ -12,9 +12,9 @@ public static class VelocipedeNativeColumnInfoExtensions
     /// <param name="columns">Original <see cref="VelocipedeNativeColumnInfo"/> list.</param>
     /// <returns>Collection of <see cref="ColumnInfoDto"/>.</returns>
     /// <exception cref="InvalidDataException">Thrown when column name is null or empty, or calculated column type is null.</exception>
-    public static IEnumerable<ColumnInfoDto> GetColumnInfoDtos(this List<VelocipedeNativeColumnInfo> columns)
+    public static IEnumerable<ColumnInfoResponseDto> GetColumnInfoDtos(this List<VelocipedeNativeColumnInfo> columns)
     {
-        List<ColumnInfoDto> result = [];
+        List<ColumnInfoResponseDto> result = [];
         foreach (VelocipedeNativeColumnInfo column in columns)
         {
             if (string.IsNullOrEmpty(column.ColumnName))
@@ -30,6 +30,7 @@ public static class VelocipedeNativeColumnInfoExtensions
             {
                 ColumnName = column.ColumnName,
                 ColumnType = (DbType)column.CalculatedColumnType,
+                NativeColumnType = column.NativeColumnType,
                 CharMaxLength = column.CharMaxLength,
                 NumericPrecision = column.NumericPrecision,
                 NumericScale = column.NumericScale,

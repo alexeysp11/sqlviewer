@@ -32,6 +32,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
     private readonly SqlApiService _sqlApiService;
     private readonly DocsApiService _docsApiService;
+    private readonly MetadataApiService _metadataApiService;
 
     public MainViewModel()
     {
@@ -42,23 +43,28 @@ public partial class MainViewModel : ObservableObject, IDisposable
             DatabaseTypeConstants.SqlServer,
         ];
         SelectedRdbms = AvailableRdbms.First();
+        DatabaseTables = [];
 
         QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
         ClearLogsCommand = new RelayCommand(ClearLogs);
+        ConnectCommand = new AsyncRelayCommand(RefreshMetadataAsync);
         ExitCommand = new RelayCommand(Exit);
         HelpCommand = new AsyncRelayCommand<string>(GetHelpAsync);
 
         HttpHandler httpHandler = new();
         _sqlApiService = new SqlApiService(httpHandler);
         _docsApiService = new DocsApiService(httpHandler);
+        _metadataApiService = new MetadataApiService(httpHandler);
     }
 
     public ObservableCollection<string> AvailableRdbms { get; }
+    public ObservableCollection<TableViewModel> DatabaseTables { get; }
 
     public IAsyncRelayCommand QuerySqlCommand { get; }
     public IRelayCommand NewConnectionCommand { get; }
     public IRelayCommand OpenFileCommand { get; }
     public IRelayCommand ClearLogsCommand { get; }
+    public IAsyncRelayCommand ConnectCommand { get; }
     public IRelayCommand ExitCommand { get; }
     public IAsyncRelayCommand<string> HelpCommand { get; }
 
@@ -118,6 +124,28 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 };
                 string url = await _docsApiService.GetDbProviderDocs(databaseType);
                 DocsHelper.OpenDocsInBrowser($"{databaseType} documentation", url);
+            }
+        }
+        catch (Exception ex)
+        {
+            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
+        }
+    }
+
+    public async Task RefreshMetadataAsync()
+    {
+        try
+        {
+            DatabaseTables.Clear();
+            VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
+            IEnumerable<string> tables = await _metadataApiService.GetTablesAsync(databaseType, ConnectionString);
+            foreach (string table in tables)
+            {
+                DatabaseTables.Add(new TableViewModel
+                {
+                    Name = table,
+                    LoadColumnsFunc = (tName) => _metadataApiService.GetColumnsAsync(databaseType, ConnectionString, tName)
+                });
             }
         }
         catch (Exception ex)
