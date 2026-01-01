@@ -22,8 +22,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="5"/>
-            <RowDefinition Height="250"/>
         </Grid.RowDefinitions>
 
         <uc:Menu Grid.Row="0" />
@@ -47,37 +45,60 @@
                      VerticalContentAlignment="Center" />
         </Grid>
 
-        <TextBox Grid.Row="2"
-                 AcceptsReturn="True"
-                 Margin="5"
-                 FontFamily="Consolas"
-                 FontSize="14"
-                 Text="{Binding SqlQuery, UpdateSourceTrigger=PropertyChanged}"
-                 SpellCheck.IsEnabled="False"/>
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250" MinWidth="150"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
 
-        <GridSplitter Grid.Row="3" Height="5" HorizontalAlignment="Stretch" Background="#EEE"/>
+            <GroupBox Header="Metadata Explorer" Grid.Column="0" Margin="5">
+                <TreeView ItemsSource="{Binding DatabaseMetadataTree}">
+                </TreeView>
+            </GroupBox>
 
-        <TabControl Grid.Row="4">
-            <TabItem Header="Result">
-                <uc:DbGrid ItemsSource="{Binding QueryResults}"
-                    MinHeight="200"
-                    MinWidth="760"
-                    Height="200"
-                    Width="Auto"
-                    IsReadOnly="True"
-                    AutoGenerateColumns="True"
-                    BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}"
-                    Background="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
-                    Grid.IsSharedSizeScope="True" />
-            </TabItem>
-            <TabItem Header="Logs">
-                <TextBox AcceptsReturn="True"
-                         Margin="5"
-                         Text="{Binding SqlCommandLogs, Mode=OneWay}"
-                         IsReadOnly="True"
-                         VerticalScrollBarVisibility="Auto"
-                         Background="#F9F9F9"/>
-            </TabItem>
-        </TabControl>
+            <GridSplitter Grid.Column="1" Width="5" HorizontalAlignment="Stretch" Background="#EEE"/>
+
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="250"/>
+                </Grid.RowDefinitions>
+            
+                <TextBox Grid.Row="0"
+                        AcceptsReturn="True"
+                        Margin="5"
+                        FontFamily="Consolas"
+                        FontSize="14"
+                        Text="{Binding SqlQuery, UpdateSourceTrigger=PropertyChanged}"
+                        SpellCheck.IsEnabled="False"/>
+
+                <GridSplitter Grid.Row="1" Height="5" HorizontalAlignment="Stretch" Background="#EEE"/>
+
+                <TabControl Grid.Row="2">
+                    <TabItem Header="Result">
+                        <uc:DbGrid ItemsSource="{Binding QueryResults}"
+                            MinHeight="200"
+                            MinWidth="760"
+                            Height="200"
+                            Width="Auto"
+                            IsReadOnly="True"
+                            AutoGenerateColumns="True"
+                            BorderBrush="{DynamicResource {x:Static SystemColors.DesktopBrushKey}}"
+                            Background="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"
+                            Grid.IsSharedSizeScope="True" />
+                    </TabItem>
+                    <TabItem Header="Logs">
+                        <TextBox AcceptsReturn="True"
+                                Margin="5"
+                                Text="{Binding SqlCommandLogs, Mode=OneWay}"
+                                IsReadOnly="True"
+                                VerticalScrollBarVisibility="Auto"
+                                Background="#F9F9F9"/>
+                    </TabItem>
+                </TabControl>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>

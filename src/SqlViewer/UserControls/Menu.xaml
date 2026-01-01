@@ -21,8 +21,6 @@
                 <MenuItem Header="_Stop" Command="{Binding CancelQueryCommand}" />
             </MenuItem>
 
-            <MenuItem Header="_Metadata" Command="{Binding OpenMetadataCommand}" />
-
             <MenuItem Header="_ETL" Command="{Binding OpenEtlCommand}" />
 
             <MenuItem Header="_Help">
