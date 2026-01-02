@@ -23,7 +23,7 @@
                 <MenuItem Header="_Stop" Command="{Binding CancelQueryCommand}" />
             </MenuItem>
 
-            <MenuItem Header="_ETL" Command="{Binding OpenEtlCommand}" />
+            <MenuItem Header="_ETL" Command="{Binding DataContext.OpenEtlCommand, RelativeSource={RelativeSource AncestorType=Window}}" />
 
             <MenuItem Header="_Help">
                 <MenuItem Header="Common SQL docs">

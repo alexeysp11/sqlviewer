@@ -10,11 +10,11 @@
 
 - писать и исполнять SQL-запросы:
 
-![Example (UI, query)](docs/img/ui_query.png)
+![ui_query](docs/img/ui_query.png)
 
 - перенос данных из одной БД в другую:
 
-![Example (UI, connections)](docs/img/ui_connections.png)
+![ui_etl_1](docs/img/ui_etl_1.png)
 
 ## JSON
 

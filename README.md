@@ -10,11 +10,11 @@ Using this app, you can do the following things:
 
 - write and execute SQL queries:
 
-![Example (UI, query)](docs/img/ui_query.png)
+![ui_query](docs/img/ui_query.png)
 
 - transfer data from one database to another:
 
-![Example (UI, connections)](docs/img/ui_connections.png)
+![ui_etl_1](docs/img/ui_etl_1.png)
 
 ## JSON
 

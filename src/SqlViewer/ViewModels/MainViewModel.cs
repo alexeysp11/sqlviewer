@@ -33,6 +33,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly SqlApiService _sqlApiService;
     private readonly DocsApiService _docsApiService;
     private readonly MetadataApiService _metadataApiService;
+    private readonly WindowService _windowService;
 
     public MainViewModel()
     {
@@ -49,12 +50,14 @@ public partial class MainViewModel : ObservableObject, IDisposable
         ClearLogsCommand = new RelayCommand(ClearLogs);
         ConnectCommand = new AsyncRelayCommand(RefreshMetadataAsync);
         ExitCommand = new RelayCommand(Exit);
+        OpenEtlCommand = new RelayCommand(OpenEtl);
         HelpCommand = new AsyncRelayCommand<string>(GetHelpAsync);
 
         HttpHandler httpHandler = new();
         _sqlApiService = new SqlApiService(httpHandler);
         _docsApiService = new DocsApiService(httpHandler);
         _metadataApiService = new MetadataApiService(httpHandler);
+        _windowService = new WindowService(_metadataApiService);
     }
 
     public ObservableCollection<string> AvailableRdbms { get; }
@@ -66,6 +69,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public IRelayCommand ClearLogsCommand { get; }
     public IAsyncRelayCommand ConnectCommand { get; }
     public IRelayCommand ExitCommand { get; }
+    public IRelayCommand OpenEtlCommand { get; }
     public IAsyncRelayCommand<string> HelpCommand { get; }
 
     private async Task QuerySqlAsync()
@@ -101,6 +105,12 @@ public partial class MainViewModel : ObservableObject, IDisposable
         {
             SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] {ex.Message}";
         }
+    }
+
+    private void OpenEtl()
+    {
+        VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
+        _windowService.ShowEtlWizard(ConnectionString, databaseType);
     }
 
     private async Task GetHelpAsync(string parameter)
