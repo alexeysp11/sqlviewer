@@ -55,7 +55,7 @@ public sealed partial class EtlViewModel(IMetadataApiService metadataService) : 
         }
         catch (Exception ex)
         {
-            GeneratedSql = $"Error loading tables: {ex.Message}";
+            MessageBox.Show($"Error loading tables: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -76,7 +76,28 @@ public sealed partial class EtlViewModel(IMetadataApiService metadataService) : 
         }
         catch (Exception ex)
         {
-            GeneratedSql = $"Generation error: {ex.Message}";
+            MessageBox.Show($"Generation error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(CanGoBack))]
+    private void PrevStep()
+    {
+        CurrentStep = 0;
+    }
+
+    [RelayCommand(CanExecute = nameof(CanExecuteMigration))]
+    private async Task ExecuteMigration()
+    {
+        try
+        {
+            // await _databaseService.ExecuteNonQueryAsync(TargetType, TargetConnectionString, GeneratedSql);
+            MessageBox.Show("The create table request has been sent to the target database!");
+            await Task.CompletedTask;
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading tables: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -86,21 +107,7 @@ public sealed partial class EtlViewModel(IMetadataApiService metadataService) : 
         && !string.IsNullOrWhiteSpace(TargetConnectionString)
         && !string.IsNullOrWhiteSpace(SelectedTable);
 
-    [RelayCommand(CanExecute = nameof(CanGoBack))]
-    private void PrevStep()
-    {
-        CurrentStep = 0;
-    }
-
     private bool CanGoBack() => CurrentStep > 0;
-
-    [RelayCommand(CanExecute = nameof(CanExecuteMigration))]
-    private async Task ExecuteMigration()
-    {
-        // await _databaseService.ExecuteNonQueryAsync(TargetType, TargetConnectionString, GeneratedSql);
-        MessageBox.Show("The create table request has been sent to the target database!");
-        await Task.CompletedTask;
-    }
 
     private bool CanExecuteMigration() => CurrentStep > 0 && !string.IsNullOrEmpty(GeneratedSql);
 }
