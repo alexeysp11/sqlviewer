@@ -12,7 +12,13 @@ public sealed partial class EtlViewModel(IMetadataApiService metadataService) : 
 {
     private readonly IMetadataApiService _metadataService = metadataService;
 
-    public ObservableCollection<VelocipedeDatabaseType> DatabaseTypes { get; } = [.. Enum.GetValues<VelocipedeDatabaseType>()];
+    public ObservableCollection<VelocipedeDatabaseType> DatabaseTypes { get; } =
+    [
+        VelocipedeDatabaseType.None,
+        VelocipedeDatabaseType.SQLite,
+        VelocipedeDatabaseType.PostgreSQL,
+        VelocipedeDatabaseType.MSSQL
+    ];
     public ObservableCollection<string> SourceTables { get; } = [];
 
     [ObservableProperty]
