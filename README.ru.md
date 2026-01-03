@@ -16,6 +16,8 @@
 
 ![ui_etl_1](docs/img/ui_etl_1.png)
 
+![ui_etl_2](docs/img/ui_etl_2.png)
+
 ## JSON
 
 `/api/sql/create-table`:

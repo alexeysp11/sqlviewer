@@ -5,5 +5,5 @@ namespace SqlViewer.ApiGateway.Factories;
 
 public interface IDbConnectionFactory
 {
-    IVelocipedeDbConnection GetDbConnection(VelocipedeDatabaseType databaseType, string connectionString);
+    IVelocipedeDbConnection GetDbConnection(VelocipedeDatabaseType databaseType, string? connectionString = null);
 }

@@ -6,6 +6,6 @@ namespace SqlViewer.ApiGateway.Factories;
 
 public sealed class DbConnectionFactory : IDbConnectionFactory
 {
-    public IVelocipedeDbConnection GetDbConnection(VelocipedeDatabaseType databaseType, string connectionString)
+    public IVelocipedeDbConnection GetDbConnection(VelocipedeDatabaseType databaseType, string? connectionString = null)
         => VelocipedeDbConnectionFactory.InitializeDbConnection(databaseType, connectionString);
 }

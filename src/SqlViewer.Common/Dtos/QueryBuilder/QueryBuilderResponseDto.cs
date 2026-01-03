@@ -2,5 +2,5 @@
 
 public sealed class QueryBuilderResponseDto : BaseSqlViewerResponseDto
 {
-    public required string Query { get; init; }
+    public string? Query { get; init; }
 }
