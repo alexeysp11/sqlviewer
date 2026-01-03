@@ -80,7 +80,6 @@ public sealed partial class EtlViewModel(
 
             string sql = await _queryBuilderService.GetCreateTableQueryAsync(
                 databaseType: TargetType,
-                connectionString: SourceConnectionString,
                 tableName: SelectedTable,
                 columnInfos: columns);
 

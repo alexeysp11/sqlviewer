@@ -13,14 +13,13 @@ public sealed class QueryBuilderApiService(IHttpHandler httpHandler) : IQueryBui
 
     public async Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
-        string connectionString,
         string tableName,
         IEnumerable<ColumnInfoDto> columnInfos)
     {
         CreateTableRequestDto requestDto = new()
         {
             DatabaseType = databaseType,
-            ConnectionString = connectionString,
+            ConnectionString = string.Empty,
             TableName = tableName,
             Columns = columnInfos
         };

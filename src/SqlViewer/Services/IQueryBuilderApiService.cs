@@ -7,7 +7,6 @@ public interface IQueryBuilderApiService : IDisposable
 {
     Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
-        string connectionString,
         string tableName,
         IEnumerable<ColumnInfoDto> columnInfos);
 }
