@@ -33,8 +33,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly SqlApiService _sqlApiService;
     private readonly DocsApiService _docsApiService;
     private readonly MetadataApiService _metadataApiService;
-    private readonly WindowService _windowService;
     private readonly QueryBuilderApiService _queryBuilderService;
+    private readonly WindowService _windowService;
 
     public MainViewModel()
     {
@@ -112,7 +112,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private void OpenEtl()
     {
         VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
-        _windowService.ShowEtlWizard(_metadataApiService, _queryBuilderService, ConnectionString, databaseType);
+        _windowService.ShowEtlWizard(_sqlApiService, _metadataApiService, _queryBuilderService, ConnectionString, databaseType);
     }
 
     private async Task GetHelpAsync(string parameter)

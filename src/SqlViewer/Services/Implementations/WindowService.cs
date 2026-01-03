@@ -8,12 +8,13 @@ namespace SqlViewer.Services.Implementations;
 public sealed class WindowService : IWindowService
 {
     public void ShowEtlWizard(
+        ISqlApiService sqlApiService,
         IMetadataApiService metadataService,
         IQueryBuilderApiService queryBuilderService,
         string connectionString,
         VelocipedeDatabaseType databaseType)
     {
-        EtlViewModel vm = new(metadataService, queryBuilderService)
+        EtlViewModel vm = new(sqlApiService, metadataService, queryBuilderService)
         {
             SourceConnectionString = connectionString,
             SourceType = databaseType

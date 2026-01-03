@@ -9,9 +9,11 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 namespace SqlViewer.ViewModels;
 
 public sealed partial class EtlViewModel(
+    ISqlApiService sqlApiService,
     IMetadataApiService metadataService,
     IQueryBuilderApiService queryBuilderService) : ObservableRecipient
 {
+    private readonly ISqlApiService _sqlApiService = sqlApiService;
     private readonly IMetadataApiService _metadataService = metadataService;
     private readonly IQueryBuilderApiService _queryBuilderService = queryBuilderService;
 
@@ -78,12 +80,11 @@ public sealed partial class EtlViewModel(
                 connectionString: SourceConnectionString,
                 tableName: SelectedTable);
 
-            string sql = await _queryBuilderService.GetCreateTableQueryAsync(
+            GeneratedSql = await _queryBuilderService.GetCreateTableQueryAsync(
                 databaseType: TargetType,
                 tableName: SelectedTable,
                 columnInfos: columns);
 
-            GeneratedSql = sql;
             CurrentStep = 1;
         }
         catch (Exception ex)
@@ -103,9 +104,11 @@ public sealed partial class EtlViewModel(
     {
         try
         {
-            // await _databaseService.ExecuteNonQueryAsync(TargetType, TargetConnectionString, GeneratedSql);
+            await _sqlApiService.QueryAsync(
+                databaseType: TargetType,
+                connectionString: TargetConnectionString,
+                query: GeneratedSql);
             MessageBox.Show("The create table request has been sent to the target database!");
-            await Task.CompletedTask;
         }
         catch (Exception ex)
         {
