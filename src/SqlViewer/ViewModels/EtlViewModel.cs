@@ -13,6 +13,12 @@ public sealed partial class EtlViewModel(
     IMetadataApiService metadataService,
     IQueryBuilderApiService queryBuilderService) : ObservableRecipient
 {
+    private enum EtlStepType
+    {
+        Setup = 0,
+        Preview = 1,
+    }
+
     private readonly ISqlApiService _sqlApiService = sqlApiService;
     private readonly IMetadataApiService _metadataService = metadataService;
     private readonly IQueryBuilderApiService _queryBuilderService = queryBuilderService;
@@ -52,7 +58,7 @@ public sealed partial class EtlViewModel(
     [NotifyCanExecuteChangedFor(nameof(GenerateCreateScriptCommand))]
     [NotifyCanExecuteChangedFor(nameof(ExecuteMigrationCommand))]
     [NotifyCanExecuteChangedFor(nameof(PrevStepCommand))]
-    private int _currentStep; // 0 - Setup, 1 - Preview
+    private int _currentStep = (int)EtlStepType.Setup;
 
     [RelayCommand]
     private async Task LoadSourceTables()
@@ -62,7 +68,9 @@ public sealed partial class EtlViewModel(
             IEnumerable<string> tables = await _metadataService.GetTablesAsync(SourceType, SourceConnectionString);
             SourceTables.Clear();
             foreach (string table in tables)
+            {
                 SourceTables.Add(table);
+            }
         }
         catch (Exception ex)
         {
@@ -85,7 +93,7 @@ public sealed partial class EtlViewModel(
                 tableName: SelectedTable,
                 columnInfos: columns);
 
-            CurrentStep = 1;
+            CurrentStep = (int)EtlStepType.Preview;
         }
         catch (Exception ex)
         {
@@ -96,7 +104,7 @@ public sealed partial class EtlViewModel(
     [RelayCommand(CanExecute = nameof(CanGoBack))]
     private void PrevStep()
     {
-        CurrentStep = 0;
+        CurrentStep = (int)EtlStepType.Setup;
     }
 
     [RelayCommand(CanExecute = nameof(CanExecuteMigration))]
@@ -108,7 +116,7 @@ public sealed partial class EtlViewModel(
                 databaseType: TargetType,
                 connectionString: TargetConnectionString,
                 query: GeneratedSql);
-            MessageBox.Show("The create table request has been sent to the target database!");
+            MessageBox.Show("The create table request has been sent to the target database!", "ETL transferring done", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         catch (Exception ex)
         {
@@ -117,12 +125,12 @@ public sealed partial class EtlViewModel(
     }
 
     private bool CanGenerate() =>
-        CurrentStep == 0
+        CurrentStep == (int)EtlStepType.Setup
         && !string.IsNullOrWhiteSpace(SourceConnectionString)
         && !string.IsNullOrWhiteSpace(TargetConnectionString)
         && !string.IsNullOrWhiteSpace(SelectedTable);
 
-    private bool CanGoBack() => CurrentStep > 0;
+    private bool CanGoBack() => CurrentStep > (int)EtlStepType.Setup;
 
-    private bool CanExecuteMigration() => CurrentStep > 0 && !string.IsNullOrEmpty(GeneratedSql);
+    private bool CanExecuteMigration() => CurrentStep > (int)EtlStepType.Setup && !string.IsNullOrEmpty(GeneratedSql);
 }
