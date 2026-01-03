@@ -8,9 +8,12 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
 
-public sealed partial class EtlViewModel(IMetadataApiService metadataService) : ObservableRecipient
+public sealed partial class EtlViewModel(
+    IMetadataApiService metadataService,
+    IQueryBuilderApiService queryBuilderService) : ObservableRecipient
 {
     private readonly IMetadataApiService _metadataService = metadataService;
+    private readonly IQueryBuilderApiService _queryBuilderService = queryBuilderService;
 
     public ObservableCollection<VelocipedeDatabaseType> DatabaseTypes { get; } =
     [
@@ -71,11 +74,15 @@ public sealed partial class EtlViewModel(IMetadataApiService metadataService) : 
         try
         {
             IEnumerable<ColumnInfoResponseDto> columns = await _metadataService.GetColumnsAsync(
-                SourceType,
-                SourceConnectionString,
-                SelectedTable);
+                databaseType: SourceType,
+                connectionString: SourceConnectionString,
+                tableName: SelectedTable);
 
-            string sql = "/* Generated SQL here */";
+            string sql = await _queryBuilderService.GetCreateTableQueryAsync(
+                databaseType: TargetType,
+                connectionString: SourceConnectionString,
+                tableName: SelectedTable,
+                columnInfos: columns);
 
             GeneratedSql = sql;
             CurrentStep = 1;

@@ -5,13 +5,19 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;
 
-public sealed class WindowService(IMetadataApiService metadataService) : IWindowService
+public sealed class WindowService : IWindowService
 {
-    private readonly IMetadataApiService _metadataService = metadataService;
-
-    public void ShowEtlWizard(string connectionString, VelocipedeDatabaseType databaseType)
+    public void ShowEtlWizard(
+        IMetadataApiService metadataService,
+        IQueryBuilderApiService queryBuilderService,
+        string connectionString,
+        VelocipedeDatabaseType databaseType)
     {
-        EtlViewModel vm = new(_metadataService);
+        EtlViewModel vm = new(metadataService, queryBuilderService)
+        {
+            SourceConnectionString = connectionString,
+            SourceType = databaseType
+        };
         EtlWindow win = new()
         {
             DataContext = vm,

@@ -34,6 +34,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly DocsApiService _docsApiService;
     private readonly MetadataApiService _metadataApiService;
     private readonly WindowService _windowService;
+    private readonly QueryBuilderApiService _queryBuilderService;
 
     public MainViewModel()
     {
@@ -57,7 +58,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
         _sqlApiService = new SqlApiService(httpHandler);
         _docsApiService = new DocsApiService(httpHandler);
         _metadataApiService = new MetadataApiService(httpHandler);
-        _windowService = new WindowService(_metadataApiService);
+        _queryBuilderService = new QueryBuilderApiService(httpHandler);
+        _windowService = new WindowService();
     }
 
     public ObservableCollection<string> AvailableRdbms { get; }
@@ -110,7 +112,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private void OpenEtl()
     {
         VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
-        _windowService.ShowEtlWizard(ConnectionString, databaseType);
+        _windowService.ShowEtlWizard(_metadataApiService, _queryBuilderService, ConnectionString, databaseType);
     }
 
     private async Task GetHelpAsync(string parameter)

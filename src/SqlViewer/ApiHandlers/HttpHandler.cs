@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Web;
 using VelocipedeUtils.Shared.DbOperations.Enums;
+using SqlViewer.Common.Dtos.QueryBuilder;
 
 namespace SqlViewer.ApiHandlers;
 
@@ -101,6 +102,25 @@ public sealed class HttpHandler : IHttpHandler
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         MetadataTablesResponseDto responseDto = JsonConvert.DeserializeObject<MetadataTablesResponseDto>(jsonResponse);
+
+        return responseDto;
+    }
+
+    public async Task<QueryBuilderResponseDto> GetCreateTableQueryAsync(CreateTableRequestDto requestDto)
+    {
+        UriBuilder uriBuilder = new()
+        {
+            Scheme = App.AppSettings.ServerScheme,
+            Host = App.AppSettings.ServerHost,
+            Port = App.AppSettings.ServerPort,
+            Path = RestApiPaths.QueryBuilderCreateTable,
+        };
+        string url = uriBuilder.Uri.ToString();
+
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
+        response.EnsureSuccessStatusCode();
+        string jsonResponse = await response.Content.ReadAsStringAsync();
+        QueryBuilderResponseDto responseDto = JsonConvert.DeserializeObject<QueryBuilderResponseDto>(jsonResponse);
 
         return responseDto;
     }

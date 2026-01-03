@@ -4,6 +4,9 @@ namespace SqlViewer.Services;
 
 public interface IWindowService
 {
-    void ShowEtlWizard(string connectionString, VelocipedeDatabaseType databaseType);
+    void ShowEtlWizard(
+        IMetadataApiService metadataService,
+        IQueryBuilderApiService queryBuilderService,
+        string connectionString,
+        VelocipedeDatabaseType databaseType);
 }
-
