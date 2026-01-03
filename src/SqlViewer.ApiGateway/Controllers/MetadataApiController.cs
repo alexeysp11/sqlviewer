@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Services;
+using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Enums;
 using SqlViewer.Common.Extensions;
@@ -15,7 +16,7 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger,
     private readonly IMetadataService _metadataService = metadataService;
 
     [HttpPost]
-    [Route("/api/metadata/tables")]
+    [Route(RestApiPaths.MetadataTables)]
     public async Task<MetadataTablesResponseDto> GetTablesAsync([FromBody] MetadataRequestDto request)
     {
         try
@@ -33,7 +34,7 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger,
     }
 
     [HttpPost]
-    [Route("/api/metadata/columns")]
+    [Route(RestApiPaths.MetadataColumns)]
     public async Task<MetadataColumnsResponseDto> GetColumnsAsync([FromBody] MetadataRequestDto request)
     {
         try

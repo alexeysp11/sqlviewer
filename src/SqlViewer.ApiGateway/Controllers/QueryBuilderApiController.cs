@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Services;
+using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.QueryBuilder;
 using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Common.Enums;
@@ -17,7 +18,7 @@ public sealed class QueryBuilderApiController(
     private readonly IQueryBuilderService _queryBuilderService = queryBuilderService;
 
     [HttpPost]
-    [Route("/api/query-builder/create/table")]
+    [Route(RestApiPaths.QueryBuilderCreateTable)]
     public QueryBuilderResponseDto GetCreateTableQuery([FromBody] CreateTableRequestDto request)
     {
         try

@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using SqlViewer.Constants;
 using SqlViewer.Common.Dtos.Docs;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Dtos.SqlQueries;
@@ -9,6 +8,7 @@ using System.Net.Http.Json;
 using System.Web;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using SqlViewer.Common.Dtos.QueryBuilder;
+using SqlViewer.Common.Constants;
 
 namespace SqlViewer.ApiHandlers;
 
@@ -31,7 +31,7 @@ public sealed class HttpHandler : IHttpHandler
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.Query,
+            Path = RestApiPaths.SqlQuery,
         };
         string url = uriBuilder.Uri.ToString();
 

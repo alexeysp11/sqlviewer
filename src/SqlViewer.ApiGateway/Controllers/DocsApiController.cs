@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Docs;
 using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.Enums;
@@ -12,7 +13,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
     private readonly ILogger<DocsApiController> _logger = logger;
 
     [HttpGet]
-    [Route("/api/docs/db-providers")]
+    [Route(RestApiPaths.GetDbProviderDocs)]
     public SqlViewerDocsResponseDto GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
     {
         try

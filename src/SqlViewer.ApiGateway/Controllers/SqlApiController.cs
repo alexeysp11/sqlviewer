@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Services;
+using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Common.Enums;
@@ -14,7 +15,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     private readonly ISqlQueryService _sqlQueryService = sqlQueryService;
 
     [HttpPost]
-    [Route("/api/sql/query")]
+    [Route(RestApiPaths.SqlQuery)]
     public async Task<SqlQueryResponseDto> QueryAsync([FromBody] SqlQueryRequestDto request)
     {
         try
@@ -33,7 +34,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     }
 
     [HttpPost]
-    [Route("/api/sql/execute")]
+    [Route(RestApiPaths.SqlExecute)]
     public async Task<CommonResponseDto> ExecuteAsync([FromBody] SqlQueryRequestDto request)
     {
         try
@@ -52,7 +53,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     }
 
     [HttpPost]
-    [Route("/api/sql/create-table")]
+    [Route(RestApiPaths.SqlCreateTable)]
     public async Task<CommonResponseDto> CreateTableAsync([FromBody] CreateTableRequestDto request)
     {
         try
@@ -72,7 +73,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     }
 
     [HttpPost]
-    [Route("/api/sql/drop-table")]
+    [Route(RestApiPaths.SqlDropTable)]
     public async Task<CommonResponseDto> DropTableAsync([FromBody] DropTableRequestDto request)
     {
         try
