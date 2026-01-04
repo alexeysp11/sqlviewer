@@ -18,6 +18,22 @@
 
 ![ui_etl_2](docs/img/ui_etl_2.png)
 
+## Запуск проекта в docker
+
+1. Создайте сертификат для поддержки протокола HTTPS и установите пароль:
+```bash
+# For Windows (PowerShell)
+dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\aspnetapp.pfx -p YourSecurePassword123
+dotnet dev-certs https --trust
+
+# For Linux/macOS
+dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p YourSecurePassword123
+dotnet dev-certs https --trust
+```
+2. Передите в корневую папку данного проекта.
+3. Создайте файл `.env` и добавьте в него информацию о вашем пароле: например, `CERT_PASSWORD=YourSecurePassword123`. Также добавьте путь, где хранится HTTPS сертификат в качестве переменной `HOST_CERT_PATH`.
+4. Для сборки и запуска всего стека приложений: `docker compose up --build`.
+
 ## JSON
 
 `/api/sql/create-table`:

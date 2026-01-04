@@ -18,6 +18,22 @@ Using this app, you can do the following things:
 
 ![ui_etl_2](docs/img/ui_etl_2.png)
 
+## Running a project in Docker
+
+1. Create a certificate to support the HTTPS protocol and set a password:
+```bash
+# For Windows (PowerShell)
+dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\aspnetapp.pfx -p YourSecurePassword123
+dotnet dev-certs https --trust
+
+# For Linux/macOS
+dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p YourSecurePassword123
+dotnet dev-certs https --trust
+```
+2. Navigate to the root folder of this project.
+3. Create a `.env` file and add your password information to it: for example, `CERT_PASSWORD=YourSecurePassword123`. Also add the path where the HTTPS certificate is stored as the `HOST_CERT_PATH` variable.
+4. To build and run the entire application stack: `docker compose up --build`.
+
 ## JSON
 
 `/api/sql/create-table`:

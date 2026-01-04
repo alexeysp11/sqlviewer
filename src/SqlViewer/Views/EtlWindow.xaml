@@ -67,12 +67,12 @@
 
             <TabItem>
                 <GroupBox Header="Generated SQL query">
-                    <TextBox Text="{Binding GeneratedSql}" 
-                             IsReadOnly="True" 
-                             FontFamily="Consolas" 
-                             AcceptsReturn="True" 
-                             VerticalScrollBarVisibility="Auto" 
-                             Background="#1E1E1E" 
+                    <TextBox Text="{Binding GeneratedSql}"
+                             IsReadOnly="False"
+                             FontFamily="Consolas"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"
+                             Background="#1E1E1E"
                              Foreground="#DCDCDC"
                              Padding="10"/>
                 </GroupBox>
