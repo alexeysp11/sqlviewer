@@ -2,7 +2,7 @@
 
 [English](README.md) | [Русский](README.ru.md)
 
-`sqlviewer` is a multilingual C# application that provides a user-friendly interface for interacting with different RDBMS and performing various database operations.
+`sqlviewer` is a desktop application that provides a user-friendly interface for interacting with different RDBMS and performing various database operations.
 
 ## Overall description
 
