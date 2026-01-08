@@ -30,6 +30,7 @@ public sealed partial class EtlViewModel(
         VelocipedeDatabaseType.PostgreSQL,
         VelocipedeDatabaseType.MSSQL
     ];
+
     public ObservableCollection<string> SourceTables { get; } = [];
 
     [ObservableProperty]

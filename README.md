@@ -2,17 +2,25 @@
 
 [English](README.md) | [Русский](README.ru.md)
 
-`sqlviewer` is a desktop application that provides a user-friendly interface for interacting with different RDBMS and performing various database operations.
+A distributed system for managing heterogeneous data sources.
 
-## Overall description
+## General description
+
+- Microservice architecture.
+- Centralized metadata storage and connection abstraction.
+- The system allows users to interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API, hiding the technical details of connection implementation.
+
+Since this system is based on WPF and Web API, it's worth noting that microservices were chosen for scalability: for example, the query execution service can be scaled separately from the metadata management service if the load on the database increases.
+
+## Features
 
 Using this app, you can do the following things:
 
-- write and execute SQL queries:
+- Write and execute SQL queries:
 
 ![ui_query](docs/img/ui_query.png)
 
-- transfer data from one database to another:
+- Transfer data from one database to another:
 
 ![ui_etl_1](docs/img/ui_etl_1.png)
 
