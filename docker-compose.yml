@@ -1,5 +1,6 @@
 services:
   webapi:
+    container_name: api-gateway
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
@@ -19,20 +20,25 @@ services:
 
   redis:
     image: redis:alpine
+    container_name: redis-cache
     ports:
       - "6379:6379"
+
+  postgres:
+    image: postgres
+    container_name: metadata-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sqlviewer
+    ports:
+      - "54321:5432"
 
   clickhouse:
     image: clickhouse/clickhouse-server
     profiles: ["extra-dbs"]
     ports:
       - "8123:8123"
-
-  postgres:
-    image: postgres
-    profiles: ["extra-dbs"]
-    ports:
-      - "5432:5432"
 
   sqlserver:
     image: mcr.microsoft.com

@@ -9,6 +9,7 @@ A distributed system for managing heterogeneous data sources.
 - Microservice architecture.
 - Centralized metadata storage and connection abstraction.
 - The system allows users to interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API, hiding the technical details of connection implementation.
+- Automatic migrations upon service launch (to speed up development).
 
 Since this system is based on WPF and Web API, it's worth noting that microservices were chosen for scalability: for example, the query execution service can be scaled separately from the metadata management service if the load on the database increases.
 
