@@ -43,10 +43,10 @@ dotnet dev-certs https --trust
 3. Create a `.env` file and add the configuration data for webapi inside the docker container.
 ```.env
 DB_HOST=host.docker.internal
-DB_PASSWORD=StrongPassword1234
+DB_PASSWORD=DatabasePassword1234
 
 HOST_CERT_PATH=path
-CERT_PASSWORD=AnotherStrongPassword1234
+CERT_PASSWORD=YourSecurePassword123
 ```
 4. To build and run the entire application stack: `docker compose up --build`.
 
