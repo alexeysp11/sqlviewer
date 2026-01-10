@@ -42,9 +42,14 @@ dotnet dev-certs https --trust
 2. Передите в корневую папку данного проекта.
 3. Создайте файл `.env` и добавьте в него данные для конфигурации webapi внутри docker контейнера.
 ```.env
+# Database server
 DB_HOST=host.docker.internal
 DB_PASSWORD=DatabasePassword1234
 
+# Encryption
+ENCRYPTION_KEY=YourSuperSecretKey123
+
+# HTTP certificate
 HOST_CERT_PATH=path
 CERT_PASSWORD=YourSecurePassword123
 ```
