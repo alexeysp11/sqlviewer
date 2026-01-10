@@ -16,7 +16,10 @@ public static class Program
         // Get configurations.
         string appsettingsSectionName = nameof(AppSettings);
         string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") ?? "Production";
-        IConfigurationRoot configuration = new ConfigurationBuilder().AddJsonFile($"appsettings.{environment}.json").Build();
+        IConfigurationRoot configuration = new ConfigurationBuilder()
+            .AddJsonFile($"appsettings.{environment}.json")
+            .AddEnvironmentVariables()
+            .Build();
         AppSettings appsettings = configuration.GetSection(appsettingsSectionName).Get<AppSettings>()
             ?? throw new Exception($"Cannot start the application: '{appsettingsSectionName}' section is not specified in the config file");
 

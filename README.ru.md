@@ -40,7 +40,14 @@ dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p YourSecurePass
 dotnet dev-certs https --trust
 ```
 2. Передите в корневую папку данного проекта.
-3. Создайте файл `.env` и добавьте в него информацию о вашем пароле: например, `CERT_PASSWORD=YourSecurePassword123`. Также добавьте путь, где хранится HTTPS сертификат в качестве переменной `HOST_CERT_PATH`.
+3. Создайте файл `.env` и добавьте в него данные для конфигурации webapi внутри docker контейнера.
+```.env
+DB_HOST=host.docker.internal
+DB_PASSWORD=StrongPassword1234
+
+HOST_CERT_PATH=path
+CERT_PASSWORD=AnotherStrongPassword1234
+```
 4. Для сборки и запуска всего стека приложений: `docker compose up --build`.
 
 ## JSON

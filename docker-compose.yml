@@ -1,12 +1,15 @@
 services:
   webapi:
     container_name: api-gateway
+    env_file:
+      - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - AppSettings__MetadataConnectionString=Server=${DB_HOST};Username=postgres;Database=sqlviewer;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .
       dockerfile: src/SqlViewer.ApiGateway/Dockerfile
