@@ -9,6 +9,7 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - EncryptionSettings__Key={ENCRYPTION_KEY}
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .

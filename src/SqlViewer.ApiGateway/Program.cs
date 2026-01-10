@@ -1,14 +1,17 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SqlViewer.ApiGateway.DataSeeding;
 using SqlViewer.ApiGateway.DbContexts;
 using SqlViewer.ApiGateway.Factories;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.ApiGateway.Services.Implementations;
+using SqlViewer.Common.Models;
 
 namespace SqlViewer.ApiGateway;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -20,6 +23,8 @@ public static class Program
         builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
         builder.Services.AddScoped<IQueryBuilderService, QueryBuilderService>();
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+        builder.Services.AddScoped<IApiGatewayDataSeeder, ApiGatewayDataSeeder>();
+        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         builder.Services.AddDataProtection();
         
@@ -37,7 +42,8 @@ public static class Program
         using (IServiceScope scope = app.Services.CreateScope())
         {
             ApiGatewayDbContext db = scope.ServiceProvider.GetRequiredService<ApiGatewayDbContext>();
-            db.Database.Migrate();
+            IApiGatewayDataSeeder dataSeeder = scope.ServiceProvider.GetRequiredService<IApiGatewayDataSeeder>();
+            await dataSeeder.InitializeAsync();
         }
 
         // Configure the HTTP request pipeline.
