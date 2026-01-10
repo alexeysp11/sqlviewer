@@ -34,7 +34,8 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "ConnectionStrings__MetadataConnection": "Server=host.docker.internal;Username=postgres;Database=sqlviewer;Port=54321;Password=postgres;"
       },
       "publishAllPorts": true,
       "useSSL": true
