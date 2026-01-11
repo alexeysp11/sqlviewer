@@ -31,7 +31,7 @@ public sealed class HttpHandler : IHttpHandler
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.SqlQuery,
+            Path = RestApiPaths.Sql.Query,
         };
         string url = uriBuilder.Uri.ToString();
 
@@ -50,7 +50,7 @@ public sealed class HttpHandler : IHttpHandler
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.GetDbProviderDocs,
+            Path = RestApiPaths.Docs.DbProviders,
         };
 
         // Query parameters.
@@ -75,7 +75,7 @@ public sealed class HttpHandler : IHttpHandler
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.MetadataColumns,
+            Path = RestApiPaths.Metadata.Columns,
         };
         string url = uriBuilder.Uri.ToString();
 
@@ -94,7 +94,7 @@ public sealed class HttpHandler : IHttpHandler
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.MetadataTables,
+            Path = RestApiPaths.Metadata.Tables,
         };
         string url = uriBuilder.Uri.ToString();
 
@@ -113,7 +113,7 @@ public sealed class HttpHandler : IHttpHandler
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.QueryBuilderCreateTable,
+            Path = RestApiPaths.QueryBuilder.CreateTable,
         };
         string url = uriBuilder.Uri.ToString();
 

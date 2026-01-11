@@ -18,7 +18,7 @@ public sealed class QueryBuilderApiController(
     private readonly IQueryBuilderService _queryBuilderService = queryBuilderService;
 
     [HttpPost]
-    [Route(RestApiPaths.QueryBuilderCreateTable)]
+    [Route(RestApiPaths.QueryBuilder.CreateTable)]
     public QueryBuilderResponseDto GetCreateTableQuery([FromBody] CreateTableRequestDto request)
     {
         try

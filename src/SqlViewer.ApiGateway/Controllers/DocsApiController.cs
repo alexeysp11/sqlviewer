@@ -13,7 +13,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
     private readonly ILogger<DocsApiController> _logger = logger;
 
     [HttpGet]
-    [Route(RestApiPaths.GetDbProviderDocs)]
+    [Route(RestApiPaths.Docs.DbProviders)]
     public SqlViewerDocsResponseDto GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
     {
         try

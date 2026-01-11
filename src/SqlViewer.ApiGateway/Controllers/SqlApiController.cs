@@ -15,7 +15,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     private readonly ISqlQueryService _sqlQueryService = sqlQueryService;
 
     [HttpPost]
-    [Route(RestApiPaths.SqlQuery)]
+    [Route(RestApiPaths.Sql.Query)]
     public async Task<SqlQueryResponseDto> QueryAsync([FromBody] SqlQueryRequestDto request)
     {
         try
@@ -34,7 +34,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     }
 
     [HttpPost]
-    [Route(RestApiPaths.SqlExecute)]
+    [Route(RestApiPaths.Sql.Execute)]
     public async Task<CommonResponseDto> ExecuteAsync([FromBody] SqlQueryRequestDto request)
     {
         try
@@ -53,7 +53,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     }
 
     [HttpPost]
-    [Route(RestApiPaths.SqlCreateTable)]
+    [Route(RestApiPaths.Sql.CreateTable)]
     public async Task<CommonResponseDto> CreateTableAsync([FromBody] CreateTableRequestDto request)
     {
         try
@@ -73,7 +73,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
     }
 
     [HttpPost]
-    [Route(RestApiPaths.SqlDropTable)]
+    [Route(RestApiPaths.Sql.DropTable)]
     public async Task<CommonResponseDto> DropTableAsync([FromBody] DropTableRequestDto request)
     {
         try

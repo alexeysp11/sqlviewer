@@ -16,7 +16,7 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger,
     private readonly IMetadataService _metadataService = metadataService;
 
     [HttpPost]
-    [Route(RestApiPaths.MetadataTables)]
+    [Route(RestApiPaths.Metadata.Tables)]
     public async Task<MetadataTablesResponseDto> GetTablesAsync([FromBody] MetadataRequestDto request)
     {
         try
@@ -34,7 +34,7 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger,
     }
 
     [HttpPost]
-    [Route(RestApiPaths.MetadataColumns)]
+    [Route(RestApiPaths.Metadata.Columns)]
     public async Task<MetadataColumnsResponseDto> GetColumnsAsync([FromBody] MetadataRequestDto request)
     {
         try
