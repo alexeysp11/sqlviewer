@@ -9,6 +9,8 @@ using System.Web;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using SqlViewer.Common.Dtos.QueryBuilder;
 using SqlViewer.Common.Constants;
+using SqlViewer.Common.Dtos.Auth;
+using SqlViewer.Common.Dtos;
 
 namespace SqlViewer.ApiHandlers;
 
@@ -121,6 +123,25 @@ public sealed class HttpHandler : IHttpHandler
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
         QueryBuilderResponseDto responseDto = JsonConvert.DeserializeObject<QueryBuilderResponseDto>(jsonResponse);
+
+        return responseDto;
+    }
+
+    public async Task<CommonResponseDto> VerifyUserByPasswordAsync(LoginRequestDto requestDto)
+    {
+        UriBuilder uriBuilder = new()
+        {
+            Scheme = App.AppSettings.ServerScheme,
+            Host = App.AppSettings.ServerHost,
+            Port = App.AppSettings.ServerPort,
+            Path = RestApiPaths.Auth.Login,
+        };
+        string url = uriBuilder.Uri.ToString();
+
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
+        response.EnsureSuccessStatusCode();
+        string jsonResponse = await response.Content.ReadAsStringAsync();
+        CommonResponseDto responseDto = JsonConvert.DeserializeObject<CommonResponseDto>(jsonResponse);
 
         return responseDto;
     }

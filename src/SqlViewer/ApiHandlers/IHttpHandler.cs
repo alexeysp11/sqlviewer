@@ -1,4 +1,6 @@
-﻿using SqlViewer.Common.Dtos.Docs;
+﻿using SqlViewer.Common.Dtos.Auth;
+using SqlViewer.Common.Dtos;
+using SqlViewer.Common.Dtos.Docs;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Dtos.QueryBuilder;
 using SqlViewer.Common.Dtos.SqlQueries;
@@ -16,4 +18,6 @@ public interface IHttpHandler : IDisposable
     Task<SqlViewerDocsResponseDto> GetDbProviderDocs(VelocipedeDatabaseType databaseType);
 
     Task<QueryBuilderResponseDto> GetCreateTableQueryAsync(CreateTableRequestDto requestDto);
+
+    Task<CommonResponseDto> VerifyUserByPasswordAsync(LoginRequestDto requestDto);
 }

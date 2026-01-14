@@ -31,8 +31,11 @@ public partial class App : Application
             {
                 MainWindow mainWindow = new();
                 mainWindow.Show();
-                loginWindow.Close();
+
+                MainWindow = mainWindow;
                 ShutdownMode = ShutdownMode.OnMainWindowClose;
+                
+                loginWindow.Close();
             }
             else
             {
