@@ -23,6 +23,7 @@ public static class Program
         builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
         builder.Services.AddScoped<IQueryBuilderService, QueryBuilderService>();
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+        builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IApiGatewayDataSeeder, ApiGatewayDataSeeder>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 

@@ -2,7 +2,7 @@
 
 namespace SqlViewer.ApiGateway.Services.Implementations;
 
-public class EncryptionService(IDataProtectionProvider provider) : IEncryptionService
+public sealed class EncryptionService(IDataProtectionProvider provider) : IEncryptionService
 {
     private readonly IDataProtector _protector = provider.CreateProtector("sqlviewer.v1");
 

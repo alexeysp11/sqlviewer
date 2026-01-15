@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.Auth;
@@ -8,9 +9,10 @@ namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public sealed class AuthApiController(ILogger<MetadataApiController> logger) : ControllerBase
+public sealed class AuthApiController(ILogger<MetadataApiController> logger, IAuthService authService) : ControllerBase
 {
     private readonly ILogger<MetadataApiController> _logger = logger;
+    private readonly IAuthService _authService = authService;
 
     [HttpPost]
     [Route(RestApiPaths.Auth.Login)]
@@ -20,7 +22,7 @@ public sealed class AuthApiController(ILogger<MetadataApiController> logger) : C
         {
             bool success = request.AuthType switch
             {
-                SqlViewerAuthType.ByPassword => request.Username == "admin" && request.Password == "admin",
+                SqlViewerAuthType.ByPassword => await _authService.VilidateByPasswordAsync(request.Username, request.Password),
                 _ => throw new NotSupportedException($"Specified authentication type is not supported: {request.AuthType}")
             };
             if (!success)

@@ -1,3 +1,3 @@
 ﻿namespace SqlViewer.ViewModels;
 
-public class ColumnViewModel : TreeItemViewModel { }
+public sealed class ColumnViewModel : TreeItemViewModel { }

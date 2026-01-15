@@ -3,7 +3,7 @@ using SqlViewer.Common.Dtos.Metadata;
 
 namespace SqlViewer.ViewModels;
 
-public class TableViewModel : TreeItemViewModel
+public sealed class TableViewModel : TreeItemViewModel
 {
     private bool _isExpanded;
     public TableViewModel()

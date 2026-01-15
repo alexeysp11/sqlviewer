@@ -8,7 +8,7 @@ using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.ApiGateway.DataSeeding;
 
-public class ApiGatewayDataSeeder(
+public sealed class ApiGatewayDataSeeder(
     ApiGatewayDbContext context,
     IConfiguration config,
     IEncryptionService encryptionService,
