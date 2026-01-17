@@ -30,8 +30,8 @@ The classic method, in which the full connection string is passed in the input f
 
 A mechanism for accessing databases through named profiles configured on the server. A special tag is used instead of the donnection string:
 - `[DataSource Id="1"]`: search by unique identifier.
-- `[DataSource Id="1" Name="pg-metadata-db"]`: search by user friendly name.
-- `[DataSource Name="pg-metadata-db"]`: search by both parameters (strict matching).
+- `[DataSource Name="pg-metadata-db"]`: search by user friendly name.
+- `[DataSource Id="1" Name="pg-metadata-db"]`: search by both parameters (strict matching).
 
 The advantages of this approach:
 - **Security**: The user and client application don't see passwords or server addresses. All sensitive data is stored on the ASP.NET Core server side.
