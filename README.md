@@ -16,13 +16,33 @@ Since this system is based on WPF and Web API, it's worth noting that microservi
 
 ## Features
 
-Using this app, you can do the following things:
+### Connecting to databases
 
-- Write and execute SQL queries:
+The application supports two methods for identifying the target database for query execution:
+- Using an explicit connection string
+- Using data sources
+
+#### Using an explicit connection string
+
+The classic method, in which the full connection string is passed in the input field (for example, for PostgreSQL or SQLite). This method allows you to quickly connect to any available database without prior configuration.
+
+#### Using data sources
+
+A mechanism for accessing databases through named profiles configured on the server. A special tag is used instead of the donnection string:
+- `[DataSource Id="1"]`: search by unique identifier.
+- `[DataSource Id="1" Name="pg-metadata-db"]`: search by user friendly name.
+- `[DataSource Name="pg-metadata-db"]`: search by both parameters (strict matching).
+
+The advantages of this approach:
+- **Security**: The user and client application don't see passwords or server addresses. All sensitive data is stored on the ASP.NET Core server side.
+- **Convenience**: Instead of remembering complex connection strings, human-readable aliases are used (e.g., "Warehouse 2026," "Analytics DB").
+- **Flexibility**: If the database address changes, the administrator simply updates it on the server—clients don't need to change settings in their requests.
+
+### Write and execute SQL queries:
 
 ![ui_query](docs/img/ui_query.png)
 
-- Transfer data from one database to another:
+### Transfer data from one database to another:
 
 ![ui_etl_1](docs/img/ui_etl_1.png)
 

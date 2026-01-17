@@ -5,7 +5,7 @@ namespace SqlViewer.ApiGateway.Services;
 
 public interface IQueryBuilderService
 {
-    string GetCreateTableQuery(
+    Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
         string tableName,
         IEnumerable<VelocipedeColumnInfo> columnInfos);

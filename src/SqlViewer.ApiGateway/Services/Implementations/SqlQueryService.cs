@@ -10,13 +10,13 @@ public sealed class SqlQueryService(IDbConnectionFactory dbConnectionFactory) : 
 {
     private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
 
-    public Task CreateTableAsync(
+    public async Task CreateTableAsync(
         VelocipedeDatabaseType databaseType,
         string connectionString,
         string tableName,
         IEnumerable<VelocipedeColumnInfo> columnInfos)
     {
-        using IVelocipedeDbConnection dbConnection = _dbConnectionFactory.GetDbConnection(
+        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
 
@@ -29,40 +29,40 @@ public sealed class SqlQueryService(IDbConnectionFactory dbConnectionFactory) : 
         {
             throw new InvalidOperationException("Query builder generated empty SQL");
         }
-        return dbConnection.ExecuteAsync(sql);
+        await dbConnection.ExecuteAsync(sql);
     }
 
-    public Task DropTableAsync(
+    public async Task DropTableAsync(
         VelocipedeDatabaseType databaseType,
         string connectionString,
         string tableName)
     {
-        using IVelocipedeDbConnection dbConnection = _dbConnectionFactory.GetDbConnection(
+        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
         string sql = $@"drop table ""{tableName}""";
-        return dbConnection.ExecuteAsync(sql);
+        await dbConnection.ExecuteAsync(sql);
     }
 
-    public Task ExecuteAsync(
+    public async Task ExecuteAsync(
         VelocipedeDatabaseType databaseType,
         string connectionString,
         string query)
     {
-        using IVelocipedeDbConnection dbConnection = _dbConnectionFactory.GetDbConnection(
+        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
-        return dbConnection.ExecuteAsync(query);
+        await dbConnection.ExecuteAsync(query);
     }
 
-    public Task<List<dynamic>> QueryAsync(
+    public async Task<List<dynamic>> QueryAsync(
         VelocipedeDatabaseType databaseType,
         string connectionString,
         string query)
     {
-        using IVelocipedeDbConnection dbConnection = _dbConnectionFactory.GetDbConnection(
+        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
-        return dbConnection.QueryAsync<dynamic>(query);
+        return await dbConnection.QueryAsync<dynamic>(query);
     }
 }

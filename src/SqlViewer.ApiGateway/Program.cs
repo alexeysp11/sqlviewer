@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.ApiGateway.DataSeeding;
-using SqlViewer.ApiGateway.DbContexts;
+using SqlViewer.ApiGateway.Data.DataSeeding;
+using SqlViewer.ApiGateway.Data.DbContexts;
 using SqlViewer.ApiGateway.Factories;
+using SqlViewer.ApiGateway.Factories.Implementations;
+using SqlViewer.ApiGateway.Repositories;
+using SqlViewer.ApiGateway.Repositories.Implementations;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.ApiGateway.Services.Implementations;
 using SqlViewer.Common.Models;
@@ -25,6 +28,7 @@ public static class Program
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
         builder.Services.AddScoped<IApiGatewayDataSeeder, ApiGatewayDataSeeder>();
+        builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 
         builder.Services.AddDataProtection();

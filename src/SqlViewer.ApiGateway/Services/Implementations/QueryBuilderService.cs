@@ -10,12 +10,12 @@ public sealed class QueryBuilderService(IDbConnectionFactory dbConnectionFactory
 {
     private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
 
-    public string GetCreateTableQuery(
+    public async Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
         string tableName,
         IEnumerable<VelocipedeColumnInfo> columnInfos)
     {
-        using IVelocipedeDbConnection dbConnection = _dbConnectionFactory.GetDbConnection(databaseType);
+        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(databaseType);
 
         IVelocipedeQueryBuilder queryBuilder = dbConnection.GetQueryBuilder();
         string? sql = queryBuilder

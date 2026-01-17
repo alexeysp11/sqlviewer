@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.ApiGateway.DataSeeding;
+﻿namespace SqlViewer.ApiGateway.Data.DataSeeding;
 
 public interface IApiGatewayDataSeeder
 {

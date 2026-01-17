@@ -95,8 +95,8 @@ public sealed class GetColumnsTests
     {
         Mock<IDbConnectionFactory> factoryMock = new();
         factoryMock
-            .Setup(x => x.GetDbConnection(dbConnection.DatabaseType, It.IsAny<string>()))
-            .Returns(dbConnection);
+            .Setup(x => x.GetDbConnectionAsync(dbConnection.DatabaseType, It.IsAny<string>()))
+            .ReturnsAsync(dbConnection);
         return factoryMock.Object;
     }
     #endregion  // Test cases

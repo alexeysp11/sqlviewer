@@ -101,7 +101,7 @@
                     <TabItem Header="Result">
                         <uc:DbGrid ItemsSource="{Binding QueryResults}"
                             MinHeight="200"
-                            MinWidth="760"
+                            MinWidth="635"
                             Height="200"
                             Width="Auto"
                             IsReadOnly="True"

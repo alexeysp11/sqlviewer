@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.ApiGateway.DbContexts;
+using SqlViewer.ApiGateway.Data.DbContexts;
 using SqlViewer.Common.Models;
 
 namespace SqlViewer.ApiGateway.Services.Implementations;

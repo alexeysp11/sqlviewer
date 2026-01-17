@@ -19,11 +19,11 @@ public sealed class QueryBuilderApiController(
 
     [HttpPost]
     [Route(RestApiPaths.QueryBuilder.CreateTable)]
-    public QueryBuilderResponseDto GetCreateTableQuery([FromBody] CreateTableRequestDto request)
+    public async Task<QueryBuilderResponseDto> GetCreateTableQueryAsync([FromBody] CreateTableRequestDto request)
     {
         try
         {
-            string query = _queryBuilderService.GetCreateTableQuery(
+            string query = await _queryBuilderService.GetCreateTableQueryAsync(
                 databaseType: request.DatabaseType,
                 tableName: request.TableName,
                 columnInfos: request.Columns.GetVelocipedeColumnInfos(request.DatabaseType));

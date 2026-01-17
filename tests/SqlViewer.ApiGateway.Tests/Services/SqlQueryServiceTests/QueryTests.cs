@@ -72,8 +72,8 @@ public sealed class QueryTests
     {
         Mock<IDbConnectionFactory> factoryMock = new();
         factoryMock
-            .Setup(x => x.GetDbConnection(It.IsAny<VelocipedeDatabaseType>(), It.IsAny<string>()))
-            .Returns(dbConnection);
+            .Setup(x => x.GetDbConnectionAsync(It.IsAny<VelocipedeDatabaseType>(), It.IsAny<string>()))
+            .ReturnsAsync(dbConnection);
         return factoryMock.Object;
     }
     #endregion  // Test cases

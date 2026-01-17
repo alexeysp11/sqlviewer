@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Models;
 
-namespace SqlViewer.ApiGateway.DbContexts;
+namespace SqlViewer.ApiGateway.Data.DbContexts;
 
 public sealed class ApiGatewayDbContext(DbContextOptions<ApiGatewayDbContext> options) : DbContext(options)
 {

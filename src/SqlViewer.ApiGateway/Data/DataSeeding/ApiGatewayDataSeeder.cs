@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.ApiGateway.DbContexts;
+using SqlViewer.ApiGateway.Data.DbContexts;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Models;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
-namespace SqlViewer.ApiGateway.DataSeeding;
+namespace SqlViewer.ApiGateway.Data.DataSeeding;
 
 public sealed class ApiGatewayDataSeeder(
     ApiGatewayDbContext context,

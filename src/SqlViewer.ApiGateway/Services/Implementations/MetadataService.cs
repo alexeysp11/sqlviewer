@@ -9,19 +9,22 @@ public sealed class MetadataService(IDbConnectionFactory dbConnectionFactory) : 
 {
     private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
 
-    public Task<List<VelocipedeNativeColumnInfo>> GetColumnsAsync(VelocipedeDatabaseType databaseType, string connectionString, string tableName)
+    public async Task<List<VelocipedeNativeColumnInfo>> GetColumnsAsync(
+        VelocipedeDatabaseType databaseType,
+        string connectionString,
+        string tableName)
     {
-        using IVelocipedeDbConnection dbConnection = _dbConnectionFactory.GetDbConnection(
+        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
-        return dbConnection.GetColumnsAsync(tableName);
+        return await dbConnection.GetColumnsAsync(tableName);
     }
 
-    public Task<List<string>> GetTablesAsync(VelocipedeDatabaseType databaseType, string connectionString)
+    public async Task<List<string>> GetTablesAsync(VelocipedeDatabaseType databaseType, string connectionString)
     {
-        using IVelocipedeDbConnection dbConnection = _dbConnectionFactory.GetDbConnection(
+        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
-        return dbConnection.GetTablesInDbAsync();
+        return await dbConnection.GetTablesInDbAsync();
     }
 }
