@@ -9,6 +9,9 @@ public static partial class DataSourceParser
     /// </summary>
     private static readonly Regex DataSourceRegex = DataSourceParseRegex();
 
+    private const string IdRegexGroupName = "id";
+    private const string NameRegexGroupName = "name";
+
     public static DataSourceParseInfo? Parse(string? input)
     {
         if (string.IsNullOrEmpty(input))
@@ -18,16 +21,14 @@ public static partial class DataSourceParser
         if (!match.Success)
             return null;
 
-        bool isIntId = int.TryParse(match.Groups["id"].Value, out int id);
-        string? name = match.Groups["name"].Value;
-
+        string? dataSourceName = match.Groups[NameRegexGroupName].Value;
         return new DataSourceParseInfo
         {
-            Id = isIntId ? id : null,
-            Name = string.IsNullOrEmpty(name) ? null : name
+            Id = int.TryParse(match.Groups[IdRegexGroupName].Value, out int dataSourceId) ? dataSourceId : null,
+            Name = string.IsNullOrEmpty(dataSourceName) ? null : dataSourceName
         };
     }
 
-    [GeneratedRegex(pattern: @"\[DataSource\s+(?:Id=""(?<id>[^""]+)""|Name=""(?<name>[^""]+)""|\s+)+\]", options: RegexOptions.Compiled | RegexOptions.CultureInvariant)]
+    [GeneratedRegex(pattern: $@"\[DataSource\s+(?:Id=""(?<{IdRegexGroupName}>[^""]+)""|Name=""(?<{NameRegexGroupName}>[^""]+)""|\s+)+\]", options: RegexOptions.Compiled | RegexOptions.CultureInvariant)]
     private static partial Regex DataSourceParseRegex();
 }
