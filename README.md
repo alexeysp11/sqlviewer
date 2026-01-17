@@ -36,7 +36,7 @@ A mechanism for accessing databases through named profiles configured on the ser
 The advantages of this approach:
 - **Security**: The user and client application don't see passwords or server addresses. All sensitive data is stored on the ASP.NET Core server side.
 - **Convenience**: Instead of remembering complex connection strings, human-readable aliases are used (e.g., "Warehouse 2026," "Analytics DB").
-- **Flexibility**: If the database address changes, the administrator simply updates it on the server—clients don't need to change settings in their requests.
+- **Flexibility**: If the database address changes, the administrator simply updates it on the server, and clients don't need to change settings in their requests.
 
 ### Write and execute SQL queries:
 
