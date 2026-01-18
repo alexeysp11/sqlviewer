@@ -4,10 +4,6 @@
 obj
 bin
 
-packages
-
-SqlViewer.lnk
+.env
 
 *.csproj.user
-
-.env

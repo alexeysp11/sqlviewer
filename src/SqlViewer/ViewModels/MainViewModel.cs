@@ -15,6 +15,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(QuerySqlCommand))]
+    [NotifyCanExecuteChangedFor(nameof(ConnectCommand))]
     private string _connectionString;
 
     [ObservableProperty]
@@ -49,7 +50,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
         QuerySqlCommand = new AsyncRelayCommand(QuerySqlAsync, CanExecuteSql);
         ClearLogsCommand = new RelayCommand(ClearLogs);
-        ConnectCommand = new AsyncRelayCommand(RefreshMetadataAsync);
+        ConnectCommand = new AsyncRelayCommand(RefreshMetadataAsync, CanExecuteConnect);
         ExitCommand = new RelayCommand(Exit);
         OpenEtlCommand = new RelayCommand(OpenEtl);
         HelpCommand = new AsyncRelayCommand<string>(GetHelpAsync);
@@ -175,6 +176,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
     };
 
     private bool CanExecuteSql() => !string.IsNullOrWhiteSpace(SqlQuery) && !string.IsNullOrWhiteSpace(ConnectionString);
+    private bool CanExecuteConnect() => !string.IsNullOrWhiteSpace(ConnectionString);
 
     public void Dispose() => _sqlApiService?.Dispose();
 }
