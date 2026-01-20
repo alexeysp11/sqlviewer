@@ -1,40 +1,78 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Enums;
 
 namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
-[Route("[controller]")]
-public sealed class AuthApiController(ILogger<MetadataApiController> logger, IAuthService authService) : ControllerBase
+public sealed class AuthApiController(
+    ILogger<MetadataApiController> logger,
+    IAuthService authService) : ControllerBase
 {
-    private readonly ILogger<MetadataApiController> _logger = logger;
-    private readonly IAuthService _authService = authService;
-
     [HttpPost]
     [Route(RestApiPaths.Auth.Login)]
-    public async Task<CommonResponseDto> Login([FromBody] LoginRequestDto request)
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
     {
         try
         {
             bool success = request.AuthType switch
             {
-                SqlViewerAuthType.ByPassword => await _authService.VilidateByPasswordAsync(request.Username, request.Password),
+                SqlViewerAuthType.ByPassword => await authService.VilidateByPasswordAsync(request.Username, request.Password),
                 _ => throw new NotSupportedException($"Specified authentication type is not supported: {request.AuthType}")
             };
             if (!success)
             {
-                throw new InvalidOperationException("Authentication failed");
+                return Unauthorized("Authentication failed");
             }
-            return new() { Status = SqlOperationStatus.Success, };
+
+            LoginResponseDto response = await authService.CreateSessionAsync(request.Username);
+
+            return Ok(response);
         }
         catch (Exception ex)
         {
-            _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            logger.LogError("{Message}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPost]
+    [Route(RestApiPaths.Auth.LoginAsGuest)]
+    public IActionResult LoginGuest()
+    {
+        try
+        {
+            LoginResponseDto response = authService.CreateGuestSession();
+            return Ok(response);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("{Message}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
+    }
+
+    [HttpPost]
+    [Route(RestApiPaths.Auth.RefreshAccessToken)]
+    public async Task<IActionResult> RefreshAccessToken([FromBody] RefreshRequest request)
+    {
+        try
+        {
+            LoginResponseDto response = await authService.RefreshSessionAsync(request.RefreshToken);
+            return Ok(response);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            logger.LogWarning("{Message}", ex.Message);
+            return StatusCode(StatusCodes.Status401Unauthorized, ex.Message);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError("{Message}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 }

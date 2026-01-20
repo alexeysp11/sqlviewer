@@ -1,5 +1,8 @@
+﻿using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using SqlViewer.ApiGateway.Data.DataSeeding;
 using SqlViewer.ApiGateway.Data.DbContexts;
 using SqlViewer.ApiGateway.Factories;
@@ -27,6 +30,7 @@ public static class Program
         builder.Services.AddScoped<IQueryBuilderService, QueryBuilderService>();
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
         builder.Services.AddScoped<IAuthService, AuthService>();
+        builder.Services.AddScoped<ITokenService, TokenService>();
         builder.Services.AddScoped<IApiGatewayDataSeeder, ApiGatewayDataSeeder>();
         builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
@@ -36,6 +40,19 @@ public static class Program
         builder.Services.AddDbContext<ApiGatewayDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString("MetadataConnection"))
         );
+
+        string issuerSigningKey = builder.Configuration.GetValue<string>("Jwt:IssuerSigningKey")
+            ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options => {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey))
+                };
+            });
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();

@@ -11,6 +11,8 @@ public static class RestApiPaths
     {
         private const string Base = $"{ApiBase}/auth";
         public const string Login = $"{Base}/login";
+        public const string LoginAsGuest = $"{Base}/login/guest";
+        public const string RefreshAccessToken = $"{Base}/refresh/access-token";
     }
 
     public static class Sql

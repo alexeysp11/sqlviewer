@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SqlViewer.ApiGateway.Data.DbContexts;
 using SqlViewer.ApiGateway.Services;
+using SqlViewer.Common.Enums;
 using SqlViewer.Common.Models;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
@@ -48,7 +49,8 @@ public sealed class ApiGatewayDataSeeder(
             admin = new()
             {
                 Username = adminUsername,
-                PasswordHash = passwordHasher.HashPassword(null!, adminPassword)
+                PasswordHash = passwordHasher.HashPassword(null!, adminPassword),
+                Role = SqlViewerAuthRole.Admin,
             };
             context.Users.Add(admin);
         }

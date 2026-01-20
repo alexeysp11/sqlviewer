@@ -8,4 +8,5 @@ public enum SqlOperationStatus
     None = 0,
     Success = 1,
     Failed = 2,
+    Unauthorized = 3,
 }
