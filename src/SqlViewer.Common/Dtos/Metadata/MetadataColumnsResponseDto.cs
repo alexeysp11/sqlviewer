@@ -1,4 +1,5 @@
-﻿using SqlViewer.Common.Extensions;
+﻿using System.Text.Json.Serialization;
+using SqlViewer.Common.Extensions;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
@@ -9,8 +10,15 @@ namespace SqlViewer.Common.Dtos.Metadata;
 /// </summary>
 public sealed class MetadataColumnsResponseDto : BaseSqlViewerResponseDto
 {
+    [JsonPropertyName("databaseType")]
     public required VelocipedeDatabaseType DatabaseType { get; init; }
+
+    [JsonPropertyName("tableName")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public required string? TableName { get; init; }
+
+    [JsonPropertyName("columns")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public IEnumerable<ColumnInfoResponseDto>? Columns { get; init; }
 
     /// <summary>

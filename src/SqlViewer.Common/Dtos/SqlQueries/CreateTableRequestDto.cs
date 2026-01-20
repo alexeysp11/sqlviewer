@@ -1,4 +1,5 @@
-﻿using SqlViewer.Common.Dtos.Metadata;
+﻿using System.Text.Json.Serialization;
+using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Extensions;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
@@ -9,7 +10,10 @@ namespace SqlViewer.Common.Dtos.SqlQueries;
 /// </summary>
 public sealed class CreateTableRequestDto : BaseSqlViewerRequestDto
 {
+    [JsonPropertyName("tableName")]
     public required string TableName { get; init; }
+
+    [JsonPropertyName("columns")]
     public required IEnumerable<ColumnInfoDto> Columns { get; init; }
 
     /// <summary>
