@@ -1,5 +1,4 @@
 ﻿using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.Docs;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Dtos.QueryBuilder;
@@ -19,5 +18,6 @@ public interface IHttpHandler : IDisposable
 
     Task<QueryBuilderResponseDto> GetCreateTableQueryAsync(CreateTableRequestDto requestDto);
 
-    Task<CommonResponseDto> VerifyUserByPasswordAsync(LoginRequestDto requestDto);
+    Task<LoginResponseDto> VerifyUserByPasswordAsync(LoginRequestDto requestDto);
+    Task<LoginResponseDto> GuestLoginAsync();
 }

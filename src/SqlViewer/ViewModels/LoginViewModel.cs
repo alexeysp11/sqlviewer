@@ -56,9 +56,29 @@ public partial class LoginViewModel : ObservableObject, IDisposable
     }
 
     [RelayCommand]
-    private void GuestLogin()
+    private async Task GuestLoginAsync()
     {
-        LoginResultRequested?.Invoke(true);
+        IsBusy = true;
+        try
+        {
+            bool isAuthenticated = await _authApiService.GuestLoginAsync();
+            if (isAuthenticated)
+            {
+                LoginResultRequested?.Invoke(true);
+            }
+            else
+            {
+                ShowErrorRequested?.Invoke("Incorrect credentials");
+            }
+        }
+        catch (Exception ex)
+        {
+            ShowErrorRequested?.Invoke(ex.Message);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     public void Dispose() => _authApiService?.Dispose();

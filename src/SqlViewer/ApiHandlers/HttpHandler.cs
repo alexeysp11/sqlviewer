@@ -10,7 +10,6 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 using SqlViewer.Common.Dtos.QueryBuilder;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Dtos;
 
 namespace SqlViewer.ApiHandlers;
 
@@ -127,7 +126,7 @@ public sealed class HttpHandler : IHttpHandler
         return responseDto;
     }
 
-    public async Task<CommonResponseDto> VerifyUserByPasswordAsync(LoginRequestDto requestDto)
+    public async Task<LoginResponseDto> VerifyUserByPasswordAsync(LoginRequestDto requestDto)
     {
         UriBuilder uriBuilder = new()
         {
@@ -141,7 +140,26 @@ public sealed class HttpHandler : IHttpHandler
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        CommonResponseDto responseDto = JsonConvert.DeserializeObject<CommonResponseDto>(jsonResponse);
+        LoginResponseDto responseDto = JsonConvert.DeserializeObject<LoginResponseDto>(jsonResponse);
+
+        return responseDto;
+    }
+
+    public async Task<LoginResponseDto> GuestLoginAsync()
+    {
+        UriBuilder uriBuilder = new()
+        {
+            Scheme = App.AppSettings.ServerScheme,
+            Host = App.AppSettings.ServerHost,
+            Port = App.AppSettings.ServerPort,
+            Path = RestApiPaths.Auth.LoginAsGuest,
+        };
+        string url = uriBuilder.Uri.ToString();
+
+        HttpResponseMessage response = await _httpClient.PostAsync(url, null);
+        response.EnsureSuccessStatusCode();
+        string jsonResponse = await response.Content.ReadAsStringAsync();
+        LoginResponseDto responseDto = JsonConvert.DeserializeObject<LoginResponseDto>(jsonResponse);
 
         return responseDto;
     }
