@@ -23,12 +23,18 @@ public sealed class HttpHandler : IHttpHandler
     }
 
     private readonly HttpClient _httpClient;
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
 
     public HttpHandler()
     {
         _httpClient = new()
         {
             Timeout = TimeSpan.FromSeconds(App.AppSettings.HttpClientTimeoutSeconds)
+        };
+
+        _jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
         };
     }
 
@@ -151,10 +157,7 @@ public sealed class HttpHandler : IHttpHandler
             string errorMessage;
             try
             {
-                var problem = JsonSerializer.Deserialize<ProblemDetailsResponse>(jsonResponse, new JsonSerializerOptions
-                {
-                    PropertyNameCaseInsensitive = true
-                });
+                ProblemDetailsResponse problem = JsonSerializer.Deserialize<ProblemDetailsResponse>(jsonResponse, _jsonSerializerOptions);
                 errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
             }
             catch
@@ -179,11 +182,23 @@ public sealed class HttpHandler : IHttpHandler
         string url = uriBuilder.Uri.ToString();
 
         HttpResponseMessage response = await _httpClient.PostAsync(url, null);
-        response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        LoginResponseDto responseDto = JsonSerializer.Deserialize<LoginResponseDto>(jsonResponse);
+        if (!response.IsSuccessStatusCode)
+        {
+            string errorMessage;
+            try
+            {
+                ProblemDetailsResponse problem = JsonSerializer.Deserialize<ProblemDetailsResponse>(jsonResponse, _jsonSerializerOptions);
+                errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
+            }
+            catch
+            {
+                errorMessage = jsonResponse;
+            }
 
-        return responseDto;
+            throw new Exception(errorMessage);
+        }
+        return JsonSerializer.Deserialize<LoginResponseDto>(jsonResponse);
     }
 
     public void Dispose() => _httpClient?.Dispose();
