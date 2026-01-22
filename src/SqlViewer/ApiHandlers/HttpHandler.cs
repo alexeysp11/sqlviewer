@@ -1,20 +1,27 @@
-﻿using Newtonsoft.Json;
+﻿using SqlViewer.Common.Constants;
+using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Dtos.Docs;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Common.Dtos.QueryBuilder;
 using System.Collections.Specialized;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
 using System.Web;
 using VelocipedeUtils.Shared.DbOperations.Enums;
-using SqlViewer.Common.Dtos.QueryBuilder;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.Auth;
 
 namespace SqlViewer.ApiHandlers;
 
 public sealed class HttpHandler : IHttpHandler
 {
+    private class ProblemDetailsResponse
+    {
+        public string Title { get; set; }
+        public string Detail { get; set; }
+        public int? Status { get; set; }
+    }
+
     private readonly HttpClient _httpClient;
 
     public HttpHandler()
@@ -39,7 +46,7 @@ public sealed class HttpHandler : IHttpHandler
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        SqlQueryResponseDto responseDto = JsonConvert.DeserializeObject<SqlQueryResponseDto>(jsonResponse);
+        SqlQueryResponseDto responseDto = JsonSerializer.Deserialize<SqlQueryResponseDto>(jsonResponse);
 
         return responseDto;
     }
@@ -64,7 +71,7 @@ public sealed class HttpHandler : IHttpHandler
         HttpResponseMessage response = await _httpClient.GetAsync(url);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        SqlViewerDocsResponseDto responseDto = JsonConvert.DeserializeObject<SqlViewerDocsResponseDto>(jsonResponse);
+        SqlViewerDocsResponseDto responseDto = JsonSerializer.Deserialize<SqlViewerDocsResponseDto>(jsonResponse);
 
         return responseDto;
     }
@@ -83,7 +90,7 @@ public sealed class HttpHandler : IHttpHandler
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        MetadataColumnsResponseDto responseDto = JsonConvert.DeserializeObject<MetadataColumnsResponseDto>(jsonResponse);
+        MetadataColumnsResponseDto responseDto = JsonSerializer.Deserialize<MetadataColumnsResponseDto>(jsonResponse);
 
         return responseDto;
     }
@@ -102,7 +109,7 @@ public sealed class HttpHandler : IHttpHandler
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        MetadataTablesResponseDto responseDto = JsonConvert.DeserializeObject<MetadataTablesResponseDto>(jsonResponse);
+        MetadataTablesResponseDto responseDto = JsonSerializer.Deserialize<MetadataTablesResponseDto>(jsonResponse);
 
         return responseDto;
     }
@@ -121,7 +128,7 @@ public sealed class HttpHandler : IHttpHandler
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        QueryBuilderResponseDto responseDto = JsonConvert.DeserializeObject<QueryBuilderResponseDto>(jsonResponse);
+        QueryBuilderResponseDto responseDto = JsonSerializer.Deserialize<QueryBuilderResponseDto>(jsonResponse);
 
         return responseDto;
     }
@@ -138,11 +145,26 @@ public sealed class HttpHandler : IHttpHandler
         string url = uriBuilder.Uri.ToString();
 
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
-        response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        LoginResponseDto responseDto = JsonConvert.DeserializeObject<LoginResponseDto>(jsonResponse);
+        if (!response.IsSuccessStatusCode)
+        {
+            string errorMessage;
+            try
+            {
+                var problem = JsonSerializer.Deserialize<ProblemDetailsResponse>(jsonResponse, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+                errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
+            }
+            catch
+            {
+                errorMessage = jsonResponse;
+            }
 
-        return responseDto;
+            throw new Exception(errorMessage);
+        }
+        return JsonSerializer.Deserialize<LoginResponseDto>(jsonResponse);
     }
 
     public async Task<LoginResponseDto> GuestLoginAsync()
@@ -159,7 +181,7 @@ public sealed class HttpHandler : IHttpHandler
         HttpResponseMessage response = await _httpClient.PostAsync(url, null);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        LoginResponseDto responseDto = JsonConvert.DeserializeObject<LoginResponseDto>(jsonResponse);
+        LoginResponseDto responseDto = JsonSerializer.Deserialize<LoginResponseDto>(jsonResponse);
 
         return responseDto;
     }

@@ -16,7 +16,7 @@ public sealed class AuthService(
     public async Task<bool> VilidateByPasswordAsync(string username, string? password)
     {
         if (string.IsNullOrEmpty(username))
-            throw new ArgumentNullException(nameof(username));
+            throw new InvalidOperationException($"Parameter {nameof(username)} should be specified");
 
         User? user = await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Username == username);
         if (user is null)
