@@ -4,7 +4,7 @@ using SqlViewer.Common.Enums;
 
 namespace SqlViewer.Services.Implementations;
 
-public sealed class AuthApiService(IHttpHandler httpHandler) : IAuthApiService
+public sealed class AuthApiService(IAuthHttpHandler httpHandler) : IAuthApiService
 {
     public async Task<bool> VerifyUserByPasswordAsync(string username, string password)
     {

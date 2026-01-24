@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SqlViewer.ApiHandlers;
+using SqlViewer.ApiHandlers.Implementations;
 using SqlViewer.Models;
 using SqlViewer.Services;
 using SqlViewer.Services.Implementations;
@@ -30,25 +31,31 @@ public partial class App : Application
         ServiceCollection services = new();
 
         // 1. Services.
-        services.AddSingleton<IHttpHandler, HttpHandler>();
         services.AddSingleton<IAuthApiService, AuthApiService>();
-        services.AddSingleton<ISqlApiService, SqlApiService>();
         services.AddSingleton<IDocsApiService, DocsApiService>();
         services.AddSingleton<IMetadataApiService, MetadataApiService>();
         services.AddSingleton<IQueryBuilderApiService, QueryBuilderApiService>();
+        services.AddSingleton<ISqlApiService, SqlApiService>();
         services.AddSingleton<IWindowService, WindowService>();
+
+        // 2. HTTP handlers.
+        services.AddSingleton<IAuthHttpHandler, AuthHttpHandler>();
+        services.AddSingleton<IDocsHttpHandler, DocsHttpHandler>();
+        services.AddSingleton<IMetadataHttpHandler, MetadataHttpHandler>();
+        services.AddSingleton<IQueryBuilderHttpHandler, QueryBuilderHttpHandler>();
+        services.AddSingleton<ISqlHttpHandler, SqlHttpHandler>();
 
         // Register HttpClient with base address.
         //services.AddHttpClient("MyApi", client => {
         //    client.BaseAddress = new Uri("https://api.example.com/");
         //});
 
-        // 2. ViewModels.
+        // 3. ViewModels.
         services.AddTransient<LoginViewModel>();
         services.AddSingleton<MainViewModel>();
         services.AddTransient<EtlViewModel>();
 
-        // 3. Views.
+        // 4. Views.
         services.AddTransient<LoginWindow>();
         services.AddSingleton<MainWindow>();
         services.AddTransient<EtlWizardWindow>();

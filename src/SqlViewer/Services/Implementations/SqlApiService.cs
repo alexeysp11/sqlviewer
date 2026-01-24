@@ -7,10 +7,8 @@ using VelocipedeUtils.Shared.DbOperations.Models;
 
 namespace SqlViewer.Services.Implementations;
 
-public sealed class SqlApiService(IHttpHandler httpHandler) : ISqlApiService
+public sealed class SqlApiService(ISqlHttpHandler httpHandler) : ISqlApiService
 {
-    private readonly IHttpHandler _httpHandler = httpHandler;
-
     public async Task<DataTable> QueryAsync(VelocipedeDatabaseType databaseType, string connectionString, string query)
     {
         SqlQueryRequestDto requestDto = new()
@@ -20,7 +18,7 @@ public sealed class SqlApiService(IHttpHandler httpHandler) : ISqlApiService
             Query = query
         };
 
-        SqlQueryResponseDto responseDto = await _httpHandler.ExecuteQueryAsync(requestDto);
+        SqlQueryResponseDto responseDto = await httpHandler.ExecuteQueryAsync(requestDto);
 
         if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
             throw new InvalidOperationException("Unable to get response DTO");
@@ -30,5 +28,5 @@ public sealed class SqlApiService(IHttpHandler httpHandler) : ISqlApiService
         return responseDto.QueryResult.ToDataTable();
     }
 
-    public void Dispose() => _httpHandler.Dispose();
+    public void Dispose() => httpHandler?.Dispose();
 }

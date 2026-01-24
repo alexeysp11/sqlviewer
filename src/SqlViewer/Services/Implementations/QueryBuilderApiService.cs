@@ -7,10 +7,8 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;
 
-public sealed class QueryBuilderApiService(IHttpHandler httpHandler) : IQueryBuilderApiService
+public sealed class QueryBuilderApiService(IQueryBuilderHttpHandler httpHandler) : IQueryBuilderApiService
 {
-    private readonly IHttpHandler _httpHandler = httpHandler;
-
     public async Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
         string tableName,
@@ -24,7 +22,7 @@ public sealed class QueryBuilderApiService(IHttpHandler httpHandler) : IQueryBui
             Columns = columnInfos
         };
 
-        QueryBuilderResponseDto responseDto = await _httpHandler.GetCreateTableQueryAsync(requestDto);
+        QueryBuilderResponseDto responseDto = await httpHandler.GetCreateTableQueryAsync(requestDto);
 
         if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
             throw new InvalidOperationException("Unable to get response DTO");
@@ -36,5 +34,5 @@ public sealed class QueryBuilderApiService(IHttpHandler httpHandler) : IQueryBui
         return responseDto.Query;
     }
 
-    public void Dispose() => _httpHandler?.Dispose();
+    public void Dispose() => httpHandler?.Dispose();
 }

@@ -43,7 +43,7 @@ public sealed class QueryTests
     public async Task QueryAsync_StatusIsNone_ThrowsInvalidOperationException()
     {
         // Arrange
-        Mock<IHttpHandler> mockClient = new();
+        Mock<ISqlHttpHandler> mockClient = new();
         mockClient
             .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
             .ReturnsAsync(new SqlQueryResponseDto
@@ -66,7 +66,7 @@ public sealed class QueryTests
     {
         // Arrange
         SqlQueryResponseDto? responseDto = null;
-        Mock<IHttpHandler> mockClient = new();
+        Mock<ISqlHttpHandler> mockClient = new();
         mockClient
             .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
             .ReturnsAsync(responseDto);
@@ -85,7 +85,7 @@ public sealed class QueryTests
     public async Task QueryAsync_StatusIsFailed_ThrowsInvalidOperationException()
     {
         // Arrange
-        Mock<IHttpHandler> mockClient = new();
+        Mock<ISqlHttpHandler> mockClient = new();
         mockClient
             .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
             .ReturnsAsync(new SqlQueryResponseDto
@@ -109,7 +109,7 @@ public sealed class QueryTests
     public async Task QueryAsync_StatusIsSuccess(SqlQueryResponseDto responseDto)
     {
         // Arrange.
-        Mock<IHttpHandler> mockClient = new();
+        Mock<ISqlHttpHandler> mockClient = new();
         mockClient
             .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
             .ReturnsAsync(responseDto);

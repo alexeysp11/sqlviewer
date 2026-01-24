@@ -5,13 +5,11 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;
 
-public sealed class DocsApiService(IHttpHandler httpHandler) : IDocsApiService
+public sealed class DocsApiService(IDocsHttpHandler httpHandler) : IDocsApiService
 {
-    private readonly IHttpHandler _httpHandler = httpHandler;
-
     public async Task<string> GetDbProviderDocs(VelocipedeDatabaseType databaseType)
     {
-        SqlViewerDocsResponseDto responseDto = await _httpHandler.GetDbProviderDocs(databaseType);
+        SqlViewerDocsResponseDto responseDto = await httpHandler.GetDbProviderDocs(databaseType);
 
         if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
             throw new InvalidOperationException("Unable to get response DTO");
@@ -23,5 +21,5 @@ public sealed class DocsApiService(IHttpHandler httpHandler) : IDocsApiService
         return responseDto.Url;
     }
 
-    public void Dispose() => _httpHandler.Dispose();
+    public void Dispose() => httpHandler?.Dispose();
 }

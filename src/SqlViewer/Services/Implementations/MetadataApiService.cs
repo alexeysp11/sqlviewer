@@ -5,9 +5,9 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;
 
-public sealed class MetadataApiService(IHttpHandler httpHandler) : IMetadataApiService
+public sealed class MetadataApiService(IMetadataHttpHandler httpHandler) : IMetadataApiService
 {
-    private readonly IHttpHandler _httpHandler = httpHandler;
+    private readonly IMetadataHttpHandler _httpHandler = httpHandler;
 
     public async Task<IEnumerable<ColumnInfoResponseDto>> GetColumnsAsync(
         VelocipedeDatabaseType databaseType,
