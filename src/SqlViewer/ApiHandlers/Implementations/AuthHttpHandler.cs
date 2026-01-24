@@ -8,6 +8,16 @@ namespace SqlViewer.ApiHandlers.Implementations;
 
 public sealed class AuthHttpHandler : HttpHandler, IAuthHttpHandler
 {
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
+
+    public AuthHttpHandler() : base()
+    {
+        _jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+    }
+
     public async Task<LoginResponseDto> VerifyUserByPasswordAsync(LoginRequestDto requestDto)
     {
         UriBuilder uriBuilder = new()

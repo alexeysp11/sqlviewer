@@ -1,4 +1,5 @@
 ﻿using SqlViewer.Common.Constants;
+using SqlViewer.Common.Converters;
 using SqlViewer.Common.Dtos.SqlQueries;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -8,6 +9,17 @@ namespace SqlViewer.ApiHandlers.Implementations;
 
 public sealed class SqlHttpHandler : HttpHandler, ISqlHttpHandler
 {
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
+
+    public SqlHttpHandler() : base()
+    {
+        _jsonSerializerOptions = new()
+        {
+            PropertyNameCaseInsensitive = true,
+            Converters = { new DynamicObjectConverter() }
+        };
+    }
+
     public async Task<SqlQueryResponseDto> ExecuteQueryAsync(SqlQueryRequestDto requestDto)
     {
         UriBuilder uriBuilder = new()
@@ -22,7 +34,7 @@ public sealed class SqlHttpHandler : HttpHandler, ISqlHttpHandler
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
         response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
-        SqlQueryResponseDto responseDto = JsonSerializer.Deserialize<SqlQueryResponseDto>(jsonResponse);
+        SqlQueryResponseDto responseDto = JsonSerializer.Deserialize<SqlQueryResponseDto>(jsonResponse, _jsonSerializerOptions);
 
         return responseDto;
     }
