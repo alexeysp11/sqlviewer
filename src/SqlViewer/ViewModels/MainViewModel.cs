@@ -3,10 +3,9 @@ using System.Data;
 using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SqlViewer.ApiHandlers;
 using SqlViewer.Constants;
 using SqlViewer.Helpers;
-using SqlViewer.Services.Implementations;
+using SqlViewer.Services;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
@@ -31,14 +30,25 @@ public partial class MainViewModel : ObservableObject, IDisposable
     [ObservableProperty]
     private DataTable _queryResults;
 
-    private readonly SqlApiService _sqlApiService;
-    private readonly DocsApiService _docsApiService;
-    private readonly MetadataApiService _metadataApiService;
-    private readonly QueryBuilderApiService _queryBuilderService;
-    private readonly WindowService _windowService;
+    private readonly ISqlApiService _sqlApiService;
+    private readonly IDocsApiService _docsApiService;
+    private readonly IMetadataApiService _metadataApiService;
+    private readonly IQueryBuilderApiService _queryBuilderService;
+    private readonly IWindowService _windowService;
 
-    public MainViewModel()
+    public MainViewModel(
+        ISqlApiService sqlApiService,
+        IDocsApiService docsApiService,
+        IMetadataApiService metadataApiService,
+        IQueryBuilderApiService queryBuilderApiService,
+        IWindowService windowService)
     {
+        _sqlApiService = sqlApiService;
+        _docsApiService = docsApiService;
+        _metadataApiService = metadataApiService;
+        _queryBuilderService = queryBuilderApiService;
+        _windowService = windowService;
+
         AvailableRdbms =
         [
             DatabaseTypeConstants.Sqlite,
@@ -54,13 +64,6 @@ public partial class MainViewModel : ObservableObject, IDisposable
         ExitCommand = new RelayCommand(Exit);
         OpenEtlCommand = new RelayCommand(OpenEtl);
         HelpCommand = new AsyncRelayCommand<string>(GetHelpAsync);
-
-        HttpHandler httpHandler = new();
-        _sqlApiService = new SqlApiService(httpHandler);
-        _docsApiService = new DocsApiService(httpHandler);
-        _metadataApiService = new MetadataApiService(httpHandler);
-        _queryBuilderService = new QueryBuilderApiService(httpHandler);
-        _windowService = new WindowService();
     }
 
     public ObservableCollection<string> AvailableRdbms { get; }

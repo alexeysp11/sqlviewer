@@ -1,12 +1,11 @@
 ﻿using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SqlViewer.ApiHandlers;
-using SqlViewer.Services.Implementations;
+using SqlViewer.Services;
 
 namespace SqlViewer.ViewModels;
 
-public partial class LoginViewModel : ObservableObject, IDisposable
+public partial class LoginViewModel(IAuthApiService authApiService) : ObservableObject, IDisposable
 {
     public event Action<bool> LoginResultRequested;
     public event Action<string> ShowErrorRequested;
@@ -16,14 +15,6 @@ public partial class LoginViewModel : ObservableObject, IDisposable
 
     [ObservableProperty]
     private bool _isBusy;
-
-    private readonly AuthApiService _authApiService;
-
-    public LoginViewModel()
-    {
-        HttpHandler httpHandler = new();
-        _authApiService = new AuthApiService(httpHandler);
-    }
 
     [RelayCommand]
     private async Task LoginAsync(object parameter)
@@ -35,7 +26,7 @@ public partial class LoginViewModel : ObservableObject, IDisposable
         try
         {
             string password = passwordBox.Password;
-            bool isAuthenticated = await _authApiService.VerifyUserByPasswordAsync(Username, password);
+            bool isAuthenticated = await authApiService.VerifyUserByPasswordAsync(Username, password);
             if (isAuthenticated)
             {
                 LoginResultRequested?.Invoke(true);
@@ -61,7 +52,7 @@ public partial class LoginViewModel : ObservableObject, IDisposable
         IsBusy = true;
         try
         {
-            bool isAuthenticated = await _authApiService.GuestLoginAsync();
+            bool isAuthenticated = await authApiService.GuestLoginAsync();
             if (isAuthenticated)
             {
                 LoginResultRequested?.Invoke(true);
@@ -81,5 +72,5 @@ public partial class LoginViewModel : ObservableObject, IDisposable
         }
     }
 
-    public void Dispose() => _authApiService?.Dispose();
+    public void Dispose() => authApiService?.Dispose();
 }

@@ -5,12 +5,16 @@ namespace SqlViewer;
 
 public partial class MainWindow : Window
 {
-    public MainWindow()
+    private readonly MainViewModel _mainViewModel;
+
+    public MainWindow(MainViewModel mainViewModel)
     {
         try
         {
+            _mainViewModel = mainViewModel;
+            DataContext = _mainViewModel;
+
             InitializeComponent();
-            DataContext = new MainViewModel();
         }
         catch (Exception ex)
         {

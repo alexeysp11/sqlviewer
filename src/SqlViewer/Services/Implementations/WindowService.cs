@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
 using VelocipedeUtils.Shared.DbOperations.Enums;
@@ -14,16 +15,13 @@ public sealed class WindowService : IWindowService
         string connectionString,
         VelocipedeDatabaseType databaseType)
     {
-        EtlViewModel vm = new(sqlApiService, metadataService, queryBuilderService)
-        {
-            SourceConnectionString = connectionString,
-            SourceType = databaseType
-        };
-        EtlWindow win = new()
-        {
-            DataContext = vm,
-            Owner = Application.Current.MainWindow
-        };
-        win.ShowDialog();
+        EtlWizardWindow etlWizardWindow = App.Services.GetRequiredService<EtlWizardWindow>();
+        etlWizardWindow.Owner = Application.Current.MainWindow;
+
+        EtlViewModel etlViewModel = etlWizardWindow.EtlViewModel;
+        etlViewModel.SourceConnectionString = connectionString;
+        etlViewModel.SourceType = databaseType;
+
+        etlWizardWindow.ShowDialog();
     }
 }
