@@ -14,7 +14,7 @@ public sealed class AuthApiController(
 {
     [HttpPost]
     [Route(RestApiPaths.Auth.Login)]
-    public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
+    public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto request)
     {
         try
         {
@@ -41,7 +41,7 @@ public sealed class AuthApiController(
 
     [HttpPost]
     [Route(RestApiPaths.Auth.LoginAsGuest)]
-    public IActionResult LoginGuest()
+    public ActionResult<LoginResponseDto> LoginGuest()
     {
         try
         {
@@ -57,7 +57,7 @@ public sealed class AuthApiController(
 
     [HttpPost]
     [Route(RestApiPaths.Auth.RefreshAccessToken)]
-    public async Task<IActionResult> RefreshAccessToken([FromBody] RefreshRequest request)
+    public async Task<ActionResult<LoginResponseDto>> RefreshAccessToken([FromBody] RefreshRequest request)
     {
         try
         {

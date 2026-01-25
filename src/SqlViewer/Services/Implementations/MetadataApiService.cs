@@ -1,6 +1,5 @@
 ﻿using SqlViewer.ApiHandlers;
 using SqlViewer.Common.Dtos.Metadata;
-using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;
@@ -20,14 +19,7 @@ public sealed class MetadataApiService(IMetadataHttpHandler httpHandler) : IMeta
             ConnectionString = connectionString,
             TableName = tableName
         };
-
         MetadataColumnsResponseDto responseDto = await _httpHandler.GetColumnsAsync(requestDto);
-
-        if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
-            throw new InvalidOperationException("Unable to get response DTO");
-        if (responseDto.Status is SqlOperationStatus.Failed)
-            throw new InvalidOperationException(responseDto.ErrorMessage);
-
         return responseDto.Columns ?? [];
     }
 
@@ -38,14 +30,7 @@ public sealed class MetadataApiService(IMetadataHttpHandler httpHandler) : IMeta
             DatabaseType = databaseType,
             ConnectionString = connectionString,
         };
-
         MetadataTablesResponseDto responseDto = await _httpHandler.GetTables(requestDto);
-
-        if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
-            throw new InvalidOperationException("Unable to get response DTO");
-        if (responseDto.Status is SqlOperationStatus.Failed)
-            throw new InvalidOperationException(responseDto.ErrorMessage);
-
         return responseDto.Tables ?? [];
     }
 

@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.Common.Models;
+﻿namespace SqlViewer.Common.Enums;
 
 public enum AccessLevelType
 {

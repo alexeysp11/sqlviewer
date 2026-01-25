@@ -3,7 +3,6 @@ using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.QueryBuilder;
 using SqlViewer.Common.Dtos.SqlQueries;
-using SqlViewer.Common.Enums;
 using SqlViewer.Common.Extensions;
 
 namespace SqlViewer.ApiGateway.Controllers;
@@ -19,7 +18,7 @@ public sealed class QueryBuilderApiController(
 
     [HttpPost]
     [Route(RestApiPaths.QueryBuilder.CreateTable)]
-    public async Task<QueryBuilderResponseDto> GetCreateTableQueryAsync([FromBody] CreateTableRequestDto request)
+    public async Task<ActionResult<QueryBuilderResponseDto>> GetCreateTableQueryAsync([FromBody] CreateTableRequestDto request)
     {
         try
         {
@@ -27,12 +26,12 @@ public sealed class QueryBuilderApiController(
                 databaseType: request.DatabaseType,
                 tableName: request.TableName,
                 columnInfos: request.Columns.GetVelocipedeColumnInfos(request.DatabaseType));
-            return new() { Status = SqlOperationStatus.Success, Query = query, };
+            return new QueryBuilderResponseDto { Query = query };
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 }

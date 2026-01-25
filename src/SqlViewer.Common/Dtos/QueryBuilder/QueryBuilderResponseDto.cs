@@ -2,7 +2,7 @@
 
 namespace SqlViewer.Common.Dtos.QueryBuilder;
 
-public sealed class QueryBuilderResponseDto : BaseSqlViewerResponseDto
+public sealed class QueryBuilderResponseDto
 {
     [JsonPropertyName("query")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

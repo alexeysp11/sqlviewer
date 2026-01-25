@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Docs;
-using SqlViewer.Common.Enums;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ApiGateway.Controllers;
@@ -14,7 +13,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
 
     [HttpGet]
     [Route(RestApiPaths.Docs.DbProviders)]
-    public SqlViewerDocsResponseDto GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
+    public ActionResult<SqlViewerDocsResponseDto> GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
     {
         try
         {
@@ -26,12 +25,12 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
                 VelocipedeDatabaseType.MySQL => "https://dev.mysql.com/doc/",
                 _ => throw new NotImplementedException()
             };
-            return new() { Status = SqlOperationStatus.Success, Url = url };
+            return Ok(new SqlViewerDocsResponseDto { Url = url });
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 }

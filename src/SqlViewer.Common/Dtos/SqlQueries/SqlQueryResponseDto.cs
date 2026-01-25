@@ -5,7 +5,7 @@ namespace SqlViewer.Common.Dtos.SqlQueries;
 /// <summary>
 /// Response for executing SQL query.
 /// </summary>
-public sealed class SqlQueryResponseDto : BaseSqlViewerResponseDto
+public sealed class SqlQueryResponseDto
 {
     [JsonPropertyName("queryResult")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

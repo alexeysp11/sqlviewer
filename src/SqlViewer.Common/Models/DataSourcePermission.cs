@@ -1,4 +1,6 @@
-﻿namespace SqlViewer.Common.Models;
+﻿using SqlViewer.Common.Enums;
+
+namespace SqlViewer.Common.Models;
 
 public sealed record DataSourcePermission
 {

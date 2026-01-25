@@ -2,7 +2,6 @@
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Metadata;
-using SqlViewer.Common.Enums;
 using SqlViewer.Common.Extensions;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
@@ -17,25 +16,25 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger,
 
     [HttpPost]
     [Route(RestApiPaths.Metadata.Tables)]
-    public async Task<MetadataTablesResponseDto> GetTablesAsync([FromBody] MetadataRequestDto request)
+    public async Task<ActionResult<MetadataTablesResponseDto>> GetTablesAsync([FromBody] MetadataRequestDto request)
     {
         try
         {
             List<string> result = await _metadataService.GetTablesAsync(
                 databaseType: request.DatabaseType,
                 connectionString: request.ConnectionString);
-            return new() { Status = SqlOperationStatus.Success, Tables = result, };
+            return Ok(new MetadataTablesResponseDto { Tables = result });
         }
         catch (Exception ex)
         {
-            _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            _logger.LogError("Unable to get tables in {DatabaseType}: {Message}", request.DatabaseType, ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
     [HttpPost]
     [Route(RestApiPaths.Metadata.Columns)]
-    public async Task<MetadataColumnsResponseDto> GetColumnsAsync([FromBody] MetadataRequestDto request)
+    public async Task<ActionResult<MetadataColumnsResponseDto>> GetColumnsAsync([FromBody] MetadataRequestDto request)
     {
         try
         {
@@ -48,24 +47,21 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger,
                 databaseType: request.DatabaseType,
                 connectionString: request.ConnectionString,
                 tableName: request.TableName);
-            return new()
+            return Ok(new MetadataColumnsResponseDto
             {
-                Status = SqlOperationStatus.Success,
                 TableName = request.TableName,
                 DatabaseType = request.DatabaseType,
                 Columns = result.GetColumnInfoDtos(),
-            };
+            });
         }
         catch (Exception ex)
         {
-            _logger.LogError("{Message}", ex.Message);
-            return new()
-            {
-                Status = SqlOperationStatus.Failed,
-                ErrorMessage = ex.Message,
-                TableName = request.TableName,
-                DatabaseType = request.DatabaseType,
-            };
+            _logger.LogError(
+                "Unable to get table columns for '{TableName}' in {DatabaseType}: {Message}",
+                request.TableName,
+                request.DatabaseType,
+                ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 }

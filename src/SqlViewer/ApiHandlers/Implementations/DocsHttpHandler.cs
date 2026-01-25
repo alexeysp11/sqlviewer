@@ -1,4 +1,5 @@
 ﻿using SqlViewer.Common.Constants;
+using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.Docs;
 using System.Collections.Specialized;
 using System.Net.Http;
@@ -10,6 +11,16 @@ namespace SqlViewer.ApiHandlers.Implementations;
 
 public sealed class DocsHttpHandler : HttpHandler, IDocsHttpHandler
 {
+    private readonly JsonSerializerOptions _jsonSerializerOptions;
+
+    public DocsHttpHandler() : base()
+    {
+        _jsonSerializerOptions = new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        };
+    }
+
     public async Task<SqlViewerDocsResponseDto> GetDbProviderDocs(VelocipedeDatabaseType databaseType)
     {
         UriBuilder uriBuilder = new()
@@ -28,10 +39,22 @@ public sealed class DocsHttpHandler : HttpHandler, IDocsHttpHandler
         string url = uriBuilder.Uri.ToString();
 
         HttpResponseMessage response = await _httpClient.GetAsync(url);
-        response.EnsureSuccessStatusCode();
         string jsonResponse = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            string errorMessage;
+            try
+            {
+                ProblemDetailsResponseDto problem = JsonSerializer.Deserialize<ProblemDetailsResponseDto>(jsonResponse, _jsonSerializerOptions);
+                errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
+            }
+            catch
+            {
+                errorMessage = jsonResponse;
+            }
+            throw new Exception(errorMessage);
+        }
         SqlViewerDocsResponseDto responseDto = JsonSerializer.Deserialize<SqlViewerDocsResponseDto>(jsonResponse);
-
         return responseDto;
     }
 }

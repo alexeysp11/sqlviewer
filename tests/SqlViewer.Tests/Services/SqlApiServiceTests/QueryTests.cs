@@ -3,7 +3,6 @@ using FluentAssertions;
 using Moq;
 using SqlViewer.ApiHandlers;
 using SqlViewer.Common.Dtos.SqlQueries;
-using SqlViewer.Common.Enums;
 using SqlViewer.Services.Implementations;
 using SqlViewer.Tests.Infrastructure.Models;
 using VelocipedeUtils.Shared.DbOperations.Enums;
@@ -33,33 +32,11 @@ public sealed class QueryTests
 
     public static TheoryData<SqlQueryResponseDto> TestCasesQuerying =>
     [
-        new SqlQueryResponseDto { Status = SqlOperationStatus.Success, QueryResult = NullQueryResult },
-        new SqlQueryResponseDto { Status = SqlOperationStatus.Success, QueryResult = EmptyQueryResult },
-        new SqlQueryResponseDto { Status = SqlOperationStatus.Success, QueryResult = ValidQueryResult },
+        new SqlQueryResponseDto { QueryResult = NullQueryResult },
+        new SqlQueryResponseDto { QueryResult = EmptyQueryResult },
+        new SqlQueryResponseDto { QueryResult = ValidQueryResult },
     ];
     #endregion  // Test cases
-
-    [Fact]
-    public async Task QueryAsync_StatusIsNone_ThrowsInvalidOperationException()
-    {
-        // Arrange
-        Mock<ISqlHttpHandler> mockClient = new();
-        mockClient
-            .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
-            .ReturnsAsync(new SqlQueryResponseDto
-            {
-                Status = SqlOperationStatus.None
-            });
-
-        SqlApiService service = new(mockClient.Object);
-        var act = async () => await service.QueryAsync(VelocipedeDatabaseType.PostgreSQL, "conn_string", "SELECT 1");
-
-        // Act & Assert
-        await act
-            .Should()
-            .ThrowAsync<InvalidOperationException>()
-            .WithMessage("Unable to get response DTO");
-    }
 
     [Fact]
     public async Task QueryAsync_ResponseDtoIsNull_ThrowsInvalidOperationException()
@@ -88,11 +65,7 @@ public sealed class QueryTests
         Mock<ISqlHttpHandler> mockClient = new();
         mockClient
             .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
-            .ReturnsAsync(new SqlQueryResponseDto
-            {
-                Status = SqlOperationStatus.Failed,
-                ErrorMessage = "Database error"
-            });
+            .ThrowsAsync(new Exception("Database error"));
 
         SqlApiService service = new(mockClient.Object);
         var act = async () => await service.QueryAsync(VelocipedeDatabaseType.PostgreSQL, "conn_string", "SELECT 1");
@@ -100,7 +73,7 @@ public sealed class QueryTests
         // Act & Assert
         await act
             .Should()
-            .ThrowAsync<InvalidOperationException>()
+            .ThrowAsync<Exception>()
             .WithMessage("Database error");
     }
 

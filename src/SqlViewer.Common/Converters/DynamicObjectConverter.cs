@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace SqlViewer.Common.Converters;
 
-public class DynamicObjectConverter : JsonConverter<object>
+public sealed class DynamicObjectConverter : JsonConverter<object>
 {
     public override object? Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

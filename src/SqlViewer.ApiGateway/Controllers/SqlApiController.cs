@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.SqlQueries;
-using SqlViewer.Common.Enums;
 
 namespace SqlViewer.ApiGateway.Controllers;
 
@@ -16,7 +14,7 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
 
     [HttpPost]
     [Route(RestApiPaths.Sql.Query)]
-    public async Task<SqlQueryResponseDto> QueryAsync([FromBody] SqlQueryRequestDto request)
+    public async Task<ActionResult<SqlQueryResponseDto>> QueryAsync([FromBody] SqlQueryRequestDto request)
     {
         try
         {
@@ -24,18 +22,18 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
                 databaseType: request.DatabaseType,
                 connectionString: request.ConnectionString,
                 query: request.Query);
-            return new() { Status = SqlOperationStatus.Success, QueryResult = result, };
+            return Ok(new SqlQueryResponseDto { QueryResult = result });
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
     [HttpPost]
     [Route(RestApiPaths.Sql.Execute)]
-    public async Task<CommonResponseDto> ExecuteAsync([FromBody] SqlQueryRequestDto request)
+    public async Task<IActionResult> ExecuteAsync([FromBody] SqlQueryRequestDto request)
     {
         try
         {
@@ -43,18 +41,18 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
                 databaseType: request.DatabaseType,
                 connectionString: request.ConnectionString,
                 query: request.Query);
-            return new() { Status = SqlOperationStatus.Success, };
+            return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
     [HttpPost]
     [Route(RestApiPaths.Sql.CreateTable)]
-    public async Task<CommonResponseDto> CreateTableAsync([FromBody] CreateTableRequestDto request)
+    public async Task<IActionResult> CreateTableAsync([FromBody] CreateTableRequestDto request)
     {
         try
         {
@@ -63,18 +61,18 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
                 connectionString: request.ConnectionString,
                 tableName: request.TableName,
                 columnInfos: request.GetVelocipedeColumnInfos());
-            return new() { Status = SqlOperationStatus.Success, };
+            return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
     [HttpPost]
     [Route(RestApiPaths.Sql.DropTable)]
-    public async Task<CommonResponseDto> DropTableAsync([FromBody] DropTableRequestDto request)
+    public async Task<IActionResult> DropTableAsync([FromBody] DropTableRequestDto request)
     {
         try
         {
@@ -82,12 +80,12 @@ public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQuery
                 databaseType: request.DatabaseType,
                 connectionString: request.ConnectionString,
                 tableName: request.TableName);
-            return new() { Status = SqlOperationStatus.Success, };
+            return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 }

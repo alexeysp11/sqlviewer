@@ -1,4 +1,5 @@
 ﻿using SqlViewer.Common.Constants;
+using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.Auth;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -36,14 +37,13 @@ public sealed class AuthHttpHandler : HttpHandler, IAuthHttpHandler
             string errorMessage;
             try
             {
-                ProblemDetailsResponse problem = JsonSerializer.Deserialize<ProblemDetailsResponse>(jsonResponse, _jsonSerializerOptions);
+                ProblemDetailsResponseDto problem = JsonSerializer.Deserialize<ProblemDetailsResponseDto>(jsonResponse, _jsonSerializerOptions);
                 errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
             }
             catch
             {
                 errorMessage = jsonResponse;
             }
-
             throw new Exception(errorMessage);
         }
         return JsonSerializer.Deserialize<LoginResponseDto>(jsonResponse);
@@ -67,14 +67,13 @@ public sealed class AuthHttpHandler : HttpHandler, IAuthHttpHandler
             string errorMessage;
             try
             {
-                ProblemDetailsResponse problem = JsonSerializer.Deserialize<ProblemDetailsResponse>(jsonResponse, _jsonSerializerOptions);
+                ProblemDetailsResponseDto problem = JsonSerializer.Deserialize<ProblemDetailsResponseDto>(jsonResponse, _jsonSerializerOptions);
                 errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
             }
             catch
             {
                 errorMessage = jsonResponse;
             }
-
             throw new Exception(errorMessage);
         }
         return JsonSerializer.Deserialize<LoginResponseDto>(jsonResponse);
