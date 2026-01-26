@@ -40,7 +40,7 @@ public sealed class MetadataApiController(ILogger<MetadataApiController> logger,
         {
             if (string.IsNullOrEmpty(request.TableName))
             {
-                throw new InvalidOperationException("Table name should be specified");
+                return BadRequest("Table name should be specified");
             }
 
             List<VelocipedeNativeColumnInfo> result = await _metadataService.GetColumnsAsync(

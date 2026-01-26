@@ -58,7 +58,7 @@ public sealed class AuthService(
         User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
         if (user is null || user.RefreshTokenExpiry < DateTime.UtcNow)
         {
-            throw new UnauthorizedAccessException("Session expired, please log in again");
+            throw new UnauthorizedAccessException("Session expired. Please, sign in again");
         }
         return await CreateSessionAsync(user.Username);
     }

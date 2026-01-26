@@ -27,9 +27,7 @@ public sealed class AuthApiController(
             {
                 return Unauthorized("Authentication failed");
             }
-
             LoginResponseDto response = await authService.CreateSessionAsync(request.Username);
-
             return Ok(response);
         }
         catch (Exception ex)

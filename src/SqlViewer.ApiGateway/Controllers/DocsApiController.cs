@@ -23,7 +23,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
                 VelocipedeDatabaseType.PostgreSQL => "https://www.postgresql.org/",
                 VelocipedeDatabaseType.MSSQL => "https://learn.microsoft.com/en-us/sql/sql-server",
                 VelocipedeDatabaseType.MySQL => "https://dev.mysql.com/doc/",
-                _ => throw new NotImplementedException()
+                _ => throw new NotSupportedException($"Unable to get documentation for the specified database type: {databaseType}")
             };
             return Ok(new SqlViewerDocsResponseDto { Url = url });
         }
