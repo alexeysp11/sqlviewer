@@ -1,8 +1,10 @@
 ﻿using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos;
 using SqlViewer.Common.Dtos.Docs;
+using SqlViewer.StorageContexts;
 using System.Collections.Specialized;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Web;
 using VelocipedeUtils.Shared.DbOperations.Enums;
@@ -11,10 +13,12 @@ namespace SqlViewer.ApiHandlers.Implementations;
 
 public sealed class DocsHttpHandler : HttpHandler, IDocsHttpHandler
 {
+    private readonly IUserContext _userContext;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-    public DocsHttpHandler() : base()
+    public DocsHttpHandler(IUserContext userContext) : base()
     {
+        _userContext = userContext;
         _jsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -38,7 +42,12 @@ public sealed class DocsHttpHandler : HttpHandler, IDocsHttpHandler
 
         string url = uriBuilder.Uri.ToString();
 
-        HttpResponseMessage response = await _httpClient.GetAsync(url);
+        // Authorization.
+        HttpRequestMessage requestMessage = new(HttpMethod.Get, url);
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue(_userContext.TokenType, _userContext.AccessToken);
+
+        // Request.
+        HttpResponseMessage response = await _httpClient.SendAsync(requestMessage);
         string jsonResponse = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
@@ -50,7 +59,7 @@ public sealed class DocsHttpHandler : HttpHandler, IDocsHttpHandler
             }
             catch
             {
-                errorMessage = jsonResponse;
+                errorMessage = string.IsNullOrEmpty(jsonResponse) ? $"Status code: {response.StatusCode}" : jsonResponse;
             }
             throw new Exception(errorMessage);
         }

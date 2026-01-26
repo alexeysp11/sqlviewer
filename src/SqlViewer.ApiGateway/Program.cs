@@ -41,15 +41,21 @@ public static class Program
             options.UseNpgsql(builder.Configuration.GetConnectionString("MetadataConnection"))
         );
 
-        string issuerSigningKey = builder.Configuration.GetValue<string>("Jwt:IssuerSigningKey")
+        string issuerSigningKey = builder.Configuration.GetValue<string>("Jwt:Key")
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
+                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+
                     ValidateAudience = true,
+                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    
                     ValidateLifetime = true,
+                    
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey))
                 };
             });
@@ -76,6 +82,7 @@ public static class Program
         }
 
         app.UseHttpsRedirection();
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.MapControllers();

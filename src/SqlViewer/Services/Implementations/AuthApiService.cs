@@ -1,10 +1,11 @@
 ﻿using SqlViewer.ApiHandlers;
 using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Enums;
+using SqlViewer.StorageContexts;
 
 namespace SqlViewer.Services.Implementations;
 
-public sealed class AuthApiService(IAuthHttpHandler httpHandler) : IAuthApiService
+public sealed class AuthApiService(IAuthHttpHandler httpHandler, IUserContext userContext) : IAuthApiService
 {
     public async Task<bool> VerifyUserByPasswordAsync(string username, string password)
     {
@@ -15,30 +16,30 @@ public sealed class AuthApiService(IAuthHttpHandler httpHandler) : IAuthApiServi
             Password = password
         };
 
-        LoginResponseDto responseDto = await httpHandler.VerifyUserByPasswordAsync(requestDto);
+        LoginResponseDto responseDto = await httpHandler.VerifyUserByPasswordAsync(requestDto)
+            ?? throw new InvalidOperationException("Unable to get response DTO");
 
-        //if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
-        //    throw new InvalidOperationException("Unable to get response DTO");
-        //if (responseDto.Status is SqlOperationStatus.Failed)
-        //    throw new InvalidOperationException(responseDto.ErrorMessage);
+        if (string.IsNullOrEmpty(responseDto.AccessToken))
+            return false;
+        if (responseDto.ExpiresInSeconds <= 0)
+            return false;
 
-        //return responseDto.Status is SqlOperationStatus.Success;
-
-        return await Task.FromResult(responseDto is not null);
+        userContext.CurrentUser = responseDto;
+        return true;
     }
 
     public async Task<bool> GuestLoginAsync()
     {
-        LoginResponseDto responseDto = await httpHandler.GuestLoginAsync();
+        LoginResponseDto responseDto = await httpHandler.GuestLoginAsync()
+            ?? throw new InvalidOperationException("Unable to get response DTO");
 
-        //if (responseDto is null || responseDto.Status is SqlOperationStatus.None)
-        //    throw new InvalidOperationException("Unable to get response DTO");
-        //if (responseDto.Status is SqlOperationStatus.Failed)
-        //    throw new InvalidOperationException(responseDto.ErrorMessage);
+        if (string.IsNullOrEmpty(responseDto.AccessToken))
+            return false;
+        if (responseDto.ExpiresInSeconds <= 0)
+            return false;
 
-        //return responseDto.Status is SqlOperationStatus.Success;
-
-        return await Task.FromResult(responseDto is not null);
+        userContext.CurrentUser = responseDto;
+        return true;
     }
 
     public void Dispose() => httpHandler?.Dispose();

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Docs;
 using VelocipedeUtils.Shared.DbOperations.Enums;
@@ -12,6 +13,7 @@ public sealed class DocsApiController(ILogger<DocsApiController> logger) : Contr
     private readonly ILogger<DocsApiController> _logger = logger;
 
     [HttpGet]
+    [Authorize]
     [Route(RestApiPaths.Docs.DbProviders)]
     public ActionResult<SqlViewerDocsResponseDto> GetDbProviderDocs([FromQuery] VelocipedeDatabaseType databaseType)
     {

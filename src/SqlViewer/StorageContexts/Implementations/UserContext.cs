@@ -1,11 +1,16 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using SqlViewer.Common.Dtos.Auth;
 
-namespace SqlViewer.Storage;
+namespace SqlViewer.StorageContexts.Implementations;
 
-public static class SecureStorage
+#nullable enable
+
+public sealed record UserContext : IUserContext
 {
+    public LoginResponseDto? CurrentUser { get; set; }
+
     public static void SaveToken(string token)
     {
         byte[] data = Encoding.UTF8.GetBytes(token);
@@ -13,7 +18,7 @@ public static class SecureStorage
         File.WriteAllBytes("token.dat", encrypted);
     }
 
-    public static string LoadToken()
+    public static string? LoadToken()
     {
         if (!File.Exists("token.dat"))
             return null;

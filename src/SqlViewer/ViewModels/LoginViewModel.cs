@@ -59,7 +59,7 @@ public partial class LoginViewModel(IAuthApiService authApiService) : Observable
             }
             else
             {
-                ShowErrorRequested?.Invoke("Incorrect credentials");
+                ShowErrorRequested?.Invoke("Authentication failed");
             }
         }
         catch (Exception ex)

@@ -6,6 +6,8 @@ using SqlViewer.ApiHandlers.Implementations;
 using SqlViewer.Models;
 using SqlViewer.Services;
 using SqlViewer.Services.Implementations;
+using SqlViewer.StorageContexts;
+using SqlViewer.StorageContexts.Implementations;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
 
@@ -45,17 +47,20 @@ public partial class App : Application
         services.AddSingleton<IQueryBuilderHttpHandler, QueryBuilderHttpHandler>();
         services.AddSingleton<ISqlHttpHandler, SqlHttpHandler>();
 
+        // 3. Storage contexts.
+        services.AddSingleton<IUserContext, UserContext>();
+
         // Register HttpClient with base address.
         //services.AddHttpClient("MyApi", client => {
         //    client.BaseAddress = new Uri("https://api.example.com/");
         //});
 
-        // 3. ViewModels.
+        // 4. ViewModels.
         services.AddTransient<LoginViewModel>();
         services.AddSingleton<MainViewModel>();
         services.AddTransient<EtlViewModel>();
 
-        // 4. Views.
+        // 5. Views.
         services.AddTransient<LoginWindow>();
         services.AddSingleton<MainWindow>();
         services.AddTransient<EtlWizardWindow>();
