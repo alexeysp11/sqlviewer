@@ -1,5 +1,4 @@
 ﻿using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Enums;
 
 namespace SqlViewer.StorageContexts;
 
