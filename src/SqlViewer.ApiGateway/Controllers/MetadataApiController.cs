@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Metadata;
@@ -8,6 +9,7 @@ using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public sealed class MetadataApiController(ILogger<MetadataApiController> logger, IMetadataService metadataService) : ControllerBase
 {

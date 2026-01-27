@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.QueryBuilder;
@@ -8,6 +9,7 @@ using SqlViewer.Common.Extensions;
 namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
 public sealed class QueryBuilderApiController(
     ILogger<QueryBuilderApiController> logger,

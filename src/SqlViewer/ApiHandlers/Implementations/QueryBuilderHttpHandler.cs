@@ -1,19 +1,23 @@
 ﻿using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Common.Dtos.QueryBuilder;
-using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text.Json;
 using SqlViewer.Common.Dtos;
+using SqlViewer.StorageContexts;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Json;
 
 namespace SqlViewer.ApiHandlers.Implementations;
 
 public sealed class QueryBuilderHttpHandler : HttpHandler, IQueryBuilderHttpHandler
 {
+    private readonly IUserContext _userContext;
     private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-    public QueryBuilderHttpHandler()
+    public QueryBuilderHttpHandler(IUserContext userContext)
     {
+        _userContext = userContext;
         _jsonSerializerOptions = new JsonSerializerOptions
         {
             PropertyNameCaseInsensitive = true
@@ -31,7 +35,13 @@ public sealed class QueryBuilderHttpHandler : HttpHandler, IQueryBuilderHttpHand
         };
         string url = uriBuilder.Uri.ToString();
 
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync(url, requestDto);
+        // Authorization.
+        using HttpRequestMessage requestMessage = new(HttpMethod.Post, url);
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue(_userContext.TokenType, _userContext.AccessToken);
+        requestMessage.Content = new StringContent(JsonSerializer.Serialize(requestDto), Encoding.UTF8, "application/json");
+
+        // Request.
+        HttpResponseMessage response = await _httpClient.SendAsync(requestMessage);
         string jsonResponse = await response.Content.ReadAsStringAsync();
         if (!response.IsSuccessStatusCode)
         {
