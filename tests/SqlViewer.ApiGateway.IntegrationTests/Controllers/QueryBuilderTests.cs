@@ -74,4 +74,25 @@ public sealed class QueryBuilderTests(ApiGatewayWebApplicationFactory<Program> f
             .And
             .Contain("Username");
     }
+
+    [Fact]
+    public async Task GetCreateTableQuery_EmptyTableName_ReturnsInternalServerError()
+    {
+        // Arrange
+        CreateTableRequestDto request = new()
+        {
+            ConnectionString = factory.ConnectionString,
+            DatabaseType = VelocipedeDatabaseType.PostgreSQL,
+            TableName = string.Empty,
+            Columns = []
+        };
+
+        // Act
+        HttpResponseMessage response = await _client.PostAsJsonAsync(RestApiPaths.QueryBuilder.CreateTable, request);
+
+        // Assert
+        response.StatusCode
+            .Should()
+            .Be(HttpStatusCode.BadRequest);
+    }
 }

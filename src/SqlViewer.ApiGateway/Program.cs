@@ -1,10 +1,12 @@
-﻿using System.Text;
+﻿using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SqlViewer.ApiGateway.Data.DataSeeding;
 using SqlViewer.ApiGateway.Data.DbContexts;
+using SqlViewer.ApiGateway.DtoFluentValidation;
 using SqlViewer.ApiGateway.Factories;
 using SqlViewer.ApiGateway.Factories.Implementations;
 using SqlViewer.ApiGateway.Repositories;
@@ -12,6 +14,7 @@ using SqlViewer.ApiGateway.Repositories.Implementations;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.ApiGateway.Services.Implementations;
 using SqlViewer.Common.Models;
+using System.Text;
 
 namespace SqlViewer.ApiGateway;
 
@@ -34,6 +37,9 @@ public sealed class Program
         builder.Services.AddScoped<IApiGatewayDataSeeder, ApiGatewayDataSeeder>();
         builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
         builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
+        builder.Services.AddValidatorsFromAssemblyContaining<CreateTableRequestValidator>();
+        builder.Services.AddFluentValidationAutoValidation();
 
         builder.Services.AddDataProtection();
         
