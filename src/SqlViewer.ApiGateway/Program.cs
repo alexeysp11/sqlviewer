@@ -15,7 +15,7 @@ using SqlViewer.Common.Models;
 
 namespace SqlViewer.ApiGateway;
 
-public static class Program
+public sealed class Program
 {
     public static async Task Main(string[] args)
     {
