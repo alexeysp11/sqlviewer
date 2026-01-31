@@ -1,103 +1,93 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.Enums;
-using SqlViewer.ApiGateway.ViewModels;
-using SqlViewer.ApiGateway.ViewModels.SqlQueries;
-using VelocipedeUtils.Shared.DbOperations.DbConnections;
-using VelocipedeUtils.Shared.DbOperations.Factories;
-using VelocipedeUtils.Shared.DbOperations.QueryBuilders;
+using SqlViewer.ApiGateway.Services;
+using SqlViewer.Common.Constants;
+using SqlViewer.Common.Dtos.SqlQueries;
 
 namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("[controller]")]
-public sealed class SqlApiController(ILogger<SqlApiController> logger) : ControllerBase
+public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQueryService sqlQueryService) : ControllerBase
 {
     private readonly ILogger<SqlApiController> _logger = logger;
+    private readonly ISqlQueryService _sqlQueryService = sqlQueryService;
 
     [HttpPost]
-    [Route("/api/sql/query")]
-    public async Task<SqlQueryResponse> QueryAsync([FromBody] SqlQueryRequest request)
+    [Route(RestApiPaths.Sql.Query)]
+    public async Task<ActionResult<SqlQueryResponseDto>> QueryAsync([FromBody] SqlQueryRequestDto request)
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            List<dynamic> result = await dbConnection.QueryAsync<dynamic>(request.Query);
-            return new() { Status = SqlOperationStatus.Success, QueryResult = result, };
+            List<dynamic> result = await _sqlQueryService.QueryAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                query: request.Query);
+            return Ok(new SqlQueryResponseDto { QueryResult = result });
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
     [HttpPost]
-    [Route("/api/sql/execute")]
-    public async Task<CommonResponse> ExecuteAsync([FromBody] SqlQueryRequest request)
+    [Route(RestApiPaths.Sql.Execute)]
+    public async Task<IActionResult> ExecuteAsync([FromBody] SqlQueryRequestDto request)
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            await dbConnection.ExecuteAsync(request.Query);
-            return new() { Status = SqlOperationStatus.Success, };
+            await _sqlQueryService.ExecuteAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                query: request.Query);
+            return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
     [HttpPost]
-    [Route("/api/sql/create-table")]
-    public async Task<CommonResponse> CreateTableAsync([FromBody] CreateTableRequest request)
+    [Route(RestApiPaths.Sql.CreateTable)]
+    public async Task<IActionResult> CreateTableAsync([FromBody] CreateTableRequestDto request)
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-            
-            IVelocipedeQueryBuilder queryBuilder = dbConnection.GetQueryBuilder();
-            string? sql = queryBuilder
-                .CreateTable(request.TableName)
-                .WithColumns(request.Columns)
-                .ToString();
-            if (string.IsNullOrEmpty(sql))
-            {
-                throw new InvalidOperationException("Query builder generated empty SQL");
-            }
-            await dbConnection.ExecuteAsync(sql);
-
-            return new() { Status = SqlOperationStatus.Success, };
+            await _sqlQueryService.CreateTableAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                tableName: request.TableName,
+                columnInfos: request.GetVelocipedeColumnInfos());
+            return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 
     [HttpPost]
-    [Route("/api/sql/drop-table")]
-    public async Task<CommonResponse> DropTableAsync([FromBody] DropTableRequest request)
+    [Route(RestApiPaths.Sql.DropTable)]
+    public async Task<IActionResult> DropTableAsync([FromBody] DropTableRequestDto request)
     {
         try
         {
-            using IVelocipedeDbConnection dbConnection
-                = VelocipedeDbConnectionFactory.InitializeDbConnection(request.DatabaseType, request.ConnectionString);
-
-            IVelocipedeQueryBuilder queryBuilder = dbConnection.GetQueryBuilder();
-            string sql = $@"drop table ""{request.TableName}""";
-            await dbConnection.ExecuteAsync(sql);
-
-            return new() { Status = SqlOperationStatus.Success, };
+            await _sqlQueryService.DropTableAsync(
+                databaseType: request.DatabaseType,
+                connectionString: request.ConnectionString,
+                tableName: request.TableName);
+            return Ok();
         }
         catch (Exception ex)
         {
             _logger.LogError("{Message}", ex.Message);
-            return new() { Status = SqlOperationStatus.Failed, ErrorMessage = ex.Message, };
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
 }

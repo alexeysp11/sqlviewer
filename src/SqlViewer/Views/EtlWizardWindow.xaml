@@ -1,0 +1,88 @@
+﻿<Window x:Class="SqlViewer.Views.EtlWizardWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlViewer.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="sqlviewer: ETL" Height="450" Width="800">
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,20">
+            <TextBlock Text="Transferring table structure" FontSize="20" FontWeight="Bold" Foreground="#2D2D2D"/>
+            <TextBlock Text="Select the source and target database for schema generation" Foreground="Gray"/>
+        </StackPanel>
+
+        <!-- Main Content -->
+        <TabControl Grid.Row="1" Background="Transparent" BorderThickness="0" SelectedIndex="{Binding CurrentStep}">
+            <TabControl.ItemContainerStyle>
+                <Style TargetType="TabItem">
+                    <Setter Property="Visibility" Value="Collapsed"/>
+                </Style>
+            </TabControl.ItemContainerStyle>
+
+            <TabItem>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <GroupBox Header="Source" Grid.Column="0" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="Database type:"/>
+                            <ComboBox ItemsSource="{Binding DatabaseTypes}" SelectedItem="{Binding SourceType}" Margin="0,5,0,10"/>
+                            
+                            <TextBlock Text="Connection string:"/>
+                            <TextBox Text="{Binding SourceConnectionString, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10" Height="20" TextWrapping="NoWrap" />
+                            
+                            <Button Content="Load tables" Command="{Binding LoadSourceTablesCommand}" Margin="0,5"/>
+                            <TextBlock Text="Select a table:" Margin="0,5,0,0"/>
+                            <ComboBox ItemsSource="{Binding SourceTables}" SelectedItem="{Binding SelectedTable}" Margin="0,5"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Destination" Grid.Column="2" Padding="10">
+                        <StackPanel>
+                            <TextBlock Text="Database type:"/>
+                            <ComboBox ItemsSource="{Binding DatabaseTypes}" SelectedItem="{Binding TargetType}" Margin="0,5,0,10"/>
+                            
+                            <TextBlock Text="Connection string:"/>
+                            <TextBox Text="{Binding TargetConnectionString, UpdateSourceTrigger=PropertyChanged}" Margin="0,5,0,10" Height="20" TextWrapping="NoWrap" />
+                            
+                            <CheckBox Content="Add IF NOT EXISTS" IsChecked="{Binding AddIfNotExists}" Margin="0,10"/>
+                        </StackPanel>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <TabItem>
+                <GroupBox Header="Generated SQL query">
+                    <TextBox Text="{Binding GeneratedSql}"
+                             IsReadOnly="False"
+                             FontFamily="Consolas"
+                             AcceptsReturn="True"
+                             VerticalScrollBarVisibility="Auto"
+                             Background="#1E1E1E"
+                             Foreground="#DCDCDC"
+                             Padding="10"/>
+                </GroupBox>
+            </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Back" Width="80" Height="30" Margin="0,0,10,0" Command="{Binding PrevStepCommand}"/>
+            <Button Content="Generate SQL" Width="130" Height="30" Margin="0,0,10,0" Command="{Binding GenerateCreateScriptCommand}" Background="#007ACC" Foreground="White"/>
+            <Button Content="Execute (CREATE)" Width="130" Height="30" Command="{Binding ExecuteMigrationCommand}" FontWeight="Bold"/>
+        </StackPanel>
+    </Grid>
+</Window>

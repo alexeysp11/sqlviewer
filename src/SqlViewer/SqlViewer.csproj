@@ -8,7 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
     <PackageReference Include="MySql.Data" Version="9.5.0" />
     <PackageReference Include="Npgsql" Version="10.0.1" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.26.0" />
@@ -17,8 +21,28 @@
   <ItemGroup>
     <None Remove="Resources/icon.ico" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SqlViewer.Common\SqlViewer.Common.csproj" />
+  </ItemGroup>
+
   <ItemGroup>
     <Resource Include="Resources/icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Production.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.Test.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,18 +1,9 @@
 .vs
-.vscode 
+.vscode
 
-obj 
-bin 
+obj
+bin
 
-packages 
-
-tests
-test.cmd 
-
-SqlViewer.lnk 
-
-docs/ProcessDocs 
-data 
-whatsnew.txt 
+.env
 
 *.csproj.user

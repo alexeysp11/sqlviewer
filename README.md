@@ -1,107 +1,111 @@
-# sqlviewer 
+# sqlviewer
 
 [English](README.md) | [Русский](README.ru.md)
 
-`sqlviewer` is a multilingual C# application that provides a user-friendly interface for interacting with different RDBMS and performing various database operations.
+A distributed system for managing heterogeneous data sources.
 
-## Overall description 
+## General description
 
-This project is a C# implementation of a GUI for retrieving and transfering data from the following RDBMS: 
-- **SQLite**,
-- **PostgreSQL**,
-- **MySQL**,
-- **Oracle**. 
+- Microservice architecture.
+- Docker containers for services and databases.
+- Centralized metadata storage and connection abstraction.
+- The system allows users to interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API, hiding the technical details of connection implementation.
+- Automatic migrations and data seeding upon service launch (to speed up development).
 
-It's available in 29 different languages, such as: 
-- English;
-- German;
-- Russian;
-- Spanish;
-- Portuguese;
-- Italian;
-- French;
-- Ukranian;
-- Dutch;
-- Polish;
-- Czech;
-- Serbian;
-- Croatian;
-- Korean;
-- Japanese, etc. 
+Since this system is based on WPF and Web API, it's worth noting that microservices were chosen for scalability: for example, the query execution service can be scaled separately from the metadata management service if the load on the database increases.
 
-Using this app, you can do the following things: 
+## Features
 
-- write and execute SQL queries:
+### Connecting to databases
 
-![Example (UI, query)](docs/img/ui_query.png)
+The application supports two methods for identifying the target database for query execution:
+- Using an explicit connection string
+- Using data sources
 
-- watch information about all tables inside your database (SQL definition, columns, foreign keys, triggers and all data inside a paticular table): 
+#### Using an explicit connection string
 
-![Example (UI, tables)](docs/img/ui_tables.png)
+The classic method, in which the full connection string is passed in the input field (for example, for PostgreSQL or SQLite). This method allows you to quickly connect to any available database without prior configuration.
 
-- transfer data from one database to another:
+#### Using data sources
 
-![Example (UI, connections)](docs/img/ui_connections.png)
+A mechanism for accessing databases through named profiles configured on the server. A special tag is used instead of the donnection string:
+- `[DataSource Id="1"]`: search by unique identifier.
+- `[DataSource Name="pg-metadata-db"]`: search by user friendly name.
+- `[DataSource Id="1" Name="pg-metadata-db"]`: search by both parameters (strict matching).
 
-### Goal
+The advantages of this approach:
+- **Security**: The user and client application don't see passwords or server addresses. All sensitive data is stored on the ASP.NET Core server side.
+- **Convenience**: Instead of remembering complex connection strings, human-readable aliases are used (e.g., "Warehouse 2026," "Analytics DB").
+- **Flexibility**: If the database address changes, the administrator simply updates it on the server, and clients don't need to change settings in their requests.
 
-The goal of the project is to create a C# GUI application for retrieving and transferring data from various RDBMS, including SQLite, PostgreSQL, MySQL, and Oracle.
+### Write and execute SQL queries:
 
-The scope of the project includes implementing a GUI for executing SQL queries, viewing database information, and transferring data between different databases.
+![ui_query](docs/img/ui_query.png)
 
-This project can be used by database administrators, developers, and anyone who needs to work with multiple RDBMS and perform data management tasks.
+### Transfer data from one database to another:
 
-### Similar open-source projects
+![ui_etl_1](docs/img/ui_etl_1.png)
 
-Similar open-source projects include [DBeaver](https://github.com/dbeaver/dbeaver) and [SQuirreL SQL](https://github.com/squirrel-sql-client), but there are also similar projects written in C# such as [SQL Server Management Studio (SSMS)](https://docs.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver15) and [LINQPad](http://linqpad.net/).
+![ui_etl_2](docs/img/ui_etl_2.png)
 
-### Possible limitations
+## Running a project in Docker
 
-Possible limitations of this project could include compatibility issues with certain RDBMS, performance issues when dealing with large datasets, and potential security vulnerabilities when transferring data between databases.
+1. Create a certificate to support the HTTPS protocol and set a password:
+```bash
+# For Windows (PowerShell)
+dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\aspnetapp.pfx -p YourSecurePassword123
+dotnet dev-certs https --trust
 
-## Getting started
-
-### Prerequisites
-
-- Windows OS;
-- .NET Core 3.1;
-- One of the following data sources to be able to perform some operations with data: 
-    - **SQLite**,
-    - **PostgreSQL**,
-    - **MySQL**,
-    - **Oracle**.
-
-### How to run 
-
-In order to run the application, you can use command line: 
-1. Go to the main folder of the repository: 
+# For Linux/macOS
+dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p YourSecurePassword123
+dotnet dev-certs https --trust
 ```
-cd C:\PathToRepo\sqlviewer 
+2. Navigate to the root folder of this project.
+3. Create a `.env` file and add the configuration data for webapi inside the docker container.
+```.env
+# Database server
+DB_HOST=host.docker.internal
+DB_PASSWORD=DatabasePassword1234
+
+# Encryption
+ENCRYPTION_KEY=YourSuperSecretKey123
+
+# HTTP certificate
+HOST_CERT_PATH=path
+CERT_PASSWORD=YourSecurePassword123
 ```
-2. Execute `config.cmd` file to restore all the projects, and initialize databases and the project's file system: 
+4. To build and run the entire application stack: `docker compose up --build`.
+
+## JSON
+
+`/api/sql/create-table`:
+```json
+{
+    "databaseType": 3,
+    "tableName": "NewCreatedTable",
+    "columns": [
+        {
+            "columnName": "Id",
+            "columnType": 12
+        },
+        {
+            "columnName": "Column1",
+            "columnType": 16
+        },
+        {
+            "columnName": "Column2",
+            "columnType": 16
+        }
+    ],
+    "connectionString": "Server=localhost;Username=postgres;Database=postgres;Port=5432;Password=postgres"
+}
 ```
-config.cmd
+
+`/api/sql/drop-table`:
+```json
+{
+    "databaseType": 3,
+    "tableName": "NewCreatedTable",
+    "connectionString": "Server=localhost;Username=postgres;Database=postgres;Port=5432;Password=postgres"
+}
 ```
-3. Execute `run.cmd` file: 
-```
-run.cmd 
-```
-
-### How to use 
-
-[Click here](docs/HowToUse.md) to read guide on how to use the application. 
-
-## For developers 
-
-This application is written in C# with **WPF** using **MVVM** pattern. 
-
-### How to contribute
-
-1. [Click here](https://docs.github.com/en/get-started/quickstart/contributing-to-projects) to read guide on how to contribute to GitHub projects (common for any GitHub project). 
-2. Read [to-do list](docs/TODO.md). 
-
-### Application structure 
-
-Class diagram is shown below:
-
-![Class diagram: SqlViewer](docs/img/sqlviewer_classdiagram.png)

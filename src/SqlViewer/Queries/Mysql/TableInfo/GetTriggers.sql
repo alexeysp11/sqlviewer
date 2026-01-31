@@ -1,1 +1,0 @@
-SHOW TRIGGERS LIKE '{0}'

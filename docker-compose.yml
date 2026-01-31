@@ -1,0 +1,52 @@
+services:
+  webapi:
+    container_name: api-gateway
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer;Port=54321;Password=${DB_PASSWORD};
+    build:
+      context: .
+      dockerfile: src/SqlViewer.ApiGateway/Dockerfile
+    ports:
+      - "5293:8080"
+      - "7051:8081"
+    volumes:
+      - ${HOST_CERT_PATH:-./certs}:/https:ro
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:alpine
+    container_name: redis-cache
+    ports:
+      - "6379:6379"
+
+  postgres:
+    image: postgres
+    container_name: metadata-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sqlviewer
+    ports:
+      - "54321:5432"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server
+    profiles: ["extra-dbs"]
+    ports:
+      - "8123:8123"
+
+  sqlserver:
+    image: mcr.microsoft.com
+    profiles: ["extra-dbs"]
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=StrongPassword123
