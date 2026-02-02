@@ -6,7 +6,7 @@ A distributed system for managing heterogeneous data sources.
 
 ## General description
 
-- Microservice architecture.
+- Client-service architecture.
 - Docker containers for services and databases.
 - Centralized metadata storage and connection abstraction.
 - The system allows users to interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API, hiding the technical details of connection implementation.
@@ -75,37 +75,3 @@ HOST_CERT_PATH=path
 CERT_PASSWORD=YourSecurePassword123
 ```
 4. To build and run the entire application stack: `docker compose up --build`.
-
-## JSON
-
-`/api/sql/create-table`:
-```json
-{
-    "databaseType": 3,
-    "tableName": "NewCreatedTable",
-    "columns": [
-        {
-            "columnName": "Id",
-            "columnType": 12
-        },
-        {
-            "columnName": "Column1",
-            "columnType": 16
-        },
-        {
-            "columnName": "Column2",
-            "columnType": 16
-        }
-    ],
-    "connectionString": "Server=localhost;Username=postgres;Database=postgres;Port=5432;Password=postgres"
-}
-```
-
-`/api/sql/drop-table`:
-```json
-{
-    "databaseType": 3,
-    "tableName": "NewCreatedTable",
-    "connectionString": "Server=localhost;Username=postgres;Database=postgres;Port=5432;Password=postgres"
-}
-```
