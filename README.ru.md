@@ -6,7 +6,7 @@
 
 ## Общее описание
 
-- Микросервисная архитектура.
+- Клиент-сервисная архитектура.
 - Docker контейнеры для сервисов и баз данных.
 - Централизованное хранилище метаданных (Metadata Storage) и абстракция подключений.
 - Система позволяет пользователям взаимодействовать с различными БД (SQLite, PostgreSQL, MS SQL) через унифицированный API, скрывая технические детали реализации подключений.
@@ -75,37 +75,3 @@ HOST_CERT_PATH=path
 CERT_PASSWORD=YourSecurePassword123
 ```
 4. Для сборки и запуска всего стека приложений: `docker compose up --build`.
-
-## JSON
-
-`/api/sql/create-table`:
-```json
-{
-    "databaseType": 3,
-    "tableName": "NewCreatedTable",
-    "columns": [
-        {
-            "columnName": "Id",
-            "columnType": 12
-        },
-        {
-            "columnName": "Column1",
-            "columnType": 16
-        },
-        {
-            "columnName": "Column2",
-            "columnType": 16
-        }
-    ],
-    "connectionString": "Server=localhost;Username=postgres;Database=postgres;Port=5432;Password=postgres"
-}
-```
-
-`/api/sql/drop-table`:
-```json
-{
-    "databaseType": 3,
-    "tableName": "NewCreatedTable",
-    "connectionString": "Server=localhost;Username=postgres;Database=postgres;Port=5432;Password=postgres"
-}
-```
