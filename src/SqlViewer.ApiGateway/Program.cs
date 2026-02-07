@@ -13,6 +13,10 @@ using SqlViewer.ApiGateway.Repositories;
 using SqlViewer.ApiGateway.Repositories.Implementations;
 using SqlViewer.ApiGateway.Services;
 using SqlViewer.ApiGateway.Services.Implementations;
+using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services;
+using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services.Implementations;
+using SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services;
+using SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services.Implementations;
 using SqlViewer.Common.Models;
 using System.Text;
 

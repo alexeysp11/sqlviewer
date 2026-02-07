@@ -3,7 +3,7 @@ using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
-namespace SqlViewer.ApiGateway.Services.Implementations;
+namespace SqlViewer.ApiGateway.VerticalSlices.Metadata.Services.Implementations;
 
 public sealed class MetadataService(IDbConnectionFactory dbConnectionFactory) : IMetadataService
 {

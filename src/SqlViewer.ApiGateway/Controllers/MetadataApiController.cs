@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.Services;
+using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Extensions;

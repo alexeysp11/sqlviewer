@@ -1,7 +1,7 @@
 ﻿using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
-namespace SqlViewer.ApiGateway.Services;
+namespace SqlViewer.ApiGateway.VerticalSlices.Metadata.Services;
 
 public interface IQueryBuilderService
 {

@@ -4,7 +4,7 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 using VelocipedeUtils.Shared.DbOperations.QueryBuilders;
 
-namespace SqlViewer.ApiGateway.Services.Implementations;
+namespace SqlViewer.ApiGateway.VerticalSlices.Metadata.Services.Implementations;
 
 public sealed class QueryBuilderService(IDbConnectionFactory dbConnectionFactory) : IQueryBuilderService
 {

@@ -6,13 +6,13 @@ using VelocipedeUtils.Shared.DbOperations.Factories;
 
 namespace SqlViewer.ApiGateway.Factories.Implementations;
 
-public sealed class DbConnectionFactory(IDataSourceRepository dbRepository) : IDbConnectionFactory
+public sealed class DbConnectionFactory(IDataSourceRepository dataSourceRepository) : IDbConnectionFactory
 {
     public async Task<IVelocipedeDbConnection> GetDbConnectionAsync(VelocipedeDatabaseType databaseType, string? connectionString = null)
     {
         DataSourceParseInfo? dataSourceInfo = DataSourceParser.Parse(connectionString);
         string? actualConnectionString = dataSourceInfo is not null
-            ? await dbRepository.GetRealConnectionStringAsync(dataSourceInfo.Id, dataSourceInfo.Name)
+            ? await dataSourceRepository.GetRealConnectionStringAsync(dataSourceInfo.Id, dataSourceInfo.Name)
             : connectionString;
 
         return VelocipedeDbConnectionFactory.InitializeDbConnection(databaseType, actualConnectionString);

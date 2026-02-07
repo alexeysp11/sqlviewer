@@ -4,19 +4,17 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 using VelocipedeUtils.Shared.DbOperations.QueryBuilders;
 
-namespace SqlViewer.ApiGateway.Services.Implementations;
+namespace SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services.Implementations;
 
 public sealed class SqlQueryService(IDbConnectionFactory dbConnectionFactory) : ISqlQueryService
 {
-    private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
-
     public async Task CreateTableAsync(
         VelocipedeDatabaseType databaseType,
         string connectionString,
         string tableName,
         IEnumerable<VelocipedeColumnInfo> columnInfos)
     {
-        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
+        using IVelocipedeDbConnection dbConnection = await dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
 
@@ -37,7 +35,7 @@ public sealed class SqlQueryService(IDbConnectionFactory dbConnectionFactory) : 
         string connectionString,
         string tableName)
     {
-        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
+        using IVelocipedeDbConnection dbConnection = await dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
         string sql = $@"drop table ""{tableName}""";
@@ -49,7 +47,7 @@ public sealed class SqlQueryService(IDbConnectionFactory dbConnectionFactory) : 
         string connectionString,
         string query)
     {
-        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
+        using IVelocipedeDbConnection dbConnection = await dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
         await dbConnection.ExecuteAsync(query);
@@ -60,7 +58,7 @@ public sealed class SqlQueryService(IDbConnectionFactory dbConnectionFactory) : 
         string connectionString,
         string query)
     {
-        using IVelocipedeDbConnection dbConnection = await _dbConnectionFactory.GetDbConnectionAsync(
+        using IVelocipedeDbConnection dbConnection = await dbConnectionFactory.GetDbConnectionAsync(
             databaseType,
             connectionString);
         return await dbConnection.QueryAsync<dynamic>(query);
