@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.ApiGateway.Data.DataSources;
+﻿namespace SqlViewer.Common.Parsers.DataSources;
 
 public sealed record DataSourceParseInfo
 {

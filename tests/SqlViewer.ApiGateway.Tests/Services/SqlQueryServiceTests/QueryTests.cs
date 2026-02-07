@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Moq;
-using SqlViewer.ApiGateway.Factories;
 using SqlViewer.ApiGateway.Tests.Infrastructure.Models;
 using SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services.Implementations;
+using SqlViewer.Common.Factories;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 

@@ -1,7 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SqlViewer.ApiGateway.Data.DbContexts;
-using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Models;
+using SqlViewer.Common.Repositories;
+using SqlViewer.Common.Services;
 
 namespace SqlViewer.ApiGateway.Repositories.Implementations;
 

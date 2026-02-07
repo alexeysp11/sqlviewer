@@ -1,10 +1,11 @@
 ﻿using SqlViewer.ApiGateway.Data.DataSources;
-using SqlViewer.ApiGateway.Repositories;
+using SqlViewer.Common.Parsers.DataSources;
+using SqlViewer.Common.Repositories;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Factories;
 
-namespace SqlViewer.ApiGateway.Factories.Implementations;
+namespace SqlViewer.Common.Factories.Implementations;
 
 public sealed class DbConnectionFactory(IDataSourceRepository dataSourceRepository) : IDbConnectionFactory
 {

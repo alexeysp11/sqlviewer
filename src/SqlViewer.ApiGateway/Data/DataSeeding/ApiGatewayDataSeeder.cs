@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SqlViewer.ApiGateway.Data.DbContexts;
-using SqlViewer.ApiGateway.Services;
 using SqlViewer.Common.Enums;
 using SqlViewer.Common.Models;
+using SqlViewer.Common.Services;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 

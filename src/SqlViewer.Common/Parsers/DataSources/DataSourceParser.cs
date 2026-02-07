@@ -1,6 +1,7 @@
 ﻿namespace SqlViewer.ApiGateway.Data.DataSources;
 
 using System.Text.RegularExpressions;
+using SqlViewer.Common.Parsers.DataSources;
 
 public static partial class DataSourceParser
 {

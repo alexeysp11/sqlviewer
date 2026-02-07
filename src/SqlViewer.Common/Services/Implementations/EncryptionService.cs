@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.DataProtection;
 
-namespace SqlViewer.ApiGateway.Services.Implementations;
+namespace SqlViewer.Common.Services.Implementations;
 
 public sealed class EncryptionService(IDataProtectionProvider provider) : IEncryptionService
 {

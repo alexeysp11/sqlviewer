@@ -1,7 +1,7 @@
 ﻿using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.ApiGateway.Factories;
+namespace SqlViewer.Common.Factories;
 
 public interface IDbConnectionFactory
 {

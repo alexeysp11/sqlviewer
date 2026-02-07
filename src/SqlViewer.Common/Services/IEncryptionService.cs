@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.ApiGateway.Services;
+﻿namespace SqlViewer.Common.Services;
 
 public interface IEncryptionService
 {

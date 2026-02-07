@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.ApiGateway.Repositories;
+﻿namespace SqlViewer.Common.Repositories;
 
 public interface IDataSourceRepository
 {
