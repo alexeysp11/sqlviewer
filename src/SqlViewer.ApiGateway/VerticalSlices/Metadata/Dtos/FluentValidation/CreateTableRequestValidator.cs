@@ -1,8 +1,9 @@
 ﻿using FluentValidation;
 using SqlViewer.Common.Dtos.SqlQueries;
 
-namespace SqlViewer.ApiGateway.DtoFluentValidation;
+namespace SqlViewer.ApiGateway.VerticalSlices.Metadata.Dtos.FluentValidation;
 
+// TODO: Should be moved into metadata and query execution service.
 public sealed class CreateTableRequestValidator : AbstractValidator<CreateTableRequestDto>
 {
     public CreateTableRequestValidator()

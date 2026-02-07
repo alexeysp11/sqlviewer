@@ -4,7 +4,7 @@ using SqlViewer.Common.Models;
 using SqlViewer.Common.Repositories;
 using SqlViewer.Common.Services;
 
-namespace SqlViewer.ApiGateway.Repositories.Implementations;
+namespace SqlViewer.ApiGateway.VerticalSlices.Metadata.Repositories.Implementations;
 
 public sealed class DataSourceRepository(
     ApiGatewayDbContext dbContext,
