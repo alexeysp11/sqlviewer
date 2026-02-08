@@ -11,6 +11,7 @@ namespace SqlViewer.Common.Dtos.Metadata;
 public sealed class MetadataColumnsResponseDto
 {
     [JsonPropertyName("databaseType")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required VelocipedeDatabaseType DatabaseType { get; init; }
 
     [JsonPropertyName("tableName")]

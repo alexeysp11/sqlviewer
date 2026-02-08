@@ -9,6 +9,7 @@ namespace SqlViewer.Common.Dtos.Auth;
 public sealed class LoginRequestDto
 {
     [JsonPropertyName("authType")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required SqlViewerAuthType AuthType { get; init; }
 
     [JsonPropertyName("username")]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.Services;
+using SqlViewer.ApiGateway.VerticalSlices.Security.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Enums;

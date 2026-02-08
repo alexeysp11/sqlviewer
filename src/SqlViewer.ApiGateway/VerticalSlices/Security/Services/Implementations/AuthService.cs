@@ -5,7 +5,7 @@ using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Enums;
 using SqlViewer.Common.Models;
 
-namespace SqlViewer.ApiGateway.Services.Implementations;
+namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services.Implementations;
 
 public sealed class AuthService(
     ApiGatewayDbContext dbContext,

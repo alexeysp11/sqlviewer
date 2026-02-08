@@ -5,7 +5,7 @@ using System.Text;
 using System.Security.Cryptography;
 using SqlViewer.Common.Enums;
 
-namespace SqlViewer.ApiGateway.Services.Implementations;
+namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services.Implementations;
 
 public class TokenService(IConfiguration config) : ITokenService
 {

@@ -1,6 +1,6 @@
 ﻿using SqlViewer.Common.Dtos.Auth;
 
-namespace SqlViewer.ApiGateway.Services;
+namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services;
 
 public interface IAuthService
 {

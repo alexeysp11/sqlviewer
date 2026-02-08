@@ -20,6 +20,7 @@ public record ColumnInfoDto
     /// The type of the column.
     /// </summary>
     [JsonPropertyName("columnType")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required DbType ColumnType { get; init; }
 
     /// <summary>

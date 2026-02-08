@@ -1,6 +1,6 @@
 ﻿using SqlViewer.Common.Enums;
 
-namespace SqlViewer.ApiGateway.Services;
+namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services;
 
 public interface ITokenService
 {

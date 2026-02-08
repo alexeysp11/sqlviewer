@@ -45,5 +45,6 @@ public sealed class LoginResponseDto
     /// User authentication role.
     /// </summary>
     [JsonPropertyName("authRole")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public SqlViewerAuthRole Role { get; init; }
 }

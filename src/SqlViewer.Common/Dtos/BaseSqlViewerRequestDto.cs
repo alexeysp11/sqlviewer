@@ -9,6 +9,7 @@ namespace SqlViewer.Common.Dtos;
 public abstract class BaseSqlViewerRequestDto
 {
     [JsonPropertyName("databaseType")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required VelocipedeDatabaseType DatabaseType { get; init; }
 
     [JsonPropertyName("connectionString")]
