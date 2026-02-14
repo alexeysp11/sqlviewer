@@ -6,7 +6,7 @@ namespace SqlViewer.Common.Dtos.Auth;
 /// <summary>
 /// Response DTO for verifying user credentials.
 /// </summary>
-public sealed class LoginResponseDto
+public sealed record LoginResponseDto
 {
     /// <summary>
     /// JWT access token for Header <c>"Authorization: Bearer AccessToken"</c>.
