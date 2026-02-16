@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using SqlViewer.ApiGateway.Data.DbContexts;
 using SqlViewer.ApiGateway.IntegrationTests.Infrastructure.AuthenticationHandlers;
 using Testcontainers.PostgreSql;
 using static SqlViewer.Common.Constants.ConfigurationKeys;

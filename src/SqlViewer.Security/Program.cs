@@ -1,8 +1,6 @@
-using SqlViewer.Metadata.Services;
+namespace SqlViewer.Security;
 
-namespace SqlViewer.Metadata;
-
-public sealed class Program
+public static class Program
 {
     public static void Main(string[] args)
     {

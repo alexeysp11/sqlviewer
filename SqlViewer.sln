@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.QueryExecution", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Metadata", "src\SqlViewer.Metadata\SqlViewer.Metadata.csproj", "{5F3DD19A-8996-4777-8F6D-0D4CD52D2563}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Security", "src\SqlViewer.Security\SqlViewer.Security.csproj", "{65F9F980-43D4-4814-A175-C5C21EDD2162}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -72,6 +74,10 @@ Global
 		{5F3DD19A-8996-4777-8F6D-0D4CD52D2563}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F3DD19A-8996-4777-8F6D-0D4CD52D2563}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F3DD19A-8996-4777-8F6D-0D4CD52D2563}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65F9F980-43D4-4814-A175-C5C21EDD2162}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65F9F980-43D4-4814-A175-C5C21EDD2162}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65F9F980-43D4-4814-A175-C5C21EDD2162}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65F9F980-43D4-4814-A175-C5C21EDD2162}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{A9BFB7A3-FE49-4235-B1FA-E44944AA149E} = {C468FFF0-F521-4F67-A0B5-27C777B164B5}
 		{984AFA9F-CA4F-4A16-86EA-C23DD7EED13E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5F3DD19A-8996-4777-8F6D-0D4CD52D2563} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{65F9F980-43D4-4814-A175-C5C21EDD2162} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {970E3C9B-23BB-4829-A788-C199135EB72A}
