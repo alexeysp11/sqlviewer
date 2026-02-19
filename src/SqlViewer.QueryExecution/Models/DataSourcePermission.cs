@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Enums;
+﻿using SqlViewer.QueryExecution.Enums;
 
 namespace SqlViewer.QueryExecution.Models;
 

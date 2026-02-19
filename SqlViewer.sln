@@ -32,6 +32,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Metadata", "src\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Security", "src\SqlViewer.Security\SqlViewer.Security.csproj", "{65F9F980-43D4-4814-A175-C5C21EDD2162}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "infrastructure", "infrastructure", "{5CD77990-C1A8-4727-AD60-D38109FD694E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "postgres", "postgres", "{F9A7C00C-56D0-43EC-8BFF-2FFD0CC47D7A}"
+	ProjectSection(SolutionItems) = preProject
+		infrastructure\postgres\init.sql = infrastructure\postgres\init.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +100,7 @@ Global
 		{984AFA9F-CA4F-4A16-86EA-C23DD7EED13E} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{5F3DD19A-8996-4777-8F6D-0D4CD52D2563} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{65F9F980-43D4-4814-A175-C5C21EDD2162} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{F9A7C00C-56D0-43EC-8BFF-2FFD0CC47D7A} = {5CD77990-C1A8-4727-AD60-D38109FD694E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {970E3C9B-23BB-4829-A788-C199135EB72A}

@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Enums;
+﻿using SqlViewer.Metadata.Enums;
 
 namespace SqlViewer.Metadata.Models;
 

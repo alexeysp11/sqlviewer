@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.Common.Enums;
+﻿namespace SqlViewer.Metadata.Enums;
 
 public enum AccessLevelType
 {

@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Enums;
 using SqlViewer.Common.Services;
 using SqlViewer.Metadata.Data.DbContexts;
+using SqlViewer.Metadata.Enums;
 using SqlViewer.Metadata.Models;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
@@ -12,8 +12,7 @@ namespace SqlViewer.Metadata.Data.DataSeeding;
 public sealed class MetadataDataSeeder(
     MetadataDbContext context,
     IConfiguration config,
-    IEncryptionService encryptionService,
-    IPasswordHasher<User> passwordHasher) : IMetadataDataSeeder
+    IEncryptionService encryptionService) : IMetadataDataSeeder
 {
     public async Task InitializeAsync()
     {
@@ -41,15 +40,9 @@ public sealed class MetadataDataSeeder(
         User? admin = await context.Users.FirstOrDefaultAsync(x => x.Username == adminUsername);
         if (admin is null)
         {
-            string? adminPassword = config[DefaultUserCredentials.AdminPassword];
-            if (string.IsNullOrEmpty(adminPassword))
-            {
-                throw new Exception("Admin password is missing from configuration");
-            }
             admin = new()
             {
                 Username = adminUsername,
-                PasswordHash = passwordHasher.HashPassword(null!, adminPassword),
                 Role = SqlViewerAuthRole.Admin,
             };
             context.Users.Add(admin);

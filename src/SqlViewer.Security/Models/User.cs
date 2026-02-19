@@ -18,7 +18,4 @@ public sealed record User
     public DateTime? RefreshTokenExpiry { get; set; }
 
     public string? RefreshToken { get; set; }
-
-    public ICollection<DataSourcePermission> Permissions { get; set; } = [];
-    public ICollection<DataSource> OwnedSources { get; set; } = [];
 }

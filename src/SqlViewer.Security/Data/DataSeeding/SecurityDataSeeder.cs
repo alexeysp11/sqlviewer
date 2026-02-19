@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Enums;
-using SqlViewer.Common.Services;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Models;
-using VelocipedeUtils.Shared.DbOperations.Enums;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Security.Data.DataSeeding;
@@ -12,7 +10,6 @@ namespace SqlViewer.Security.Data.DataSeeding;
 public sealed class SecurityDataSeeder(
     SecurityDbContext context,
     IConfiguration config,
-    IEncryptionService encryptionService,
     IPasswordHasher<User> passwordHasher) : ISecurityDataSeeder
 {
     public async Task InitializeAsync()
@@ -25,8 +22,7 @@ public sealed class SecurityDataSeeder(
 
         await context.Database.MigrateAsync();
 
-        User admin = await CreateAdminUserAsync();
-        await CreateMetadataDataSource(admin);
+        await CreateAdminUserAsync();
 
         await context.SaveChangesAsync();
     }
@@ -55,35 +51,5 @@ public sealed class SecurityDataSeeder(
             context.Users.Add(admin);
         }
         return admin;
-    }
-
-    private async Task CreateMetadataDataSource(User admin)
-    {
-        string? dataSourceName = config[DefaultDataSources.MetadataDbName];
-        if (string.IsNullOrEmpty(dataSourceName))
-        {
-            throw new Exception("Metadata datasource name is missing from configuration");
-        }
-        DataSource? dataSource = await context.DataSources.FirstOrDefaultAsync(x => x.Name == dataSourceName);
-        if (dataSource is null)
-        {
-            string metadataConnectionString = config.GetConnectionString(ConnectionStrings.Metadata)
-                ?? throw new Exception("Metadata connection string could not be null");
-            string? dataSourceDescription = config[DefaultDataSources.MetadataDbDescription];
-            if (string.IsNullOrEmpty(dataSourceDescription))
-            {
-                throw new Exception("Metadata datasource description is missing from configuration");
-            }
-            dataSource = new()
-            {
-                Name = dataSourceName,
-                Description = dataSourceDescription,
-                EncryptedConnectionString = encryptionService.Encrypt(metadataConnectionString),
-                Owner = admin,
-                DbType = VelocipedeDatabaseType.PostgreSQL,
-            };
-            dataSource.Permissions = [new() { User = admin, DataSource = dataSource, AccessLevel = AccessLevelType.Admin }];
-            context.DataSources.Add(dataSource);
-        }
     }
 }
