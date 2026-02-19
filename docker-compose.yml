@@ -30,7 +30,7 @@ services:
 
   postgres:
     image: postgres
-    container_name: metadata-db
+    container_name: sqlviewer-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
