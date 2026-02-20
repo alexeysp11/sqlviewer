@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Enums;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Models;
+using SqlViewer.Shared.Seed.Models;
+using SqlViewer.Shared.Seed.Registries;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Security.Data.DataSeeding;
@@ -14,21 +16,15 @@ public sealed class SecurityDataSeeder(
 {
     public async Task InitializeAsync()
     {
-        string? encryptionKey = config[Encryption.Key];
-        if (string.IsNullOrEmpty(encryptionKey))
-        {
-            throw new Exception("Encryption key is missing from configuration");
-        }
-
         await context.Database.MigrateAsync();
-
         await CreateAdminUserAsync();
-
         await context.SaveChangesAsync();
     }
 
     private async Task<User> CreateAdminUserAsync()
     {
+        IEnumerable<UserSeedDto> users = SeedRegistry.Users;
+
         string? adminUsername = config[DefaultUserCredentials.AdminUsername];
         if (string.IsNullOrEmpty(adminUsername))
         {

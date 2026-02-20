@@ -1,15 +1,36 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using SqlViewer.Security.Data.DataSeeding;
+using SqlViewer.Security.Data.DbContexts;
+using SqlViewer.Security.Models;
+
 namespace SqlViewer.Security;
 
 public static class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
+        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddScoped<ISecurityDataSeeder, SecurityDataSeeder>();
+        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+
         builder.Services.AddGrpc();
 
-        var app = builder.Build();
+        builder.Services.AddDbContext<SecurityDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString("SecurityConnection"))
+        );
+
+        WebApplication app = builder.Build();
+
+        // Initialization and seeding the database.
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            SecurityDbContext db = scope.ServiceProvider.GetRequiredService<SecurityDbContext>();
+            ISecurityDataSeeder dataSeeder = scope.ServiceProvider.GetRequiredService<ISecurityDataSeeder>();
+            await dataSeeder.InitializeAsync();
+        }
 
         // Configure the HTTP request pipeline.
         //app.MapGrpcService<GreeterService>();

@@ -26,6 +26,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\SqlViewer.Common\SqlViewer.Common.csproj" />
+    <ProjectReference Include="..\SqlViewer.Shared.Seed\SqlViewer.Shared.Seed.csproj" />
   </ItemGroup>
 
 </Project>
