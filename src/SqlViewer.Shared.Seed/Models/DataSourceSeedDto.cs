@@ -1,6 +1,6 @@
 ﻿namespace SqlViewer.Shared.Seed.Models;
 
-public record DataSourceSeedDto(
+public sealed record DataSourceSeedDto(
     Guid Uid,
     string Name,
     string Description,
