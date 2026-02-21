@@ -17,6 +17,12 @@ public static class SeedIdentifiers
             public const string Admin = "admin";
             public const string Guest = "guest";
         }
+
+        public static class Password
+        {
+            public const string Default = "default";
+            public const string System = "system";
+        }
     }
 
     public static class DataSource

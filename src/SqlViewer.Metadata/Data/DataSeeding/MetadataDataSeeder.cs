@@ -32,7 +32,7 @@ public sealed class MetadataDataSeeder(
 
     private async Task<User> CreateAdminUserAsync()
     {
-        string? adminUsername = config[DefaultUserCredentials.AdminUsername];
+        string? adminUsername = config[DefaultUserCredentials.Username.Admin];
         if (string.IsNullOrEmpty(adminUsername))
         {
             throw new Exception("Admin username is missing from configuration");
@@ -52,7 +52,7 @@ public sealed class MetadataDataSeeder(
 
     private async Task CreateMetadataDataSource(User admin)
     {
-        string? dataSourceName = config[DefaultDataSources.MetadataDbName];
+        string? dataSourceName = config[DefaultDataSources.DbName.Metadata];
         if (string.IsNullOrEmpty(dataSourceName))
         {
             throw new Exception("Metadata datasource name is missing from configuration");
@@ -62,7 +62,7 @@ public sealed class MetadataDataSeeder(
         {
             string metadataConnectionString = config.GetConnectionString(ConnectionStrings.Metadata)
                 ?? throw new Exception("Metadata connection string could not be null");
-            string? dataSourceDescription = config[DefaultDataSources.MetadataDbDescription];
+            string? dataSourceDescription = config[DefaultDataSources.DbDescription.Metadata];
             if (string.IsNullOrEmpty(dataSourceDescription))
             {
                 throw new Exception("Metadata datasource description is missing from configuration");

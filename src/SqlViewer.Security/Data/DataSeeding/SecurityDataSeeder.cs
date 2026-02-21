@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SqlViewer.Common.Constants;
+using SqlViewer.Common.Enums;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Mappings;
 using SqlViewer.Security.Models;
@@ -30,15 +32,16 @@ public sealed class SecurityDataSeeder(
         User? existingUser = await context.Users.FirstOrDefaultAsync(x => x.Username == user.Username);
         if (existingUser is null)
         {
-            // Update PasswordHash.
-            // TODO: get password from configurations.
-            string? password = user.PasswordHash;
+            string? password = user.Role switch
+            {
+                SqlViewerAuthRole.Admin => config[ConfigurationKeys.DefaultUserCredentials.Password.Admin],
+                SqlViewerAuthRole.Guest => config[ConfigurationKeys.DefaultUserCredentials.Password.Guest],
+                _ => user.PasswordHash
+            };
             if (string.IsNullOrEmpty(password))
             {
                 throw new Exception($"Password is missing from configuration for the specified user: {user.Username}");
             }
-
-            // Add user.
             existingUser = new User
             {
                 Username = user.Username,
