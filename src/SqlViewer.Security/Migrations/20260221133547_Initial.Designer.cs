@@ -12,7 +12,7 @@ using SqlViewer.Security.Data.DbContexts;
 namespace SqlViewer.Security.Migrations
 {
     [DbContext(typeof(SecurityDbContext))]
-    [Migration("20260220180259_Initial")]
+    [Migration("20260221133547_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -75,6 +75,9 @@ namespace SqlViewer.Security.Migrations
 
                     b.Property<int>("Role")
                         .HasColumnType("integer");
+
+                    b.Property<Guid>("Uid")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Username")
                         .IsRequired()
