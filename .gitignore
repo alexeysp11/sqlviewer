@@ -7,3 +7,4 @@ bin
 .env
 
 *.csproj.user
+*.tmp

@@ -19,18 +19,18 @@ public sealed class SecurityDataSeeder(
     {
         await context.Database.MigrateAsync();
 
-        IEnumerable<User> userEntities = SeedRegistry.Users.Select(seedMapper.MapToUser);
-        foreach (User userEntity in userEntities)
+        IEnumerable<User> users = SeedRegistry.Users.Select(seedMapper.MapToUser);
+        foreach (User user in users)
         {
-            await CreateUserIfNotExistsAsync(userEntity);
+            await CreateUserIfNotExistsAsync(user);
         }
         await context.SaveChangesAsync();
     }
 
     private async Task CreateUserIfNotExistsAsync(User user)
     {
-        User? existingUser = await context.Users.FirstOrDefaultAsync(x => x.Username == user.Username);
-        if (existingUser is null)
+        long? existingUserId = await context.Users.Where(x => x.Username == user.Username).Select(x => (long?)x.Id).FirstOrDefaultAsync();
+        if (!existingUserId.HasValue)
         {
             string? password = user.Role switch
             {
@@ -42,14 +42,8 @@ public sealed class SecurityDataSeeder(
             {
                 throw new Exception($"Password is missing from configuration for the specified user: {user.Username}");
             }
-            existingUser = new User
-            {
-                Username = user.Username,
-                Uid = user.Uid,
-                PasswordHash = passwordHasher.HashPassword(null!, password),
-                Role = user.Role,
-            };
-            context.Users.Add(existingUser);
+            user.PasswordHash = passwordHasher.HashPassword(null!, password);
+            context.Users.Add(user);
         }
     }
 }
