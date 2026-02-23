@@ -4,6 +4,7 @@ using SqlViewer.Security.Data.DataSeeding;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Mappings;
 using SqlViewer.Security.Models;
+using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Security;
 
@@ -21,7 +22,7 @@ public static class Program
         builder.Services.AddGrpc();
 
         builder.Services.AddDbContext<SecurityDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("SecurityConnection"))
+            options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Security))
         );
 
         WebApplication app = builder.Build();

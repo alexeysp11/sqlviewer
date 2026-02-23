@@ -7,6 +7,8 @@ public sealed record User
 {
     public long Id { get; set; }
 
+    public Guid Uid { get; set; }
+
     [MaxLength(50)]
     public required string Username { get; set; }
 

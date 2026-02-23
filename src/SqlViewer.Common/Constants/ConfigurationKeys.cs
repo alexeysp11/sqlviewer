@@ -59,5 +59,7 @@ public static class ConfigurationKeys
     public static class ConnectionStrings
     {
         public const string Metadata = "MetadataConnection";
+        public const string Security = "SecurityConnection";
+        public const string QueryExecution = "QueryExecutionConnection";
     }
 }

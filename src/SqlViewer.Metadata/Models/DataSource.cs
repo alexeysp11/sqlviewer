@@ -7,6 +7,8 @@ public sealed record DataSource
 {
     public long Id { get; set; }
 
+    public Guid Uid { get; set; }
+
     [MaxLength(100)]
     public required string Name { get; set; }
 
@@ -18,7 +20,6 @@ public sealed record DataSource
     [MaxLength(2000)]
     public required string EncryptedConnectionString { get; set; }
 
-    public long OwnerId { get; set; }
     public User Owner { get; set; } = null!;
 
     public ICollection<DataSourcePermission> Permissions { get; set; } = [];

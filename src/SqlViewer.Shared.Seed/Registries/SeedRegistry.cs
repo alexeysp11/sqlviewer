@@ -27,6 +27,20 @@ public static class SeedRegistry
             Description: SeedIdentifiers.DataSource.Description.Metadata,
             DbType: SeedIdentifiers.DbType.Postgres,
             OwnerUid: SeedIdentifiers.User.Uid.Admin
+        ),
+        new DataSourceSeedDto(
+            Uid: SeedIdentifiers.DataSource.Uid.Security,
+            Name: SeedIdentifiers.DataSource.Name.Security,
+            Description: SeedIdentifiers.DataSource.Description.Security,
+            DbType: SeedIdentifiers.DbType.Postgres,
+            OwnerUid: SeedIdentifiers.User.Uid.Admin
+        ),
+        new DataSourceSeedDto(
+            Uid: SeedIdentifiers.DataSource.Uid.QueryExecution,
+            Name: SeedIdentifiers.DataSource.Name.QueryExecution,
+            Description: SeedIdentifiers.DataSource.Description.QueryExecution,
+            DbType: SeedIdentifiers.DbType.Postgres,
+            OwnerUid: SeedIdentifiers.User.Uid.Admin
         )
     ];
 
@@ -35,6 +49,16 @@ public static class SeedRegistry
         new DataSourcePermissionSeedDto(
             UserUid: SeedIdentifiers.User.Uid.Admin,
             DataSourceUid: SeedIdentifiers.DataSource.Uid.Metadata,
+            AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin
+        ),
+        new DataSourcePermissionSeedDto(
+            UserUid: SeedIdentifiers.User.Uid.Admin,
+            DataSourceUid: SeedIdentifiers.DataSource.Uid.Security,
+            AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin
+        ),
+        new DataSourcePermissionSeedDto(
+            UserUid: SeedIdentifiers.User.Uid.Admin,
+            DataSourceUid: SeedIdentifiers.DataSource.Uid.QueryExecution,
             AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin
         )
     ];
