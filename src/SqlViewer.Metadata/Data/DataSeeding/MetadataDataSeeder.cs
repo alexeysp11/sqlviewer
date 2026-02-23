@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Services;
 using SqlViewer.Metadata.Data.DbContexts;
+using SqlViewer.Metadata.Enums;
 using SqlViewer.Metadata.Mappings;
 using SqlViewer.Metadata.Models;
 using SqlViewer.Shared.Seed.Constants;
@@ -16,6 +17,8 @@ public sealed class MetadataDataSeeder(
     SeedMapper seedMapper,
     IEncryptionService encryptionService) : IMetadataDataSeeder
 {
+    private readonly Dictionary<Guid, DataSource> _createdDataSources = [];
+
     public async Task InitializeAsync()
     {
         await context.Database.MigrateAsync();
@@ -25,6 +28,7 @@ public sealed class MetadataDataSeeder(
         {
             await CreateUserIfNotExistsAsync(user);
             await CreateOwnedDataSources(user);
+            await CreateDataSourcePermissions(user);
         }
         await context.SaveChangesAsync();
     }
@@ -64,6 +68,31 @@ public sealed class MetadataDataSeeder(
                     dataSource.EncryptedConnectionString = encryptionService.Encrypt(connectionString);
                 }
                 context.DataSources.Add(dataSource);
+                _createdDataSources.Add(dataSource.Uid, dataSource);
+            }
+        }
+    }
+
+    private async Task CreateDataSourcePermissions(User user)
+    {
+        User existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username) ?? user;
+        IEnumerable<DataSourcePermissionSeedDto> permissionDtos = SeedRegistry.DataSourcePermissions
+            .Where(dsp => dsp.UserUid == existingUser.Uid);
+        foreach (DataSourcePermissionSeedDto permissionDto in permissionDtos)
+        {
+            DataSourcePermission? permission = await context.DataSourcePermissions
+                .FirstOrDefaultAsync(dsp => dsp.DataSource.Uid == permissionDto.DataSourceUid);
+            if (permission is null)
+            {
+                DataSource dataSource = await context.DataSources.FirstOrDefaultAsync(ds => ds.Uid == permissionDto.DataSourceUid)
+                    ?? _createdDataSources[permissionDto.DataSourceUid];
+                permission = new DataSourcePermission
+                {
+                    User = existingUser,
+                    DataSource = dataSource,
+                    AccessLevel = Enum.Parse<AccessLevelType>(permissionDto.AccessLevel, false)
+                };
+                context.DataSourcePermissions.Add(permission);
             }
         }
     }
