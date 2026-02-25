@@ -4,7 +4,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace SqlViewer.Metadata.Migrations
+namespace SqlViewer.QueryExecution.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -74,6 +74,7 @@ namespace SqlViewer.Metadata.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Uid = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<long>(type: "bigint", nullable: false),
                     DataSourceId = table.Column<long>(type: "bigint", nullable: false),
                     AccessLevel = table.Column<int>(type: "integer", nullable: false)

@@ -47,16 +47,19 @@ public static class SeedRegistry
     public static IEnumerable<DataSourcePermissionSeedDto> DataSourcePermissions =>
     [
         new DataSourcePermissionSeedDto(
+            Uid: SeedIdentifiers.DataSourcePermission.Uid.AdminToMetadata,
             UserUid: SeedIdentifiers.User.Uid.Admin,
             DataSourceUid: SeedIdentifiers.DataSource.Uid.Metadata,
             AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin
         ),
         new DataSourcePermissionSeedDto(
+            Uid: SeedIdentifiers.DataSourcePermission.Uid.AdminToSecurity,
             UserUid: SeedIdentifiers.User.Uid.Admin,
             DataSourceUid: SeedIdentifiers.DataSource.Uid.Security,
             AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin
         ),
         new DataSourcePermissionSeedDto(
+            Uid: SeedIdentifiers.DataSourcePermission.Uid.AdminToQueryExecution,
             UserUid: SeedIdentifiers.User.Uid.Admin,
             DataSourceUid: SeedIdentifiers.DataSource.Uid.QueryExecution,
             AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin

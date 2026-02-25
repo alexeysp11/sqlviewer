@@ -80,14 +80,17 @@ public sealed class MetadataDataSeeder(
             .Where(dsp => dsp.UserUid == existingUser.Uid);
         foreach (DataSourcePermissionSeedDto permissionDto in permissionDtos)
         {
-            DataSourcePermission? permission = await context.DataSourcePermissions
-                .FirstOrDefaultAsync(dsp => dsp.DataSource.Uid == permissionDto.DataSourceUid);
-            if (permission is null)
+            long? permissionId = await context.DataSourcePermissions
+                .Where(dsp => dsp.DataSource.Uid == permissionDto.DataSourceUid)
+                .Select(dsp => (long?)dsp.Id)
+                .FirstOrDefaultAsync();
+            if (!permissionId.HasValue)
             {
                 DataSource dataSource = await context.DataSources.FirstOrDefaultAsync(ds => ds.Uid == permissionDto.DataSourceUid)
                     ?? _createdDataSources[permissionDto.DataSourceUid];
-                permission = new DataSourcePermission
+                DataSourcePermission permission = new()
                 {
+                    Uid = permissionDto.Uid,
                     User = existingUser,
                     DataSource = dataSource,
                     AccessLevel = Enum.Parse<AccessLevelType>(permissionDto.AccessLevel, false)

@@ -56,6 +56,13 @@ public static class SeedIdentifiers
 
     public static class DataSourcePermission
     {
+        public static class Uid
+        {
+            public static readonly Guid AdminToMetadata = Guid.Parse("550e8401-e29b-41d4-a716-446655440010");
+            public static readonly Guid AdminToSecurity = Guid.Parse("550e8401-e29b-41d4-a716-446655440011");
+            public static readonly Guid AdminToQueryExecution = Guid.Parse("550e8401-e29b-41d4-a716-446655440012");
+        }
+
         public static class AccessLevel
         {
             public const string Undefined = "Undefined";

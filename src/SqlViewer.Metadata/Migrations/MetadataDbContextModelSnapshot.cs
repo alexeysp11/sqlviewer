@@ -74,6 +74,9 @@ namespace SqlViewer.Metadata.Migrations
                     b.Property<long>("DataSourceId")
                         .HasColumnType("bigint");
 
+                    b.Property<Guid>("Uid")
+                        .HasColumnType("uuid");
+
                     b.Property<long>("UserId")
                         .HasColumnType("bigint");
 
