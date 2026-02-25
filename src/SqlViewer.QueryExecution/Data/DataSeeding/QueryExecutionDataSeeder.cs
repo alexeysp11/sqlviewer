@@ -1,10 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Enums;
 using SqlViewer.Common.Services;
 using SqlViewer.QueryExecution.Data.DbContexts;
 using SqlViewer.QueryExecution.Enums;
+using SqlViewer.QueryExecution.Mappings;
 using SqlViewer.QueryExecution.Models;
-using VelocipedeUtils.Shared.DbOperations.Enums;
+using SqlViewer.Shared.Seed.Constants;
+using SqlViewer.Shared.Seed.Models;
+using SqlViewer.Shared.Seed.Registries;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.QueryExecution.Data.DataSeeding;
@@ -12,71 +14,86 @@ namespace SqlViewer.QueryExecution.Data.DataSeeding;
 public sealed class QueryExecutionDataSeeder(
     QueryExecutionDbContext context,
     IConfiguration config,
+    SeedMapper seedMapper,
     IEncryptionService encryptionService) : IQueryExecutionDataSeeder
 {
+    private readonly Dictionary<Guid, DataSource> _createdDataSources = [];
+
     public async Task InitializeAsync()
     {
-        string? encryptionKey = config[Encryption.Key];
-        if (string.IsNullOrEmpty(encryptionKey))
-        {
-            throw new Exception("Encryption key is missing from configuration");
-        }
-
         await context.Database.MigrateAsync();
 
-        User admin = await CreateAdminUserAsync();
-        await CreateMetadataDataSource(admin);
-
+        IEnumerable<User> users = SeedRegistry.Users.Select(seedMapper.MapToUser);
+        foreach (User user in users)
+        {
+            await CreateUserIfNotExistsAsync(user);
+            await CreateOwnedDataSources(user);
+            await CreateDataSourcePermissions(user);
+        }
         await context.SaveChangesAsync();
     }
 
-    private async Task<User> CreateAdminUserAsync()
+    private async Task CreateUserIfNotExistsAsync(User user)
     {
-        string? adminUsername = config[DefaultUserCredentials.Username.Admin];
-        if (string.IsNullOrEmpty(adminUsername))
+        long? existingUserId = await context.Users.Where(x => x.Username == user.Username).Select(x => (long?)x.Id).FirstOrDefaultAsync();
+        if (!existingUserId.HasValue)
         {
-            throw new Exception("Admin username is missing from configuration");
+            context.Users.Add(user);
         }
-        User? admin = await context.Users.FirstOrDefaultAsync(x => x.Username == adminUsername);
-        if (admin is null)
-        {
-            admin = new()
-            {
-                Username = adminUsername,
-                Role = SqlViewerAuthRole.Admin,
-            };
-            context.Users.Add(admin);
-        }
-        return admin;
     }
 
-    private async Task CreateMetadataDataSource(User admin)
+    private async Task CreateOwnedDataSources(User user)
     {
-        string? dataSourceName = config[DefaultDataSources.DbName.Metadata];
-        if (string.IsNullOrEmpty(dataSourceName))
+        User existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username) ?? user;
+        IEnumerable<DataSourceSeedDto> dataSourceDtos = SeedRegistry.DataSources.Where(ds => ds.OwnerUid == existingUser.Uid);
+        foreach (DataSourceSeedDto dataSourceDto in dataSourceDtos)
         {
-            throw new Exception("Metadata datasource name is missing from configuration");
-        }
-        DataSource? dataSource = await context.DataSources.FirstOrDefaultAsync(x => x.Name == dataSourceName);
-        if (dataSource is null)
-        {
-            string metadataConnectionString = config.GetConnectionString(ConnectionStrings.Metadata)
-                ?? throw new Exception("Metadata connection string could not be null");
-            string? dataSourceDescription = config[DefaultDataSources.DbDescription.Metadata];
-            if (string.IsNullOrEmpty(dataSourceDescription))
+            long? dataSourceId = await context.DataSources
+                .Where(ds => ds.Name == dataSourceDto.Name)
+                .Select(ds => (long?)ds.Id)
+                .FirstOrDefaultAsync();
+            if (!dataSourceId.HasValue)
             {
-                throw new Exception("Metadata datasource description is missing from configuration");
+                DataSource dataSource = seedMapper.MapToDataSource(dataSourceDto);
+                dataSource.Owner = existingUser;
+                string? connectionString = dataSourceDto.Name switch
+                {
+                    SeedIdentifiers.DataSource.Name.Metadata => config.GetConnectionString(ConnectionStrings.Metadata),
+                    SeedIdentifiers.DataSource.Name.Security => config.GetConnectionString(ConnectionStrings.Security),
+                    SeedIdentifiers.DataSource.Name.QueryExecution => config.GetConnectionString(ConnectionStrings.QueryExecution),
+                    _ => dataSource.EncryptedConnectionString
+                };
+                if (!string.IsNullOrEmpty(connectionString))
+                {
+                    dataSource.EncryptedConnectionString = encryptionService.Encrypt(connectionString);
+                }
+                context.DataSources.Add(dataSource);
+                _createdDataSources.Add(dataSource.Uid, dataSource);
             }
-            dataSource = new()
+        }
+    }
+
+    private async Task CreateDataSourcePermissions(User user)
+    {
+        User existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username) ?? user;
+        IEnumerable<DataSourcePermissionSeedDto> permissionDtos = SeedRegistry.DataSourcePermissions
+            .Where(dsp => dsp.UserUid == existingUser.Uid);
+        foreach (DataSourcePermissionSeedDto permissionDto in permissionDtos)
+        {
+            DataSourcePermission? permission = await context.DataSourcePermissions
+                .FirstOrDefaultAsync(dsp => dsp.DataSource.Uid == permissionDto.DataSourceUid);
+            if (permission is null)
             {
-                Name = dataSourceName,
-                Description = dataSourceDescription,
-                EncryptedConnectionString = encryptionService.Encrypt(metadataConnectionString),
-                Owner = admin,
-                DbType = VelocipedeDatabaseType.PostgreSQL,
-            };
-            dataSource.Permissions = [new() { User = admin, DataSource = dataSource, AccessLevel = AccessLevelType.Admin }];
-            context.DataSources.Add(dataSource);
+                DataSource dataSource = await context.DataSources.FirstOrDefaultAsync(ds => ds.Uid == permissionDto.DataSourceUid)
+                    ?? _createdDataSources[permissionDto.DataSourceUid];
+                permission = new DataSourcePermission
+                {
+                    User = existingUser,
+                    DataSource = dataSource,
+                    AccessLevel = Enum.Parse<AccessLevelType>(permissionDto.AccessLevel, false)
+                };
+                context.DataSourcePermissions.Add(permission);
+            }
         }
     }
 }
