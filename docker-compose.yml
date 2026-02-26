@@ -10,7 +10,7 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
       - EncryptionSettings__Key={ENCRYPTION_KEY}
-      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .
       dockerfile: src/SqlViewer.ApiGateway/Dockerfile
@@ -21,6 +21,83 @@ services:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
       - redis
+      - postgres
+
+  security:
+    container_name: security
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
+    build:
+      context: .
+      dockerfile: src/SqlViewer.Security/Dockerfile
+    ports:
+      - "5274:8080"
+      - "7128:8081"
+    volumes:
+      - ${HOST_CERT_PATH:-./certs}:/https:ro
+    depends_on:
+      - redis
+      - postgres
+
+  metadata:
+    container_name: metadata
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
+    build:
+      context: .
+      dockerfile: src/SqlViewer.Metadata/Dockerfile
+    ports:
+      - "5100:8080"
+      - "7026:8081"
+    volumes:
+      - ${HOST_CERT_PATH:-./certs}:/https:ro
+    depends_on:
+      - redis
+      - postgres
+
+  query:
+    container_name: query
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
+    build:
+      context: .
+      dockerfile: src/SqlViewer.QueryExecution/Dockerfile
+    ports:
+      - "5249:8080"
+      - "7091:8081"
+    volumes:
+      - ${HOST_CERT_PATH:-./certs}:/https:ro
+    depends_on:
+      - redis
+      - postgres
 
   redis:
     image: redis:alpine

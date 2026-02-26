@@ -13,6 +13,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/SqlViewer.Security/SqlViewer.Security.csproj", "src/SqlViewer.Security/"]
+COPY ["src/SqlViewer.Common/SqlViewer.Common.csproj", "src/SqlViewer.Common/"]
+COPY ["src/SqlViewer.Shared.Seed/SqlViewer.Shared.Seed.csproj", "src/SqlViewer.Shared.Seed/"]
 RUN dotnet restore "./src/SqlViewer.Security/SqlViewer.Security.csproj"
 COPY . .
 WORKDIR "/src/src/SqlViewer.Security"
