@@ -6,7 +6,7 @@ A distributed system for managing heterogeneous data sources.
 
 ## General description
 
-- Client-service architecture.
+- Microservice architecture.
 - Docker containers for services and databases.
 - Centralized metadata storage and connection abstraction.
 - The system allows users to interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API, hiding the technical details of connection implementation.
