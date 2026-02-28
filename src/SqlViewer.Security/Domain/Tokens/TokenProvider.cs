@@ -5,9 +5,9 @@ using System.Text;
 using System.Security.Cryptography;
 using SqlViewer.Common.Enums;
 
-namespace SqlViewer.Security.Services.Implementations;
+namespace SqlViewer.Security.Domain.Tokens;
 
-public class TokenService(IConfiguration config) : ITokenService
+public class TokenProvider(IConfiguration config) : ITokenProvider
 {
     public string GenerateAccessToken(string username, SqlViewerAuthRole role)
     {

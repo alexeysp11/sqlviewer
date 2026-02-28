@@ -2,8 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SqlViewer.Security.Data.DataSeeding;
 using SqlViewer.Security.Data.DbContexts;
+using SqlViewer.Security.Data.Entities;
 using SqlViewer.Security.Mappings;
-using SqlViewer.Security.Models;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Security;
@@ -17,7 +17,7 @@ public static class Program
         // Add services to the container.
         builder.Services.AddScoped<SeedMapper>();
         builder.Services.AddScoped<ISecurityDataSeeder, SecurityDataSeeder>();
-        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+        builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 
         builder.Services.AddGrpc();
 

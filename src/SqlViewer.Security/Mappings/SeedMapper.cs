@@ -1,5 +1,5 @@
 ﻿using Riok.Mapperly.Abstractions;
-using SqlViewer.Security.Models;
+using SqlViewer.Security.Data.Entities;
 using SqlViewer.Shared.Seed.Constants;
 using SqlViewer.Shared.Seed.Models;
 
@@ -10,10 +10,10 @@ public partial class SeedMapper
 {
     private const string DefaultPassword = SeedIdentifiers.User.Password.Default;
 
-    [MapperIgnoreTarget(nameof(User.Id))]
-    [MapperIgnoreTarget(nameof(User.RefreshToken))]
-    [MapperIgnoreTarget(nameof(User.RefreshTokenExpiry))]
-    [MapValue(nameof(User.PasswordHash), DefaultPassword)]
-    [MapProperty(nameof(UserSeedDto.Role), nameof(User.Role))]
-    public partial User MapToUser(UserSeedDto dto);
+    [MapperIgnoreTarget(nameof(UserEntity.Id))]
+    [MapperIgnoreTarget(nameof(UserEntity.RefreshToken))]
+    [MapperIgnoreTarget(nameof(UserEntity.RefreshTokenExpiry))]
+    [MapValue(nameof(UserEntity.PasswordHash), DefaultPassword)]
+    [MapProperty(nameof(UserSeedDto.Role), nameof(UserEntity.Role))]
+    public partial UserEntity MapToUser(UserSeedDto dto);
 }

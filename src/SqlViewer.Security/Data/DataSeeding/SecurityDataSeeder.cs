@@ -3,8 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Enums;
 using SqlViewer.Security.Data.DbContexts;
+using SqlViewer.Security.Data.Entities;
 using SqlViewer.Security.Mappings;
-using SqlViewer.Security.Models;
 using SqlViewer.Shared.Seed.Registries;
 
 namespace SqlViewer.Security.Data.DataSeeding;
@@ -13,21 +13,21 @@ public sealed class SecurityDataSeeder(
     SecurityDbContext context,
     IConfiguration config,
     SeedMapper seedMapper,
-    IPasswordHasher<User> passwordHasher) : ISecurityDataSeeder
+    IPasswordHasher<UserEntity> passwordHasher) : ISecurityDataSeeder
 {
     public async Task InitializeAsync()
     {
         await context.Database.MigrateAsync();
 
-        IEnumerable<User> users = SeedRegistry.Users.Select(seedMapper.MapToUser);
-        foreach (User user in users)
+        IEnumerable<UserEntity> users = SeedRegistry.Users.Select(seedMapper.MapToUser);
+        foreach (UserEntity user in users)
         {
             await CreateUserIfNotExistsAsync(user);
         }
         await context.SaveChangesAsync();
     }
 
-    private async Task CreateUserIfNotExistsAsync(User user)
+    private async Task CreateUserIfNotExistsAsync(UserEntity user)
     {
         long? existingUserId = await context.Users.Where(x => x.Username == user.Username).Select(x => (long?)x.Id).FirstOrDefaultAsync();
         if (!existingUserId.HasValue)

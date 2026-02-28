@@ -1,8 +1,8 @@
 ﻿using SqlViewer.Common.Enums;
 
-namespace SqlViewer.Security.Services;
+namespace SqlViewer.Security.Domain.Tokens;
 
-public interface ITokenService
+public interface ITokenProvider
 {
     string GenerateAccessToken(string username, SqlViewerAuthRole role);
     string GenerateRefreshToken();

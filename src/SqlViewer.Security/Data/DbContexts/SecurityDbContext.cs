@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Security.Models;
+using SqlViewer.Security.Data.Entities;
 
 namespace SqlViewer.Security.Data.DbContexts;
 
 public sealed class SecurityDbContext(DbContextOptions<SecurityDbContext> options) : DbContext(options)
 {
-    public DbSet<QueryLog> QueryLogs { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<QueryLogEntity> QueryLogs { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
 }

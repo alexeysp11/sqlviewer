@@ -3,22 +3,23 @@ using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Enums;
 using SqlViewer.Security.Data.DbContexts;
-using SqlViewer.Security.Models;
+using SqlViewer.Security.Data.Entities;
+using SqlViewer.Security.Domain.Tokens;
 
-namespace SqlViewer.Security.Services.Implementations;
+namespace SqlViewer.Security.Domain.Identities;
 
-public sealed class AuthService(
+public sealed class IdentityManager(
     SecurityDbContext dbContext,
     IConfiguration config,
-    IPasswordHasher<User> passwordHasher,
-    ITokenService tokenService) : IAuthService
+    IPasswordHasher<UserEntity> passwordHasher,
+    ITokenProvider tokenService) : IIdentityManager
 {
     public async Task<bool> VilidateByPasswordAsync(string username, string? password)
     {
         if (string.IsNullOrEmpty(username))
             throw new InvalidOperationException($"Parameter {nameof(username)} should be specified");
 
-        User? user = await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Username == username);
+        UserEntity? user = await dbContext.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Username == username);
         if (user is null)
             return false;
 
@@ -32,8 +33,8 @@ public sealed class AuthService(
 
     public async Task<LoginResponseDto> CreateSessionAsync(string username)
     {
-        User user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username)
-            ?? throw new InvalidOperationException("User not found");
+        UserEntity user = await dbContext.Users.FirstOrDefaultAsync(u => u.Username == username)
+            ?? throw new InvalidOperationException("UserEntity not found");
 
         string accessToken = tokenService.GenerateAccessToken(user.Username, user.Role);
         string refreshToken = tokenService.GenerateRefreshToken();
@@ -55,7 +56,7 @@ public sealed class AuthService(
 
     public async Task<LoginResponseDto> RefreshSessionAsync(string refreshToken)
     {
-        User? user = await dbContext.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+        UserEntity? user = await dbContext.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
         if (user is null || user.RefreshTokenExpiry < DateTime.UtcNow)
         {
             throw new UnauthorizedAccessException("Session expired. Please, sign in again");

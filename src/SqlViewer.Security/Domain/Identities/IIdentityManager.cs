@@ -1,8 +1,8 @@
 ﻿using SqlViewer.Common.Dtos.Auth;
 
-namespace SqlViewer.Security.Services;
+namespace SqlViewer.Security.Domain.Identities;
 
-public interface IAuthService
+public interface IIdentityManager
 {
     Task<bool> VilidateByPasswordAsync(string username, string? password);
     Task<LoginResponseDto> CreateSessionAsync(string username);

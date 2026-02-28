@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SqlViewer.Common.Enums;
 
-namespace SqlViewer.Security.Models;
+namespace SqlViewer.Security.Data.Entities;
 
-public sealed record User
+public sealed record UserEntity
 {
     public long Id { get; set; }
 

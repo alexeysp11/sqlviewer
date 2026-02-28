@@ -25,7 +25,7 @@ namespace SqlViewer.Security.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SqlViewer.Security.Models.QueryLog", b =>
+            modelBuilder.Entity("SqlViewer.Security.Data.Entities.QueryLogEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -54,7 +54,7 @@ namespace SqlViewer.Security.Migrations
                     b.ToTable("QueryLogs");
                 });
 
-            modelBuilder.Entity("SqlViewer.Security.Models.User", b =>
+            modelBuilder.Entity("SqlViewer.Security.Data.Entities.UserEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
