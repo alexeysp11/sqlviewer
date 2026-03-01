@@ -1,5 +1,4 @@
-﻿using Grpc.Core;
-using Microsoft.AspNetCore.Identity.Data;
+﻿using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.Common.Constants;
@@ -11,36 +10,15 @@ namespace SqlViewer.ApiGateway.Controllers;
 
 [ApiController]
 public sealed class AuthApiController(
-    ILogger<AuthApiController> logger,
     SecurityService.SecurityServiceClient securityClient,
     LoginMapper mapper) : ControllerBase
 {
     [HttpPost(RestApiPaths.Auth.Login)]
     public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto request)
     {
-        try
-        {
-            LoginRequest grpcRequest = mapper.MapToLoginRequest(request);
-            LoginResponse response = await securityClient.LoginAsync(grpcRequest);
-            return Ok(mapper.MapToDto(response));
-        }
-        catch (RpcException ex)
-        {
-            logger.LogWarning("gRPC Error: {StatusDetail}, Code: {StatusCode}", ex.Status.Detail, ex.StatusCode);
-            return ex.StatusCode switch
-            {
-                Grpc.Core.StatusCode.Unauthenticated => Unauthorized(new { message = "Incorrect login or password" }),
-                Grpc.Core.StatusCode.InvalidArgument => BadRequest(new { message = ex.Status.Detail }),
-                Grpc.Core.StatusCode.PermissionDenied => Forbid(),
-                Grpc.Core.StatusCode.NotFound => NotFound(new { message = ex.Status.Detail }),
-                _ => StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error on the authorization service side" })
-            };
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Unexpected error in API Gateway");
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
+        LoginRequest grpcRequest = mapper.MapToLoginRequest(request);
+        LoginResponse response = await securityClient.LoginAsync(grpcRequest);
+        return Ok(mapper.MapToDto(response));
     }
 
     [HttpPost(RestApiPaths.Auth.LoginAsGuest)]

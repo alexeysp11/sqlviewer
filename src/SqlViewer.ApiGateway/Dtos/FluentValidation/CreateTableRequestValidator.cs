@@ -9,14 +9,11 @@ public sealed class CreateTableRequestValidator : AbstractValidator<CreateTableR
     public CreateTableRequestValidator()
     {
         RuleFor(x => x.TableName)
-            .NotEmpty()
-            .WithMessage("Table name is required")
-            .MaximumLength(128)
-            .WithMessage("Table name is too long");
+            .NotEmpty().WithMessage("Table name is required")
+            .MaximumLength(128).WithMessage("Table name is too long");
 
         RuleFor(x => x.Columns)
-            .NotEmpty()
-            .WithMessage("Table must have at least one column");
+            .NotEmpty().WithMessage("Table must have at least one column");
 
         RuleForEach(x => x.Columns).ChildRules(column =>
         {

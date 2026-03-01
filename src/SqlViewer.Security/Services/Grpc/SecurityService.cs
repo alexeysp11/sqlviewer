@@ -22,7 +22,7 @@ public class SecurityGrpcService(
             };
 
             if (!success)
-                throw new RpcException(new Status(StatusCode.Unauthenticated, "Authentication failed"));
+                throw new RpcException(new Status(StatusCode.Unauthenticated, string.Empty));
 
             LoginResponseDto result = await identityManager.CreateSessionAsync(request.Username);
             return mapper.MapToGrpc(result);

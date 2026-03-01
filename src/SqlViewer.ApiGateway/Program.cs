@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
+using SqlViewer.ApiGateway.Middleware;
 using SqlViewer.Security;
 using System.Text;
 
@@ -11,7 +12,7 @@ namespace SqlViewer.ApiGateway;
 
 public sealed class Program
 {
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -21,14 +22,12 @@ public sealed class Program
         builder.Services.AddScoped<LoginMapper>();
         builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
         {
-            o.Address = new Uri("http://localhost:5274");
+            o.Address = new Uri(builder.Configuration["Services:Grpc:Security"]!);
         });
 
         builder.Services.AddValidatorsFromAssemblyContaining<CreateTableRequestValidator>();
         builder.Services.AddFluentValidationAutoValidation();
 
-        builder.Services.AddDataProtection();
-        
         string issuerSigningKey = builder.Configuration.GetValue<string>("Jwt:Key")
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -64,6 +63,7 @@ public sealed class Program
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseMiddleware<GrpcExceptionMiddleware>();
 
         app.MapControllers();
 
