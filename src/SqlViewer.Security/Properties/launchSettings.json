@@ -3,7 +3,12 @@
     "http": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
+        "Jwt__ExpiryLifetimeMinutes": "90",
+        "Jwt__Issuer": "sqlviewer/security",
+        "Jwt__Audience": "sqlviewer/api-gateway",
+        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       },
       "dotnetRunMessages": true,
       "applicationUrl": "http://localhost:5274"
@@ -11,7 +16,12 @@
     "https": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
+        "Jwt__ExpiryLifetimeMinutes": "90",
+        "Jwt__Issuer": "sqlviewer/security",
+        "Jwt__Audience": "sqlviewer/api-gateway",
+        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7128;http://localhost:5274"
@@ -21,7 +31,12 @@
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
       "environmentVariables": {
         "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "ASPNETCORE_HTTP_PORTS": "8080",
+        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
+        "Jwt__ExpiryLifetimeMinutes": "90",
+        "Jwt__Issuer": "sqlviewer/security",
+        "Jwt__Audience": "sqlviewer/api-gateway",
+        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       },
       "publishAllPorts": true,
       "useSSL": true

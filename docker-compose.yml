@@ -10,6 +10,11 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
       - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - Jwt__Key={JWT_KEY}
+      - Jwt__ExpiryLifetimeMinutes={JWT_LIFETIME_MINUTES}
+      - Jwt__Issuer={JWT_ISSUER}
+      - Jwt__Audience={JWT_AUDIENCE}
+      - Jwt__IssuerSigningKey={JWT_ISSUER_KEY}
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .
@@ -34,6 +39,11 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
       - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - Jwt__Key={JWT_KEY}
+      - Jwt__ExpiryLifetimeMinutes={JWT_LIFETIME_MINUTES}
+      - Jwt__Issuer={JWT_ISSUER}
+      - Jwt__Audience={JWT_AUDIENCE}
+      - Jwt__IssuerSigningKey={JWT_ISSUER_KEY}
       - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .

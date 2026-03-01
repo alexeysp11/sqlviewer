@@ -6,7 +6,12 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "EncryptionSettings__Key": "YourSuperSecretKey123"
+        "EncryptionSettings__Key": "YourSuperSecretKey123",
+        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
+        "Jwt__ExpiryLifetimeMinutes": "90",
+        "Jwt__Issuer": "sqlviewer/security",
+        "Jwt__Audience": "sqlviewer/api-gateway",
+        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7051;http://localhost:5293"
@@ -17,7 +22,12 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "EncryptionSettings__Key": "YourSuperSecretKey123"
+        "EncryptionSettings__Key": "YourSuperSecretKey123",
+        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
+        "Jwt__ExpiryLifetimeMinutes": "90",
+        "Jwt__Issuer": "sqlviewer/security",
+        "Jwt__Audience": "sqlviewer/api-gateway",
+        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       },
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7051;http://localhost:5293"
@@ -28,7 +38,12 @@
       "launchUrl": "swagger",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "EncryptionSettings__Key": "YourSuperSecretKey123"
+        "EncryptionSettings__Key": "YourSuperSecretKey123",
+        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
+        "Jwt__ExpiryLifetimeMinutes": "90",
+        "Jwt__Issuer": "sqlviewer/security",
+        "Jwt__Audience": "sqlviewer/api-gateway",
+        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       }
     },
     "Container (Dockerfile)": {
@@ -39,7 +54,12 @@
         "ASPNETCORE_HTTPS_PORTS": "8081",
         "ASPNETCORE_HTTP_PORTS": "8080",
         "EncryptionSettings__Key": "YourSuperSecretKey123",
-        "ConnectionStrings__MetadataConnection": "Server=host.docker.internal;Username=postgres;Database=sqlviewer;Port=54321;Password=postgres;"
+        "ConnectionStrings__MetadataConnection": "Server=host.docker.internal;Username=postgres;Database=sqlviewer;Port=54321;Password=postgres;",
+        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
+        "Jwt__ExpiryLifetimeMinutes": "90",
+        "Jwt__Issuer": "sqlviewer/security",
+        "Jwt__Audience": "sqlviewer/api-gateway",
+        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       },
       "publishAllPorts": true,
       "useSSL": true
