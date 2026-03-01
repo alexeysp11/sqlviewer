@@ -25,6 +25,10 @@ public class SecurityGrpcService(
             LoginResponseDto result = await identityManager.CreateSessionAsync(request.Username);
             return MapToResponse(result);
         }
+        catch (RpcException)
+        {
+            throw;
+        }
         catch (Exception ex)
         {
             logger.LogError(ex, "Error during Login");

@@ -3,16 +3,6 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
-using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services;
-using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services.Implementations;
-using SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services;
-using SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services.Implementations;
-using SqlViewer.ApiGateway.VerticalSlices.Security.Services;
-using SqlViewer.ApiGateway.VerticalSlices.Security.Services.Implementations;
-using SqlViewer.Common.Factories;
-using SqlViewer.Common.Factories.Implementations;
-using SqlViewer.Common.Services;
-using SqlViewer.Common.Services.Implementations;
 using SqlViewer.Security;
 using System.Text;
 
@@ -27,14 +17,6 @@ public sealed class Program
         builder.Services.AddControllers();
 
         // Add services to the container.
-        //builder.Services.AddScoped<ISqlQueryService, SqlQueryService>();
-        //builder.Services.AddScoped<IMetadataService, MetadataService>();
-        //builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
-        //builder.Services.AddScoped<IQueryBuilderService, QueryBuilderService>();
-        //builder.Services.AddScoped<IEncryptionService, EncryptionService>();
-        //builder.Services.AddScoped<IAuthService, AuthService>();
-        //builder.Services.AddScoped<ITokenService, TokenService>();
-
         builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
         {
             o.Address = new Uri("http://localhost:5274");

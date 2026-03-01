@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.Data;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Auth;
@@ -29,9 +30,21 @@ public sealed class AuthApiController(
             LoginResponse response = await securityClient.LoginAsync(grpcRequest);
             return Ok(MapToDto(response));
         }
+        catch (RpcException ex)
+        {
+            logger.LogWarning("gRPC Error: {StatusDetail}, Code: {StatusCode}", ex.Status.Detail, ex.StatusCode);
+            return ex.StatusCode switch
+            {
+                Grpc.Core.StatusCode.Unauthenticated => Unauthorized(new { message = "Incorrect login or password" }),
+                Grpc.Core.StatusCode.InvalidArgument => BadRequest(new { message = ex.Status.Detail }),
+                Grpc.Core.StatusCode.PermissionDenied => Forbid(),
+                Grpc.Core.StatusCode.NotFound => NotFound(new { message = ex.Status.Detail }),
+                _ => StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error on the authorization service side" })
+            };
+        }
         catch (Exception ex)
         {
-            logger.LogError("{Message}", ex.Message);
+            logger.LogError(ex, "Unexpected error in API Gateway");
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }
