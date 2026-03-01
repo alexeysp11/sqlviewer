@@ -19,6 +19,7 @@ public static class Program
 
         // Add services to the container.
         builder.Services.AddScoped<SeedMapper>();
+        builder.Services.AddScoped<SecurityServiceMapper>();
         builder.Services.AddScoped<ISecurityDataSeeder, SecurityDataSeeder>();
         builder.Services.AddScoped<IIdentityManager, IdentityManager>();
         builder.Services.AddScoped<ITokenProvider, TokenProvider>();

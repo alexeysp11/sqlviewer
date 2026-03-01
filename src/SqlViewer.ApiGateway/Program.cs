@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
+using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.Security;
 using System.Text;
 
@@ -17,6 +18,7 @@ public sealed class Program
         builder.Services.AddControllers();
 
         // Add services to the container.
+        builder.Services.AddScoped<LoginMapper>();
         builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
         {
             o.Address = new Uri("http://localhost:5274");

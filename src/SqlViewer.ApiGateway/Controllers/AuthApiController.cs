@@ -1,11 +1,10 @@
 ﻿using Grpc.Core;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Enums;
 using SqlViewer.Security;
-using AuthType = SqlViewer.Security.AuthType;
 using LoginRequest = SqlViewer.Security.LoginRequest;
 
 namespace SqlViewer.ApiGateway.Controllers;
@@ -13,22 +12,17 @@ namespace SqlViewer.ApiGateway.Controllers;
 [ApiController]
 public sealed class AuthApiController(
     ILogger<AuthApiController> logger,
-    SecurityService.SecurityServiceClient securityClient) : ControllerBase
+    SecurityService.SecurityServiceClient securityClient,
+    LoginMapper mapper) : ControllerBase
 {
     [HttpPost(RestApiPaths.Auth.Login)]
     public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginRequestDto request)
     {
         try
         {
-            LoginRequest grpcRequest = new()
-            {
-                Username = request.Username,
-                Password = request.Password,
-                AuthType = (AuthType)request.AuthType
-            };
-
+            LoginRequest grpcRequest = mapper.MapToLoginRequest(request);
             LoginResponse response = await securityClient.LoginAsync(grpcRequest);
-            return Ok(MapToDto(response));
+            return Ok(mapper.MapToDto(response));
         }
         catch (RpcException ex)
         {
@@ -53,7 +47,7 @@ public sealed class AuthApiController(
     public async Task<ActionResult<LoginResponseDto>> LoginGuest()
     {
         LoginResponse response = await securityClient.LoginGuestAsync(new Google.Protobuf.WellKnownTypes.Empty());
-        return Ok(MapToDto(response));
+        return Ok(mapper.MapToDto(response));
     }
 
     [HttpPost(RestApiPaths.Auth.RefreshAccessToken)]
@@ -63,16 +57,6 @@ public sealed class AuthApiController(
         {
             AccessToken = request.RefreshToken
         });
-        return Ok(MapToDto(response));
+        return Ok(mapper.MapToDto(response));
     }
-
-    private static LoginResponseDto MapToDto(LoginResponse resp) => new()
-    {
-        AccessToken = resp.AccessToken,
-        RefreshToken = resp.RefreshToken,
-        TokenType = resp.TokenType,
-        ExpiresInSeconds = resp.ExpiresInSeconds,
-        Username = resp.Username,
-        Role = (SqlViewerAuthRole)resp.Role
-    };
 }

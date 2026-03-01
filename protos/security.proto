@@ -12,8 +12,10 @@ enum AuthType {
 }
 
 enum AuthRole {
-  AUTH_ROLE_USER = 0;
+  AUTH_ROLE_NONE = 0;
   AUTH_ROLE_ADMIN = 1;
+  AUTH_ROLE_USER = 2;
+  AUTH_ROLE_GUEST = 3;
 }
 
 message LoginRequest {

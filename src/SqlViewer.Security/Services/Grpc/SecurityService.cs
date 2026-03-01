@@ -2,12 +2,14 @@
 using Google.Protobuf.WellKnownTypes;
 using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Security.Domain.Identities;
+using SqlViewer.Security.Mappings;
 
 namespace SqlViewer.Security.Services.Grpc;
 
 public class SecurityGrpcService(
     ILogger<SecurityGrpcService> logger,
-    IIdentityManager identityManager) : SecurityService.SecurityServiceBase
+    IIdentityManager identityManager,
+    SecurityServiceMapper mapper) : SecurityService.SecurityServiceBase
 {
     public override async Task<LoginResponse> Login(LoginRequest request, ServerCallContext context)
     {
@@ -23,7 +25,7 @@ public class SecurityGrpcService(
                 throw new RpcException(new Status(StatusCode.Unauthenticated, "Authentication failed"));
 
             LoginResponseDto result = await identityManager.CreateSessionAsync(request.Username);
-            return MapToResponse(result);
+            return mapper.MapToGrpc(result);
         }
         catch (RpcException)
         {
@@ -39,7 +41,7 @@ public class SecurityGrpcService(
     public override Task<LoginResponse> LoginGuest(Empty request, ServerCallContext context)
     {
         LoginResponseDto result = identityManager.CreateGuestSession();
-        return Task.FromResult(MapToResponse(result));
+        return Task.FromResult(mapper.MapToGrpc(result));
     }
 
     public override async Task<LoginResponse> RefreshAccessToken(RefreshAccessTokenRequest request, ServerCallContext context)
@@ -47,21 +49,11 @@ public class SecurityGrpcService(
         try
         {
             LoginResponseDto result = await identityManager.RefreshSessionAsync(request.AccessToken);
-            return MapToResponse(result);
+            return mapper.MapToGrpc(result);
         }
         catch (UnauthorizedAccessException)
         {
             throw new RpcException(new Status(StatusCode.Unauthenticated, "Invalid token"));
         }
     }
-
-    private static LoginResponse MapToResponse(LoginResponseDto dto) => new()
-    {
-        AccessToken = dto.AccessToken,
-        RefreshToken = dto.RefreshToken ?? "",
-        TokenType = dto.TokenType,
-        ExpiresInSeconds = dto.ExpiresInSeconds,
-        Username = dto.Username ?? "",
-        Role = (AuthRole)dto.Role
-    };
 }
