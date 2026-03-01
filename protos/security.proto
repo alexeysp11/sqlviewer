@@ -8,8 +8,7 @@ package security;
 
 enum AuthType {
   AUTH_TYPE_UNKNOWN = 0;
-  AUTH_TYPE_SQL = 1;
-  AUTH_TYPE_WINDOWS = 2;
+  AUTH_TYPE_PASSWORD = 1;
 }
 
 enum AuthRole {

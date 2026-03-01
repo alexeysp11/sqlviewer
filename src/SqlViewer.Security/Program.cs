@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using SqlViewer.Security.Data.DataSeeding;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
+using SqlViewer.Security.Domain.Identities;
+using SqlViewer.Security.Domain.Tokens;
 using SqlViewer.Security.Mappings;
+using SqlViewer.Security.Services.Grpc;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Security;
@@ -17,6 +20,8 @@ public static class Program
         // Add services to the container.
         builder.Services.AddScoped<SeedMapper>();
         builder.Services.AddScoped<ISecurityDataSeeder, SecurityDataSeeder>();
+        builder.Services.AddScoped<IIdentityManager, IdentityManager>();
+        builder.Services.AddScoped<ITokenProvider, TokenProvider>();
         builder.Services.AddScoped<IPasswordHasher<UserEntity>, PasswordHasher<UserEntity>>();
 
         builder.Services.AddGrpc();
@@ -36,7 +41,7 @@ public static class Program
         }
 
         // Configure the HTTP request pipeline.
-        //app.MapGrpcService<GreeterService>();
+        app.MapGrpcService<SecurityGrpcService>();
         app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
         app.Run();

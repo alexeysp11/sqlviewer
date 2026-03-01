@@ -13,6 +13,7 @@ using SqlViewer.Common.Factories;
 using SqlViewer.Common.Factories.Implementations;
 using SqlViewer.Common.Services;
 using SqlViewer.Common.Services.Implementations;
+using SqlViewer.Security;
 using System.Text;
 
 namespace SqlViewer.ApiGateway;
@@ -26,13 +27,18 @@ public sealed class Program
         builder.Services.AddControllers();
 
         // Add services to the container.
-        builder.Services.AddScoped<ISqlQueryService, SqlQueryService>();
-        builder.Services.AddScoped<IMetadataService, MetadataService>();
-        builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
-        builder.Services.AddScoped<IQueryBuilderService, QueryBuilderService>();
-        builder.Services.AddScoped<IEncryptionService, EncryptionService>();
-        builder.Services.AddScoped<IAuthService, AuthService>();
-        builder.Services.AddScoped<ITokenService, TokenService>();
+        //builder.Services.AddScoped<ISqlQueryService, SqlQueryService>();
+        //builder.Services.AddScoped<IMetadataService, MetadataService>();
+        //builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
+        //builder.Services.AddScoped<IQueryBuilderService, QueryBuilderService>();
+        //builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+        //builder.Services.AddScoped<IAuthService, AuthService>();
+        //builder.Services.AddScoped<ITokenService, TokenService>();
+
+        builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
+        {
+            o.Address = new Uri("http://localhost:5274");
+        });
 
         builder.Services.AddValidatorsFromAssemblyContaining<CreateTableRequestValidator>();
         builder.Services.AddFluentValidationAutoValidation();
