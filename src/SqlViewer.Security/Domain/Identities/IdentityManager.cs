@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Enums;
 using SqlViewer.Security.Data.DbContexts;
@@ -50,7 +51,7 @@ public sealed class IdentityManager(
             RefreshToken = refreshToken,
             Username = user.Username,
             Role = user.Role,
-            ExpiresInSeconds = Convert.ToDouble(config["Jwt:ExpiryLifetimeMinutes"]) * 60
+            ExpiresInSeconds = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]) * 60
         };
     }
 
@@ -71,7 +72,7 @@ public sealed class IdentityManager(
         {
             AccessToken = accessToken,
             Role = SqlViewerAuthRole.Guest,
-            ExpiresInSeconds = Convert.ToDouble(config["Jwt:ExpiryLifetimeMinutes"]) * 60
+            ExpiresInSeconds = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]) * 60
         };
     }
 }

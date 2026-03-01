@@ -1,4 +1,5 @@
-﻿using SqlViewer.Common.Dtos.Auth;
+﻿using SqlViewer.Common.Constants;
+using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Common.Enums;
 
 namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services.Implementations;
@@ -20,7 +21,7 @@ public sealed class AuthService(
             RefreshToken = "",
             Username = "",
             Role = SqlViewerAuthRole.Admin,
-            ExpiresInSeconds = Convert.ToDouble(config["Jwt:ExpiryLifetimeMinutes"]) * 60
+            ExpiresInSeconds = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]) * 60
         };
     }
 
@@ -36,7 +37,7 @@ public sealed class AuthService(
         {
             AccessToken = accessToken,
             Role = SqlViewerAuthRole.Guest,
-            ExpiresInSeconds = Convert.ToDouble(config["Jwt:ExpiryLifetimeMinutes"]) * 60
+            ExpiresInSeconds = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]) * 60
         };
     }
 }

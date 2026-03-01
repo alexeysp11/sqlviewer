@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.ApiGateway.Middleware;
+using SqlViewer.Common.Constants;
 using SqlViewer.Security;
 using System.Text;
 
@@ -22,23 +23,23 @@ public sealed class Program
         builder.Services.AddScoped<LoginMapper>();
         builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
         {
-            o.Address = new Uri(builder.Configuration["Services:Grpc:Security"]!);
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Security]!);
         });
 
         builder.Services.AddValidatorsFromAssemblyContaining<CreateTableRequestValidator>();
         builder.Services.AddFluentValidationAutoValidation();
 
-        string issuerSigningKey = builder.Configuration.GetValue<string>("Jwt:Key")
+        string issuerSigningKey = builder.Configuration.GetValue<string>(ConfigurationKeys.Jwt.Key)
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidIssuer = builder.Configuration[ConfigurationKeys.Jwt.Issuer],
 
                     ValidateAudience = true,
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidAudience = builder.Configuration[ConfigurationKeys.Jwt.Audience],
                     
                     ValidateLifetime = true,
                     

@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Security.Cryptography;
 using SqlViewer.Common.Enums;
+using SqlViewer.Common.Constants;
 
 namespace SqlViewer.Security.Domain.Tokens;
 
@@ -19,16 +20,16 @@ public class TokenProvider(IConfiguration config) : ITokenProvider
         ];
 
 #nullable disable
-        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
+        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(config[ConfigurationKeys.Jwt.Key]));
 #nullable restore
         SigningCredentials creds = new(key, SecurityAlgorithms.HmacSha256);
 
-        double expiryLifetimeMinutes = Convert.ToDouble(config["Jwt:ExpiryLifetimeMinutes"]);
+        double expiryLifetimeMinutes = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]);
         DateTime expires = DateTime.UtcNow.AddMinutes(expiryLifetimeMinutes);
         
         JwtSecurityToken token = new(
-            issuer: config["Jwt:Issuer"],
-            audience: config["Jwt:Audience"],
+            issuer: config[ConfigurationKeys.Jwt.Issuer],
+            audience: config[ConfigurationKeys.Jwt.Audience],
             claims: claims,
             expires: expires,
             signingCredentials: creds

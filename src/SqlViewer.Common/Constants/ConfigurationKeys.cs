@@ -12,6 +12,31 @@ public static class ConfigurationKeys
         public const string Key = $"{Section}:Key";
     }
 
+    public static class Jwt
+    {
+        private const string Section = "Jwt";
+
+        public const string Key = $"{Section}:Key";
+        public const string ExpiryLifetimeMinutes = $"{Section}:ExpiryLifetimeMinutes";
+        public const string Issuer = $"{Section}:Issuer";
+        public const string Audience = $"{Section}:Audience";
+        public const string IssuerSigningKey = $"{Section}:IssuerSigningKey";
+    }
+
+    public static class Services
+    {
+        private const string Root = "Services";
+
+        public static class Grpc
+        {
+            private const string Section = $"{Root}:Grpc";
+
+            public const string Security = $"{Section}:Security";
+            public const string Metadata = $"{Section}:Metadata";
+            public const string QueryExecution = $"{Section}:QueryExecution";
+        }
+    }
+
     public static class DefaultUserCredentials
     {
         private const string Root = "DefaultUserCredentials";
