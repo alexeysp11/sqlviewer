@@ -33,15 +33,23 @@ public class SecurityGrpcService(
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, "Error during Login");
+            logger.LogError(ex, "Error during login");
             throw new RpcException(new Status(StatusCode.Internal, ex.Message));
         }
     }
 
     public override Task<LoginResponse> LoginGuest(Empty request, ServerCallContext context)
     {
-        LoginResponseDto result = identityManager.CreateGuestSession();
-        return Task.FromResult(mapper.MapToGrpc(result));
+        try
+        {
+            LoginResponseDto result = identityManager.CreateGuestSession();
+            return Task.FromResult(mapper.MapToGrpc(result));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error during login as guest");
+            throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+        }
     }
 
     public override async Task<LoginResponse> RefreshAccessToken(RefreshAccessTokenRequest request, ServerCallContext context)
@@ -54,6 +62,11 @@ public class SecurityGrpcService(
         catch (UnauthorizedAccessException)
         {
             throw new RpcException(new Status(StatusCode.Unauthenticated, "Invalid token"));
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error during refresh access token");
+            throw new RpcException(new Status(StatusCode.Internal, ex.Message));
         }
     }
 }
