@@ -9,13 +9,16 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
-      - EncryptionSettings__Key={ENCRYPTION_KEY}
-      - Jwt__Key={JWT_KEY}
-      - Jwt__ExpiryLifetimeMinutes={JWT_LIFETIME_MINUTES}
-      - Jwt__Issuer={JWT_ISSUER}
-      - Jwt__Audience={JWT_AUDIENCE}
-      - Jwt__IssuerSigningKey={JWT_ISSUER_KEY}
+      - EncryptionSettings__Key=${ENCRYPTION_KEY}
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__ExpiryLifetimeMinutes=${JWT_LIFETIME_MINUTES}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+      - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
+      - Services__Grpc__Security=http://${GRPC_SECURITY_HOST}:${GRPC_SECURITY_PORT}
+      - Services__Grpc__Metadata=http://${GRPC_METADATA_HOST}:${GRPC_METADATA_PORT}
+      - Services__Grpc__QueryExecution=http://${GRPC_QUERYEXECUTION_HOST}:${GRPC_QUERYEXECUTION_PORT}
     build:
       context: .
       dockerfile: src/SqlViewer.ApiGateway/Dockerfile
@@ -38,12 +41,12 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
-      - EncryptionSettings__Key={ENCRYPTION_KEY}
-      - Jwt__Key={JWT_KEY}
-      - Jwt__ExpiryLifetimeMinutes={JWT_LIFETIME_MINUTES}
-      - Jwt__Issuer={JWT_ISSUER}
-      - Jwt__Audience={JWT_AUDIENCE}
-      - Jwt__IssuerSigningKey={JWT_ISSUER_KEY}
+      - EncryptionSettings__Key=${ENCRYPTION_KEY}
+      - Jwt__Key=${JWT_KEY}
+      - Jwt__ExpiryLifetimeMinutes=${JWT_LIFETIME_MINUTES}
+      - Jwt__Issuer=${JWT_ISSUER}
+      - Jwt__Audience=${JWT_AUDIENCE}
+      - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
       - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .
@@ -67,7 +70,7 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
-      - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - EncryptionSettings__Key=${ENCRYPTION_KEY}
       - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
@@ -93,7 +96,7 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
-      - EncryptionSettings__Key={ENCRYPTION_KEY}
+      - EncryptionSettings__Key=${ENCRYPTION_KEY}
       - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
