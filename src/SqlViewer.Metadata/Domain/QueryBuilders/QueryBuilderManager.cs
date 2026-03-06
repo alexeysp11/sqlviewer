@@ -4,9 +4,9 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 using VelocipedeUtils.Shared.DbOperations.QueryBuilders;
 
-namespace SqlViewer.Metadata.Services.Implementations;
+namespace SqlViewer.Metadata.Domain.QueryBuilders;
 
-public sealed class QueryBuilderService(IDbConnectionFactory dbConnectionFactory) : IQueryBuilderService
+public sealed class QueryBuilderManager(IDbConnectionFactory dbConnectionFactory) : IQueryBuilderManager
 {
     private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
 

@@ -3,9 +3,9 @@ using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
-namespace SqlViewer.Metadata.Services.Implementations;
+namespace SqlViewer.Metadata.Domain.MetadataRegistries;
 
-public sealed class MetadataService(IDbConnectionFactory dbConnectionFactory) : IMetadataService
+public sealed class MetadataRegistry(IDbConnectionFactory dbConnectionFactory) : IMetadataRegistry
 {
     private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
 

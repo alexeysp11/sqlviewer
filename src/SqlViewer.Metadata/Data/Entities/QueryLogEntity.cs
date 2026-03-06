@@ -1,6 +1,6 @@
-﻿namespace SqlViewer.Metadata.Models;
+﻿namespace SqlViewer.Metadata.Data.Entities;
 
-public sealed record QueryLog
+public sealed record QueryLogEntity
 {
     public long Id { get; set; }
     public DateTime Timestamp { get; set; } = DateTime.UtcNow;

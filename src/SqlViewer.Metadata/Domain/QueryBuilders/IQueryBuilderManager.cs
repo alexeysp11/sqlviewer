@@ -1,9 +1,9 @@
 ﻿using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
-namespace SqlViewer.Metadata.Services;
+namespace SqlViewer.Metadata.Domain.QueryBuilders;
 
-public interface IQueryBuilderService
+public interface IQueryBuilderManager
 {
     Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,

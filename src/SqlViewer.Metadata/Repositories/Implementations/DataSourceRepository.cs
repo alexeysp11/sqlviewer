@@ -2,7 +2,7 @@
 using SqlViewer.Common.Repositories;
 using SqlViewer.Common.Services;
 using SqlViewer.Metadata.Data.DbContexts;
-using SqlViewer.Metadata.Models;
+using SqlViewer.Metadata.Data.Entities;
 
 namespace SqlViewer.Metadata.Repositories.Implementations;
 
@@ -17,7 +17,7 @@ public sealed class DataSourceRepository(
             throw new ArgumentException("Please, specify the Id or Name of the data source");
         }
 
-        IQueryable<DataSource> query = dbContext.DataSources.AsNoTracking();
+        IQueryable<DataSourceEntity> query = dbContext.DataSources.AsNoTracking();
         if (dataSourceId.HasValue)
         {
             query = query.Where(ds => ds.Id == dataSourceId.Value);
@@ -26,7 +26,7 @@ public sealed class DataSourceRepository(
         {
             query = query.Where(ds => ds.Name == dataSourceName);
         }
-        DataSource dataSource = await query.FirstOrDefaultAsync()
+        DataSourceEntity dataSource = await query.FirstOrDefaultAsync()
             ?? throw new InvalidOperationException("Unable to find specified data source");
 
         return encryptionService.Decrypt(dataSource.EncryptedConnectionString);

@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using SqlViewer.Common.Enums;
 
-namespace SqlViewer.Metadata.Models;
+namespace SqlViewer.Metadata.Data.Entities;
 
-public sealed record User
+public sealed record UserEntity
 {
     public long Id { get; set; }
 
@@ -14,6 +14,6 @@ public sealed record User
 
     public required SqlViewerAuthRole Role { get; set; }
 
-    public ICollection<DataSourcePermission> Permissions { get; set; } = [];
-    public ICollection<DataSource> OwnedSources { get; set; } = [];
+    public ICollection<DataSourcePermissionEntity> Permissions { get; set; } = [];
+    public ICollection<DataSourceEntity> OwnedSources { get; set; } = [];
 }

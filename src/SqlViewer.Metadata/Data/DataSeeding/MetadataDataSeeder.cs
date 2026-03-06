@@ -1,9 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SqlViewer.Common.Services;
 using SqlViewer.Metadata.Data.DbContexts;
+using SqlViewer.Metadata.Data.Entities;
 using SqlViewer.Metadata.Enums;
 using SqlViewer.Metadata.Mappings;
-using SqlViewer.Metadata.Models;
 using SqlViewer.Shared.Seed.Constants;
 using SqlViewer.Shared.Seed.Models;
 using SqlViewer.Shared.Seed.Registries;
@@ -17,14 +17,14 @@ public sealed class MetadataDataSeeder(
     SeedMapper seedMapper,
     IEncryptionService encryptionService) : IMetadataDataSeeder
 {
-    private readonly Dictionary<Guid, DataSource> _createdDataSources = [];
+    private readonly Dictionary<Guid, DataSourceEntity> _createdDataSources = [];
 
     public async Task InitializeAsync()
     {
         await context.Database.MigrateAsync();
 
-        IEnumerable<User> users = SeedRegistry.Users.Select(seedMapper.MapToUser);
-        foreach (User user in users)
+        IEnumerable<UserEntity> users = SeedRegistry.Users.Select(seedMapper.MapToUser);
+        foreach (UserEntity user in users)
         {
             await CreateUserIfNotExistsAsync(user);
             await CreateOwnedDataSources(user);
@@ -33,7 +33,7 @@ public sealed class MetadataDataSeeder(
         await context.SaveChangesAsync();
     }
 
-    private async Task CreateUserIfNotExistsAsync(User user)
+    private async Task CreateUserIfNotExistsAsync(UserEntity user)
     {
         long? existingUserId = await context.Users.Where(x => x.Username == user.Username).Select(x => (long?)x.Id).FirstOrDefaultAsync();
         if (!existingUserId.HasValue)
@@ -42,9 +42,9 @@ public sealed class MetadataDataSeeder(
         }
     }
 
-    private async Task CreateOwnedDataSources(User user)
+    private async Task CreateOwnedDataSources(UserEntity user)
     {
-        User existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username) ?? user;
+        UserEntity existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username) ?? user;
         IEnumerable<DataSourceSeedDto> dataSourceDtos = SeedRegistry.DataSources.Where(ds => ds.OwnerUid == existingUser.Uid);
         foreach (DataSourceSeedDto dataSourceDto in dataSourceDtos)
         {
@@ -54,7 +54,7 @@ public sealed class MetadataDataSeeder(
                 .FirstOrDefaultAsync();
             if (!dataSourceId.HasValue)
             {
-                DataSource dataSource = seedMapper.MapToDataSource(dataSourceDto);
+                DataSourceEntity dataSource = seedMapper.MapToDataSource(dataSourceDto);
                 dataSource.Owner = existingUser;
                 string? connectionString = dataSourceDto.Name switch
                 {
@@ -73,9 +73,9 @@ public sealed class MetadataDataSeeder(
         }
     }
 
-    private async Task CreateDataSourcePermissions(User user)
+    private async Task CreateDataSourcePermissions(UserEntity user)
     {
-        User existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username) ?? user;
+        UserEntity existingUser = await context.Users.FirstOrDefaultAsync(u => u.Username == user.Username) ?? user;
         IEnumerable<DataSourcePermissionSeedDto> permissionDtos = SeedRegistry.DataSourcePermissions
             .Where(dsp => dsp.UserUid == existingUser.Uid);
         foreach (DataSourcePermissionSeedDto permissionDto in permissionDtos)
@@ -86,9 +86,9 @@ public sealed class MetadataDataSeeder(
                 .FirstOrDefaultAsync();
             if (!permissionId.HasValue)
             {
-                DataSource dataSource = await context.DataSources.FirstOrDefaultAsync(ds => ds.Uid == permissionDto.DataSourceUid)
+                DataSourceEntity dataSource = await context.DataSources.FirstOrDefaultAsync(ds => ds.Uid == permissionDto.DataSourceUid)
                     ?? _createdDataSources[permissionDto.DataSourceUid];
-                DataSourcePermission permission = new()
+                DataSourcePermissionEntity permission = new()
                 {
                     Uid = permissionDto.Uid,
                     User = existingUser,
