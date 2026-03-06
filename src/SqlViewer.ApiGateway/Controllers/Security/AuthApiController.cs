@@ -6,7 +6,7 @@ using SqlViewer.Common.Dtos.Auth;
 using SqlViewer.Security;
 using LoginRequest = SqlViewer.Security.LoginRequest;
 
-namespace SqlViewer.ApiGateway.Controllers;
+namespace SqlViewer.ApiGateway.Controllers.Security;
 
 [ApiController]
 public sealed class AuthApiController(

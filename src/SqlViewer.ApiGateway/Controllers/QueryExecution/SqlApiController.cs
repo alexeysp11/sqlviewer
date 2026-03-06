@@ -4,7 +4,7 @@ using SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.SqlQueries;
 
-namespace SqlViewer.ApiGateway.Controllers;
+namespace SqlViewer.ApiGateway.Controllers.QueryExecution;
 
 [ApiController]
 [Authorize]

@@ -6,7 +6,7 @@ using SqlViewer.Common.Dtos.QueryBuilder;
 using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Common.Extensions;
 
-namespace SqlViewer.ApiGateway.Controllers;
+namespace SqlViewer.ApiGateway.Controllers.Metadata;
 
 [ApiController]
 [Authorize]

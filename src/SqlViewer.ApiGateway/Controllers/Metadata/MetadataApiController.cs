@@ -6,7 +6,7 @@ using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Common.Extensions;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
-namespace SqlViewer.ApiGateway.Controllers;
+namespace SqlViewer.ApiGateway.Controllers.Metadata;
 
 [ApiController]
 [Authorize]

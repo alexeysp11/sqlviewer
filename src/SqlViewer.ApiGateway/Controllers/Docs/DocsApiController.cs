@@ -4,7 +4,7 @@ using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Docs;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.ApiGateway.Controllers;
+namespace SqlViewer.ApiGateway.Controllers.Docs;
 
 [ApiController]
 [Route("[controller]")]
