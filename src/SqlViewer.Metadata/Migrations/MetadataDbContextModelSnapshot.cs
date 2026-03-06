@@ -22,7 +22,7 @@ namespace SqlViewer.Metadata.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.DataSource", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.DataSourceEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace SqlViewer.Metadata.Migrations
                     b.ToTable("DataSources");
                 });
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.DataSourcePermission", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.DataSourcePermissionEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace SqlViewer.Metadata.Migrations
                     b.ToTable("DataSourcePermissions");
                 });
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.QueryLog", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.QueryLogEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +118,7 @@ namespace SqlViewer.Metadata.Migrations
                     b.ToTable("QueryLogs");
                 });
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.User", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.UserEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,9 +142,9 @@ namespace SqlViewer.Metadata.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.DataSource", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.DataSourceEntity", b =>
                 {
-                    b.HasOne("SqlViewer.Metadata.Models.User", "Owner")
+                    b.HasOne("SqlViewer.Metadata.Data.Entities.UserEntity", "Owner")
                         .WithMany("OwnedSources")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -153,15 +153,15 @@ namespace SqlViewer.Metadata.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.DataSourcePermission", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.DataSourcePermissionEntity", b =>
                 {
-                    b.HasOne("SqlViewer.Metadata.Models.DataSource", "DataSource")
+                    b.HasOne("SqlViewer.Metadata.Data.Entities.DataSourceEntity", "DataSource")
                         .WithMany("Permissions")
                         .HasForeignKey("DataSourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SqlViewer.Metadata.Models.User", "User")
+                    b.HasOne("SqlViewer.Metadata.Data.Entities.UserEntity", "User")
                         .WithMany("Permissions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -172,12 +172,12 @@ namespace SqlViewer.Metadata.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.DataSource", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.DataSourceEntity", b =>
                 {
                     b.Navigation("Permissions");
                 });
 
-            modelBuilder.Entity("SqlViewer.Metadata.Models.User", b =>
+            modelBuilder.Entity("SqlViewer.Metadata.Data.Entities.UserEntity", b =>
                 {
                     b.Navigation("OwnedSources");
 
