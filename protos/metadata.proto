@@ -1,0 +1,86 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+
+option csharp_namespace = "SqlViewer.Metadata";
+
+package metadata;
+
+enum DatabaseType {
+  DATABASE_TYPE_NONE = 0;
+  DATABASE_TYPE_IN_MEMORY = 1;
+  DATABASE_TYPE_SQLITE = 2;
+  DATABASE_TYPE_POSTGRESQL = 3;
+  DATABASE_TYPE_MSSQL = 4;
+  DATABASE_TYPE_MYSQL = 5;
+  DATABASE_TYPE_MARIADB = 6;
+  DATABASE_TYPE_HSQLDB = 7;
+  DATABASE_TYPE_ORACLE = 8;
+  DATABASE_TYPE_CLICKHOUSE = 9;
+  DATABASE_TYPE_FIREBIRD = 10;
+}
+
+// Corresponds to System.Data.DbType
+enum DbType {
+  DB_TYPE_ANSI_STRING = 0;
+  DB_TYPE_BINARY = 1;
+  DB_TYPE_BYTE = 2;
+  DB_TYPE_BOOLEAN = 3;
+  DB_TYPE_CURRENCY = 4;
+  DB_TYPE_DATE = 5;
+  DB_TYPE_DATE_TIME = 6;
+  DB_TYPE_DECIMAL = 7;
+  DB_TYPE_DOUBLE = 8;
+  DB_TYPE_GUID = 9;
+  DB_TYPE_INT16 = 10;
+  DB_TYPE_INT32 = 11;
+  DB_TYPE_INT64 = 12;
+  DB_TYPE_OBJECT = 13;
+  DB_TYPE_S_BYTE = 14;
+  DB_TYPE_SINGLE = 15;
+  DB_TYPE_STRING = 16;
+  DB_TYPE_TIME = 17;
+  DB_TYPE_U_INT16 = 18;
+  DB_TYPE_U_INT32 = 19;
+  DB_TYPE_U_INT64 = 20;
+  DB_TYPE_VAR_NUMERIC = 21;
+  DB_TYPE_ANSI_STRING_FIXED_LENGTH = 22;
+  DB_TYPE_STRING_FIXED_LENGTH = 23;
+  // 24 is missing from the original enum
+  DB_TYPE_XML = 25;
+  DB_TYPE_DATE_TIME2 = 26;
+  DB_TYPE_DATE_TIME_OFFSET = 27;
+}
+
+message MetadataRequest {
+  DatabaseType database_type = 1;
+  string connection_string = 2;
+  optional string table_name = 3;
+}
+
+message MetadataTablesResponse {
+  repeated string tables = 1;
+}
+
+message MetadataColumnsResponse {
+  DatabaseType database_type = 1;
+  string table_name = 2;
+  repeated ColumnInfoResponse columns = 3;
+}
+
+message ColumnInfoResponse {
+  string column_name = 1;
+  DbType column_type = 2;
+  optional int32 char_max_length = 3;
+  optional int32 numeric_precision = 4;
+  optional int32 numeric_scale = 5;
+  google.protobuf.Value default_value = 6;
+  bool is_primary_key = 7;
+  bool is_nullable = 8;
+  optional string native_column_type = 9;
+}
+
+service MetadataService {
+  rpc GetTables (MetadataRequest) returns (MetadataTablesResponse);
+  rpc GetColumns (MetadataRequest) returns (MetadataColumnsResponse);
+}
