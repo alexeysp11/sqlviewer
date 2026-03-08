@@ -4,9 +4,9 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 using VelocipedeUtils.Shared.DbOperations.QueryBuilders;
 
-namespace SqlViewer.QueryExecution.Services.Implementations;
+namespace SqlViewer.QueryExecution.Domain.SqlQuery;
 
-public sealed class SqlQueryService(IDbConnectionFactory dbConnectionFactory) : ISqlQueryService
+public sealed class SqlQueryManager(IDbConnectionFactory dbConnectionFactory) : ISqlQueryManager
 {
     public async Task CreateTableAsync(
         VelocipedeDatabaseType databaseType,

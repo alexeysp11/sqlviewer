@@ -13,6 +13,7 @@
     <Protobuf Include="..\..\protos\security.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\protos\metadata.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\protos\query_builder.proto" GrpcServices="Client" />
+    <Protobuf Include="..\..\protos\query_execution.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>

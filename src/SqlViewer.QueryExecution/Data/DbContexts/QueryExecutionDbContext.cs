@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.QueryExecution.Models;
+using SqlViewer.QueryExecution.Data.Entities;
 
 namespace SqlViewer.QueryExecution.Data.DbContexts;
 
 public sealed class QueryExecutionDbContext(DbContextOptions<QueryExecutionDbContext> options) : DbContext(options)
 {
-    public DbSet<DataSource> DataSources { get; set; }
-    public DbSet<DataSourcePermission> DataSourcePermissions { get; set; }
-    public DbSet<QueryLog> QueryLogs { get; set; }
-    public DbSet<User> Users { get; set; }
+    public DbSet<DataSourceEntity> DataSources { get; set; }
+    public DbSet<DataSourcePermissionEntity> DataSourcePermissions { get; set; }
+    public DbSet<QueryLogEntity> QueryLogs { get; set; }
+    public DbSet<UserEntity> Users { get; set; }
 }

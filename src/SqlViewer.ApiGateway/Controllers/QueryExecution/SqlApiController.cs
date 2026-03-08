@@ -1,93 +1,49 @@
+﻿using System.Dynamic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.VerticalSlices.QueryExecution.Services;
+using SqlViewer.ApiGateway.Extensions;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Metadata;
+using SqlViewer.QueryExecution;
 
 namespace SqlViewer.ApiGateway.Controllers.QueryExecution;
 
 [ApiController]
 [Authorize]
 [Route("[controller]")]
-public sealed class SqlApiController(ILogger<SqlApiController> logger, ISqlQueryService sqlQueryService) : ControllerBase
+public sealed class SqlApiController(
+    ILogger<SqlApiController> logger,
+    QueryExecutionService.QueryExecutionServiceClient grpcClient) : ControllerBase
 {
-    private readonly ILogger<SqlApiController> _logger = logger;
-    private readonly ISqlQueryService _sqlQueryService = sqlQueryService;
-
     [HttpPost]
     [Route(RestApiPaths.Sql.Query)]
     public async Task<ActionResult<SqlQueryResponseDto>> QueryAsync([FromBody] SqlQueryRequestDto request)
     {
         try
         {
-            List<dynamic> result = await _sqlQueryService.QueryAsync(
-                databaseType: request.DatabaseType,
-                connectionString: request.ConnectionString,
-                query: request.Query);
-            return Ok(new SqlQueryResponseDto { QueryResult = result });
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("{Message}", ex.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
+            SqlQueryResponse protoResponse = await grpcClient.QueryAsync(new SqlQueryRequest
+            {
+                DatabaseType = (DatabaseType)request.DatabaseType,
+                ConnectionString = request.ConnectionString,
+                Query = request.Query
+            });
 
-    [HttpPost]
-    [Route(RestApiPaths.Sql.Execute)]
-    public async Task<IActionResult> ExecuteAsync([FromBody] SqlQueryRequestDto request)
-    {
-        try
-        {
-            await _sqlQueryService.ExecuteAsync(
-                databaseType: request.DatabaseType,
-                connectionString: request.ConnectionString,
-                query: request.Query);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("{Message}", ex.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
+            List<dynamic> dynamicResult = protoResponse.QueryResult.Select(row => {
+                IDictionary<string, object?> expando = new ExpandoObject();
+                foreach (KeyValuePair<string, Google.Protobuf.WellKnownTypes.Value> field in row.Fields)
+                {
+                    expando.Add(field.Key, field.Value.Unwrap());
+                }
+                return (dynamic)expando;
+            }).ToList();
 
-    [HttpPost]
-    [Route(RestApiPaths.Sql.CreateTable)]
-    public async Task<IActionResult> CreateTableAsync([FromBody] CreateTableRequestDto request)
-    {
-        try
-        {
-            await _sqlQueryService.CreateTableAsync(
-                databaseType: request.DatabaseType,
-                connectionString: request.ConnectionString,
-                tableName: request.TableName,
-                columnInfos: request.GetVelocipedeColumnInfos());
-            return Ok();
+            return Ok(new SqlQueryResponseDto { QueryResult = dynamicResult });
         }
         catch (Exception ex)
         {
-            _logger.LogError("{Message}", ex.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-        }
-    }
-
-    [HttpPost]
-    [Route(RestApiPaths.Sql.DropTable)]
-    public async Task<IActionResult> DropTableAsync([FromBody] DropTableRequestDto request)
-    {
-        try
-        {
-            await _sqlQueryService.DropTableAsync(
-                databaseType: request.DatabaseType,
-                connectionString: request.ConnectionString,
-                tableName: request.TableName);
-            return Ok();
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError("{Message}", ex.Message);
-            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            logger.LogError(ex, "Query failed");
+            return StatusCode(500, ex.Message);
         }
     }
 }

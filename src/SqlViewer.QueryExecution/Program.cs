@@ -4,6 +4,12 @@ using SqlViewer.Common.Services;
 using SqlViewer.QueryExecution.Data.DataSeeding;
 using SqlViewer.QueryExecution.Mappings;
 using SqlViewer.QueryExecution.Data.DbContexts;
+using SqlViewer.QueryExecution.Domain.SqlQuery;
+using SqlViewer.Common.Factories;
+using SqlViewer.Common.Factories.Implementations;
+using SqlViewer.Common.Repositories;
+using SqlViewer.QueryExecution.Repositories.Implementations;
+using SqlViewer.QueryExecution.Services.Grpc;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.QueryExecution;
@@ -16,6 +22,9 @@ public sealed class Program
 
         // Add services to the container.
         builder.Services.AddScoped<SeedMapper>();
+        builder.Services.AddScoped<ISqlQueryManager, SqlQueryManager>();
+        builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
+        builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
         builder.Services.AddScoped<IQueryExecutionDataSeeder, QueryExecutionDataSeeder>();
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
 
@@ -38,7 +47,7 @@ public sealed class Program
         }
 
         // Configure the HTTP request pipeline.
-        //app.MapGrpcService<GreeterService>();
+        app.MapGrpcService<QueryExecutionGrpcService>();
         app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
         app.Run();

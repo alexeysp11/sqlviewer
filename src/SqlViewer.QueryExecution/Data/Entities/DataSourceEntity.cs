@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.QueryExecution.Models;
+namespace SqlViewer.QueryExecution.Data.Entities;
 
-public sealed record DataSource
+public sealed record DataSourceEntity
 {
     public long Id { get; set; }
 
@@ -20,7 +20,7 @@ public sealed record DataSource
     [MaxLength(2000)]
     public required string EncryptedConnectionString { get; set; }
 
-    public User Owner { get; set; } = null!;
+    public UserEntity Owner { get; set; } = null!;
 
-    public ICollection<DataSourcePermission> Permissions { get; set; } = [];
+    public ICollection<DataSourcePermissionEntity> Permissions { get; set; } = [];
 }

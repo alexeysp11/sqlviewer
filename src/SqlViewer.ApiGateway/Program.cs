@@ -9,6 +9,7 @@ using SqlViewer.ApiGateway.Middleware;
 using SqlViewer.Common.Constants;
 using SqlViewer.Metadata;
 using SqlViewer.QueryBuilder;
+using SqlViewer.QueryExecution;
 using SqlViewer.Security;
 using System.Text;
 
@@ -25,6 +26,7 @@ public sealed class Program
         // Add services to the container.
         builder.Services.AddScoped<LoginMapper>();
         builder.Services.AddTransient<TokenPropagationHandler>();
+
         builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
         {
             o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Security]!);
@@ -36,6 +38,10 @@ public sealed class Program
         builder.Services.AddGrpcClient<QueryBuilderService.QueryBuilderServiceClient>(o =>
         {
             o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Metadata]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
+        builder.Services.AddGrpcClient<QueryExecutionService.QueryExecutionServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.QueryExecution]!);
         }).AddHttpMessageHandler<TokenPropagationHandler>();
 
         builder.Services.AddHttpContextAccessor();

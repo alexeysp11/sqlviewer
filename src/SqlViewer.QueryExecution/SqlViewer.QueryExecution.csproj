@@ -10,7 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
+    <Protobuf Include="..\..\protos\metadata.proto" GrpcServices="Both" />
+    <Protobuf Include="..\..\protos\query_builder.proto" GrpcServices="Both" />
+    <Protobuf Include="..\..\protos\query_execution.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

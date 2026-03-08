@@ -1,9 +1,9 @@
 ﻿using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 
-namespace SqlViewer.QueryExecution.Services;
+namespace SqlViewer.QueryExecution.Domain.SqlQuery;
 
-public interface ISqlQueryService
+public interface ISqlQueryManager
 {
     Task<List<dynamic>> QueryAsync(
         VelocipedeDatabaseType databaseType,

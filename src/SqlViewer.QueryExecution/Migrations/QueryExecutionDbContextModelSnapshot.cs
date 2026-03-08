@@ -22,7 +22,7 @@ namespace SqlViewer.QueryExecution.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.DataSource", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.DataSourceEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -60,7 +60,7 @@ namespace SqlViewer.QueryExecution.Migrations
                     b.ToTable("DataSources");
                 });
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.DataSourcePermission", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.DataSourcePermissionEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -89,7 +89,7 @@ namespace SqlViewer.QueryExecution.Migrations
                     b.ToTable("DataSourcePermissions");
                 });
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.QueryLog", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.QueryLogEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -118,7 +118,7 @@ namespace SqlViewer.QueryExecution.Migrations
                     b.ToTable("QueryLogs");
                 });
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.User", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.UserEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -142,9 +142,9 @@ namespace SqlViewer.QueryExecution.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.DataSource", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.DataSourceEntity", b =>
                 {
-                    b.HasOne("SqlViewer.QueryExecution.Models.User", "Owner")
+                    b.HasOne("SqlViewer.QueryExecution.Data.Entities.UserEntity", "Owner")
                         .WithMany("OwnedSources")
                         .HasForeignKey("OwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -153,15 +153,15 @@ namespace SqlViewer.QueryExecution.Migrations
                     b.Navigation("Owner");
                 });
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.DataSourcePermission", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.DataSourcePermissionEntity", b =>
                 {
-                    b.HasOne("SqlViewer.QueryExecution.Models.DataSource", "DataSource")
+                    b.HasOne("SqlViewer.QueryExecution.Data.Entities.DataSourceEntity", "DataSource")
                         .WithMany("Permissions")
                         .HasForeignKey("DataSourceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SqlViewer.QueryExecution.Models.User", "User")
+                    b.HasOne("SqlViewer.QueryExecution.Data.Entities.UserEntity", "User")
                         .WithMany("Permissions")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -172,12 +172,12 @@ namespace SqlViewer.QueryExecution.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.DataSource", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.DataSourceEntity", b =>
                 {
                     b.Navigation("Permissions");
                 });
 
-            modelBuilder.Entity("SqlViewer.QueryExecution.Models.User", b =>
+            modelBuilder.Entity("SqlViewer.QueryExecution.Data.Entities.UserEntity", b =>
                 {
                     b.Navigation("OwnedSources");
 
