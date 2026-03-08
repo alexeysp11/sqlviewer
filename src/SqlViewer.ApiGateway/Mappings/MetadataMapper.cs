@@ -15,6 +15,8 @@ public static partial class MetadataMapper
     public static partial MetadataRequest MapToProto(this MetadataRequestDto dto);
 
     public static partial MetadataTablesResponseDto MapToDto(this MetadataTablesResponse proto);
+
+    [MapProperty(nameof(MetadataRequest.DatabaseType), nameof(MetadataRequestDto.DatabaseType), Use = nameof(MapToVelocipedeDatabaseType))]
     public static partial MetadataColumnsResponseDto MapToDto(this MetadataColumnsResponse proto);
 
     private static DatabaseType MapToDatabaseType(VelocipedeDatabaseType source)
@@ -33,6 +35,24 @@ public static partial class MetadataMapper
             VelocipedeDatabaseType.MariaDB => DatabaseType.Mariadb,
             VelocipedeDatabaseType.HSQLDB => DatabaseType.Hsqldb,
             _ => throw new ArgumentOutOfRangeException(nameof(source), source, $"The value of enum {nameof(VelocipedeDatabaseType)} is not supported"),
+        };
+    }
+    private static VelocipedeDatabaseType MapToVelocipedeDatabaseType(DatabaseType source)
+    {
+        return source switch
+        {
+            DatabaseType.None => VelocipedeDatabaseType.None,
+            DatabaseType.InMemory => VelocipedeDatabaseType.InMemory,
+            DatabaseType.Oracle => VelocipedeDatabaseType.Oracle,
+            DatabaseType.Clickhouse => VelocipedeDatabaseType.Clickhouse,
+            DatabaseType.Firebird => VelocipedeDatabaseType.Firebird,
+            DatabaseType.Sqlite => VelocipedeDatabaseType.SQLite,
+            DatabaseType.Postgresql => VelocipedeDatabaseType.PostgreSQL,
+            DatabaseType.Mssql => VelocipedeDatabaseType.MSSQL,
+            DatabaseType.Mysql => VelocipedeDatabaseType.MySQL,
+            DatabaseType.Mariadb => VelocipedeDatabaseType.MariaDB,
+            DatabaseType.Hsqldb => VelocipedeDatabaseType.HSQLDB,
+            _ => throw new ArgumentOutOfRangeException(nameof(source), source, $"The value of enum {nameof(DatabaseType)} is not supported"),
         };
     }
 
