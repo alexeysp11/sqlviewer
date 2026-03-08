@@ -160,7 +160,18 @@ public partial class MainViewModel : ObservableObject, IDisposable
                 DatabaseTables.Add(new TableViewModel
                 {
                     Name = table,
-                    LoadColumnsFunc = (tName) => _metadataApiService.GetColumnsAsync(databaseType, ConnectionString, tName)
+                    LoadColumnsFunc = async (tName) =>
+                    {
+                        try
+                        {
+                            return await _metadataApiService.GetColumnsAsync(databaseType, ConnectionString, tName);
+                        }
+                        catch (Exception ex)
+                        {
+                            SqlCommandLogs += $"\n[{DateTime.Now:HH:mm:ss}] Error loading columns for {tName}: {ex.Message}";
+                            return [];
+                        }
+                    }
                 });
             }
         }

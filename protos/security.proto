@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/empty.proto";
+
+option csharp_namespace = "SqlViewer.Security";
+
+package security;
+
+enum AuthType {
+  AUTH_TYPE_UNKNOWN = 0;
+  AUTH_TYPE_PASSWORD = 1;
+}
+
+enum AuthRole {
+  AUTH_ROLE_NONE = 0;
+  AUTH_ROLE_ADMIN = 1;
+  AUTH_ROLE_USER = 2;
+  AUTH_ROLE_GUEST = 3;
+}
+
+message LoginRequest {
+  AuthType auth_type = 1;
+  string username = 2;
+  optional string password = 3;
+}
+
+message LoginResponse {
+  string access_token = 1;
+  optional string refresh_token = 2;
+  string token_type = 3;
+  double expires_in_seconds = 4;
+  optional string username = 5;
+  AuthRole role = 6;
+}
+
+message RefreshAccessTokenRequest {
+  string access_token = 1;
+}
+
+service SecurityService {
+  rpc Login (LoginRequest) returns (LoginResponse);
+  rpc LoginGuest (google.protobuf.Empty) returns (LoginResponse);
+  rpc RefreshAccessToken (RefreshAccessTokenRequest) returns (LoginResponse);
+}

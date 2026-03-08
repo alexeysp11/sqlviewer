@@ -5,7 +5,7 @@ namespace SqlViewer.Common.Dtos.Metadata;
 /// <summary>
 /// Response for getting metadata about tables.
 /// </summary>
-public sealed class MetadataTablesResponseDto
+public sealed record MetadataTablesResponseDto
 {
     [JsonPropertyName("tables")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

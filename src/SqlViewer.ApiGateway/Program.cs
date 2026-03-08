@@ -1,63 +1,64 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SqlViewer.ApiGateway.Data.DataSeeding;
-using SqlViewer.ApiGateway.Data.DbContexts;
-using SqlViewer.ApiGateway.DtoFluentValidation;
-using SqlViewer.ApiGateway.Factories;
-using SqlViewer.ApiGateway.Factories.Implementations;
-using SqlViewer.ApiGateway.Repositories;
-using SqlViewer.ApiGateway.Repositories.Implementations;
-using SqlViewer.ApiGateway.Services;
-using SqlViewer.ApiGateway.Services.Implementations;
-using SqlViewer.Common.Models;
+using SqlViewer.ApiGateway.DelegatingHandlers;
+using SqlViewer.ApiGateway.Dtos.FluentValidation;
+using SqlViewer.ApiGateway.Mappings;
+using SqlViewer.ApiGateway.Middleware;
+using SqlViewer.Common.Constants;
+using SqlViewer.Metadata;
+using SqlViewer.QueryBuilder;
+using SqlViewer.QueryExecution;
+using SqlViewer.Security;
 using System.Text;
 
 namespace SqlViewer.ApiGateway;
 
 public sealed class Program
 {
-    public static async Task Main(string[] args)
+    public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
 
         // Add services to the container.
-        builder.Services.AddScoped<ISqlQueryService, SqlQueryService>();
-        builder.Services.AddScoped<IMetadataService, MetadataService>();
-        builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
-        builder.Services.AddScoped<IQueryBuilderService, QueryBuilderService>();
-        builder.Services.AddScoped<IEncryptionService, EncryptionService>();
-        builder.Services.AddScoped<IAuthService, AuthService>();
-        builder.Services.AddScoped<ITokenService, TokenService>();
-        builder.Services.AddScoped<IApiGatewayDataSeeder, ApiGatewayDataSeeder>();
-        builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
-        builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+        builder.Services.AddScoped<LoginMapper>();
+        builder.Services.AddTransient<TokenPropagationHandler>();
 
+        builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Security]!);
+        });
+        builder.Services.AddGrpcClient<MetadataService.MetadataServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Metadata]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
+        builder.Services.AddGrpcClient<QueryBuilderService.QueryBuilderServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Metadata]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
+        builder.Services.AddGrpcClient<QueryExecutionService.QueryExecutionServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.QueryExecution]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
+
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddValidatorsFromAssemblyContaining<CreateTableRequestValidator>();
         builder.Services.AddFluentValidationAutoValidation();
 
-        builder.Services.AddDataProtection();
-        
-        builder.Services.AddDbContext<ApiGatewayDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString("MetadataConnection"))
-        );
-
-        string issuerSigningKey = builder.Configuration.GetValue<string>("Jwt:Key")
+        string issuerSigningKey = builder.Configuration.GetValue<string>(ConfigurationKeys.Jwt.Key)
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(options => {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                    ValidIssuer = builder.Configuration[ConfigurationKeys.Jwt.Issuer],
 
                     ValidateAudience = true,
-                    ValidAudience = builder.Configuration["Jwt:Audience"],
+                    ValidAudience = builder.Configuration[ConfigurationKeys.Jwt.Audience],
                     
                     ValidateLifetime = true,
                     
@@ -72,14 +73,6 @@ public sealed class Program
 
         WebApplication app = builder.Build();
 
-        // Initialization and seeding the database.
-        using (IServiceScope scope = app.Services.CreateScope())
-        {
-            ApiGatewayDbContext db = scope.ServiceProvider.GetRequiredService<ApiGatewayDbContext>();
-            IApiGatewayDataSeeder dataSeeder = scope.ServiceProvider.GetRequiredService<IApiGatewayDataSeeder>();
-            await dataSeeder.InitializeAsync();
-        }
-
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
@@ -90,6 +83,7 @@ public sealed class Program
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseMiddleware<GrpcExceptionMiddleware>();
 
         app.MapControllers();
 

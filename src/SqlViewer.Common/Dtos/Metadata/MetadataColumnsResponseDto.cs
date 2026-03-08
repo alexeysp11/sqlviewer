@@ -8,9 +8,10 @@ namespace SqlViewer.Common.Dtos.Metadata;
 /// <summary>
 /// Response for getting metadata about coluns.
 /// </summary>
-public sealed class MetadataColumnsResponseDto
+public sealed record MetadataColumnsResponseDto
 {
     [JsonPropertyName("databaseType")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required VelocipedeDatabaseType DatabaseType { get; init; }
 
     [JsonPropertyName("tableName")]

@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+import "metadata.proto";
+
+option csharp_namespace = "SqlViewer.QueryBuilder";
+
+package query_builder;
+
+message CreateTableRequest {
+  metadata.DatabaseType database_type = 1;
+  string table_name = 2;
+  repeated metadata.ColumnInfoResponse columns = 3;
+}
+
+message QueryBuilderResponse {
+  string query = 1;
+}
+
+service QueryBuilderService {
+  rpc GetCreateTableQuery (CreateTableRequest) returns (QueryBuilderResponse);
+}

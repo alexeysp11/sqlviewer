@@ -6,9 +6,10 @@ namespace SqlViewer.Common.Dtos.Auth;
 /// <summary>
 /// Request DTO for verifying user credentials.
 /// </summary>
-public sealed class LoginRequestDto
+public sealed record LoginRequestDto
 {
     [JsonPropertyName("authType")]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public required SqlViewerAuthType AuthType { get; init; }
 
     [JsonPropertyName("username")]

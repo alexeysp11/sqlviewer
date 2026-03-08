@@ -6,7 +6,7 @@ A distributed system for managing heterogeneous data sources.
 
 ## General description
 
-- Client-service architecture.
+- Microservice architecture.
 - Docker containers for services and databases.
 - Centralized metadata storage and connection abstraction.
 - The system allows users to interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API, hiding the technical details of connection implementation.
@@ -65,13 +65,31 @@ dotnet dev-certs https --trust
 ```.env
 # Database server
 DB_HOST=host.docker.internal
-DB_PASSWORD=DatabasePassword1234
+DB_PASSWORD=postgres
 
 # Encryption
 ENCRYPTION_KEY=YourSuperSecretKey123
 
 # HTTP certificate
-HOST_CERT_PATH=path
-CERT_PASSWORD=YourSecurePassword123
+# For Windows
+HOST_CERT_PATH=${USERPROFILE}\.aspnet\https
+# For Linux/macOS it could be: HOST_CERT_PATH=~/.aspnet/https
+
+CERT_PASSWORD=1234
+
+# JWT
+JWT_KEY=TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=
+JWT_LIFETIME_MINUTES=90
+JWT_ISSUER=sqlviewer/security
+JWT_AUDIENCE=sqlviewer/api-gateway
+JWT_ISSUER_KEY=iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k=
+
+# Microservices
+GRPC_SECURITY_HOST=host.docker.internal
+GRPC_SECURITY_PORT=5274
+GRPC_METADATA_HOST=host.docker.internal
+GRPC_METADATA_PORT=5100
+GRPC_QUERYEXECUTION_HOST=host.docker.internal
+GRPC_QUERYEXECUTION_PORT=5249
 ```
 4. To build and run the entire application stack: `docker compose up --build`.
