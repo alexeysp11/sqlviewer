@@ -4,7 +4,6 @@ using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Metadata;
 using SqlViewer.ApiGateway.Mappings;
-using Microsoft.AspNetCore.Authentication;
 
 namespace SqlViewer.ApiGateway.Controllers.Metadata;
 

@@ -15,6 +15,7 @@ using SqlViewer.Metadata.Mappings;
 using SqlViewer.Metadata.Repositories.Implementations;
 using SqlViewer.Metadata.Services.Grpc;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
+using SqlViewer.Metadata.Domain.QueryBuilders;
 
 namespace SqlViewer.Metadata;
 
@@ -29,6 +30,7 @@ public sealed class Program
         builder.Services.AddScoped<IMetadataDataSeeder, MetadataDataSeeder>();
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
         builder.Services.AddScoped<IMetadataRegistry, MetadataRegistry>();
+        builder.Services.AddScoped<IQueryBuilderManager, QueryBuilderManager>();
         builder.Services.AddScoped<IDbConnectionFactory, DbConnectionFactory>();
         builder.Services.AddScoped<IDataSourceRepository, DataSourceRepository>();
 
@@ -75,6 +77,7 @@ public sealed class Program
 
         // Configure the HTTP request pipeline.
         app.MapGrpcService<MetadataGrpcService>();
+        app.MapGrpcService<QueryBuilderGrpcService>();
         app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
 
         app.Run();

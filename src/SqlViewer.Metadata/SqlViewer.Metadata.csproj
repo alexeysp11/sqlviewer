@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Protobuf Include="..\..\protos\metadata.proto" GrpcServices="Server" />
+    <Protobuf Include="..\..\protos\query_builder.proto" GrpcServices="Server" />
   </ItemGroup>
 
   <ItemGroup>

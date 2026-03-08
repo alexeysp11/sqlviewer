@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services;
+using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Dtos.QueryBuilder;
 using SqlViewer.Common.Dtos.SqlQueries;
-using SqlViewer.Common.Extensions;
+using SqlViewer.QueryBuilder;
 
 namespace SqlViewer.ApiGateway.Controllers.Metadata;
 
@@ -13,26 +14,26 @@ namespace SqlViewer.ApiGateway.Controllers.Metadata;
 [Route("[controller]")]
 public sealed class QueryBuilderApiController(
     ILogger<QueryBuilderApiController> logger,
-    IQueryBuilderService queryBuilderService) : ControllerBase
+    QueryBuilderService.QueryBuilderServiceClient grpcClient) : ControllerBase
 {
-    private readonly ILogger<QueryBuilderApiController> _logger = logger;
-    private readonly IQueryBuilderService _queryBuilderService = queryBuilderService;
-
     [HttpPost]
     [Route(RestApiPaths.QueryBuilder.CreateTable)]
     public async Task<ActionResult<QueryBuilderResponseDto>> GetCreateTableQueryAsync([FromBody] CreateTableRequestDto request)
     {
         try
         {
-            string query = await _queryBuilderService.GetCreateTableQueryAsync(
-                databaseType: request.DatabaseType,
-                tableName: request.TableName,
-                columnInfos: request.Columns.GetVelocipedeColumnInfos(request.DatabaseType));
-            return new QueryBuilderResponseDto { Query = query };
+            CreateTableRequest protoRequest = request.MapToProto();
+            QueryBuilderResponse protoResponse = await grpcClient.GetCreateTableQueryAsync(protoRequest);
+            return Ok(new QueryBuilderResponseDto { Query = protoResponse.Query });
+        }
+        catch (RpcException ex)
+        {
+            logger.LogError("gRPC call failed: {Status}", ex.Status);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
         catch (Exception ex)
         {
-            _logger.LogError("{Message}", ex.Message);
+            logger.LogError(ex, "Unexpected error in QueryBuilder");
             return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
     }

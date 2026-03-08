@@ -8,6 +8,7 @@ using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.ApiGateway.Middleware;
 using SqlViewer.Common.Constants;
 using SqlViewer.Metadata;
+using SqlViewer.QueryBuilder;
 using SqlViewer.Security;
 using System.Text;
 
@@ -29,6 +30,10 @@ public sealed class Program
             o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Security]!);
         });
         builder.Services.AddGrpcClient<MetadataService.MetadataServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Metadata]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
+        builder.Services.AddGrpcClient<QueryBuilderService.QueryBuilderServiceClient>(o =>
         {
             o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Metadata]!);
         }).AddHttpMessageHandler<TokenPropagationHandler>();

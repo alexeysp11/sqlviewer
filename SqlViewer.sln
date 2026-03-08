@@ -44,6 +44,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{F9FBE589-BC46-4D61-B094-E8ED187BF9A5}"
 	ProjectSection(SolutionItems) = preProject
 		protos\metadata.proto = protos\metadata.proto
+		protos\query_builder.proto = protos\query_builder.proto
 		protos\security.proto = protos\security.proto
 	EndProjectSection
 EndProject

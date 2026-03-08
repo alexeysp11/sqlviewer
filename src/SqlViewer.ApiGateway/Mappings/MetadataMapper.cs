@@ -1,7 +1,9 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Riok.Mapperly.Abstractions;
 using SqlViewer.Common.Dtos.Metadata;
+using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Metadata;
+using SqlViewer.QueryBuilder;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ApiGateway.Mappings;
@@ -13,6 +15,8 @@ public static partial class MetadataMapper
     [MapProperty(nameof(MetadataRequestDto.DatabaseType), nameof(MetadataRequest.DatabaseType), Use = nameof(MapToDatabaseType))]
     [MapProperty(nameof(MetadataRequestDto.TableName), nameof(MetadataRequest.TableName), Use = nameof(MapString))]
     public static partial MetadataRequest MapToProto(this MetadataRequestDto dto);
+
+    public static partial CreateTableRequest MapToProto(this CreateTableRequestDto dto);
 
     public static partial MetadataTablesResponseDto MapToDto(this MetadataTablesResponse proto);
 
@@ -37,6 +41,7 @@ public static partial class MetadataMapper
             _ => throw new ArgumentOutOfRangeException(nameof(source), source, $"The value of enum {nameof(VelocipedeDatabaseType)} is not supported"),
         };
     }
+
     private static VelocipedeDatabaseType MapToVelocipedeDatabaseType(DatabaseType source)
     {
         return source switch
