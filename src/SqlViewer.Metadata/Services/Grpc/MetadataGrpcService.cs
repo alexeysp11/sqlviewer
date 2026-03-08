@@ -7,13 +7,13 @@ using SqlViewer.Metadata.Domain.MetadataRegistries;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
 using SqlViewer.Common.Extensions;
 
-namespace SqlViewer.Metadata.Services;
+namespace SqlViewer.Metadata.Services.Grpc;
 
 [Authorize]
-public sealed class MetadataService(
-    ILogger<MetadataService> logger,
+public sealed class MetadataGrpcService(
+    ILogger<MetadataGrpcService> logger,
     IMetadataRegistry metadataRegistry)
-    : Metadata.MetadataService.MetadataServiceBase
+    : MetadataService.MetadataServiceBase
 {
     public override async Task<MetadataTablesResponse> GetTables(MetadataRequest request, ServerCallContext context)
     {

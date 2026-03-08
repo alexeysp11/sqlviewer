@@ -2,10 +2,12 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SqlViewer.ApiGateway.DelegatingHandlers;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.ApiGateway.Middleware;
 using SqlViewer.Common.Constants;
+using SqlViewer.Metadata;
 using SqlViewer.Security;
 using System.Text;
 
@@ -21,11 +23,17 @@ public sealed class Program
 
         // Add services to the container.
         builder.Services.AddScoped<LoginMapper>();
+        builder.Services.AddTransient<TokenPropagationHandler>();
         builder.Services.AddGrpcClient<SecurityService.SecurityServiceClient>(o =>
         {
             o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Security]!);
         });
+        builder.Services.AddGrpcClient<MetadataService.MetadataServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Metadata]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
 
+        builder.Services.AddHttpContextAccessor();
         builder.Services.AddValidatorsFromAssemblyContaining<CreateTableRequestValidator>();
         builder.Services.AddFluentValidationAutoValidation();
 
