@@ -2,6 +2,9 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SqlViewer.ApiGateway.DelegatingHandlers;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
@@ -71,6 +74,20 @@ public sealed class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        string serviceName = "api-gateway";
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
+                .AddOtlpExporter(opt => {
+                    // Send traces to Jaeger (the service name in Docker Compose)
+                    opt.Endpoint = new Uri("http://jaeger:4317");
+                }))
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)
+                .AddPrometheusExporter());
+
         WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -79,6 +96,8 @@ public sealed class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
 
         app.UseHttpsRedirection();
         app.UseAuthentication();

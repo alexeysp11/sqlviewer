@@ -152,6 +152,34 @@ services:
     depends_on:
       - kafka
 
+  # Metrics collector
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sqlviewer-prometheus
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  # Visualization (default login/password: admin/admin)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sqlviewer-grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  # Request tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: sqlviewer-jaeger
+    ports:
+      - "16686:16686" # UI interface (see tracing graphs)
+      - "4317:4317"   # OTLP gRPC (for receiving data from .NET)
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
+
   redis:
     image: redis:alpine
     container_name: redis-cache
