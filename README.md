@@ -13,40 +13,11 @@ A distributed system for managing heterogeneous data sources.
 
 ## 🏗️ Architecture
 
-```mermaid
-graph TD
-    subgraph Client_Side [Client Side]
-        WPF[WPF Desktop App]
-    end
-
-    subgraph API_Gateway [Entry Point]
-        GW[API Gateway]
-    end
-
-    subgraph Microservices [Core Logic]
-        SEC[Security Service]
-        META[Metadata Service]
-        QRY[Query Execution Service]
-    end
-
-    subgraph Storage [Databases]
-        DB_SEC[(pg-security-db)]
-        DB_META[(pg-metadata-db)]
-        DB_QRY[(pg-query-db)]
-        DB_SAND[(pg-sandbox-db)]
-    end
-
-    WPF -- HTTPS/REST --> GW
-    GW -- gRPC --> SEC
-    GW -- gRPC --> META
-    GW -- gRPC --> QRY
-
-    SEC --> DB_SEC
-    META --> DB_META
-    QRY --> DB_QRY
-    QRY -.-> DB_SAND
-    QRY -.-> ExternalDB[(External Databases)]
-```
+- **WPF Client**: Sends an HTTPS request to **API Gateway**.
+- **API Gateway**: Performs routing and calls the required microservice via gRPC.
+- **Security Service**: Authorizes the user in the application.
+- **Metadata Service**: Provides connection parameters to the target database.
+- **Query Execution Service**: Executes an SQL query in the selected database (internal or external).
 
 ## ✨ Features
 
@@ -70,7 +41,7 @@ The system automatically initializes several PostgreSQL databases upon startup. 
 
 ### 🛡️ Internal Databases
 These are used by the microservices to store system metadata and security logic:
-- **`pg-security-db`**: Stores users, roles, and permissions for the Security service.
+- **`pg-security-db`**: Stores users, roles, and permissions for the **Security** service.
 - **`pg-metadata-db`**: Stores Data Source configurations and connection abstractions.
 - **`pg-query-db`**: Stores query history and execution logs.
 
