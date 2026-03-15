@@ -1,5 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SqlViewer.Security.Data.DataSeeding;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
@@ -31,7 +34,24 @@ public static class Program
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Security))
         );
 
+        // OpenTelemetry.
+        string serviceName = "security";
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
+                .AddOtlpExporter(opt => {
+                    // Send traces to Jaeger (the service name in Docker Compose)
+                    opt.Endpoint = new Uri("http://jaeger:4317");
+                }))
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)
+                .AddPrometheusExporter());
+
         WebApplication app = builder.Build();
+
+        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
 
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())

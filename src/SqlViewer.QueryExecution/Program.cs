@@ -1,13 +1,16 @@
 using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
+using SqlViewer.Common.Factories;
+using SqlViewer.Common.Factories.Implementations;
+using SqlViewer.Common.Repositories;
 using SqlViewer.Common.Services.Implementations;
 using SqlViewer.Common.Services;
 using SqlViewer.QueryExecution.Data.DataSeeding;
 using SqlViewer.QueryExecution.Mappings;
 using SqlViewer.QueryExecution.Data.DbContexts;
 using SqlViewer.QueryExecution.Domain.SqlQuery;
-using SqlViewer.Common.Factories;
-using SqlViewer.Common.Factories.Implementations;
-using SqlViewer.Common.Repositories;
 using SqlViewer.QueryExecution.Repositories.Implementations;
 using SqlViewer.QueryExecution.Services.Grpc;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
@@ -36,7 +39,24 @@ public sealed class Program
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.QueryExecution))
         );
 
+        // OpenTelemetry.
+        string serviceName = "query-execution";
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
+                .AddOtlpExporter(opt => {
+                    // Send traces to Jaeger (the service name in Docker Compose)
+                    opt.Endpoint = new Uri("http://jaeger:4317");
+                }))
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)
+                .AddPrometheusExporter());
+
         WebApplication app = builder.Build();
+
+        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
 
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())

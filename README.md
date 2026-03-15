@@ -86,10 +86,56 @@ JWT_ISSUER_KEY=iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k=
 
 # Microservices
 GRPC_SECURITY_HOST=host.docker.internal
-GRPC_SECURITY_PORT=5274
+GRPC_SECURITY_PORT=5275
 GRPC_METADATA_HOST=host.docker.internal
-GRPC_METADATA_PORT=5100
+GRPC_METADATA_PORT=5101
 GRPC_QUERYEXECUTION_HOST=host.docker.internal
-GRPC_QUERYEXECUTION_PORT=5249
+GRPC_QUERYEXECUTION_PORT=5250
 ```
 4. To build and run the entire application stack: `docker compose up --build`.
+
+## 📊 Observability & Monitoring
+
+The monitoring stack is deployed automatically alongside the core services.
+
+### How to verify it's working?
+
+Spin up the infrastructure: `docker-compose up -d`
+
+#### 1. Prometheus (Metrics Collection)
+Used for gathering and storing performance metrics from all your services.
+- **URL:** [http://localhost:9090](http://localhost:9090)
+- **Check:** Navigate to `Status` -> `Targets`.
+- **Expected Result:** All services (`api-gateway`, `security`, `metadata`, etc.) should have an **UP** status. This confirms Prometheus is successfully scraping data from the `:8080/metrics` endpoints.
+
+#### 2. Jaeger (Distributed Tracing)
+Allows you to visualize the request lifecycle across microservices (from API Gateway to DB).
+- **URL:** [http://localhost:16686](http://localhost:16686)
+- **Check:** 
+    1. Send any request to the API (via WPF client or Swagger).
+    2. In Jaeger, select `api-gateway` in the **Service** field.
+    3. Click **Find Traces**. You will see the timeline (Spans) of your request and its gRPC calls.
+
+#### 3. Grafana (Visualization)
+Rich dashboards for real-time system health monitoring.
+- **URL:** [http://localhost:3000](http://localhost:3000)
+- **Credentials:** `admin` / `admin`
+- **Initial Setup:**
+    1. Go to `Connections` -> `Data Sources` -> `Add data source`.
+    2. Select **Prometheus**.
+    3. In the **URL** field, enter `http://prometheus:9090` and click **Save & Test**.
+
+### Importing the Standard .NET Dashboard
+
+For deep analysis of ASP.NET Core services, it is highly recommended to use the pre-built dashboard.
+
+1. In Grafana, click **Dashboards** -> **New** -> **Import**.
+2. In the `"Import via grafana.com"` field, enter ID: `19924` and click **Load**.
+3. In the dropdown, select the **Prometheus** DataSource you created.
+4. Click **Import**.
+
+**Dashboard Highlights:**
+*   **Requests per second:** Incoming traffic intensity.
+*   **Request Duration:** API response latency.
+*   **HTTP Error Rate:** Percentage of `4xx`/`5xx` errors.
+*   **Resource Usage:** CPU and RAM consumption per microservice.

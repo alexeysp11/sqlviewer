@@ -37,8 +37,13 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      # Other variables
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
       - EncryptionSettings__Key=${ENCRYPTION_KEY}
@@ -53,7 +58,7 @@ services:
       dockerfile: src/SqlViewer.Security/Dockerfile
     ports:
       - "5274:8080"
-      - "7128:8081"
+      - "5275:8082"
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
@@ -66,8 +71,13 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      # Other variables
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
       - EncryptionSettings__Key=${ENCRYPTION_KEY}
@@ -84,7 +94,7 @@ services:
       dockerfile: src/SqlViewer.Metadata/Dockerfile
     ports:
       - "5100:8080"
-      - "7026:8081"
+      - "5101:8082"
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
@@ -97,8 +107,13 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      # Other variables
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
       - EncryptionSettings__Key=${ENCRYPTION_KEY}
@@ -110,7 +125,7 @@ services:
       dockerfile: src/SqlViewer.QueryExecution/Dockerfile
     ports:
       - "5249:8080"
-      - "7091:8081"
+      - "5250:8082"
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:

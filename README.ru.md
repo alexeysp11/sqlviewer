@@ -87,10 +87,56 @@ JWT_ISSUER_KEY=iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k=
 
 # Microservices
 GRPC_SECURITY_HOST=host.docker.internal
-GRPC_SECURITY_PORT=5274
+GRPC_SECURITY_PORT=5275
 GRPC_METADATA_HOST=host.docker.internal
-GRPC_METADATA_PORT=5100
+GRPC_METADATA_PORT=5101
 GRPC_QUERYEXECUTION_HOST=host.docker.internal
-GRPC_QUERYEXECUTION_PORT=5249
+GRPC_QUERYEXECUTION_PORT=5250
 ```
 4. Для сборки и запуска всего стека приложений: `docker compose up --build`.
+
+## 📊 Observability & Monitoring
+
+Система мониторинга разворачивается автоматически вместе с основными сервисами.
+
+### Как проверить, что всё работает?
+
+Запустите инфраструктуру: `docker-compose up -d`
+
+#### 1. Prometheus (Сбор метрик)
+Служит для сбора и хранения метрик производительности ваших сервисов.
+- **Адрес:** [http://localhost:9090](http://localhost:9090)
+- **Проверка:** Перейдите в меню `Status` -> `Targets`.
+- **Ожидаемый результат:** Все сервисы (`api-gateway`, `security`, `metadata` и др.) должны иметь статус **UP**. Это значит, что Prometheus успешно забирает данные с эндпоинтов `:8080/metrics`.
+
+#### 2. Jaeger (Трассировка запросов)
+Позволяет визуализировать путь запроса через все микросервисы (от API Gateway до БД).
+- **Адрес:** [http://localhost:16686](http://localhost:16686)
+- **Проверка:** 
+    1. Сделайте любой запрос к API (через WPF-клиент или Swagger).
+    2. В Jaeger в поле **Service** выберите `api-gateway`.
+    3. Нажмите **Find Traces**. Вы увидите временную шкалу (Span) вашего запроса и его прохождение через gRPC-вызовы.
+
+#### 3. Grafana (Визуализация)
+Красивые дашборды для мониторинга состояния системы в реальном времени.
+- **Адрес:** [http://localhost:3000](http://localhost:3000)
+- **Доступ:** `admin` / `admin`
+- **Первичная настройка:**
+    1. Перейдите в `Connections` -> `Data Sources` -> `Add data source`.
+    2. Выберите **Prometheus**.
+    3. В поле **URL** введите `http://prometheus:9090` и нажмите **Save & Test**.
+
+### Подключение стандартного Dashboard для .NET
+
+Для глубокого анализа ASP.NET Core сервисов рекомендуется использовать готовый дашборд.
+
+1. В Grafana нажмите **Dashboards** -> **New** -> **Import**.
+2. В поле `"Import via grafana.com"` введите ID: `19924` и нажмите **Load**.
+3. В выпадающем списке выберите созданный ранее DataSource (**Prometheus**).
+4. Нажмите **Import**.
+
+**Что доступно на дашборде:**
+*   **Requests per second:** интенсивность входящего трафика.
+*   **Request Duration:** задержки (latency) ответов API.
+*   **HTTP Error Rate:** процент ошибок (`4xx`/`5xx`).
+*   **Resource Usage:** потребление CPU и RAM каждым микросервисом.

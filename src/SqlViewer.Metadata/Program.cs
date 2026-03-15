@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Factories;
 using SqlViewer.Common.Factories.Implementations;
@@ -11,11 +13,12 @@ using SqlViewer.Common.Services.Implementations;
 using SqlViewer.Metadata.Data.DataSeeding;
 using SqlViewer.Metadata.Data.DbContexts;
 using SqlViewer.Metadata.Domain.MetadataRegistries;
+using SqlViewer.Metadata.Domain.QueryBuilders;
 using SqlViewer.Metadata.Mappings;
 using SqlViewer.Metadata.Repositories.Implementations;
 using SqlViewer.Metadata.Services.Grpc;
+using System.Text;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
-using SqlViewer.Metadata.Domain.QueryBuilders;
 
 namespace SqlViewer.Metadata;
 
@@ -62,7 +65,24 @@ public sealed class Program
             });
         builder.Services.AddAuthorization();
 
+        // OpenTelemetry.
+        string serviceName = "metadata";
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
+                .AddOtlpExporter(opt => {
+                    // Send traces to Jaeger (the service name in Docker Compose)
+                    opt.Endpoint = new Uri("http://jaeger:4317");
+                }))
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)
+                .AddPrometheusExporter());
+
         WebApplication app = builder.Build();
+
+        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
 
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())
