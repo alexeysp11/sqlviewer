@@ -4,53 +4,51 @@
 
 A distributed system for managing heterogeneous data sources.
 
-## General description
+## 📖 General description
 
-- Microservice architecture.
-- Docker containers for services and databases.
-- Centralized metadata storage and connection abstraction.
-- The system allows users to interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API, hiding the technical details of connection implementation.
-- Automatic migrations and data seeding upon service launch (to speed up development).
+- **Microservice architecture**: Scalable and decoupled components.
+- **Docker-ready**: Fully containerized services and databases.
+- **Abstraction layer**: Interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API.
+- **Auto-migrations**: Database seeding and migrations on startup for rapid development.
 
-Since this system is based on WPF and Web API, it's worth noting that microservices were chosen for scalability: for example, the query execution service can be scaled separately from the metadata management service if the load on the database increases.
+## ✨ Features
 
-## Features
+### 🔌 Connecting to Databases
 
-### Connecting to databases
+The application supports two methods for identifying the target database:
+- **Explicit Connection String**: Quick connection without prior configuration.
+- **Data Sources**: Named profiles (e.g., `[DataSource Name="Analytics"]`) for enhanced security and convenience.
 
-The application supports two methods for identifying the target database for query execution:
-- Using an explicit connection string
-- Using data sources
-
-#### Using an explicit connection string
-
-The classic method, in which the full connection string is passed in the input field (for example, for PostgreSQL or SQLite). This method allows you to quickly connect to any available database without prior configuration.
-
-#### Using data sources
-
-A mechanism for accessing databases through named profiles configured on the server. A special tag is used instead of the donnection string:
-- `[DataSource Id="1"]`: search by unique identifier.
-- `[DataSource Name="pg-metadata-db"]`: search by user friendly name.
-- `[DataSource Id="1" Name="pg-metadata-db"]`: search by both parameters (strict matching).
-
-The advantages of this approach:
-- **Security**: The user and client application don't see passwords or server addresses. All sensitive data is stored on the ASP.NET Core server side.
-- **Convenience**: Instead of remembering complex connection strings, human-readable aliases are used (e.g., "Warehouse 2026," "Analytics DB").
-- **Flexibility**: If the database address changes, the administrator simply updates it on the server, and clients don't need to change settings in their requests.
-
-### Write and execute SQL queries:
+### 📝 SQL Query Execution
 
 ![ui_query](docs/img/ui_query.png)
 
-### Transfer data from one database to another:
+### 🔄 Data Transfer (ETL)
 
-![ui_etl_1](docs/img/ui_etl_1.png)
+Transfer data seamlessly between different database engines.
 
-![ui_etl_2](docs/img/ui_etl_2.png)
+## 🗄️ System Databases & Sandbox
 
-## Running a project in Docker
+The system automatically initializes several PostgreSQL databases upon startup. You don't need to create them manually.
 
-1. Create a certificate to support the HTTPS protocol and set a password:
+### 🛡️ Internal Databases
+These are used by the microservices to store system metadata and security logic:
+- **`pg-security-db`**: Stores users, roles, and permissions for the Security service.
+- **`pg-metadata-db`**: Stores Data Source configurations and connection abstractions.
+- **`pg-query-db`**: Stores query history and execution logs.
+
+### 🏖️ Sandbox Database (Quick Start)
+For testing purposes, a **`pg-sandbox-db`** is provided. 
+- It comes pre-filled with sample tables (e.g., `Employees`, `Orders`).
+- You can use it immediately after launch to test SQL queries or ETL processes.
+- **Default DataSource Name:** `[DataSource Name="sandbox"]`
+
+> **Note:** All migrations and seed data are applied automatically via Entity Framework Core on service startup.
+
+## 🐳 Running a project in Docker
+
+### 1. 🔒 Generate HTTPS Certificate
+
 ```bash
 # For Windows (PowerShell)
 dotnet dev-certs https -ep $env:USERPROFILE\.aspnet\https\aspnetapp.pfx -p YourSecurePassword123
@@ -60,8 +58,10 @@ dotnet dev-certs https --trust
 dotnet dev-certs https -ep ${HOME}/.aspnet/https/aspnetapp.pfx -p YourSecurePassword123
 dotnet dev-certs https --trust
 ```
-2. Navigate to the root folder of this project.
-3. Create a `.env` file and add the configuration data for webapi inside the docker container.
+
+### 2. 📝 Environment Setup
+
+Create a .env file in the root directory:
 ```.env
 # Database server
 DB_HOST=host.docker.internal
@@ -92,7 +92,10 @@ GRPC_METADATA_PORT=5101
 GRPC_QUERYEXECUTION_HOST=host.docker.internal
 GRPC_QUERYEXECUTION_PORT=5250
 ```
-4. To build and run the entire application stack: `docker compose up --build`.
+
+### 3. 🚀 Launch
+
+`docker compose up --build`.
 
 ## 📊 Observability & Monitoring
 
