@@ -11,6 +11,43 @@ A distributed system for managing heterogeneous data sources.
 - **Abstraction layer**: Interact with various databases (SQLite, PostgreSQL, MS SQL) through a unified API.
 - **Auto-migrations**: Database seeding and migrations on startup for rapid development.
 
+## 🏗️ Architecture
+
+```mermaid
+graph TD
+    subgraph Client_Side [Client Side]
+        WPF[WPF Desktop App]
+    end
+
+    subgraph API_Gateway [Entry Point]
+        GW[API Gateway]
+    end
+
+    subgraph Microservices [Core Logic]
+        SEC[Security Service]
+        META[Metadata Service]
+        QRY[Query Execution Service]
+    end
+
+    subgraph Storage [Databases]
+        DB_SEC[(pg-security-db)]
+        DB_META[(pg-metadata-db)]
+        DB_QRY[(pg-query-db)]
+        DB_SAND[(pg-sandbox-db)]
+    end
+
+    WPF -- HTTPS/REST --> GW
+    GW -- gRPC --> SEC
+    GW -- gRPC --> META
+    GW -- gRPC --> QRY
+
+    SEC --> DB_SEC
+    META --> DB_META
+    QRY --> DB_QRY
+    QRY -.-> DB_SAND
+    QRY -.-> ExternalDB[(External Databases)]
+```
+
 ## ✨ Features
 
 ### 🔌 Connecting to Databases
