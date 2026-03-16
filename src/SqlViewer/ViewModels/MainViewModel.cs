@@ -62,7 +62,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
         ClearLogsCommand = new RelayCommand(ClearLogs);
         ConnectCommand = new AsyncRelayCommand(RefreshMetadataAsync, CanExecuteConnect);
         ExitCommand = new RelayCommand(Exit);
-        OpenEtlCommand = new RelayCommand(OpenEtl);
+        OpenEtlTableStructureCommand = new RelayCommand(OpenEtlTableStructure);
+        OpenEtlDataTransferCommand = new RelayCommand(OpenEtlDataTransfer);
         HelpCommand = new AsyncRelayCommand<string>(GetHelpAsync);
     }
 
@@ -75,7 +76,8 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public IRelayCommand ClearLogsCommand { get; }
     public IAsyncRelayCommand ConnectCommand { get; }
     public IRelayCommand ExitCommand { get; }
-    public IRelayCommand OpenEtlCommand { get; }
+    public IRelayCommand OpenEtlTableStructureCommand { get; }
+    public IRelayCommand OpenEtlDataTransferCommand { get; }
     public IAsyncRelayCommand<string> HelpCommand { get; }
 
     private async Task QuerySqlAsync()
@@ -113,10 +115,16 @@ public partial class MainViewModel : ObservableObject, IDisposable
         }
     }
 
-    private void OpenEtl()
+    private void OpenEtlTableStructure()
     {
         VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
-        _windowService.ShowEtlWizard(_sqlApiService, _metadataApiService, _queryBuilderService, ConnectionString, databaseType);
+        _windowService.ShowEtlTableStructureWizard(ConnectionString, databaseType);
+    }
+    
+    private void OpenEtlDataTransfer()
+    {
+        VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
+        _windowService.ShowEtlDataTransferWindow(ConnectionString, databaseType);
     }
 
     private async Task GetHelpAsync(string parameter)

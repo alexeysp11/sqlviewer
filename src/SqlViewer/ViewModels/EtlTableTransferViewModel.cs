@@ -1,14 +1,14 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using SqlViewer.Common.Dtos.Metadata;
 using SqlViewer.Services;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
 
-public sealed partial class EtlViewModel(
+public sealed partial class EtlTableTransferViewModel(
     ISqlApiService sqlApiService,
     IMetadataApiService metadataService,
     IQueryBuilderApiService queryBuilderService) : ObservableRecipient

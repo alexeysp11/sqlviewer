@@ -39,6 +39,7 @@ public partial class App : Application
         services.AddSingleton<IQueryBuilderApiService, QueryBuilderApiService>();
         services.AddSingleton<ISqlApiService, SqlApiService>();
         services.AddSingleton<IWindowService, WindowService>();
+        services.AddTransient<IEtlDataTransferService, EtlDataTransferService>();
 
         // 2. HTTP handlers.
         services.AddSingleton<IAuthHttpHandler, AuthHttpHandler>();
@@ -58,12 +59,14 @@ public partial class App : Application
         // 4. ViewModels.
         services.AddTransient<LoginViewModel>();
         services.AddSingleton<MainViewModel>();
-        services.AddTransient<EtlViewModel>();
+        services.AddTransient<EtlTableTransferViewModel>();
+        services.AddTransient<EtlDataTransferViewModel>();
 
         // 5. Views.
         services.AddTransient<LoginWindow>();
         services.AddSingleton<MainWindow>();
-        services.AddTransient<EtlWizardWindow>();
+        services.AddTransient<EtlTableStructureWizardWindow>();
+        services.AddTransient<EtlDataTransferWindow>();
 
         return services.BuildServiceProvider();
     }

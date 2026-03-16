@@ -8,17 +8,28 @@ namespace SqlViewer.Services.Implementations;
 
 public sealed class WindowService : IWindowService
 {
-    public void ShowEtlWizard(
-        ISqlApiService sqlApiService,
-        IMetadataApiService metadataService,
-        IQueryBuilderApiService queryBuilderService,
+    public void ShowEtlTableStructureWizard(
         string connectionString,
         VelocipedeDatabaseType databaseType)
     {
-        EtlWizardWindow etlWizardWindow = App.Services.GetRequiredService<EtlWizardWindow>();
+        EtlTableStructureWizardWindow etlWizardWindow = App.Services.GetRequiredService<EtlTableStructureWizardWindow>();
         etlWizardWindow.Owner = Application.Current.MainWindow;
 
-        EtlViewModel etlViewModel = etlWizardWindow.EtlViewModel;
+        EtlTableTransferViewModel etlViewModel = etlWizardWindow.EtlViewModel;
+        etlViewModel.SourceConnectionString = connectionString;
+        etlViewModel.SourceType = databaseType;
+
+        etlWizardWindow.ShowDialog();
+    }
+
+    public void ShowEtlDataTransferWindow(
+        string connectionString,
+        VelocipedeDatabaseType databaseType)
+    {
+        EtlDataTransferWindow etlWizardWindow = App.Services.GetRequiredService<EtlDataTransferWindow>();
+        etlWizardWindow.Owner = Application.Current.MainWindow;
+
+        EtlTableTransferViewModel etlViewModel = etlWizardWindow.EtlViewModel;
         etlViewModel.SourceConnectionString = connectionString;
         etlViewModel.SourceType = databaseType;
 
