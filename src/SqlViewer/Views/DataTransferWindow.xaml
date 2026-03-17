@@ -75,24 +75,53 @@
 
                     <!-- Active Operations -->
                     <GroupBox Header="Live Transfer Dashboard" Margin="0,0,0,10">
-                        <ItemsControl ItemsSource="{Binding ActiveTransfers}">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="5">
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="150"/>
-                                                <ColumnDefinition Width="*"/>
-                                                <ColumnDefinition Width="Auto"/>
-                                            </Grid.ColumnDefinitions>
-                                            <TextBlock Text="{Binding TableName}" VerticalAlignment="Center"/>
-                                            <ProgressBar Grid.Column="1" Value="{Binding ProgressPercentage}" Height="10" Margin="10,0"/>
-                                            <Button Grid.Column="2" Content="Cancel" Command="{Binding CancelCommand}" Foreground="Red" Padding="5,0"/>
-                                        </Grid>
-                                    </Border>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
+                        <Grid>
+                            <!-- Limit the height so that the Dashboard doesn't crowd out the History -->
+                            <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
+                                <ItemsControl ItemsSource="{Binding ActiveTransfers}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="8">
+                                                <Grid>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="180"/>
+                                                        <!-- Table name -->
+                                                        <ColumnDefinition Width="*"/>
+                                                        <!-- Progress -->
+                                                        <ColumnDefinition Width="80"/>
+                                                        <!-- Button -->
+                                                    </Grid.ColumnDefinitions>
+
+                                                    <StackPanel VerticalAlignment="Center">
+                                                        <TextBlock Text="{Binding TableName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
+                                                        <TextBlock Text="{Binding StatusMessage}" FontSize="9" Foreground="Gray"/>
+                                                    </StackPanel>
+
+                                                    <ProgressBar Grid.Column="1" 
+                                                                 Value="{Binding ProgressPercentage}" 
+                                                                 Height="12" 
+                                                                 Margin="10,0"
+                                                                 VerticalAlignment="Center"/>
+                                                    <Button Grid.Column="2" 
+                                                            Content="Stop" 
+                                                            Command="{Binding CancelCommand}"
+                                                            FontSize="11"
+                                                            Background="#FFF0F0" 
+                                                            Foreground="DarkRed"/>
+                                                </Grid>
+                                            </Border>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </ScrollViewer>
+
+                            <!-- A stub if nothing happens -->
+                            <TextBlock Text="No active transfers" 
+                                       HorizontalAlignment="Center" 
+                                       VerticalAlignment="Center" 
+                                       Foreground="LightGray"
+                                       Visibility="{Binding ActiveTransfers.Count}"/>
+                        </Grid>
                     </GroupBox>
 
                     <!-- History -->
