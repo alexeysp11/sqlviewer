@@ -5,10 +5,10 @@ using Google.Protobuf.WellKnownTypes;
 
 namespace SqlViewer.Etl.Services;
 
-public class EtlGrpcService(IBus bus) : EtlTransferService.EtlTransferServiceBase
+public sealed class EtlGrpcService(
+    ITopicProducer<StartDataTransferCommand> startTransferProducer)
+    : EtlTransferService.EtlTransferServiceBase
 {
-    private readonly IBus _bus = bus;
-
     public override async Task<StartTransferResponse> StartTransfer(
         StartTransferRequest request,
         ServerCallContext context)
@@ -16,7 +16,7 @@ public class EtlGrpcService(IBus bus) : EtlTransferService.EtlTransferServiceBas
         Guid correlationId = Guid.NewGuid();
 
         // Sending a command to Kafka via MassTransit
-        await _bus.Publish(new StartDataTransferCommand(
+        await startTransferProducer.Produce(new StartDataTransferCommand(
             correlationId,
             request.SourceConnectionString,
             request.TargetConnectionString,
