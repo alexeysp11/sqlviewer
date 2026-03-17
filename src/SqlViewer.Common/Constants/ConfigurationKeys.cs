@@ -31,6 +31,7 @@ public static class ConfigurationKeys
         {
             private const string Section = $"{Root}:Grpc";
 
+            public const string Etl = $"{Section}:Etl";
             public const string Security = $"{Section}:Security";
             public const string Metadata = $"{Section}:Metadata";
             public const string QueryExecution = $"{Section}:QueryExecution";

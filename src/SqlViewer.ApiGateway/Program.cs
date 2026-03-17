@@ -10,6 +10,7 @@ using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.ApiGateway.Middleware;
 using SqlViewer.Common.Constants;
+using SqlViewer.Etl;
 using SqlViewer.Metadata;
 using SqlViewer.QueryBuilder;
 using SqlViewer.QueryExecution;
@@ -45,6 +46,10 @@ public sealed class Program
         builder.Services.AddGrpcClient<QueryExecutionService.QueryExecutionServiceClient>(o =>
         {
             o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.QueryExecution]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
+        builder.Services.AddGrpcClient<EtlTransferService.EtlTransferServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Etl]!);
         }).AddHttpMessageHandler<TokenPropagationHandler>();
 
         builder.Services.AddHttpContextAccessor();

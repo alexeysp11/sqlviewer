@@ -43,6 +43,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Shared.Seed", "sr
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{F9FBE589-BC46-4D61-B094-E8ED187BF9A5}"
 	ProjectSection(SolutionItems) = preProject
+		protos\etl.proto = protos\etl.proto
 		protos\metadata.proto = protos\metadata.proto
 		protos\query_builder.proto = protos\query_builder.proto
 		protos\query_execution.proto = protos\query_execution.proto
