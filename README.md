@@ -41,9 +41,9 @@ The system automatically initializes several PostgreSQL databases upon startup. 
 
 ### 🛡️ Internal Databases
 These are used by the microservices to store system metadata and security logic:
-- **`pg-security-db`**: Stores users, roles, and permissions for the **Security** service.
-- **`pg-metadata-db`**: Stores Data Source configurations and connection abstractions.
-- **`pg-query-db`**: Stores query history and execution logs.
+- **`pg-security-db`**: Stores users, roles, and permissions for the **Security** service (*connection string*: `[DataSource Name="pg-security-db"]`).
+- **`pg-metadata-db`**: Stores Data Source configurations and connection abstractions (*connection string*: `[DataSource Name="pg-metadata-db"]`).
+- **`pg-query-db`**: Stores query history and execution logs (*connection string*: `[DataSource Name="pg-query-db"]`).
 
 ### 🏖️ Sandbox Database (Quick Start)
 For testing purposes, a **`pg-sandbox-db`** is provided. 
