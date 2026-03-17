@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.Shared.Seed.Models;
+﻿namespace SqlViewer.Shared.Seed.System.Models;
 
 public sealed record UserSeedDto(
     Guid Uid,

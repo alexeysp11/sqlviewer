@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.Shared.Seed.Constants;
+﻿namespace SqlViewer.Shared.Seed.System.Constants;
 
 #pragma warning disable CA1034 // Nested types should not be visible
 public static class SeedIdentifiers

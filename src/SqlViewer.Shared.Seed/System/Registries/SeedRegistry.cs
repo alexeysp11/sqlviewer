@@ -1,7 +1,7 @@
-﻿using SqlViewer.Shared.Seed.Constants;
-using SqlViewer.Shared.Seed.Models;
+﻿using SqlViewer.Shared.Seed.System.Constants;
+using SqlViewer.Shared.Seed.System.Models;
 
-namespace SqlViewer.Shared.Seed.Registries;
+namespace SqlViewer.Shared.Seed.System.Registries;
 
 public static class SeedRegistry
 {

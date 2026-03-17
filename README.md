@@ -49,7 +49,7 @@ These are used by the microservices to store system metadata and security logic:
 For testing purposes, a **`pg-sandbox-db`** is provided. 
 - It comes pre-filled with sample tables (e.g., `Employees`, `Orders`).
 - You can use it immediately after launch to test SQL queries or ETL processes.
-- **Default DataSource Name:** `[DataSource Name="sandbox"]`
+- **Default DataSource Name:** `[DataSource Name="pg-sandbox-db"]`
 
 > **Note:** All migrations and seed data are applied automatically via Entity Framework Core on service startup.
 

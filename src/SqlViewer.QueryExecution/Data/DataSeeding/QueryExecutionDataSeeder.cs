@@ -4,9 +4,9 @@ using SqlViewer.QueryExecution.Data.DbContexts;
 using SqlViewer.QueryExecution.Data.Entities;
 using SqlViewer.QueryExecution.Enums;
 using SqlViewer.QueryExecution.Mappings;
-using SqlViewer.Shared.Seed.Constants;
-using SqlViewer.Shared.Seed.Models;
-using SqlViewer.Shared.Seed.Registries;
+using SqlViewer.Shared.Seed.System.Constants;
+using SqlViewer.Shared.Seed.System.Models;
+using SqlViewer.Shared.Seed.System.Registries;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.QueryExecution.Data.DataSeeding;

@@ -5,7 +5,7 @@ using SqlViewer.Common.Enums;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
 using SqlViewer.Security.Mappings;
-using SqlViewer.Shared.Seed.Registries;
+using SqlViewer.Shared.Seed.System.Registries;
 
 namespace SqlViewer.Security.Data.DataSeeding;
 
