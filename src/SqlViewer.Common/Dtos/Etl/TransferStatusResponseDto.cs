@@ -6,5 +6,9 @@ public class TransferStatusResponseDto
     public double Progress { get; set; }
     public string? StatusMessage { get; set; }
     public bool IsFinalState { get; set; }
-    public List<string>? StepLogs { get; set; } // For filling ExecutionLogs
+
+    /// <summary>
+    /// For filling ExecutionLogs.
+    /// </summary>
+    public List<string>? StepLogs { get; set; }
 }
