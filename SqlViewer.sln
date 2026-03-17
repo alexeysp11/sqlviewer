@@ -52,6 +52,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{F9FBE5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl", "src\SqlViewer.Etl\SqlViewer.Etl.csproj", "{DC0F82EC-1737-4A7D-9DD4-BC055D337B43}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.DataTransferWorker", "src\SqlViewer.DataTransferWorker\SqlViewer.DataTransferWorker.csproj", "{0A41828C-8465-4682-84F3-44825A202E31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -106,6 +108,10 @@ Global
 		{DC0F82EC-1737-4A7D-9DD4-BC055D337B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC0F82EC-1737-4A7D-9DD4-BC055D337B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC0F82EC-1737-4A7D-9DD4-BC055D337B43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0A41828C-8465-4682-84F3-44825A202E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A41828C-8465-4682-84F3-44825A202E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0A41828C-8465-4682-84F3-44825A202E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A41828C-8465-4682-84F3-44825A202E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -124,6 +130,7 @@ Global
 		{F9A7C00C-56D0-43EC-8BFF-2FFD0CC47D7A} = {5CD77990-C1A8-4727-AD60-D38109FD694E}
 		{08E18577-3737-4760-9694-EA2228896AD9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{DC0F82EC-1737-4A7D-9DD4-BC055D337B43} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{0A41828C-8465-4682-84F3-44825A202E31} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {970E3C9B-23BB-4829-A788-C199135EB72A}

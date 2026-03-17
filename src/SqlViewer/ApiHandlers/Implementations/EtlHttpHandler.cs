@@ -33,7 +33,7 @@ public sealed class EtlHttpHandler : HttpHandler, IEtlHttpHandler
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.Sql.Query,
+            Path = RestApiPaths.Etl.StartDataTransfer,
         };
         string url = uriBuilder.Uri.ToString();
 

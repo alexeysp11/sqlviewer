@@ -10,7 +10,8 @@ public class EtlGrpcService(IBus bus) : EtlTransferService.EtlTransferServiceBas
     private readonly IBus _bus = bus;
 
     public override async Task<StartTransferResponse> StartTransfer(
-        StartTransferRequest request, ServerCallContext context)
+        StartTransferRequest request,
+        ServerCallContext context)
     {
         Guid correlationId = Guid.NewGuid();
 
