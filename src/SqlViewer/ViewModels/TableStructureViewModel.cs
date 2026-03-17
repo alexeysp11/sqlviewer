@@ -8,7 +8,7 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
 
-public sealed partial class EtlTableTransferViewModel(
+public sealed partial class TableStructureViewModel(
     ISqlApiService sqlApiService,
     IMetadataApiService metadataService,
     IQueryBuilderApiService queryBuilderService) : ObservableRecipient

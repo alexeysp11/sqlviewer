@@ -55,14 +55,14 @@ public partial class App : Application
         // 4. ViewModels.
         services.AddTransient<LoginViewModel>();
         services.AddSingleton<MainViewModel>();
-        services.AddTransient<EtlTableTransferViewModel>();
-        services.AddTransient<EtlDataTransferViewModel>();
+        services.AddTransient<TableStructureViewModel>();
+        services.AddTransient<DataTransferViewModel>();
 
         // 5. Views.
         services.AddTransient<LoginWindow>();
         services.AddSingleton<MainWindow>();
-        services.AddTransient<EtlTableStructureWizardWindow>();
-        services.AddTransient<EtlDataTransferWindow>();
+        services.AddTransient<TableStructureWindow>();
+        services.AddTransient<DataTransferWindow>();
 
         return services.BuildServiceProvider();
     }

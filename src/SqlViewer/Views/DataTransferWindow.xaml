@@ -1,0 +1,118 @@
+﻿<Window x:Class="SqlViewer.Views.DataTransferWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SqlViewer.Views"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterOwner"
+        Title="sqlviewer: ETL" Height="450" Width="800">
+
+    <Grid Margin="5">
+        <TabControl>
+            <!-- Tab 1: configurations -->
+            <TabItem Header="Configuration">
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <StackPanel Margin="15">
+                        <TextBlock Text="Database Connection Settings" FontSize="16" FontWeight="Bold" Margin="0,0,0,15"/>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <!-- Source Settings -->
+                            <GroupBox Header="Source" Margin="5">
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="Database Type:" FontSize="10" Foreground="Gray"/>
+                                    <ComboBox ItemsSource="{Binding DatabaseTypes}" SelectedItem="{Binding SourceType}" Margin="0,5"/>
+
+                                    <TextBlock Text="Connection String:" FontSize="10" Foreground="Gray" Margin="0,5,0,0"/>
+                                    <TextBox Text="{Binding SourceConnectionString, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" MinHeight="50"/>
+
+                                    <Button Content="Load tables" Command="{Binding LoadSourceTablesCommand}" Margin="0,5"/>
+                                    <TextBlock Text="Table Name:" FontSize="10" Foreground="Gray" Margin="0,10,0,0"/>
+                                    <ComboBox ItemsSource="{Binding SourceTables}" SelectedItem="{Binding SelectedTableName}" Margin="0,5"/>
+                                </StackPanel>
+                            </GroupBox>
+
+                            <!-- Target Settings -->
+                            <GroupBox Header="Target" Grid.Column="1" Margin="5">
+                                <StackPanel Margin="5">
+                                    <TextBlock Text="Database Type:" FontSize="10" Foreground="Gray"/>
+                                    <ComboBox ItemsSource="{Binding DatabaseTypes}" SelectedItem="{Binding TargetType}" Margin="0,5"/>
+
+                                    <TextBlock Text="Connection String:" FontSize="10" Foreground="Gray" Margin="0,5,0,0"/>
+                                    <TextBox Text="{Binding TargetConnectionString, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap" MinHeight="50"/>
+                                </StackPanel>
+                            </GroupBox>
+                        </Grid>
+
+                        <Button Content="Start Transfer" 
+                                Command="{Binding StartTransferCommand}" 
+                                Margin="5,20,5,5" Height="40"
+                                Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+                    </StackPanel>
+                </ScrollViewer>
+            </TabItem>
+
+            <!-- Tab 2: Monitoring, statuses -->
+            <TabItem Header="Status &amp; History">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <!-- Active dashboard -->
+                        <RowDefinition Height="*"/>
+                        <!-- History -->
+                        <RowDefinition Height="150"/>
+                        <!-- Logs -->
+                    </Grid.RowDefinitions>
+
+                    <!-- Active Operations -->
+                    <GroupBox Header="Live Transfer Dashboard" Margin="0,0,0,10">
+                        <ItemsControl ItemsSource="{Binding ActiveTransfers}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderBrush="#DDD" BorderThickness="0,0,0,1" Padding="5">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="150"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="Auto"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Text="{Binding TableName}" VerticalAlignment="Center"/>
+                                            <ProgressBar Grid.Column="1" Value="{Binding ProgressPercentage}" Height="10" Margin="10,0"/>
+                                            <Button Grid.Column="2" Content="Cancel" Command="{Binding CancelCommand}" Foreground="Red" Padding="5,0"/>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </GroupBox>
+
+                    <!-- History -->
+                    <GroupBox Header="Transfer History" Grid.Row="1" Margin="0,0,0,5">
+                        <DataGrid ItemsSource="{Binding TransferHistory}" AutoGenerateColumns="False" IsReadOnly="True">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Time" Binding="{Binding StartTime, StringFormat='HH:mm:ss'}"/>
+                                <DataGridTextColumn Header="Source" Binding="{Binding SourceDb}"/>
+                                <DataGridTextColumn Header="Target" Binding="{Binding TargetDb}"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </GroupBox>
+
+                    <!-- Logs -->
+                    <GroupBox Header="Execution Logs" Grid.Row="2">
+                        <ListBox ItemsSource="{Binding ExecutionLogs}" Background="#1E1E1E" Foreground="#D4D4D4" FontFamily="Consolas" FontSize="11"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

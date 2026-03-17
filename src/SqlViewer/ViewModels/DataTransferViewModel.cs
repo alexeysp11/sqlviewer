@@ -5,11 +5,24 @@ using SqlViewer.Services;
 using SqlViewer.Common.Dtos.Etl;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using SqlViewer.Models;
+using System.Windows;
 
 namespace SqlViewer.ViewModels;
 
-public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService) : ObservableObject
+public partial class DataTransferViewModel(
+    IEtlDataTransferService etlService,
+    IMetadataApiService metadataService) : ObservableObject
 {
+    public ObservableCollection<string> SourceTables { get; } = [];
+
+    public ObservableCollection<VelocipedeDatabaseType> DatabaseTypes { get; } =
+    [
+        VelocipedeDatabaseType.None,
+        VelocipedeDatabaseType.SQLite,
+        VelocipedeDatabaseType.PostgreSQL,
+        VelocipedeDatabaseType.MSSQL
+    ];
+
     [ObservableProperty]
     private ObservableCollection<TransferTaskViewModel> _activeTransfers = [];
 
@@ -23,10 +36,13 @@ public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService
     private string _sourceConnectionString;
 
     [ObservableProperty]
-    private string _targetConnectionString;
+    private string _selectedTableName;
 
     [ObservableProperty]
-    private string _selectedTableName;
+    private VelocipedeDatabaseType _targetType;
+
+    [ObservableProperty]
+    private string _targetConnectionString;
 
     [ObservableProperty]
     private TransferTask _selectedTransfer;
@@ -37,6 +53,24 @@ public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService
         {
             // Download logs for a specific saga.
             //LoadLogsForCorrelationId(value.CorrelationId);
+        }
+    }
+
+    [RelayCommand]
+    private async Task LoadSourceTables()
+    {
+        try
+        {
+            IEnumerable<string> tables = await metadataService.GetTablesAsync(SourceType, SourceConnectionString);
+            SourceTables.Clear();
+            foreach (string table in tables)
+            {
+                SourceTables.Add(table);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"Error loading tables: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 
@@ -80,7 +114,6 @@ public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService
             ExecutionLogs.Insert(0, $"[Launch error]: {ex.Message}");
         }
     }
-
 
     private async Task PollStatus(TransferTaskViewModel task)
     {

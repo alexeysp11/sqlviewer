@@ -12,10 +12,10 @@ public sealed class WindowService : IWindowService
         string connectionString,
         VelocipedeDatabaseType databaseType)
     {
-        EtlTableStructureWizardWindow etlWizardWindow = App.Services.GetRequiredService<EtlTableStructureWizardWindow>();
+        TableStructureWindow etlWizardWindow = App.Services.GetRequiredService<TableStructureWindow>();
         etlWizardWindow.Owner = Application.Current.MainWindow;
 
-        EtlTableTransferViewModel etlViewModel = etlWizardWindow.EtlViewModel;
+        TableStructureViewModel etlViewModel = etlWizardWindow.EtlViewModel;
         etlViewModel.SourceConnectionString = connectionString;
         etlViewModel.SourceType = databaseType;
 
@@ -26,10 +26,10 @@ public sealed class WindowService : IWindowService
         string connectionString,
         VelocipedeDatabaseType databaseType)
     {
-        EtlDataTransferWindow etlWizardWindow = App.Services.GetRequiredService<EtlDataTransferWindow>();
+        DataTransferWindow etlWizardWindow = App.Services.GetRequiredService<DataTransferWindow>();
         etlWizardWindow.Owner = Application.Current.MainWindow;
 
-        EtlDataTransferViewModel etlViewModel = etlWizardWindow.EtlViewModel;
+        DataTransferViewModel etlViewModel = etlWizardWindow.EtlViewModel;
         etlViewModel.SourceConnectionString = connectionString;
         etlViewModel.SourceType = databaseType;
 
