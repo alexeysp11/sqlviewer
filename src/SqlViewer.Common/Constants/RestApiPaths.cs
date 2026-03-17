@@ -34,8 +34,14 @@ public static class RestApiPaths
     public static class Etl
     {
         private const string Base = $"{ApiBase}/etl";
-        public const string StartDataTransfer = $"{Base}/data-transfer/start";
-        public const string Tables = $"{Base}/tables";
+        
+        public static class DataTransfer
+        {
+            private const string DataTransferBase = $"{Base}/data-transfer";
+
+            public const string Start = $"{DataTransferBase}/start";
+            public const string GetStatus = $"{DataTransferBase}/status/{{correlationId}}";
+        }
     }
 
     public static class Docs

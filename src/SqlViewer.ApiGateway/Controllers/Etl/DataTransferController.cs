@@ -11,7 +11,7 @@ public class DataTransferController(
     ILogger<MetadataApiController> logger,
     EtlTransferService.EtlTransferServiceClient grpcClient) : ControllerBase
 {
-    [HttpPost(RestApiPaths.Etl.StartDataTransfer)]
+    [HttpPost(RestApiPaths.Etl.DataTransfer.Start)]
     public async Task<IActionResult> Start([FromBody] StartTransferRequestDto dto)
     {
         try
@@ -39,7 +39,7 @@ public class DataTransferController(
         }
     }
 
-    [HttpGet("api/etl/data-transfer/status/{correlationId}")]
+    [HttpGet(RestApiPaths.Etl.DataTransfer.GetStatus)]
     public async Task<IActionResult> GetStatus(Guid correlationId)
     {
         //var status = await grpcClient.GetTransferStatusAsync(new { Id = correlationId });
