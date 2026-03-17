@@ -3,6 +3,8 @@ using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using SqlViewer.Services;
 using SqlViewer.Common.Dtos.Etl;
+using VelocipedeUtils.Shared.DbOperations.Enums;
+using SqlViewer.Models;
 
 namespace SqlViewer.ViewModels;
 
@@ -15,6 +17,9 @@ public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService
     private ObservableCollection<string> _executionLogs = [];
 
     [ObservableProperty]
+    private VelocipedeDatabaseType _sourceType;
+
+    [ObservableProperty]
     private string _sourceConnectionString;
 
     [ObservableProperty]
@@ -23,6 +28,18 @@ public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService
     [ObservableProperty]
     private string _selectedTableName;
 
+    [ObservableProperty]
+    private TransferTask _selectedTransfer;
+
+    partial void OnSelectedTransferChanged(TransferTask value)
+    {
+        if (value is not null)
+        {
+            // Download logs for a specific saga.
+            //LoadLogsForCorrelationId(value.CorrelationId);
+        }
+    }
+
     [RelayCommand]
     private async Task StartTransfer()
     {
@@ -30,7 +47,7 @@ public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService
             string.IsNullOrWhiteSpace(TargetConnectionString) ||
             string.IsNullOrWhiteSpace(SelectedTableName))
         {
-            ExecutionLogs.Insert(0, "[Ошибка]: Строки подключения и имя таблицы обязательны.");
+            ExecutionLogs.Insert(0, "[Error]: Connection strings and table name are required.");
             return;
         }
 
@@ -54,13 +71,13 @@ public partial class EtlDataTransferViewModel(IEtlDataTransferService etlService
             };
 
             ActiveTransfers.Add(task);
-            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Задача создана. ID: {correlationId}");
+            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Task created. ID: {correlationId}");
 
             _ = PollStatus(task);
         }
         catch (Exception ex)
         {
-            ExecutionLogs.Insert(0, $"[Ошибка запуска]: {ex.Message}");
+            ExecutionLogs.Insert(0, $"[Launch error]: {ex.Message}");
         }
     }
 

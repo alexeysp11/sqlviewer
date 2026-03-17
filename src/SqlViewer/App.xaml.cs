@@ -47,14 +47,10 @@ public partial class App : Application
         services.AddSingleton<IMetadataHttpHandler, MetadataHttpHandler>();
         services.AddSingleton<IQueryBuilderHttpHandler, QueryBuilderHttpHandler>();
         services.AddSingleton<ISqlHttpHandler, SqlHttpHandler>();
+        services.AddSingleton<IEtlHttpHandler, EtlHttpHandler>();
 
         // 3. Storage contexts.
         services.AddSingleton<IUserContext, UserContext>();
-
-        // Register HttpClient with base address.
-        //services.AddHttpClient("MyApi", client => {
-        //    client.BaseAddress = new Uri("https://api.example.com/");
-        //});
 
         // 4. ViewModels.
         services.AddTransient<LoginViewModel>();

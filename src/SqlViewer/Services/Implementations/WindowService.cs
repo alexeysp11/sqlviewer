@@ -29,7 +29,7 @@ public sealed class WindowService : IWindowService
         EtlDataTransferWindow etlWizardWindow = App.Services.GetRequiredService<EtlDataTransferWindow>();
         etlWizardWindow.Owner = Application.Current.MainWindow;
 
-        EtlTableTransferViewModel etlViewModel = etlWizardWindow.EtlViewModel;
+        EtlDataTransferViewModel etlViewModel = etlWizardWindow.EtlViewModel;
         etlViewModel.SourceConnectionString = connectionString;
         etlViewModel.SourceType = databaseType;
 

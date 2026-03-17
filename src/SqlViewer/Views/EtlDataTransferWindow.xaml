@@ -12,15 +12,50 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/> <!-- Headers -->
             <RowDefinition Height="*"/>    <!-- Active transfers -->
-            <RowDefinition Height="1.5*"/>  <!-- History & logs -->
+            <RowDefinition Height="1.5*"/> <!-- History & logs -->
         </Grid.RowDefinitions>
 
-        <!-- 1. Control panel -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="0,0,0,15">
-            <Button Content="Start New Transfer" Command="{Binding StartTransferCommand}" 
-                    Padding="15,5" Background="#007ACC" Foreground="White" FontWeight="Bold"/>
-            <Separator Margin="10,0" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
-            <TextBlock Text="Active Operations:" VerticalAlignment="Center" FontWeight="SemiBold"/>
+        <!-- 1. Control & Config Panel -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,15">
+            <Expander Header="Transfer Configuration" IsExpanded="True" BorderBrush="#007ACC" Margin="0,0,0,10">
+                <Grid Margin="10" Background="#F9F9F9">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="150"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Grid.Column="0" Margin="5">
+                        <TextBlock Text="Source Connection String:" FontSize="10" Foreground="Gray"/>
+                        <TextBox Text="{Binding SourceConnectionString, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="5">
+                        <TextBlock Text="Target Connection String:" FontSize="10" Foreground="Gray"/>
+                        <TextBox Text="{Binding TargetConnectionString, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="0" Grid.Row="1" Margin="5">
+                        <TextBlock Text="Table Name:" FontSize="10" Foreground="Gray"/>
+                        <TextBox Text="{Binding TableName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </StackPanel>
+
+                    <Button Grid.Column="2" Grid.Row="1" 
+                        Content="Start Transfer" 
+                        Command="{Binding StartTransferCommand}" 
+                        Margin="5" Height="30"
+                        Background="#007ACC" Foreground="White" FontWeight="Bold"/>
+                </Grid>
+            </Expander>
+
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Active Operations Status" VerticalAlignment="Center" FontWeight="SemiBold" FontSize="14"/>
+                <Separator Margin="15,0" Width="100" Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"/>
+            </StackPanel>
         </StackPanel>
 
         <!-- 2. Active transfers (Dashboard) -->
@@ -65,6 +100,7 @@
             </Grid.ColumnDefinitions>
 
             <GroupBox Header="Transfer History" Margin="0,0,5,0">
+                <!-- The history serves as a complete log of all launches (including active ones) -->
                 <DataGrid ItemsSource="{Binding TransferHistory}" AutoGenerateColumns="False" IsReadOnly="True">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Timestamp" Binding="{Binding StartTime, StringFormat='HH:mm:ss'}"/>
