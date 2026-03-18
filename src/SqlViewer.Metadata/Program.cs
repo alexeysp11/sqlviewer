@@ -71,7 +71,8 @@ public sealed class Program
         builder.Services.AddAuthorization();
 
         // OpenTelemetry.
-        string serviceName = "metadata";
+        string serviceName = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.ServiceName)
+            ?? throw new InvalidOperationException("Unable to get service name for observability");
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(resource => resource.AddService(serviceName))
             .WithTracing(tracing => tracing
@@ -79,7 +80,9 @@ public sealed class Program
                 .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
                 .AddOtlpExporter(opt => {
                     // Send traces to Jaeger (the service name in Docker Compose)
-                    opt.Endpoint = new Uri("http://jaeger:4317");
+                    string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
+                        ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
+                    opt.Endpoint = new Uri(jaegerEndpoint);
                 }))
             .WithMetrics(metrics => metrics
                 .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)

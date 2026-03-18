@@ -19,6 +19,9 @@ services:
       - Services__Grpc__Security=http://${GRPC_SECURITY_HOST}:${GRPC_SECURITY_PORT}
       - Services__Grpc__Metadata=http://${GRPC_METADATA_HOST}:${GRPC_METADATA_PORT}
       - Services__Grpc__QueryExecution=http://${GRPC_QUERYEXECUTION_HOST}:${GRPC_QUERYEXECUTION_PORT}
+      - Services__Grpc__Etl=http://${GRPC_ETL_HOST}:${GRPC_ETL_PORT}
+      - Services__Observability__ServiceName=api-gateway
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.ApiGateway/Dockerfile
@@ -53,6 +56,8 @@ services:
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
       - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
+      - Services__Observability__ServiceName=api-security
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.Security/Dockerfile
@@ -90,6 +95,8 @@ services:
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__SandboxConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-sandbox;Port=54321;Password=${DB_PASSWORD};
+      - Services__Observability__ServiceName=metadata
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.Metadata/Dockerfile
@@ -122,6 +129,8 @@ services:
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__SandboxConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-sandbox;Port=54321;Password=${DB_PASSWORD};
+      - Services__Observability__ServiceName=query-execution
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.QueryExecution/Dockerfile
@@ -133,6 +142,39 @@ services:
     depends_on:
       - redis
       - postgres
+
+  etl:
+    container_name: etl
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      # Other variables
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - EncryptionSettings__Key=${ENCRYPTION_KEY}
+      - Services__Observability__ServiceName=etl
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
+      - Services__Kafka__Url=kafka:9094
+      - Services__Kafka__Topics__DataTransferCommand=data-transfer-commands
+    build:
+      context: .
+      dockerfile: src/SqlViewer.Etl/Dockerfile
+    ports:
+      - "5209:8080"
+      - "5210:8082"
+    volumes:
+      - ${HOST_CERT_PATH:-./certs}:/https:ro
+    depends_on:
+      - redis
+      - postgres
+      - kafka
 
   kafka:
     image: apache/kafka:latest

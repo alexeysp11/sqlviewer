@@ -15,8 +15,8 @@
 
   <ItemGroup>
     <PackageReference Include="Grpc.AspNetCore" Version="2.57.0" />
-    <PackageReference Include="MassTransit" Version="9.0.1" />
-    <PackageReference Include="MassTransit.Kafka" Version="9.0.1" />
+    <PackageReference Include="MassTransit" Version="8.2.5" />
+    <PackageReference Include="MassTransit.Kafka" Version="8.2.5" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
     <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.15.0" />
     <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.15.0-beta.1" />

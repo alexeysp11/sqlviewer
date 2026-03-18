@@ -36,6 +36,28 @@ public static class ConfigurationKeys
             public const string Metadata = $"{Section}:Metadata";
             public const string QueryExecution = $"{Section}:QueryExecution";
         }
+
+        public static class Kafka
+        {
+            private const string Section = $"{Root}:Kafka";
+
+            public const string Url = $"{Section}:Url";
+
+            public static class Topics
+            {
+                private const string TopicsSection = $"{Section}:Topics";
+
+                public const string DataTransferCommand = $"{TopicsSection}:DataTransferCommand";
+            }
+        }
+
+        public static class Observability
+        {
+            private const string Section = $"{Root}:Observability";
+
+            public const string ServiceName = $"{Section}:ServiceName";
+            public const string JaegerEndpoint = $"{Section}:JaegerEndpoint";
+        }
     }
 
     public static class DefaultUserCredentials

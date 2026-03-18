@@ -16,6 +16,7 @@ public sealed class EtlGrpcService(
         Guid correlationId = Guid.NewGuid();
 
         // Sending a command to Kafka via MassTransit
+        // TODO: handle the situation when Kafka is not responding so as not to freeze the request from the client application.
         await startTransferProducer.Produce(new StartDataTransferCommand(
             correlationId,
             request.SourceConnectionString,
