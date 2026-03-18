@@ -99,6 +99,8 @@ GRPC_METADATA_HOST=host.docker.internal
 GRPC_METADATA_PORT=5101
 GRPC_QUERYEXECUTION_HOST=host.docker.internal
 GRPC_QUERYEXECUTION_PORT=5250
+GRPC_ETL_HOST=host.docker.internal
+GRPC_ETL_PORT=5210
 ```
 
 ### 3. 🚀 Launch
