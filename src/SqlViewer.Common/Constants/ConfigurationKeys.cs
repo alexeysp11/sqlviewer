@@ -87,5 +87,6 @@ public static class ConfigurationKeys
         public const string Metadata = "MetadataConnection";
         public const string Security = "SecurityConnection";
         public const string QueryExecution = "QueryExecutionConnection";
+        public const string Sandbox = "SandboxConnection";
     }
 }

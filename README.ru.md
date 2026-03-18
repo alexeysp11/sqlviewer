@@ -42,13 +42,13 @@
 ### 🛡️ Внутренние базы данных
 
 Используются микросервисами для хранения системных метаданных и логики безопасности:
-- **`pg-security-db`**: Хранит пользователей, роли и разрешения для сервиса **Security** (*connection string*: `[DataSource Name="pg-security-db"]`).
-- **`pg-metadata-db`**: Хранит конфигурации источников данных и абстракции подключений (*connection string*: `[DataSource Name="pg-metadata-db"]`).
-- **`pg-query-db`**: Хранит историю запросов и логи выполнения (*connection string*: `[DataSource Name="pg-query-db"]`).
+- **`sqlviewer-security`**: Хранит пользователей, роли и разрешения для сервиса **Security** (*connection string*: `[DataSource Name="pg-security-db"]`).
+- **`sqlviewer-metadata`**: Хранит конфигурации источников данных и абстракции подключений (*connection string*: `[DataSource Name="pg-metadata-db"]`).
+- **`sqlviewer-query`**: Хранит историю запросов и логи выполнения (*connection string*: `[DataSource Name="pg-query-db"]`).
 
 ### 🏖️ База данных "Песочница" (Быстрый старт)
 
-Для целей тестирования предоставляется база **`pg-sandbox-db`**. 
+Для целей тестирования предоставляется база **`sqlviewer-sandbox`**.
 - Она заранее заполнена примерами таблиц (например, `Employees`, `Orders`).
 - Её можно использовать сразу после запуска для проверки SQL-запросов или ETL-процессов.
 - **Имя источника данных по умолчанию:** `[DataSource Name="pg-sandbox-db"]`
@@ -125,7 +125,7 @@ GRPC_QUERYEXECUTION_PORT=5250
 #### 2. Jaeger (Трассировка запросов)
 Позволяет визуализировать путь запроса через все микросервисы (от API Gateway до БД).
 - **Адрес:** [http://localhost:16686](http://localhost:16686)
-- **Проверка:** 
+- **Проверка:**
     1. Сделайте любой запрос к API (через WPF-клиент или Swagger).
     2. В Jaeger в поле **Service** выберите `api-gateway`.
     3. Нажмите **Find Traces**. Вы увидите временную шкалу (Span) вашего запроса и его прохождение через gRPC-вызовы.

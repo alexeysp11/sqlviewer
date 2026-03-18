@@ -41,12 +41,12 @@ The system automatically initializes several PostgreSQL databases upon startup. 
 
 ### 🛡️ Internal Databases
 These are used by the microservices to store system metadata and security logic:
-- **`pg-security-db`**: Stores users, roles, and permissions for the **Security** service (*connection string*: `[DataSource Name="pg-security-db"]`).
-- **`pg-metadata-db`**: Stores Data Source configurations and connection abstractions (*connection string*: `[DataSource Name="pg-metadata-db"]`).
-- **`pg-query-db`**: Stores query history and execution logs (*connection string*: `[DataSource Name="pg-query-db"]`).
+- **`sqlviewer-security`**: Stores users, roles, and permissions for the **Security** service (*connection string*: `[DataSource Name="pg-security-db"]`).
+- **`sqlviewer-metadata`**: Stores Data Source configurations and connection abstractions (*connection string*: `[DataSource Name="pg-metadata-db"]`).
+- **`sqlviewer-query`**: Stores query history and execution logs (*connection string*: `[DataSource Name="pg-query-db"]`).
 
 ### 🏖️ Sandbox Database (Quick Start)
-For testing purposes, a **`pg-sandbox-db`** is provided. 
+For testing purposes, a **`sqlviewer-sandbox`** is provided.
 - It comes pre-filled with sample tables (e.g., `Employees`, `Orders`).
 - You can use it immediately after launch to test SQL queries or ETL processes.
 - **Default DataSource Name:** `[DataSource Name="pg-sandbox-db"]`
@@ -122,7 +122,7 @@ Used for gathering and storing performance metrics from all your services.
 #### 2. Jaeger (Distributed Tracing)
 Allows you to visualize the request lifecycle across microservices (from API Gateway to DB).
 - **URL:** [http://localhost:16686](http://localhost:16686)
-- **Check:** 
+- **Check:**
     1. Send any request to the API (via WPF client or Swagger).
     2. In Jaeger, select `api-gateway` in the **Service** field.
     3. Click **Find Traces**. You will see the timeline (Spans) of your request and its gRPC calls.

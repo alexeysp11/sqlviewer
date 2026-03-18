@@ -1,9 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 
-namespace SqlViewer.Shared.Seed.Sandbox.Models.Archive;
+namespace SqlViewer.Shared.Seed.Sandbox.Entities.Archive;
 
-[Table("Deleted_Users_Registry", Schema = "archive")]
+[Table("Deleted Users Registry", Schema = "archive")]
 public class DeletedUserRegistryEntity
 {
     [Key, Column("user id")]
@@ -18,4 +18,3 @@ public class DeletedUserRegistryEntity
     [Column("deleted at")]
     public DateOnly? DeletedAt { get; set; }
 }
-

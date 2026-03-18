@@ -31,6 +31,7 @@ public sealed class Program
         // Add services to the container.
         builder.Services.AddScoped<SeedMapper>();
         builder.Services.AddScoped<IMetadataDataSeeder, MetadataDataSeeder>();
+        builder.Services.AddScoped<ISandboxDataSeeder, SandboxDataSeeder>();
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
         builder.Services.AddScoped<IMetadataRegistry, MetadataRegistry>();
         builder.Services.AddScoped<IQueryBuilderManager, QueryBuilderManager>();
@@ -41,8 +42,12 @@ public sealed class Program
 
         builder.Services.AddGrpc();
 
+        // DbContexts.
         builder.Services.AddDbContext<MetadataDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Metadata))
+        );
+        builder.Services.AddDbContext<SandboxDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Sandbox))
         );
 
         string issuerSigningKey = builder.Configuration.GetValue<string>(ConfigurationKeys.Jwt.Key)
@@ -87,9 +92,13 @@ public sealed class Program
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())
         {
-            MetadataDbContext db = scope.ServiceProvider.GetRequiredService<MetadataDbContext>();
-            IMetadataDataSeeder dataSeeder = scope.ServiceProvider.GetRequiredService<IMetadataDataSeeder>();
-            await dataSeeder.InitializeAsync();
+            // Metadata.
+            IMetadataDataSeeder metadataSeeder = scope.ServiceProvider.GetRequiredService<IMetadataDataSeeder>();
+            await metadataSeeder.InitializeAsync();
+
+            // Sandbox.
+            ISandboxDataSeeder sandboxSeeder = scope.ServiceProvider.GetRequiredService<ISandboxDataSeeder>();
+            await sandboxSeeder.SeedAsync();
         }
 
         app.UseAuthentication();

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SqlViewer.Shared.Seed.Sandbox.Models.Public;
+namespace SqlViewer.Shared.Seed.Sandbox.Entities.Public;
 
 [Table("audit_logs", Schema = "public")]
 public class AuditLogEntity
@@ -16,4 +16,3 @@ public class AuditLogEntity
     [Column("executed_at")]
     public DateTime ExecutedAt { get; set; }
 }
-

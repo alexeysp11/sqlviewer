@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SqlViewer.Shared.Seed.Sandbox.Models.Public;
+namespace SqlViewer.Shared.Seed.Sandbox.Entities.Public;
 
 [Table("regions", Schema = "public")]
 public class RegionEntity

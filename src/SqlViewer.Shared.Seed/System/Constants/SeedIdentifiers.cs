@@ -1,6 +1,6 @@
 ﻿namespace SqlViewer.Shared.Seed.System.Constants;
 
-#pragma warning disable CA1034 // Nested types should not be visible
+[global::System.Diagnostics.CodeAnalysis.SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
 public static class SeedIdentifiers
 {
     public static class User

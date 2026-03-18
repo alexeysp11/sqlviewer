@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SqlViewer.Shared.Seed.Sandbox.Models.Public;
+namespace SqlViewer.Shared.Seed.Sandbox.Entities.Public;
 
 [Table("Books", Schema = "public")]
 public class BookEntity
@@ -18,4 +18,3 @@ public class BookEntity
     [Column("Year.Of.Publication")]
     public int YearOfPublication { get; set; }
 }
-
