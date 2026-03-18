@@ -32,6 +32,7 @@ public static class SeedIdentifiers
             public static readonly Guid Metadata = Guid.Parse("a1b2c3d4-e5f6-4a5b-bc6d-7e8f9a0b1c2d");
             public static readonly Guid Security = Guid.Parse("b2c3d4e5-f6a7-5b6c-cd7e-8f9a0b1c2d3e");
             public static readonly Guid QueryExecution = Guid.Parse("b2c3d4e5-f6a7-5b6c-cd7e-8f9a0b1c2d3d");
+            public static readonly Guid Sandbox = Guid.Parse("b2c3dc4e-f6a7-5b6c-cd7e-8f9a5bfc2d3f");
         }
 
         public static class Name
@@ -39,6 +40,7 @@ public static class SeedIdentifiers
             public const string Metadata = "pg-metadata-db";
             public const string Security = "pg-security-db";
             public const string QueryExecution = "pg-query-db";
+            public const string Sandbox = "pg-sandbox-db";
         }
 
         public static class Description
@@ -46,6 +48,7 @@ public static class SeedIdentifiers
             public const string Metadata = "sqlviewer metadata database";
             public const string Security = "sqlviewer security database";
             public const string QueryExecution = "sqlviewer query database";
+            public const string Sandbox = "sqlviewer sandbox database";
         }
 
         public static class ConnectionString
@@ -61,6 +64,7 @@ public static class SeedIdentifiers
             public static readonly Guid AdminToMetadata = Guid.Parse("550e8401-e29b-41d4-a716-446655440010");
             public static readonly Guid AdminToSecurity = Guid.Parse("550e8401-e29b-41d4-a716-446655440011");
             public static readonly Guid AdminToQueryExecution = Guid.Parse("550e8401-e29b-41d4-a716-446655440012");
+            public static readonly Guid AdminToSandbox = Guid.Parse("55de84f1-e29b-41d4-a716-44cf55440da9");
         }
 
         public static class AccessLevel

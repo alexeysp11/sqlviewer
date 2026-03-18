@@ -89,6 +89,7 @@ services:
       - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__SandboxConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-sandbox;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .
       dockerfile: src/SqlViewer.Metadata/Dockerfile
@@ -120,6 +121,7 @@ services:
       - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
       - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__SandboxConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-sandbox;Port=54321;Password=${DB_PASSWORD};
     build:
       context: .
       dockerfile: src/SqlViewer.QueryExecution/Dockerfile
