@@ -4,7 +4,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SqlViewer.Common.Constants;
 using SqlViewer.Common.Messages.Etl.Commands;
-using SqlViewer.Etl.Services;
+using SqlViewer.Etl.Services.Grpc;
 
 namespace SqlViewer.Etl;
 

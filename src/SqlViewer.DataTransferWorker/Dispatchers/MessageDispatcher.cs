@@ -5,7 +5,7 @@
 /// </summary>
 public class MessageDispatcher : BackgroundService
 {
-    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         // 1. Consume from Kafka using Confluent.Kafka
         // 2. Deserialize Metadata to get CorrelationId and MessageType

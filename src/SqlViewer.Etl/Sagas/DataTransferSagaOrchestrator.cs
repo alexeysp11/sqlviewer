@@ -1,6 +1,8 @@
-﻿using SqlViewer.Common.Messages.Etl.Events;
+﻿using System.Text.Json;
+using SqlViewer.Common.Messages.Common.Entities;
+using SqlViewer.Common.Messages.Etl.Events;
 using SqlViewer.Etl.Data.DbContexts;
-using SqlViewer.Etl.Data.Entities;
+using SqlViewer.Etl.Enums;
 
 namespace SqlViewer.Etl.Sagas;
 
@@ -11,23 +13,30 @@ public class DataTransferSagaOrchestrator(EtlDbContext db)
 {
     public async Task HandleAsync(Guid correlationId, object message)
     {
-        DataTransferSagaStateEntity? saga = await db.DataTransferSagaStates.FindAsync(correlationId);
-        if (saga is null)
-            return;
+        Data.Entities.DataTransferSagaStateEntity? saga = await db.DataTransferSagaStates.FindAsync(correlationId);
+        if (saga is null) return;
 
         switch (message)
         {
             case DataTransferStarted started:
-                saga.CurrentState = "InProgress";
+                saga.CurrentState = SagaStatus.InProgress.ToString();
                 saga.StartedAt = started.StartedAt;
                 break;
             case DataTransferCompleted completed:
-                saga.CurrentState = "Completed";
+                saga.CurrentState = SagaStatus.Completed.ToString();
                 saga.RowsProcessed = completed.TotalRows;
                 break;
             case DataTransferFailed:
-                saga.CurrentState = "Faulted";
-                // Trigger compensation logic here (via Outbox)
+                saga.CurrentState = SagaStatus.Faulted.ToString();
+                // ЛОГИКА КОМПЕНСАЦИИ:
+                // Создаем команду очистки для Worker и кладем ее в Outbox
+                db.OutboxMessages.Add(new OutboxMessageEntity
+                {
+                    CorrelationId = correlationId,
+                    Topic = "worker-commands",
+                    MessageType = "CleanupTargetTableCommand",
+                    Payload = JsonSerializer.Serialize(new { CorrelationId = correlationId })
+                });
                 break;
         }
         saga.LastUpdatedAt = DateTime.UtcNow;

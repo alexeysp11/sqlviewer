@@ -3,7 +3,7 @@ using MassTransit;
 using SqlViewer.Common.Messages.Etl.Commands;
 using Google.Protobuf.WellKnownTypes;
 
-namespace SqlViewer.Etl.Services;
+namespace SqlViewer.Etl.Services.Grpc;
 
 public sealed class EtlGrpcService(
     ITopicProducer<StartDataTransferCommand> startTransferProducer)
