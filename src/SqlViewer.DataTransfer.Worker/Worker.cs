@@ -1,4 +1,4 @@
-namespace SqlViewer.DataTransferWorker;
+namespace SqlViewer.DataTransfer.Worker;
 
 public class Worker : BackgroundService
 {

@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-SqlViewer.DataTransferWorker-8d3e6618-78f1-4a27-8326-0144b0f2e2d7</UserSecretsId>
+    <UserSecretsId>dotnet-SqlViewer.DataTransfer.Worker-8d3e6618-78f1-4a27-8326-0144b0f2e2d7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

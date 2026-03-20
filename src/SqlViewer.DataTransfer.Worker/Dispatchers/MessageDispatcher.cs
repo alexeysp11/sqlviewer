@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.DataTransferWorker.Dispatchers;
+﻿namespace SqlViewer.DataTransfer.Worker.Dispatchers;
 
 /// <summary>
 /// Background service that consumes Kafka and populates the Inbox table.

@@ -52,7 +52,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "protos", "protos", "{F9FBE5
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Api", "src\SqlViewer.Etl.Api\SqlViewer.Etl.Api.csproj", "{DC0F82EC-1737-4A7D-9DD4-BC055D337B43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.DataTransferWorker", "src\SqlViewer.DataTransferWorker\SqlViewer.DataTransferWorker.csproj", "{0A41828C-8465-4682-84F3-44825A202E31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.DataTransfer.Worker", "src\SqlViewer.DataTransfer.Worker\SqlViewer.DataTransfer.Worker.csproj", "{0A41828C-8465-4682-84F3-44825A202E31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Core", "src\SqlViewer.Etl.Core\SqlViewer.Etl.Core.csproj", "{C67D8261-9B7F-4FED-BBD7-86B156DC52BB}"
 EndProject

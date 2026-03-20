@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.DataTransferWorker.Consumers;
+﻿namespace SqlViewer.DataTransfer.Worker.Consumers;
 
 public class DataTransferConsumer()
 {
