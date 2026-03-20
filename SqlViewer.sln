@@ -56,7 +56,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.DataTransferWorke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Core", "src\SqlViewer.Etl.Core\SqlViewer.Etl.Core.csproj", "{C67D8261-9B7F-4FED-BBD7-86B156DC52BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Worker", "SqlViewer.Etl.Worker\SqlViewer.Etl.Worker.csproj", "{93E26DD1-DDEE-4881-B0B2-2C199600A779}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Worker", "src\SqlViewer.Etl.Worker\SqlViewer.Etl.Worker.csproj", "{93E26DD1-DDEE-4881-B0B2-2C199600A779}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

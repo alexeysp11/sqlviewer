@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\src\SqlViewer.Common\SqlViewer.Common.csproj" />
-    <ProjectReference Include="..\src\SqlViewer.Etl.Core\SqlViewer.Etl.Core.csproj" />
+    <ProjectReference Include="..\SqlViewer.Common\SqlViewer.Common.csproj" />
+    <ProjectReference Include="..\SqlViewer.Etl.Core\SqlViewer.Etl.Core.csproj" />
   </ItemGroup>
 </Project>
