@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>dotnet-SqlViewer.Etl.Worker-456c3fb2-e57b-485f-a7e0-468364b47f62</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\src\SqlViewer.Common\SqlViewer.Common.csproj" />
+    <ProjectReference Include="..\src\SqlViewer.Etl.Core\SqlViewer.Etl.Core.csproj" />
+  </ItemGroup>
+</Project>
