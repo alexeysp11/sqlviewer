@@ -14,7 +14,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/SqlViewer.ApiGateway/SqlViewer.ApiGateway.csproj", "src/SqlViewer.ApiGateway/"]
 COPY ["src/SqlViewer.Shared/SqlViewer.Shared.csproj", "src/SqlViewer.Shared/"]
-RUN dotnet restore "./src/SqlViewer.ApiGateway/SqlViewer.ApiGateway.csproj"
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages dotnet restore "./src/SqlViewer.ApiGateway/SqlViewer.ApiGateway.csproj"
 COPY . .
 WORKDIR "/src/src/SqlViewer.ApiGateway"
 RUN dotnet build "./SqlViewer.ApiGateway.csproj" -c $BUILD_CONFIGURATION -o /app/build

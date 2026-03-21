@@ -5,7 +5,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 
 # This stage is used to build the service project
@@ -15,7 +14,7 @@ WORKDIR /src
 COPY ["src/SqlViewer.Metadata/SqlViewer.Metadata.csproj", "src/SqlViewer.Metadata/"]
 COPY ["src/SqlViewer.Shared/SqlViewer.Shared.csproj", "src/SqlViewer.Shared/"]
 COPY ["src/SqlViewer.Shared.Seed/SqlViewer.Shared.Seed.csproj", "src/SqlViewer.Shared.Seed/"]
-RUN dotnet restore "./src/SqlViewer.Metadata/SqlViewer.Metadata.csproj"
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages dotnet restore "./src/SqlViewer.Metadata/SqlViewer.Metadata.csproj"
 COPY . .
 WORKDIR "/src/src/SqlViewer.Metadata"
 RUN dotnet build "./SqlViewer.Metadata.csproj" -c $BUILD_CONFIGURATION -o /app/build

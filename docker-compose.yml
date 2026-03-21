@@ -15,11 +15,11 @@ services:
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
-      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
-      - Services__Grpc__Security=http://${GRPC_SECURITY_HOST}:${GRPC_SECURITY_PORT}
-      - Services__Grpc__Metadata=http://${GRPC_METADATA_HOST}:${GRPC_METADATA_PORT}
-      - Services__Grpc__QueryExecution=http://${GRPC_QUERYEXECUTION_HOST}:${GRPC_QUERYEXECUTION_PORT}
-      - Services__Grpc__Etl=http://${GRPC_ETL_HOST}:${GRPC_ETL_PORT}
+      - ConnectionStrings__MetadataConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-metadata;Port=5432;Password=${DB_PASSWORD};
+      - Services__Grpc__Security=http://security:8082
+      - Services__Grpc__Metadata=http://metadata:8082
+      - Services__Grpc__QueryExecution=http://query:8082
+      - Services__Grpc__Etl=http://etl-api:8082
       - Services__Observability__ServiceName=api-gateway
       - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
@@ -31,8 +31,10 @@ services:
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   security:
     container_name: security
@@ -55,7 +57,7 @@ services:
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
-      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__SecurityConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-security;Port=5432;Password=${DB_PASSWORD};
       - Services__Observability__ServiceName=api-security
       - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
@@ -67,8 +69,10 @@ services:
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   metadata:
     container_name: metadata
@@ -91,10 +95,11 @@ services:
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
-      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__SandboxConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-sandbox;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__SecurityConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-security;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__MetadataConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-metadata;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__QueryExecutionConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-query;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__SandboxConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-sandbox;Port=5432;Password=${DB_PASSWORD};
       - Services__Observability__ServiceName=metadata
       - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
@@ -106,8 +111,10 @@ services:
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   query:
     container_name: query
@@ -125,10 +132,11 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
       - EncryptionSettings__Key=${ENCRYPTION_KEY}
-      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__SandboxConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-sandbox;Port=54321;Password=${DB_PASSWORD};
+      - ConnectionStrings__SecurityConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-security;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__MetadataConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-metadata;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__QueryExecutionConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-query;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__SandboxConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-sandbox;Port=5432;Password=${DB_PASSWORD};
       - Services__Observability__ServiceName=query-execution
       - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
@@ -140,11 +148,13 @@ services:
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
-  etl:
-    container_name: etl
+  etl-api:
+    container_name: etl-api
     env_file:
       - .env
     environment:
@@ -158,23 +168,25 @@ services:
       # Other variables
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
       - EncryptionSettings__Key=${ENCRYPTION_KEY}
-      - Services__Observability__ServiceName=etl
+      - Services__Observability__ServiceName=etl-api
       - Services__Observability__JaegerEndpoint=http://jaeger:4317
       - Services__Kafka__Url=kafka:9094
       - Services__Kafka__Topics__DataTransferCommand=data-transfer-commands
     build:
       context: .
-      dockerfile: src/SqlViewer.Etl/Dockerfile
+      dockerfile: src/SqlViewer.Etl.Api/Dockerfile
     ports:
       - "5209:8080"
       - "5210:8082"
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
-      - kafka
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   kafka:
     image: apache/kafka:latest
@@ -245,12 +257,17 @@ services:
     ports:
       - "6379:6379"
 
-  postgres:
+  sqlviewer-db:
     image: postgres
     container_name: sqlviewer-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
