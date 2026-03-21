@@ -44,6 +44,7 @@ These are used by the microservices to store system metadata and security logic:
 - **`sqlviewer-security`**: Stores users, roles, and permissions for the **Security** service (*connection string*: `[DataSource Name="pg-security-db"]`).
 - **`sqlviewer-metadata`**: Stores Data Source configurations and connection abstractions (*connection string*: `[DataSource Name="pg-metadata-db"]`).
 - **`sqlviewer-query`**: Stores query history and execution logs (*connection string*: `[DataSource Name="pg-query-db"]`).
+- **`sqlviewer-etl`**: Stores ETL commands and messages (*connection string*: `[DataSource Name="pg-etl-db"]`).
 
 ### 🏖️ Sandbox Database (Quick Start)
 For testing purposes, a **`sqlviewer-sandbox`** is provided.
@@ -72,7 +73,6 @@ dotnet dev-certs https --trust
 Create a .env file in the root directory:
 ```.env
 # Database server
-DB_HOST=host.docker.internal
 DB_PASSWORD=postgres
 
 # Encryption
@@ -91,16 +91,6 @@ JWT_LIFETIME_MINUTES=90
 JWT_ISSUER=sqlviewer/security
 JWT_AUDIENCE=sqlviewer/api-gateway
 JWT_ISSUER_KEY=iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k=
-
-# Microservices
-GRPC_SECURITY_HOST=host.docker.internal
-GRPC_SECURITY_PORT=5275
-GRPC_METADATA_HOST=host.docker.internal
-GRPC_METADATA_PORT=5101
-GRPC_QUERYEXECUTION_HOST=host.docker.internal
-GRPC_QUERYEXECUTION_PORT=5250
-GRPC_ETL_HOST=host.docker.internal
-GRPC_ETL_PORT=5210
 ```
 
 ### 3. 🚀 Launch

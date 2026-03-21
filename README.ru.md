@@ -45,6 +45,7 @@
 - **`sqlviewer-security`**: Хранит пользователей, роли и разрешения для сервиса **Security** (*connection string*: `[DataSource Name="pg-security-db"]`).
 - **`sqlviewer-metadata`**: Хранит конфигурации источников данных и абстракции подключений (*connection string*: `[DataSource Name="pg-metadata-db"]`).
 - **`sqlviewer-query`**: Хранит историю запросов и логи выполнения (*connection string*: `[DataSource Name="pg-query-db"]`).
+- **`sqlviewer-etl`**: Хранит ETL команды и сообщения (*connection string*: `[DataSource Name="pg-etl-db"]`).
 
 ### 🏖️ База данных "Песочница" (Быстрый старт)
 
@@ -75,7 +76,6 @@ dotnet dev-certs https --trust
 
 ```env
 # Database server
-DB_HOST=host.docker.internal
 DB_PASSWORD=postgres
 
 # Encryption
@@ -94,16 +94,6 @@ JWT_LIFETIME_MINUTES=90
 JWT_ISSUER=sqlviewer/security
 JWT_AUDIENCE=sqlviewer/api-gateway
 JWT_ISSUER_KEY=iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k=
-
-# Microservices
-GRPC_SECURITY_HOST=host.docker.internal
-GRPC_SECURITY_PORT=5275
-GRPC_METADATA_HOST=host.docker.internal
-GRPC_METADATA_PORT=5101
-GRPC_QUERYEXECUTION_HOST=host.docker.internal
-GRPC_QUERYEXECUTION_PORT=5250
-GRPC_ETL_HOST=host.docker.internal
-GRPC_ETL_PORT=5210
 ```
 
 ### 3. 🚀 Запуск
