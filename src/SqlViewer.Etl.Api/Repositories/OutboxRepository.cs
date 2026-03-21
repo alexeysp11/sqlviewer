@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Messages.Etl.Commands;
+﻿using SqlViewer.Shared.Messages.Etl.Commands;
 using SqlViewer.Etl.Core.Data.DbContexts;
 
 namespace SqlViewer.Etl.Api.Repositories;

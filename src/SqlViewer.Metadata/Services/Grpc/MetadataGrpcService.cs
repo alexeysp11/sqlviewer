@@ -1,11 +1,11 @@
 ﻿using Grpc.Core;
 using Google.Protobuf.WellKnownTypes;
 using Microsoft.AspNetCore.Authorization;
-using SqlViewer.Common.Dtos.Metadata;
+using SqlViewer.Shared.Dtos.Metadata;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using SqlViewer.Metadata.Domain.MetadataRegistries;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
-using SqlViewer.Common.Extensions;
+using SqlViewer.Shared.Extensions;
 
 namespace SqlViewer.Metadata.Services.Grpc;
 

@@ -3,8 +3,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Security.Cryptography;
-using SqlViewer.Common.Enums;
-using SqlViewer.Common.Constants;
+using SqlViewer.Shared.Enums;
+using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services.Implementations;
 

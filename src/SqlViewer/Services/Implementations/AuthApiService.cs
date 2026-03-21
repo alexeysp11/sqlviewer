@@ -1,6 +1,6 @@
 ﻿using SqlViewer.ApiHandlers;
-using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Enums;
+using SqlViewer.Shared.Dtos.Auth;
+using SqlViewer.Shared.Enums;
 using SqlViewer.StorageContexts;
 
 namespace SqlViewer.Services.Implementations;

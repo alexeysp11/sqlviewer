@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Controllers.Metadata;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.Etl;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.Etl;
 using SqlViewer.Etl;
 
 namespace SqlViewer.ApiGateway.Controllers.Etl;

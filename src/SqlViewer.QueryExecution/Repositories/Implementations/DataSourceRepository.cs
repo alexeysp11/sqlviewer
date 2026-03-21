@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Repositories;
-using SqlViewer.Common.Services;
+using SqlViewer.Shared.Repositories;
+using SqlViewer.Shared.Services;
 using SqlViewer.QueryExecution.Data.DbContexts;
 using SqlViewer.QueryExecution.Data.Entities;
 

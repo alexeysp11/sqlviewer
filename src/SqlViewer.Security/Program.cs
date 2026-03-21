@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using SqlViewer.Common.Constants;
+using SqlViewer.Shared.Constants;
 using SqlViewer.Security.Data.DataSeeding;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
@@ -11,7 +11,7 @@ using SqlViewer.Security.Domain.Identities;
 using SqlViewer.Security.Domain.Tokens;
 using SqlViewer.Security.Mappings;
 using SqlViewer.Security.Services.Grpc;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Security;
 

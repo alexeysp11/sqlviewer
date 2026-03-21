@@ -5,12 +5,12 @@ using Microsoft.IdentityModel.Tokens;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Factories;
-using SqlViewer.Common.Factories.Implementations;
-using SqlViewer.Common.Repositories;
-using SqlViewer.Common.Services;
-using SqlViewer.Common.Services.Implementations;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Factories;
+using SqlViewer.Shared.Factories.Implementations;
+using SqlViewer.Shared.Repositories;
+using SqlViewer.Shared.Services;
+using SqlViewer.Shared.Services.Implementations;
 using SqlViewer.Metadata.Data.DataSeeding;
 using SqlViewer.Metadata.Data.DbContexts;
 using SqlViewer.Metadata.Domain.MetadataRegistries;
@@ -18,7 +18,7 @@ using SqlViewer.Metadata.Domain.QueryBuilders;
 using SqlViewer.Metadata.Mappings;
 using SqlViewer.Metadata.Repositories.Implementations;
 using SqlViewer.Metadata.Services.Grpc;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Metadata;
 

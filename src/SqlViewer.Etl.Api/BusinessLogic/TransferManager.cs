@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Constants;
+﻿using SqlViewer.Shared.Constants;
 using SqlViewer.Etl.Api.Repositories;
 
 namespace SqlViewer.Etl.Api.BusinessLogic;

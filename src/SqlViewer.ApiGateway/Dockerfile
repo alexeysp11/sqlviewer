@@ -13,7 +13,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["src/SqlViewer.ApiGateway/SqlViewer.ApiGateway.csproj", "src/SqlViewer.ApiGateway/"]
-COPY ["src/SqlViewer.Common/SqlViewer.Common.csproj", "src/SqlViewer.Common/"]
+COPY ["src/SqlViewer.Shared/SqlViewer.Shared.csproj", "src/SqlViewer.Shared/"]
 RUN dotnet restore "./src/SqlViewer.ApiGateway/SqlViewer.ApiGateway.csproj"
 COPY . .
 WORKDIR "/src/src/SqlViewer.ApiGateway"

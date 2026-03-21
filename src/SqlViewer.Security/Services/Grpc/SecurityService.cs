@@ -1,6 +1,6 @@
 ﻿using Grpc.Core;
 using Google.Protobuf.WellKnownTypes;
-using SqlViewer.Common.Dtos.Auth;
+using SqlViewer.Shared.Dtos.Auth;
 using SqlViewer.Security.Domain.Identities;
 using SqlViewer.Security.Mappings;
 

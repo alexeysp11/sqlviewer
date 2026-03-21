@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Extensions;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using SqlViewer.Metadata;
 using SqlViewer.QueryExecution;
 

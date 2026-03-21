@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Messages.Storage.Entities;
+using SqlViewer.Shared.Messages.Storage.Entities;
 using SqlViewer.Etl.Core.Data.Entities;
 
 namespace SqlViewer.Etl.Core.Data.DbContexts;

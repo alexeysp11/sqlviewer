@@ -2,7 +2,7 @@
 using System.Windows;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
-using SqlViewer.Common.Dtos.Metadata;
+using SqlViewer.Shared.Dtos.Metadata;
 using SqlViewer.Services;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 

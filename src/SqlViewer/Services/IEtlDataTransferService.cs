@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Dtos.Etl;
+﻿using SqlViewer.Shared.Dtos.Etl;
 
 namespace SqlViewer.Services;
 

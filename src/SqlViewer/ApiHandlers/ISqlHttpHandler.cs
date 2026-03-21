@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Dtos.SqlQueries;
+﻿using SqlViewer.Shared.Dtos.SqlQueries;
 
 namespace SqlViewer.ApiHandlers;
 

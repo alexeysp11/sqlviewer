@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Enums;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Enums;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
 using SqlViewer.Security.Mappings;

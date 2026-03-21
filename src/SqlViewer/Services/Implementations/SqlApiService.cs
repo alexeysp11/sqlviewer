@@ -1,5 +1,5 @@
 ﻿using SqlViewer.ApiHandlers;
-using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using System.Data;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;

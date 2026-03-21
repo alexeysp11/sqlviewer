@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Dtos.Docs;
+﻿using SqlViewer.Shared.Dtos.Docs;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ApiHandlers;

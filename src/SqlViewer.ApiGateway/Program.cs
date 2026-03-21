@@ -9,7 +9,7 @@ using SqlViewer.ApiGateway.DelegatingHandlers;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.ApiGateway.Middleware;
-using SqlViewer.Common.Constants;
+using SqlViewer.Shared.Constants;
 using SqlViewer.Etl;
 using SqlViewer.Metadata;
 using SqlViewer.QueryBuilder;

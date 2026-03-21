@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Services;
+using SqlViewer.Shared.Services;
 using SqlViewer.Metadata.Data.DbContexts;
 using SqlViewer.Metadata.Data.Entities;
 using SqlViewer.Metadata.Enums;
@@ -7,7 +7,7 @@ using SqlViewer.Metadata.Mappings;
 using SqlViewer.Shared.Seed.System.Constants;
 using SqlViewer.Shared.Seed.System.Models;
 using SqlViewer.Shared.Seed.System.Registries;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Metadata.Data.DataSeeding;
 

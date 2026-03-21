@@ -1,5 +1,5 @@
 ﻿using SqlViewer.ApiHandlers;
-using SqlViewer.Common.Dtos.Metadata;
+using SqlViewer.Shared.Dtos.Metadata;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;

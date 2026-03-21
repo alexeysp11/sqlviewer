@@ -1,6 +1,6 @@
-﻿using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos;
-using SqlViewer.Common.Dtos.Auth;
+﻿using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos;
+using SqlViewer.Shared.Dtos.Auth;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;

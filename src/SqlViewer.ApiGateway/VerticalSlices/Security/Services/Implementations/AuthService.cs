@@ -1,6 +1,6 @@
-﻿using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Enums;
+﻿using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.Auth;
+using SqlViewer.Shared.Enums;
 
 namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services.Implementations;
 

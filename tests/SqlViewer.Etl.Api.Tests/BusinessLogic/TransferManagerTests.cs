@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using SqlViewer.Etl.Api.BusinessLogic;
 using SqlViewer.Etl.Api.Repositories;
-using SqlViewer.Common.Constants;
+using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.Etl.Api.Tests.BusinessLogic;
 

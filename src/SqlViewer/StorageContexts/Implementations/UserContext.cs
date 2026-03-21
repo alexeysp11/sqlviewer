@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-using SqlViewer.Common.Dtos.Auth;
+using SqlViewer.Shared.Dtos.Auth;
 
 namespace SqlViewer.StorageContexts.Implementations;
 

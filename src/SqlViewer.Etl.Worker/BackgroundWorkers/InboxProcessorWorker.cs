@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Messages.Storage.Entities;
-using SqlViewer.Common.Messages.Storage.Enums;
+using SqlViewer.Shared.Messages.Storage.Entities;
+using SqlViewer.Shared.Messages.Storage.Enums;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Worker.Sagas;
 

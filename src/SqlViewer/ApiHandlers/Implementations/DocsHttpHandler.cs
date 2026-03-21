@@ -1,6 +1,6 @@
-﻿using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos;
-using SqlViewer.Common.Dtos.Docs;
+﻿using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos;
+using SqlViewer.Shared.Dtos.Docs;
 using SqlViewer.StorageContexts;
 using System.Collections.Specialized;
 using System.Net.Http;

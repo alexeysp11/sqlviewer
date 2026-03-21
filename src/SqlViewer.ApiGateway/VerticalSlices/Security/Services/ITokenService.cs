@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Enums;
+﻿using SqlViewer.Shared.Enums;
 
 namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services;
 

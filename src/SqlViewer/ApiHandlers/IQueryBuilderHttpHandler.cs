@@ -1,5 +1,5 @@
-﻿using SqlViewer.Common.Dtos.QueryBuilder;
-using SqlViewer.Common.Dtos.SqlQueries;
+﻿using SqlViewer.Shared.Dtos.QueryBuilder;
+using SqlViewer.Shared.Dtos.SqlQueries;
 
 namespace SqlViewer.ApiHandlers;
 

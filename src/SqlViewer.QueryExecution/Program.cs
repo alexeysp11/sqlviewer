@@ -2,19 +2,19 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Factories;
-using SqlViewer.Common.Factories.Implementations;
-using SqlViewer.Common.Repositories;
-using SqlViewer.Common.Services.Implementations;
-using SqlViewer.Common.Services;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Factories;
+using SqlViewer.Shared.Factories.Implementations;
+using SqlViewer.Shared.Repositories;
+using SqlViewer.Shared.Services.Implementations;
+using SqlViewer.Shared.Services;
 using SqlViewer.QueryExecution.Data.DataSeeding;
 using SqlViewer.QueryExecution.Mappings;
 using SqlViewer.QueryExecution.Data.DbContexts;
 using SqlViewer.QueryExecution.Domain.SqlQuery;
 using SqlViewer.QueryExecution.Repositories.Implementations;
 using SqlViewer.QueryExecution.Services.Grpc;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.QueryExecution;
 

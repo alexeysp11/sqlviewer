@@ -1,6 +1,6 @@
 ﻿using Riok.Mapperly.Abstractions;
-using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Enums;
+using SqlViewer.Shared.Dtos.Auth;
+using SqlViewer.Shared.Enums;
 using SqlViewer.Security;
 
 namespace SqlViewer.ApiGateway.Mappings;

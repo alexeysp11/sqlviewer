@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using SqlViewer.Common.Dtos.Metadata;
+using SqlViewer.Shared.Dtos.Metadata;
 
 namespace SqlViewer.ViewModels;
 

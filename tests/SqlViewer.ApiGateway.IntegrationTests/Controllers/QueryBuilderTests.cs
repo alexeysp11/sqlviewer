@@ -1,12 +1,12 @@
 ﻿using SqlViewer.ApiGateway.IntegrationTests.Infrastructure.WebApplicationFactories;
-using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using System.Net.Http.Json;
 using System.Net;
-using SqlViewer.Common.Constants;
+using SqlViewer.Shared.Constants;
 using FluentAssertions;
 using System.Data;
 using VelocipedeUtils.Shared.DbOperations.Enums;
-using SqlViewer.Common.Dtos.QueryBuilder;
+using SqlViewer.Shared.Dtos.QueryBuilder;
 
 namespace SqlViewer.ApiGateway.IntegrationTests.Controllers;
 

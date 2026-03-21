@@ -1,7 +1,7 @@
-﻿using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.SqlQueries;
-using SqlViewer.Common.Dtos.QueryBuilder;
-using SqlViewer.Common.Dtos;
+﻿using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.SqlQueries;
+using SqlViewer.Shared.Dtos.QueryBuilder;
+using SqlViewer.Shared.Dtos;
 using SqlViewer.StorageContexts;
 using System.Net.Http;
 using System.Net.Http.Headers;

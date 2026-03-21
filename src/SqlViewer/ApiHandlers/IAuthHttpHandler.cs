@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Dtos.Auth;
+﻿using SqlViewer.Shared.Dtos.Auth;
 
 namespace SqlViewer.ApiHandlers;
 

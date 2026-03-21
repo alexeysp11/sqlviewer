@@ -1,7 +1,7 @@
 ﻿using SqlViewer.ApiHandlers;
-using SqlViewer.Common.Dtos.Metadata;
-using SqlViewer.Common.Dtos.QueryBuilder;
-using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Shared.Dtos.Metadata;
+using SqlViewer.Shared.Dtos.QueryBuilder;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;

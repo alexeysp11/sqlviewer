@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Factories;
+﻿using SqlViewer.Shared.Factories;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;

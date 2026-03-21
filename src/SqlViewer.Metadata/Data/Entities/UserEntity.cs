@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using SqlViewer.Common.Enums;
+using SqlViewer.Shared.Enums;
 
 namespace SqlViewer.Metadata.Data.Entities;
 

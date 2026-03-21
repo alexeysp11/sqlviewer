@@ -1,4 +1,4 @@
-﻿using SqlViewer.Common.Dtos.Metadata;
+﻿using SqlViewer.Shared.Dtos.Metadata;
 
 namespace SqlViewer.ApiHandlers;
 

@@ -22,7 +22,7 @@ namespace SqlViewer.Etl.Core.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SqlViewer.Common.Messages.Storage.Entities.InboxMessageEntity", b =>
+            modelBuilder.Entity("SqlViewer.Shared.Messages.Storage.Entities.InboxMessageEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -58,7 +58,7 @@ namespace SqlViewer.Etl.Core.Migrations
                     b.ToTable("InboxMessages");
                 });
 
-            modelBuilder.Entity("SqlViewer.Common.Messages.Storage.Entities.OutboxMessageEntity", b =>
+            modelBuilder.Entity("SqlViewer.Shared.Messages.Storage.Entities.OutboxMessageEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

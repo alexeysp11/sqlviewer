@@ -1,5 +1,5 @@
 ﻿using Riok.Mapperly.Abstractions;
-using SqlViewer.Common.Dtos.Auth;
+using SqlViewer.Shared.Dtos.Auth;
 
 namespace SqlViewer.Security.Mappings;
 

@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.Shared.Dtos.SqlQueries;
 
 namespace SqlViewer.ApiGateway.Dtos.FluentValidation;
 

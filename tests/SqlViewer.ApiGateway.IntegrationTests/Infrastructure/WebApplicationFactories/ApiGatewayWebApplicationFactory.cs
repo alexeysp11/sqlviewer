@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using SqlViewer.ApiGateway.IntegrationTests.Infrastructure.AuthenticationHandlers;
 using Testcontainers.PostgreSql;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.ApiGateway.IntegrationTests.Infrastructure.WebApplicationFactories;
 
