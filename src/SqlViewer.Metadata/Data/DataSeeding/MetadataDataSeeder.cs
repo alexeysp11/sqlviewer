@@ -61,6 +61,7 @@ public sealed class MetadataDataSeeder(
                     SeedIdentifiers.DataSource.Name.Metadata => config.GetConnectionString(ConnectionStrings.Metadata),
                     SeedIdentifiers.DataSource.Name.Security => config.GetConnectionString(ConnectionStrings.Security),
                     SeedIdentifiers.DataSource.Name.QueryExecution => config.GetConnectionString(ConnectionStrings.QueryExecution),
+                    SeedIdentifiers.DataSource.Name.Etl => config.GetConnectionString(ConnectionStrings.Etl),
                     SeedIdentifiers.DataSource.Name.Sandbox => config.GetConnectionString(ConnectionStrings.Sandbox),
                     _ => dataSource.EncryptedConnectionString
                 };

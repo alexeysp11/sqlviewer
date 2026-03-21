@@ -43,6 +43,13 @@ public static class SeedRegistry
             OwnerUid: SeedIdentifiers.User.Uid.Admin
         ),
         new DataSourceSeedDto(
+            Uid: SeedIdentifiers.DataSource.Uid.Etl,
+            Name: SeedIdentifiers.DataSource.Name.Etl,
+            Description: SeedIdentifiers.DataSource.Description.Etl,
+            DbType: SeedIdentifiers.DbType.Postgres,
+            OwnerUid: SeedIdentifiers.User.Uid.Admin
+        ),
+        new DataSourceSeedDto(
             Uid: SeedIdentifiers.DataSource.Uid.Sandbox,
             Name: SeedIdentifiers.DataSource.Name.Sandbox,
             Description: SeedIdentifiers.DataSource.Description.Sandbox,
@@ -69,6 +76,12 @@ public static class SeedRegistry
             Uid: SeedIdentifiers.DataSourcePermission.Uid.AdminToQueryExecution,
             UserUid: SeedIdentifiers.User.Uid.Admin,
             DataSourceUid: SeedIdentifiers.DataSource.Uid.QueryExecution,
+            AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin
+        ),
+        new DataSourcePermissionSeedDto(
+            Uid: SeedIdentifiers.DataSourcePermission.Uid.AdminToEtl,
+            UserUid: SeedIdentifiers.User.Uid.Admin,
+            DataSourceUid: SeedIdentifiers.DataSource.Uid.Etl,
             AccessLevel: SeedIdentifiers.DataSourcePermission.AccessLevel.Admin
         ),
         new DataSourcePermissionSeedDto(
