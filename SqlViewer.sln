@@ -58,6 +58,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Core", "src\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Worker", "src\SqlViewer.Etl.Worker\SqlViewer.Etl.Worker.csproj", "{93E26DD1-DDEE-4881-B0B2-2C199600A779}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqlViewer.Etl.Api.Tests", "tests\SqlViewer.Etl.Api.Tests\SqlViewer.Etl.Api.Tests.csproj", "{EA905910-5EAD-4E72-8E73-07D7929C8E31}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -124,6 +126,10 @@ Global
 		{93E26DD1-DDEE-4881-B0B2-2C199600A779}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{93E26DD1-DDEE-4881-B0B2-2C199600A779}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{93E26DD1-DDEE-4881-B0B2-2C199600A779}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA905910-5EAD-4E72-8E73-07D7929C8E31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA905910-5EAD-4E72-8E73-07D7929C8E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA905910-5EAD-4E72-8E73-07D7929C8E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA905910-5EAD-4E72-8E73-07D7929C8E31}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -145,6 +151,7 @@ Global
 		{0A41828C-8465-4682-84F3-44825A202E31} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{C67D8261-9B7F-4FED-BBD7-86B156DC52BB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{93E26DD1-DDEE-4881-B0B2-2C199600A779} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{EA905910-5EAD-4E72-8E73-07D7929C8E31} = {C468FFF0-F521-4F67-A0B5-27C777B164B5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {970E3C9B-23BB-4829-A788-C199135EB72A}

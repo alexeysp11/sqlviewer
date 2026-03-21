@@ -1,3 +1,4 @@
+using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -17,7 +18,6 @@ using SqlViewer.Metadata.Domain.QueryBuilders;
 using SqlViewer.Metadata.Mappings;
 using SqlViewer.Metadata.Repositories.Implementations;
 using SqlViewer.Metadata.Services.Grpc;
-using System.Text;
 using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Metadata;
@@ -53,7 +53,8 @@ public sealed class Program
         string issuerSigningKey = builder.Configuration.GetValue<string>(ConfigurationKeys.Jwt.Key)
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
@@ -78,7 +79,8 @@ public sealed class Program
             .WithTracing(tracing => tracing
                 .AddSource(serviceName)
                 .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
-                .AddOtlpExporter(opt => {
+                .AddOtlpExporter(opt =>
+                {
                     // Send traces to Jaeger (the service name in Docker Compose)
                     string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
                         ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
@@ -90,7 +92,8 @@ public sealed class Program
 
         WebApplication app = builder.Build();
 
-        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
+        // Creates the /metrics page
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())

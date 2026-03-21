@@ -1,19 +1,31 @@
+using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using SqlViewer.Common.Constants;
+using SqlViewer.Etl.Api.BusinessLogic;
+using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Etl.Api.Services.Grpc;
+using SqlViewer.Etl.Core.Data.DbContexts;
+using static SqlViewer.Common.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Etl.Api;
 
 public sealed class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddScoped<ITransferManager, TransferManager>();
+        builder.Services.AddScoped<IOutboxRepository, OutboxRepository>();
         builder.Services.AddGrpc();
+
+        // DbContexts.
+        builder.Services.AddDbContext<EtlDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Etl))
+        );
 
         // Kafka.
 
@@ -25,7 +37,8 @@ public sealed class Program
             .WithTracing(tracing => tracing
                 .AddSource(serviceName)
                 .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
-                .AddOtlpExporter(opt => {
+                .AddOtlpExporter(opt =>
+                {
                     // Send traces to Jaeger (the service name in Docker Compose)
                     string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
                         ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
@@ -37,7 +50,15 @@ public sealed class Program
 
         WebApplication app = builder.Build();
 
-        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
+        // Creates the /metrics page
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
+
+        // Initialize the database.
+        using (IServiceScope scope = app.Services.CreateScope())
+        {
+            EtlDbContext dbContext = scope.ServiceProvider.GetRequiredService<EtlDbContext>();
+            await dbContext.Database.MigrateAsync();
+        }
 
         // Configure the HTTP request pipeline.
         app.MapGrpcService<EtlGrpcService>();

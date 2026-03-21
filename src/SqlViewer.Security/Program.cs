@@ -55,12 +55,12 @@ public static class Program
 
         WebApplication app = builder.Build();
 
-        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
+        // Creates the /metrics page
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())
         {
-            SecurityDbContext db = scope.ServiceProvider.GetRequiredService<SecurityDbContext>();
             ISecurityDataSeeder dataSeeder = scope.ServiceProvider.GetRequiredService<ISecurityDataSeeder>();
             await dataSeeder.InitializeAsync();
         }

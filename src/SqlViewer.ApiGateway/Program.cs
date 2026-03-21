@@ -106,7 +106,8 @@ public sealed class Program
             app.UseSwaggerUI();
         }
 
-        app.UseOpenTelemetryPrometheusScrapingEndpoint(); // Creates the /metrics page
+        // Creates the /metrics page
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         app.UseHttpsRedirection();
         app.UseAuthentication();

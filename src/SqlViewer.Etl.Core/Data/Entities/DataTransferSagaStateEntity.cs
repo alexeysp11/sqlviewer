@@ -5,6 +5,7 @@
 /// </summary>
 public class DataTransferSagaStateEntity
 {
+    public long Id { get; set; }
     public required Guid CorrelationId { get; set; }
     public required string CurrentState { get; set; } = "Initial"; // Initial, Validating, CommandSent, InProgress, Completed, Faulted
     public required string SourceDb { get; set; }

@@ -1,15 +1,11 @@
-﻿using Grpc.Core;
+﻿using Google.Protobuf;
 using Google.Protobuf.WellKnownTypes;
-using SqlViewer.Etl.Core.Data.DbContexts;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Messages.Etl.Commands;
-using Google.Protobuf;
+using Grpc.Core;
+using SqlViewer.Etl.Api.BusinessLogic;
 
 namespace SqlViewer.Etl.Api.Services.Grpc;
 
-public sealed class EtlGrpcService(
-    EtlDbContext dbContext,
-    IConfiguration configuration) : EtlTransferService.EtlTransferServiceBase
+public sealed class EtlGrpcService(ITransferManager transferManager) : EtlTransferService.EtlTransferServiceBase
 {
     public override async Task<StartTransferResponse> StartTransfer(
         StartTransferRequest request,
@@ -23,14 +19,8 @@ public sealed class EtlGrpcService(
         JsonFormatter formatter = new(settings);
         string requestJson = formatter.Format(request);
 
-        // Save a record in outbox.
-        await dbContext.OutboxMessages.AddAsync(new()
-        {
-            CorrelationId = correlationId,
-            Topic = configuration[ConfigurationKeys.Services.Kafka.Topics.DataTransferCommand]!,
-            MessageType = nameof(StartDataTransferCommand),
-            Payload = requestJson
-        });
+        // Start transfer.
+        await transferManager.InitiateTransferAsync(requestJson);
 
         return new StartTransferResponse
         {
