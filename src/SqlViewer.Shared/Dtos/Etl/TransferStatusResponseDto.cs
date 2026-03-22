@@ -1,6 +1,6 @@
 ﻿namespace SqlViewer.Shared.Dtos.Etl;
 
-public class TransferStatusResponseDto
+public sealed record TransferStatusResponseDto
 {
     public Guid CorrelationId { get; set; }
     public double Progress { get; set; }

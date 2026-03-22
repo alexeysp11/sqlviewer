@@ -3,7 +3,7 @@
 /// <summary>
 /// Response from API Gateway upon successful initialization of the ETL process.
 /// </summary>
-public class StartTransferResponseDto
+public sealed record StartTransferResponseDto
 {
     /// <summary>
     /// Correlation identifier (SagaId).

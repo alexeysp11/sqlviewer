@@ -3,14 +3,18 @@ using SqlViewer.ApiGateway.Controllers.Metadata;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Dtos.Etl;
 using SqlViewer.Etl;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SqlViewer.ApiGateway.Controllers.Etl;
 
 [ApiController]
+[Authorize]
 public class DataTransferController(
     ILogger<MetadataApiController> logger,
     EtlTransferService.EtlTransferServiceClient grpcClient) : ControllerBase
 {
+    private const int MaxDataSize = 100;
+
     [HttpPost(RestApiPaths.Etl.DataTransfer.Start)]
     public async Task<IActionResult> Start([FromBody] StartTransferRequestDto dto)
     {
@@ -41,10 +45,24 @@ public class DataTransferController(
     }
 
     [HttpGet(RestApiPaths.Etl.DataTransfer.GetStatus)]
-    public async Task<IActionResult> GetStatus(Guid correlationId)
+    public async Task<IActionResult> GetStatus(Guid userUid)
     {
-        //var status = await grpcClient.GetTransferStatusAsync(new { Id = correlationId });
+        //var status = await grpcClient.GetTransferStatusAsync(new { Id = userUid });
         //return Ok(status);
-        return Ok($"ok: {correlationId}");
+        return Ok($"ok: {userUid}");
+    }
+
+    [HttpGet(RestApiPaths.Etl.DataTransfer.GetHistory)]
+    public async Task<IActionResult> GetHistory(
+        [FromRoute] Guid userUid,
+        [FromQuery(Name = "cursor")] DateTime lastCreatedAt,
+        [FromQuery(Name = "limit")] int limit)
+    {
+        if (limit > MaxDataSize)
+            limit = MaxDataSize;
+
+        //var status = await grpcClient.GetTransferStatusAsync(new { Id = userUid });
+        //return Ok(status);
+        return Ok($"userUid: {userUid}, cursor: {lastCreatedAt}, limit: {limit}");
     }
 }
