@@ -1,24 +1,13 @@
 ﻿using SqlViewer.Etl.Api.Repositories;
-using SqlViewer.Etl.Core.Data.Entities;
 using SqlViewer.Shared.Dtos.Etl;
-using SqlViewer.Shared.Helpers.DataTransfer;
 
 namespace SqlViewer.Etl.Api.BusinessLogic;
 
-public class TransferHistoryManager(ITransferHistoryRepository repository) : ITransferHistoryManager
+public sealed class TransferHistoryManager(ITransferHistoryRepository repository) : ITransferHistoryManager
 {
-    public async Task<TransferHistoryResponseDto> GetHistoryAsync(Guid userUid, string? cursorToken, int limit)
+    public async Task<TransferHistoryResponseDto> GetHistoryAsync(Guid userUid, Guid? correlationId, int limit)
     {
-        // 1. Decode the cursor
-        (DateTime CreatedAt, long Id)? cursor = DataTransferCursorHelper.DecodeCursor(cursorToken);
-
-        // 2. Getting data from the repository
-        List<TransferJobEntity> entities = (await repository.GetHistoryAsync(
-            userUid,
-            cursor?.CreatedAt,
-            cursor?.Id,
-            limit)).ToList();
-        List<TransferJobDto> dtos = entities.Select(e => new TransferJobDto
+        List<TransferJobDto> transferJobs = (await repository.GetHistoryAsync(userUid, correlationId, limit)).Select(e => new TransferJobDto
         {
             CorrelationId = e.CorrelationId,
             Source = e.Source,
@@ -27,18 +16,11 @@ public class TransferHistoryManager(ITransferHistoryRepository repository) : ITr
             Time = e.CreatedAt
         }).ToList();
 
-        // 3. Generate a token for the next page if the full limit is returned.
-        string? nextCursor = null;
-        if (entities.Count == limit)
-        {
-            TransferJobEntity lastItem = entities.Last();
-            nextCursor = DataTransferCursorHelper.EncodeCursor(lastItem.CreatedAt, lastItem.Id);
-        }
-
+        Guid? cursorCorrelationId = transferJobs.LastOrDefault()?.CorrelationId;
         return new TransferHistoryResponseDto
         {
-            Items = dtos,
-            NextCursor = nextCursor
+            Items = transferJobs,
+            CursorCorrelationId = cursorCorrelationId
         };
     }
 }

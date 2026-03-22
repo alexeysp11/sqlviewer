@@ -3,5 +3,5 @@
 public sealed record TransferHistoryResponseDto
 {
     public List<TransferJobDto> Items { get; init; } = [];
-    public string? NextCursor { get; init; }
+    public Guid? CursorCorrelationId { get; init; }
 }

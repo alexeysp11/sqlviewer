@@ -6,7 +6,7 @@ using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.Etl.Api.Tests.BusinessLogic;
 
-public class TransferManagerTests
+public sealed class TransferManagerTests
 {
     private readonly Mock<IOutboxRepository> _repositoryMock;
     private readonly Mock<IConfiguration> _configurationMock;

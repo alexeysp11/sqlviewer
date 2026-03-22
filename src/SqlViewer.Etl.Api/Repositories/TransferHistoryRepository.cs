@@ -1,4 +1,5 @@
-﻿using System.Data.Common;
+﻿using System.Data;
+using System.Data.Common;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using SqlViewer.Etl.Core.Data.DbContexts;
@@ -6,38 +7,39 @@ using SqlViewer.Etl.Core.Data.Entities;
 
 namespace SqlViewer.Etl.Api.Repositories;
 
-public class TransferHistoryRepository(
-    ILogger<TransferHistoryRepository> logger,
-    EtlDbContext dbContext) : ITransferHistoryRepository
+public sealed class TransferHistoryRepository(EtlDbContext dbContext) : ITransferHistoryRepository
 {
-    public async Task<IEnumerable<TransferJobEntity>> GetHistoryAsync(
-        Guid userUid,
-        DateTime? cursorAt,
-        long? cursorId,
-        int limit)
+    public async Task<IEnumerable<TransferJobEntity>> GetHistoryAsync(Guid userUid, Guid? correlationId, int limit)
     {
         using DbConnection connection = dbContext.Database.GetDbConnection();
+        if (connection.State != ConnectionState.Open)
+            await connection.OpenAsync();
 
-        logger.LogInformation("User {UserUid} requested history. Cursor: {Cursor}, Limit: {Limit}",
-            userUid, cursorId ?? 0, limit);
-
-        // Используем эффективный фильтр для комбинированного курсора
         const string sql = @"
-            SELECT * FROM ""TransferJobs""
-            WHERE ""UserUid"" = @UserUid
-            AND (
-                @CursorAt IS NULL OR 
-                ""CreatedAt"" < @CursorAt OR 
-                (""CreatedAt"" = @CursorAt AND ""Id"" < @CursorId)
-            )
-            ORDER BY ""CreatedAt"" DESC, ""Id"" DESC
-            LIMIT @Limit;";
+WITH cursor_record AS (
+    SELECT ""CreatedAt"", ""Id""
+    FROM ""TransferJobs""
+    WHERE ""CorrelationId"" = @LastCorrelationId AND ""UserUid"" = @OwnerUserUid
+    LIMIT 1
+)
+SELECT ""Id"", ""CorrelationId"", ""CurrentStatus"", ""Source"", ""Target"", ""CreatedAt""
+FROM ""TransferJobs""
+WHERE
+    ""UserUid"" = @OwnerUserUid
+    AND (
+        @LastCorrelationId IS NULL
+        OR
+        ""CreatedAt"" < (SELECT ""CreatedAt"" FROM cursor_record)
+        OR
+        (""CreatedAt"" = (SELECT ""CreatedAt"" FROM cursor_record) AND ""Id"" < (SELECT ""Id"" FROM cursor_record))
+    )
+ORDER BY ""CreatedAt"" DESC, ""Id"" DESC
+LIMIT @Limit;";
 
         return await connection.QueryAsync<TransferJobEntity>(sql, new
         {
-            UserUid = userUid,
-            CursorAt = cursorAt,
-            CursorId = cursorId,
+            OwnerUserUid = userUid,
+            LastCorrelationId = correlationId,
             Limit = limit
         });
     }

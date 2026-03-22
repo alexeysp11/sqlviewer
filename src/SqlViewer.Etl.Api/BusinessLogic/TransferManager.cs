@@ -3,7 +3,7 @@ using SqlViewer.Etl.Api.Repositories;
 
 namespace SqlViewer.Etl.Api.BusinessLogic;
 
-public class TransferManager(IOutboxRepository outboxRepository, IConfiguration configuration) : ITransferManager
+public sealed class TransferManager(IOutboxRepository outboxRepository, IConfiguration configuration) : ITransferManager
 {
     public async Task<Guid> InitiateTransferAsync(Guid userUid, string requestJson)
     {

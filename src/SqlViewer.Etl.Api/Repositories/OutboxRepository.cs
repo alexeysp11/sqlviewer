@@ -3,7 +3,7 @@ using SqlViewer.Etl.Core.Data.DbContexts;
 
 namespace SqlViewer.Etl.Api.Repositories;
 
-public class OutboxRepository(EtlDbContext dbContext) : IOutboxRepository
+public sealed class OutboxRepository(EtlDbContext dbContext) : IOutboxRepository
 {
     public async Task AddTransferCommandAsync(Guid userUid, Guid correlationId, string topic, string payload)
     {
