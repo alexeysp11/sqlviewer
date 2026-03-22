@@ -7,7 +7,7 @@ namespace SqlViewer.StorageContexts;
 public interface IUserContext
 {
     LoginResponseDto? CurrentUser { get; set; }
-    
+
     bool IsAuthenticated => CurrentUser != null;
 
     string? TokenType => CurrentUser?.TokenType;

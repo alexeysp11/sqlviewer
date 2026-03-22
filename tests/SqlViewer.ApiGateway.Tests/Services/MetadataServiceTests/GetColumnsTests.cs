@@ -27,7 +27,7 @@ public sealed class GetColumnsTests
         result.AddRange(GetTestCases(connectionString: null, tableName: null));
         result.AddRange(GetTestCases(connectionString: null, tableName: ""));
         result.AddRange(GetTestCases(connectionString: null, tableName: "AnyTableName"));
-        
+
         result.AddRange(GetTestCases(connectionString: "", tableName: ""));
         result.AddRange(GetTestCases(connectionString: "", tableName: null));
         result.AddRange(GetTestCases(connectionString: "", tableName: "AnyTableName"));

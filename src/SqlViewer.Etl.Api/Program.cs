@@ -2,11 +2,11 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using SqlViewer.Shared.Constants;
 using SqlViewer.Etl.Api.BusinessLogic;
 using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Etl.Api.Services.Grpc;
 using SqlViewer.Etl.Core.Data.DbContexts;
+using SqlViewer.Shared.Constants;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Etl.Api;

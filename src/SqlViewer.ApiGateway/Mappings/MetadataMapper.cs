@@ -1,9 +1,9 @@
 ﻿using Google.Protobuf.WellKnownTypes;
 using Riok.Mapperly.Abstractions;
-using SqlViewer.Shared.Dtos.Metadata;
-using SqlViewer.Shared.Dtos.SqlQueries;
 using SqlViewer.Metadata;
 using SqlViewer.QueryBuilder;
+using SqlViewer.Shared.Dtos.Metadata;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ApiGateway.Mappings;

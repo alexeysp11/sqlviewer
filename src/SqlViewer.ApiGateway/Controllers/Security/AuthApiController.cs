@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Mappings;
+using SqlViewer.Security;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Dtos.Auth;
-using SqlViewer.Security;
 using LoginRequest = SqlViewer.Security.LoginRequest;
 
 namespace SqlViewer.ApiGateway.Controllers.Security;

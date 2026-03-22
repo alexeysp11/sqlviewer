@@ -17,17 +17,17 @@ public enum TransferStatus
     /// The data transfer process has physically started in the worker service.
     /// </summary>
     Started = 1,
-    
+
     /// <summary>
     /// Intermediary progress update containing metrics like rows processed.
     /// </summary>
     Progress = 2,
-    
+
     /// <summary>
     /// The data transfer process finished successfully and all resources are released.
     /// </summary>
     Completed = 3,
-    
+
     /// <summary>
     /// The data transfer process terminated prematurely due to a technical or business error.
     /// </summary>

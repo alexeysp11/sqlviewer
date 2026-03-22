@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.Shared.Constants;
-using SqlViewer.Shared.Dtos.Auth;
-using SqlViewer.Shared.Enums;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
 using SqlViewer.Security.Domain.Tokens;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.Auth;
+using SqlViewer.Shared.Enums;
 
 namespace SqlViewer.Security.Domain.Identities;
 

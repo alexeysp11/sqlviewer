@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using System.Text;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -9,13 +10,12 @@ using SqlViewer.ApiGateway.DelegatingHandlers;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.ApiGateway.Middleware;
-using SqlViewer.Shared.Constants;
 using SqlViewer.Etl;
 using SqlViewer.Metadata;
 using SqlViewer.QueryBuilder;
 using SqlViewer.QueryExecution;
 using SqlViewer.Security;
-using System.Text;
+using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.ApiGateway;
 
@@ -59,7 +59,8 @@ public sealed class Program
         string issuerSigningKey = builder.Configuration.GetValue<string>(ConfigurationKeys.Jwt.Key)
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
@@ -67,9 +68,9 @@ public sealed class Program
 
                     ValidateAudience = true,
                     ValidAudience = builder.Configuration[ConfigurationKeys.Jwt.Audience],
-                    
+
                     ValidateLifetime = true,
-                    
+
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey))
                 };
@@ -87,7 +88,8 @@ public sealed class Program
             .WithTracing(tracing => tracing
                 .AddSource(serviceName)
                 .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
-                .AddOtlpExporter(opt => {
+                .AddOtlpExporter(opt =>
+                {
                     // Send traces to Jaeger (the service name in Docker Compose)
                     string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
                         ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");

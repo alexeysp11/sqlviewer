@@ -34,7 +34,7 @@ public static class RestApiPaths
     public static class Etl
     {
         private const string Base = $"{ApiBase}/etl";
-        
+
         public static class DataTransfer
         {
             private const string DataTransferBase = $"{Base}/data-transfer";

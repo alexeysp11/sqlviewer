@@ -40,7 +40,7 @@ public sealed record LoginResponseDto
     [JsonPropertyName("username")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Username { get; init; }
-    
+
     /// <summary>
     /// User UID.
     /// </summary>

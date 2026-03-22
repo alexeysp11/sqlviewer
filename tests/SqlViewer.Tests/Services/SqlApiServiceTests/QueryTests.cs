@@ -2,8 +2,8 @@
 using FluentAssertions;
 using Moq;
 using SqlViewer.ApiHandlers;
-using SqlViewer.Shared.Dtos.SqlQueries;
 using SqlViewer.Services.Implementations;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using SqlViewer.Tests.Infrastructure.Models;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;

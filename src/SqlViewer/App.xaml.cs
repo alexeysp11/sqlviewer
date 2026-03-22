@@ -84,7 +84,7 @@ public partial class App : Application
 
                 MainWindow = mainWindow;
                 ShutdownMode = ShutdownMode.OnMainWindowClose;
-                
+
                 loginWindow.Close();
             }
             else

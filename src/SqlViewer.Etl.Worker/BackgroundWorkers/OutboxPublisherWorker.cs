@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Shared.Messages.Storage.Entities;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Services.Kafka;
+using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.Etl.Worker.BackgroundWorkers;
 

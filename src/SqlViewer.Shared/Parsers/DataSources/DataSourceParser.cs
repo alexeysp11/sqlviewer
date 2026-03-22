@@ -17,7 +17,7 @@ public static partial class DataSourceParser
     {
         if (string.IsNullOrEmpty(input))
             return null;
-        
+
         Match match = DataSourceRegex.Match(input);
         if (!match.Success)
             return null;

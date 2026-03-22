@@ -64,7 +64,7 @@ public sealed class ColumnInfoDtoTests
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Double }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Double, IsPrimaryKey = false }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Double, IsPrimaryKey = true }, },
-        
+
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Guid }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Guid, IsPrimaryKey = false }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Guid, IsPrimaryKey = true }, },
@@ -80,7 +80,7 @@ public sealed class ColumnInfoDtoTests
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Int64 }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Int64, IsPrimaryKey = false }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Int64, IsPrimaryKey = true }, },
-        
+
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Object }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Object, IsPrimaryKey = false }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Object, IsPrimaryKey = true }, },
@@ -96,7 +96,7 @@ public sealed class ColumnInfoDtoTests
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Single }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Single, IsPrimaryKey = false }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.Single, IsPrimaryKey = true }, },
-        
+
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.String }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.String, IsPrimaryKey = false }, },
         new() { DatabaseType = databaseType, ColumnInfoDto = new() { ColumnName = "ColumnName", ColumnType = DbType.String, IsPrimaryKey = true }, },

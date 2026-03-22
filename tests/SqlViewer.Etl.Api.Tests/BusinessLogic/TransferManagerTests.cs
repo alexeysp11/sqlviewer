@@ -1,5 +1,5 @@
-﻿using Moq;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Moq;
 using SqlViewer.Etl.Api.BusinessLogic;
 using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Shared.Constants;

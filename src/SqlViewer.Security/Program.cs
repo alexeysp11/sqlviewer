@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using SqlViewer.Shared.Constants;
 using SqlViewer.Security.Data.DataSeeding;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
@@ -11,6 +10,7 @@ using SqlViewer.Security.Domain.Identities;
 using SqlViewer.Security.Domain.Tokens;
 using SqlViewer.Security.Mappings;
 using SqlViewer.Security.Services.Grpc;
+using SqlViewer.Shared.Constants;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Security;
@@ -43,7 +43,8 @@ public static class Program
             .WithTracing(tracing => tracing
                 .AddSource(serviceName)
                 .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
-                .AddOtlpExporter(opt => {
+                .AddOtlpExporter(opt =>
+                {
                     // Send traces to Jaeger (the service name in Docker Compose)
                     string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
                         ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");

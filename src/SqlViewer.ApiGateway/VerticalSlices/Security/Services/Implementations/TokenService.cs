@@ -1,10 +1,10 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
 using System.Security.Cryptography;
-using SqlViewer.Shared.Enums;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
 using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Enums;
 
 namespace SqlViewer.ApiGateway.VerticalSlices.Security.Services.Implementations;
 
@@ -26,7 +26,7 @@ public class TokenService(IConfiguration config) : ITokenService
 
         double expiryLifetimeMinutes = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]);
         DateTime expires = DateTime.UtcNow.AddMinutes(expiryLifetimeMinutes);
-        
+
         JwtSecurityToken token = new(
             issuer: config[ConfigurationKeys.Jwt.Issuer],
             audience: config[ConfigurationKeys.Jwt.Audience],

@@ -2,18 +2,18 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using SqlViewer.QueryExecution.Data.DataSeeding;
+using SqlViewer.QueryExecution.Data.DbContexts;
+using SqlViewer.QueryExecution.Domain.SqlQuery;
+using SqlViewer.QueryExecution.Mappings;
+using SqlViewer.QueryExecution.Repositories.Implementations;
+using SqlViewer.QueryExecution.Services.Grpc;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Factories;
 using SqlViewer.Shared.Factories.Implementations;
 using SqlViewer.Shared.Repositories;
-using SqlViewer.Shared.Services.Implementations;
 using SqlViewer.Shared.Services;
-using SqlViewer.QueryExecution.Data.DataSeeding;
-using SqlViewer.QueryExecution.Mappings;
-using SqlViewer.QueryExecution.Data.DbContexts;
-using SqlViewer.QueryExecution.Domain.SqlQuery;
-using SqlViewer.QueryExecution.Repositories.Implementations;
-using SqlViewer.QueryExecution.Services.Grpc;
+using SqlViewer.Shared.Services.Implementations;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.QueryExecution;
@@ -48,7 +48,8 @@ public sealed class Program
             .WithTracing(tracing => tracing
                 .AddSource(serviceName)
                 .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
-                .AddOtlpExporter(opt => {
+                .AddOtlpExporter(opt =>
+                {
                     // Send traces to Jaeger (the service name in Docker Compose)
                     string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
                         ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");

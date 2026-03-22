@@ -1,5 +1,5 @@
-﻿using SqlViewer.Shared.Constants;
-using SqlViewer.Etl.Api.Repositories;
+﻿using SqlViewer.Etl.Api.Repositories;
+using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.Etl.Api.BusinessLogic;
 

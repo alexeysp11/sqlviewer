@@ -130,7 +130,7 @@ public partial class MainViewModel : ObservableObject, IDisposable
         VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
         _windowService.ShowEtlTableStructureWizard(ConnectionString, databaseType);
     }
-    
+
     private void OpenEtlDataTransfer()
     {
         VelocipedeDatabaseType databaseType = GetDatabaseTypeFromCombo();
