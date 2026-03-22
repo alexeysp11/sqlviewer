@@ -13,6 +13,11 @@ public class InboxMessageEntity
     public long Id { get; set; }
 
     /// <summary>
+    /// User UID.
+    /// </summary>
+    public Guid? UserUid { get; set; }
+
+    /// <summary>
     /// Unique identifier for the business operation to ensure "exactly-once" processing.
     /// </summary>
     public required Guid CorrelationId { get; set; }

@@ -20,7 +20,8 @@ public class DataTransferController(
             {
                 SourceConnectionString = dto.SourceConnectionString,
                 TargetConnectionString = dto.TargetConnectionString,
-                TableName = dto.TableName
+                TableName = dto.TableName,
+                UserUid = dto.UserUid,
             };
 
             StartTransferResponse response = await grpcClient.StartTransferAsync(grpcRequest);
@@ -29,7 +30,7 @@ public class DataTransferController(
             {
                 CorrelationId = Guid.Parse(response.CorrelationId),
                 CreatedAt = response.CreatedAt.ToDateTime(),
-                Message = response.Message
+                Message = response.Message,
             });
         }
         catch (Exception ex)

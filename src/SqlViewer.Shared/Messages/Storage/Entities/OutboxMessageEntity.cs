@@ -11,6 +11,11 @@ public class OutboxMessageEntity
     public long Id { get; set; }
     
     /// <summary>
+    /// User UID.
+    /// </summary>
+    public Guid? UserUid { get; set; }
+
+    /// <summary>
     /// Business operation identifier to track the message flow across services.
     /// </summary>
     public required Guid CorrelationId { get; set; }

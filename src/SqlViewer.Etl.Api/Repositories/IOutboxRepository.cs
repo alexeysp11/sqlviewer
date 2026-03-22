@@ -2,5 +2,5 @@
 
 public interface IOutboxRepository
 {
-    Task AddTransferCommandAsync(Guid correlationId, string topic, string payload);
+    Task AddTransferCommandAsync(Guid userUid, Guid correlationId, string topic, string payload);
 }

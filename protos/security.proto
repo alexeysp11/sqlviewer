@@ -31,6 +31,7 @@ message LoginResponse {
   double expires_in_seconds = 4;
   optional string username = 5;
   AuthRole role = 6;
+  optional string user_uid = 7;
 }
 
 message RefreshAccessTokenRequest {

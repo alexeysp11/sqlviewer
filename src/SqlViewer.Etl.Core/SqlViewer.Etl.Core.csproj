@@ -17,4 +17,8 @@
     <ProjectReference Include="..\SqlViewer.Shared\SqlViewer.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

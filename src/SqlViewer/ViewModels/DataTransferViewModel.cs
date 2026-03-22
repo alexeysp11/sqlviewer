@@ -6,12 +6,14 @@ using SqlViewer.Shared.Dtos.Etl;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using SqlViewer.Models;
 using System.Windows;
+using SqlViewer.StorageContexts;
 
 namespace SqlViewer.ViewModels;
 
 public partial class DataTransferViewModel(
     IEtlDataTransferService etlService,
-    IMetadataApiService metadataService) : ObservableObject
+    IMetadataApiService metadataService,
+    IUserContext userContext) : ObservableObject
 {
     public ObservableCollection<string> SourceTables { get; } = [];
 
@@ -85,13 +87,20 @@ public partial class DataTransferViewModel(
             return;
         }
 
+        if (userContext.CurrentUser.UserUid is null)
+        {
+            ExecutionLogs.Insert(0, "[Error]: ETL transfer is only available to authorized users.");
+            return;
+        }
+
         try
         {
             StartTransferRequestDto request = new()
             {
                 SourceConnectionString = SourceConnectionString,
                 TargetConnectionString = TargetConnectionString,
-                TableName = SelectedTableName
+                TableName = SelectedTableName,
+                UserUid = userContext.CurrentUser.UserUid!.ToString(),
             };
             Guid correlationId = await etlService.StartTransferAsync(request);
 

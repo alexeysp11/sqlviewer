@@ -1,5 +1,5 @@
 services:
-  webapi:
+  api-gateway:
     container_name: api-gateway
     env_file:
       - .env

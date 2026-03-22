@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -36,6 +37,7 @@ namespace SqlViewer.Etl.Core.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserUid = table.Column<Guid>(type: "uuid", nullable: true),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
                     MessageType = table.Column<string>(type: "text", nullable: false),
                     Payload = table.Column<string>(type: "text", nullable: false),
@@ -55,6 +57,7 @@ namespace SqlViewer.Etl.Core.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserUid = table.Column<Guid>(type: "uuid", nullable: true),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
                     Topic = table.Column<string>(type: "text", nullable: false),
                     MessageType = table.Column<string>(type: "text", nullable: false),

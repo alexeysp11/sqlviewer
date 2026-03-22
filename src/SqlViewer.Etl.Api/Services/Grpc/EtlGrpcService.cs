@@ -11,6 +11,9 @@ public sealed class EtlGrpcService(ITransferManager transferManager) : EtlTransf
         StartTransferRequest request,
         ServerCallContext context)
     {
+        if (request.UserUid is null || !Guid.TryParse(request.UserUid, out Guid userUid))
+            throw new InvalidOperationException("ETL transfer is available only to authorized users");
+
         Guid correlationId = Guid.NewGuid();
 
         // Convert request to JSON.
@@ -20,7 +23,7 @@ public sealed class EtlGrpcService(ITransferManager transferManager) : EtlTransf
         string requestJson = formatter.Format(request);
 
         // Start transfer.
-        await transferManager.InitiateTransferAsync(requestJson);
+        await transferManager.InitiateTransferAsync(userUid, requestJson);
 
         return new StartTransferResponse
         {

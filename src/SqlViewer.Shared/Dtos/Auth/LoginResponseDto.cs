@@ -40,6 +40,13 @@ public sealed record LoginResponseDto
     [JsonPropertyName("username")]
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Username { get; init; }
+    
+    /// <summary>
+    /// User UID.
+    /// </summary>
+    [JsonPropertyName("userUid")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public Guid? UserUid { get; init; }
 
     /// <summary>
     /// User authentication role.

@@ -23,6 +23,7 @@ public class TransferManagerTests
     public async Task InitiateTransferAsync_ValidRequest_CallsRepositoryWithCorrectData()
     {
         // Arrange.
+        Guid userUid = Guid.NewGuid();
         string expectedTopic = "test-transfer-topic";
         string requestJson = "{\"Id\": 123, \"Command\": \"Start\"}";
 
@@ -32,7 +33,7 @@ public class TransferManagerTests
             .Returns(expectedTopic);
 
         // Act.
-        Guid correlationId = await _manager.InitiateTransferAsync(requestJson);
+        Guid correlationId = await _manager.InitiateTransferAsync(userUid, requestJson);
 
         // Assert.
         // 1. Check that CorrelationId is not empty
@@ -40,6 +41,7 @@ public class TransferManagerTests
 
         // 2. Check that the repository was called exactly once with the expected parameters
         _repositoryMock.Verify(r => r.AddTransferCommandAsync(
+            It.Is<Guid>(g => g == userUid),
             It.Is<Guid>(g => g == correlationId),
             expectedTopic,
             requestJson),
@@ -51,12 +53,13 @@ public class TransferManagerTests
     {
         // Arrange
         // Simulating the absence of a key in the config
+        Guid userUid = Guid.NewGuid();
         _configurationMock
             .Setup(c => c[ConfigurationKeys.Services.Kafka.Topics.DataTransferCommand])
             .Returns((string)null!);
 
         // Act & Assert
         await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _manager.InitiateTransferAsync("{}"));
+            _manager.InitiateTransferAsync(userUid, "{}"));
     }
 }

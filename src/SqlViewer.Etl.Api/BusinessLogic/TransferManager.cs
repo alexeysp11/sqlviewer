@@ -5,7 +5,7 @@ namespace SqlViewer.Etl.Api.BusinessLogic;
 
 public class TransferManager(IOutboxRepository outboxRepository, IConfiguration configuration) : ITransferManager
 {
-    public async Task<Guid> InitiateTransferAsync(string requestJson)
+    public async Task<Guid> InitiateTransferAsync(Guid userUid, string requestJson)
     {
         Guid correlationId = Guid.NewGuid();
 
@@ -13,7 +13,7 @@ public class TransferManager(IOutboxRepository outboxRepository, IConfiguration 
         if (string.IsNullOrEmpty(topic))
             throw new InvalidOperationException("Kafka topic is not configured.");
 
-        await outboxRepository.AddTransferCommandAsync(correlationId, topic, requestJson);
+        await outboxRepository.AddTransferCommandAsync(userUid, correlationId, topic, requestJson);
 
         return correlationId;
     }

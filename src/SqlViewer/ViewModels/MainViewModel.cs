@@ -6,6 +6,7 @@ using CommunityToolkit.Mvvm.Input;
 using SqlViewer.Constants;
 using SqlViewer.Helpers;
 using SqlViewer.Services;
+using SqlViewer.StorageContexts;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
@@ -36,18 +37,23 @@ public partial class MainViewModel : ObservableObject, IDisposable
     private readonly IQueryBuilderApiService _queryBuilderService;
     private readonly IWindowService _windowService;
 
+    private readonly IUserContext _userContext;
+
     public MainViewModel(
         ISqlApiService sqlApiService,
         IDocsApiService docsApiService,
         IMetadataApiService metadataApiService,
         IQueryBuilderApiService queryBuilderApiService,
-        IWindowService windowService)
+        IWindowService windowService,
+        IUserContext userContext)
     {
         _sqlApiService = sqlApiService;
         _docsApiService = docsApiService;
         _metadataApiService = metadataApiService;
         _queryBuilderService = queryBuilderApiService;
         _windowService = windowService;
+
+        _userContext = userContext;
 
         AvailableRdbms =
         [
@@ -79,6 +85,10 @@ public partial class MainViewModel : ObservableObject, IDisposable
     public IRelayCommand OpenEtlTableStructureCommand { get; }
     public IRelayCommand OpenEtlDataTransferCommand { get; }
     public IAsyncRelayCommand<string> HelpCommand { get; }
+
+    public string WindowTitle => _userContext.CurrentUser?.UserUid is not null
+        ? "sqlviewer: SQL Database Viewer"
+        : "sqlviewer: SQL Database Viewer [Guest]";
 
     private async Task QuerySqlAsync()
     {

@@ -50,6 +50,7 @@ public sealed class IdentityManager(
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             Username = user.Username,
+            UserUid = user.Uid,
             Role = user.Role,
             ExpiresInSeconds = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]) * 60
         };

@@ -10,6 +10,7 @@ message StartTransferRequest {
   string source_connection_string = 1;
   string target_connection_string = 2;
   string table_name = 3;
+  string user_uid = 4;
 }
 
 message StartTransferResponse {
@@ -27,8 +28,8 @@ message TransferStatusUpdate {
   double progress = 2;
   string status_message = 3;
   bool is_final_state = 4;
-  repeated string step_logs = 5; // Новые строки лога саги
-  string status_code = 6; // InProgress, Success, Failed
+  repeated string step_logs = 5;	// New lines in the saga log
+  string status_code = 6;			// InProgress, Success, Failed
 }
 
 service EtlTransferService {
