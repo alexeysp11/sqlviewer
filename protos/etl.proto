@@ -6,6 +6,7 @@ option csharp_namespace = "SqlViewer.Etl";
 
 package etl;
 
+// --- Data transfer ---
 message StartTransferRequest {
   string source_connection_string = 1;
   string target_connection_string = 2;
@@ -19,24 +20,27 @@ message StartTransferResponse {
   string message = 3;
 }
 
-message StatusSubscriptionRequest {
-  string correlation_id = 1; // You can leave it blank to listen to all operations.
+// --- Transfer history ---
+message GetTransferHistoryRequest {
+  string user_uid = 1;
+  optional string cursor_correlation_id = 2;
+  int32 limit = 3;
 }
 
-message TransferStatusUpdate {
+message TransferJobGrpcDto {
   string correlation_id = 1;
-  double progress = 2;
-  string status_message = 3;
-  bool is_final_state = 4;
-  repeated string step_logs = 5;	// New lines in the saga log
-  string status_code = 6;			// InProgress, Success, Failed
+  string source = 2;
+  string target = 3;
+  string status = 4;
+  google.protobuf.Timestamp time = 5;
+}
+
+message GetTransferHistoryResponse {
+  repeated TransferJobGrpcDto items = 1;
+  optional string cursor_correlation_id = 2;
 }
 
 service EtlTransferService {
-  // Launching transfer (Unary)
   rpc StartTransfer (StartTransferRequest) returns (StartTransferResponse);
-
-  // Streaming statuses and logs (Server Streaming)
-  // The client subscribes and receives updates as they appear in Kafka/Redis
-  rpc SubscribeToTransferStatus (StatusSubscriptionRequest) returns (stream TransferStatusUpdate);
+  rpc GetTransferHistory (GetTransferHistoryRequest) returns (GetTransferHistoryResponse);
 }

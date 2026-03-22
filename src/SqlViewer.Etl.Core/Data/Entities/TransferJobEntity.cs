@@ -6,6 +6,7 @@ public class TransferJobEntity
 {
     public long Id { get; set; }
     public required Guid CorrelationId { get; set; }
+    public required Guid UserUid { get; set; }
     public required string Source { get; set; }
     public required string Target { get; set; }
     public TransferStatus CurrentStatus { get; set; }

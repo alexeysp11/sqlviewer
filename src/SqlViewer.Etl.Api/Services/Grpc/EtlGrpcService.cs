@@ -2,10 +2,14 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using SqlViewer.Etl.Api.BusinessLogic;
+using SqlViewer.Shared.Dtos.Etl;
 
 namespace SqlViewer.Etl.Api.Services.Grpc;
 
-public sealed class EtlGrpcService(ITransferManager transferManager) : EtlTransferService.EtlTransferServiceBase
+public sealed class EtlGrpcService(
+    ILogger<EtlGrpcService> logger,
+    ITransferManager transferManager,
+    ITransferHistoryManager transferHistoryManager) : EtlTransferService.EtlTransferServiceBase
 {
     public override async Task<StartTransferResponse> StartTransfer(
         StartTransferRequest request,
@@ -33,16 +37,44 @@ public sealed class EtlGrpcService(ITransferManager transferManager) : EtlTransf
         };
     }
 
-    // We'll leave the stream empty for now or implement it later via ResponseStream.WriteAsync
-    public override async Task SubscribeToTransferStatus(
-        StatusSubscriptionRequest request,
-        IServerStreamWriter<TransferStatusUpdate> responseStream,
+    public override async Task<GetTransferHistoryResponse> GetTransferHistory(
+        GetTransferHistoryRequest request,
         ServerCallContext context)
     {
-        // We listen to Kafka and update the current status in Redis.
-        while (!context.CancellationToken.IsCancellationRequested)
+        try
         {
-            await Task.Delay(1000);
+            if (!Guid.TryParse(request.UserUid, out Guid userUid))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid user UID format"));
+            }
+
+            Guid? cursorGuid = null;
+            if (!string.IsNullOrEmpty(request.CursorCorrelationId) &&
+                Guid.TryParse(request.CursorCorrelationId, out Guid parsedGuid))
+            {
+                cursorGuid = parsedGuid;
+            }
+
+            TransferHistoryResponseDto history = await transferHistoryManager.GetHistoryAsync(userUid, cursorGuid, request.Limit);
+            GetTransferHistoryResponse response = new()
+            {
+                CursorCorrelationId = history.CursorCorrelationId?.ToString() ?? string.Empty
+            };
+            response.Items.AddRange(history.Items.Select(item => new TransferJobGrpcDto
+            {
+                CorrelationId = item.CorrelationId.ToString(),
+                Source = item.Source,
+                Target = item.Target,
+                Status = item.Status,
+                Time = Timestamp.FromDateTime(DateTime.SpecifyKind(item.Time, DateTimeKind.Utc))
+            }));
+            return response;
+        }
+        catch (RpcException) { throw; }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error while fetching transfer history for user {UserUid}", request.UserUid);
+            throw new RpcException(new Status(StatusCode.Internal, ex.Message));
         }
     }
 }

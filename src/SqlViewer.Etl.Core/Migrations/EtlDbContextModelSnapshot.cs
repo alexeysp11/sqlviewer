@@ -73,6 +73,9 @@ namespace SqlViewer.Etl.Core.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("CurrentStatus")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Source")
                         .IsRequired()
                         .HasColumnType("text");
@@ -81,7 +84,19 @@ namespace SqlViewer.Etl.Core.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<Guid>("UserUid")
+                        .HasColumnType("uuid");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("CorrelationId")
+                        .HasDatabaseName("IX_TransferJobs_CorrelationId");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CorrelationId"), "hash");
+
+                    b.HasIndex("CreatedAt", "Id")
+                        .IsDescending()
+                        .HasDatabaseName("IX_TransferJobs_CreatedAt_Id");
 
                     b.ToTable("TransferJobs");
                 });
@@ -94,7 +109,7 @@ namespace SqlViewer.Etl.Core.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
-                    b.Property<Guid>("JobId")
+                    b.Property<Guid>("CorrelationId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("MetadataJson")

@@ -19,7 +19,9 @@ public sealed class Program
 
         // Add services to the container.
         builder.Services.AddScoped<ITransferManager, TransferManager>();
+        builder.Services.AddScoped<ITransferHistoryManager, TransferHistoryManager>();
         builder.Services.AddScoped<IOutboxRepository, OutboxRepository>();
+        builder.Services.AddScoped<ITransferHistoryRepository, TransferHistoryRepository>();
         builder.Services.AddGrpc();
 
         // DbContexts.

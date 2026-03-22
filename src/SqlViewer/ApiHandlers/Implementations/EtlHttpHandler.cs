@@ -69,4 +69,41 @@ public sealed class EtlHttpHandler : HttpHandler, IEtlHttpHandler
         return await _httpClient.GetFromJsonAsync<TransferStatusResponseDto>($"api/etl/status/{correlationId}")
            ?? throw new InvalidOperationException($"Failed to deserialize {nameof(TransferStatusResponseDto)}");
     }
+
+    public async Task<StartTransferResponseDto> GetHistoryAsync(StartTransferRequestDto requestDto)
+    {
+        UriBuilder uriBuilder = new()
+        {
+            Scheme = App.AppSettings.ServerScheme,
+            Host = App.AppSettings.ServerHost,
+            Port = App.AppSettings.ServerPort,
+            Path = RestApiPaths.Etl.DataTransfer.GetHistory,
+        };
+        string url = uriBuilder.Uri.ToString();
+
+        // Authorization.
+        using HttpRequestMessage requestMessage = new(HttpMethod.Post, url);
+        requestMessage.Headers.Authorization = new AuthenticationHeaderValue(_userContext.TokenType, _userContext.AccessToken);
+        requestMessage.Content = new StringContent(JsonSerializer.Serialize(requestDto), Encoding.UTF8, "application/json");
+
+        // Request.
+        HttpResponseMessage response = await _httpClient.SendAsync(requestMessage);
+        string jsonResponse = await response.Content.ReadAsStringAsync();
+        if (!response.IsSuccessStatusCode)
+        {
+            string errorMessage;
+            try
+            {
+                ProblemDetailsResponseDto problem = JsonSerializer.Deserialize<ProblemDetailsResponseDto>(jsonResponse, _jsonSerializerOptions);
+                errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
+            }
+            catch
+            {
+                errorMessage = string.IsNullOrEmpty(jsonResponse) ? $"Status code: {response.StatusCode}" : jsonResponse;
+            }
+            throw new Exception(errorMessage);
+        }
+        StartTransferResponseDto responseDto = JsonSerializer.Deserialize<StartTransferResponseDto>(jsonResponse, _jsonSerializerOptions);
+        return responseDto;
+    }
 }

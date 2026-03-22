@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -77,8 +78,10 @@ namespace SqlViewer.Etl.Core.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserUid = table.Column<Guid>(type: "uuid", nullable: false),
                     Source = table.Column<string>(type: "text", nullable: false),
                     Target = table.Column<string>(type: "text", nullable: false),
+                    CurrentStatus = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
@@ -92,7 +95,7 @@ namespace SqlViewer.Etl.Core.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    JobId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     MetadataJson = table.Column<string>(type: "text", nullable: true),
                     Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -107,6 +110,18 @@ namespace SqlViewer.Etl.Core.Migrations
                         principalTable: "TransferJobs",
                         principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransferJobs_CorrelationId",
+                table: "TransferJobs",
+                column: "CorrelationId")
+                .Annotation("Npgsql:IndexMethod", "hash");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransferJobs_CreatedAt_Id",
+                table: "TransferJobs",
+                columns: new[] { "CreatedAt", "Id" },
+                descending: new bool[0]);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransferStatusLogs_TransferJobEntityId",

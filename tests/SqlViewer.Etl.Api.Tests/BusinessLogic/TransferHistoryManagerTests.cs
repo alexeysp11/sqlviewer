@@ -29,6 +29,7 @@ public sealed class TransferHistoryManagerTests
             new()
             {
                 CorrelationId = Guid.NewGuid(),
+                UserUid = userUid,
                 Source = "SourceDB",
                 Target = "TargetDB",
                 CurrentStatus = TransferStatus.Completed,
@@ -60,10 +61,10 @@ public sealed class TransferHistoryManagerTests
         Guid lastGuid = Guid.NewGuid();
         List<TransferJobEntity> entities =
         [
-            new() { CorrelationId = Guid.NewGuid(), Source = "S-01", Target = "T-01", CurrentStatus = TransferStatus.Failed },
-            new() { CorrelationId = Guid.NewGuid(), Source = "S-02", Target = "T-02", CurrentStatus = TransferStatus.Started },
-            new() { CorrelationId = Guid.NewGuid(), Source = "S-03", Target = "T-03", CurrentStatus = TransferStatus.Progress },
-            new() { CorrelationId = lastGuid, Source = "S-04", Target = "T-04", CurrentStatus = TransferStatus.Completed }
+            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, Source = "S-01", Target = "T-01", CurrentStatus = TransferStatus.Failed },
+            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, Source = "S-02", Target = "T-02", CurrentStatus = TransferStatus.Started },
+            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, Source = "S-03", Target = "T-03", CurrentStatus = TransferStatus.Progress },
+            new() { CorrelationId = lastGuid, UserUid = userUid, Source = "S-04", Target = "T-04", CurrentStatus = TransferStatus.Completed }
         ];
 
         _repositoryMock

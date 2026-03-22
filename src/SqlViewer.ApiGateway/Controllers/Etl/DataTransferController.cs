@@ -13,10 +13,11 @@ public class DataTransferController(
     ILogger<MetadataApiController> logger,
     EtlTransferService.EtlTransferServiceClient grpcClient) : ControllerBase
 {
+    private const int MinDataSize = 20;
     private const int MaxDataSize = 100;
 
     [HttpPost(RestApiPaths.Etl.DataTransfer.Start)]
-    public async Task<IActionResult> Start([FromBody] StartTransferRequestDto dto)
+    public async Task<ActionResult<StartTransferResponseDto>> Start([FromBody] StartTransferRequestDto dto)
     {
         try
         {
@@ -53,16 +54,44 @@ public class DataTransferController(
     }
 
     [HttpGet(RestApiPaths.Etl.DataTransfer.GetHistory)]
-    public async Task<IActionResult> GetHistory(
-        [FromRoute] Guid userUid,
-        [FromQuery(Name = "cursor")] DateTime lastCreatedAt,
-        [FromQuery(Name = "limit")] int limit)
+    public async Task<ActionResult<TransferHistoryResponseDto>> GetHistory(
+    [FromRoute] Guid userUid,
+    [FromQuery] Guid? correlationId,
+    [FromQuery] int limit = MaxDataSize)
     {
-        if (limit > MaxDataSize)
-            limit = MaxDataSize;
+        if (limit <= 0) limit = MinDataSize;
+        if (limit > MaxDataSize) limit = MaxDataSize;
 
-        //var status = await grpcClient.GetTransferStatusAsync(new { Id = userUid });
-        //return Ok(status);
-        return Ok($"userUid: {userUid}, cursor: {lastCreatedAt}, limit: {limit}");
+        try
+        {
+            GetTransferHistoryRequest request = new()
+            {
+                UserUid = userUid.ToString(),
+                CursorCorrelationId = correlationId?.ToString() ?? string.Empty,
+                Limit = limit
+            };
+
+            GetTransferHistoryResponse grpcResponse = await grpcClient.GetTransferHistoryAsync(request);
+            TransferHistoryResponseDto result = new()
+            {
+                CursorCorrelationId = Guid.TryParse(grpcResponse.CursorCorrelationId, out Guid nextGuid)
+                    ? nextGuid
+                    : null,
+                Items = grpcResponse.Items.Select(item => new TransferJobDto
+                {
+                    CorrelationId = Guid.Parse(item.CorrelationId),
+                    Source = item.Source,
+                    Target = item.Target,
+                    Status = item.Status,
+                    Time = item.Time.ToDateTime() // Converting from google.protobuf.Timestamp
+                }).ToList()
+            };
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error while fetching history for user {UserUid}", userUid);
+            return StatusCode(503, ex.Message);
+        }
     }
 }
