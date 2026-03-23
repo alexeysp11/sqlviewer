@@ -61,35 +61,28 @@
                 </ScrollViewer>
             </TabItem>
 
-            <!-- Tab 2: Monitoring, statuses -->
-            <TabItem Header="Status &amp; History">
+            <!-- Tab 2: Current status and logs -->
+            <TabItem Header="Status">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <!-- Active dashboard -->
                         <RowDefinition Height="*"/>
-                        <!-- History -->
+                        <!-- Dashboard -->
                         <RowDefinition Height="150"/>
                         <!-- Logs -->
                     </Grid.RowDefinitions>
 
-                    <!-- Active Operations -->
                     <GroupBox Header="Live Transfer Dashboard" Margin="0,0,0,10">
                         <Grid>
-                            <!-- Limit the height so that the Dashboard doesn't crowd out the History -->
-                            <ScrollViewer MaxHeight="200" VerticalScrollBarVisibility="Auto">
-                                <ItemsControl ItemsSource="{Binding ActiveTransfers}">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <ItemsControl x:Name="ActiveItemsControl" ItemsSource="{Binding ActiveTransfers}">
                                     <ItemsControl.ItemTemplate>
                                         <DataTemplate>
                                             <Border BorderBrush="#EEE" BorderThickness="0,0,0,1" Padding="8">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
                                                         <ColumnDefinition Width="180"/>
-                                                        <!-- Table name -->
                                                         <ColumnDefinition Width="*"/>
-                                                        <!-- Progress -->
                                                         <ColumnDefinition Width="80"/>
-                                                        <!-- Button -->
                                                     </Grid.ColumnDefinitions>
 
                                                     <StackPanel VerticalAlignment="Center">
@@ -97,17 +90,8 @@
                                                         <TextBlock Text="{Binding StatusMessage}" FontSize="9" Foreground="Gray"/>
                                                     </StackPanel>
 
-                                                    <ProgressBar Grid.Column="1" 
-                                                                 Value="{Binding ProgressPercentage}" 
-                                                                 Height="12" 
-                                                                 Margin="10,0"
-                                                                 VerticalAlignment="Center"/>
-                                                    <Button Grid.Column="2" 
-                                                            Content="Stop" 
-                                                            Command="{Binding CancelCommand}"
-                                                            FontSize="11"
-                                                            Background="#FFF0F0" 
-                                                            Foreground="DarkRed"/>
+                                                    <ProgressBar Grid.Column="1" Value="{Binding ProgressPercentage}" Height="12" Margin="10,0" VerticalAlignment="Center"/>
+                                                    <Button Grid.Column="2" Content="Stop" Command="{Binding CancelCommand}" FontSize="11" Background="#FFF0F0" Foreground="DarkRed"/>
                                                 </Grid>
                                             </Border>
                                         </DataTemplate>
@@ -115,17 +99,37 @@
                                 </ItemsControl>
                             </ScrollViewer>
 
-                            <!-- A stub if nothing happens -->
-                            <TextBlock Text="No active transfers" 
+                            <!-- A caption that disappears if there are elements -->
+                            <TextBlock x:Name="EmptyStateText" 
+                                       Text="No active transfers" 
                                        HorizontalAlignment="Center" 
                                        VerticalAlignment="Center" 
-                                       Foreground="LightGray"
-                                       Visibility="{Binding ActiveTransfers.Count}"/>
+                                       Foreground="LightGray">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <!-- If there are no elements in the collection, show the text -->
+                                            <DataTrigger Binding="{Binding ActiveTransfers.Count}" Value="0">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </Grid>
                     </GroupBox>
 
-                    <!-- History -->
-                    <GroupBox Header="Transfer History" Grid.Row="1" Margin="0,0,0,5">
+                    <GroupBox Header="Execution Logs" Grid.Row="1">
+                        <ListBox ItemsSource="{Binding ExecutionLogs}" Background="#1E1E1E" Foreground="#D4D4D4" FontFamily="Consolas" FontSize="11"/>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+
+            <!-- Tab 3: History -->
+            <TabItem Header="History">
+                <Grid Margin="10">
+                    <GroupBox Header="Transfer History">
                         <DataGrid ItemsSource="{Binding TransferHistory}" AutoGenerateColumns="False" IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Time" Binding="{Binding StartTime, StringFormat='HH:mm:ss'}"/>
@@ -134,11 +138,6 @@
                                 <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
                             </DataGrid.Columns>
                         </DataGrid>
-                    </GroupBox>
-
-                    <!-- Logs -->
-                    <GroupBox Header="Execution Logs" Grid.Row="2">
-                        <ListBox ItemsSource="{Binding ExecutionLogs}" Background="#1E1E1E" Foreground="#D4D4D4" FontFamily="Consolas" FontSize="11"/>
                     </GroupBox>
                 </Grid>
             </TabItem>
