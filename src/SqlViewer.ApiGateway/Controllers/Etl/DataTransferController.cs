@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Controllers.Metadata;
 using SqlViewer.Etl;
+using SqlViewer.Etl.Api.Mappings;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Dtos.Etl;
 
@@ -25,6 +26,8 @@ public class DataTransferController(
             {
                 SourceConnectionString = dto.SourceConnectionString,
                 TargetConnectionString = dto.TargetConnectionString,
+                SourceDatabaseType = EtlMapper.MapToDatabaseType(dto.SourceDatabaseType),
+                TargetDatabaseType = EtlMapper.MapToDatabaseType(dto.TargetDatabaseType),
                 TableName = dto.TableName,
                 UserUid = dto.UserUid,
             };
@@ -80,8 +83,10 @@ public class DataTransferController(
                 Items = grpcResponse.Items.Select(item => new TransferJobDto
                 {
                     CorrelationId = Guid.Parse(item.CorrelationId),
-                    Source = item.Source,
-                    Target = item.Target,
+                    SourceConnectionString = item.SourceConnectionString,
+                    TargetConnectionString = item.TargetConnectionString,
+                    SourceDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(item.SourceDatabaseType),
+                    TargetDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(item.TargetDatabaseType),
                     Status = item.Status,
                     Time = item.Time.ToDateTime() // Converting from google.protobuf.Timestamp
                 }).ToList()

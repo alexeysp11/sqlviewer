@@ -4,7 +4,7 @@ using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.Etl.Core.Data.DbContexts;
 
-public class EtlDbContext(DbContextOptions<EtlDbContext> options) : DbContext(options)
+public sealed class EtlDbContext(DbContextOptions<EtlDbContext> options) : DbContext(options)
 {
     public DbSet<DataTransferSagaStateEntity> DataTransferSagaStates { get; set; }
     public DbSet<TransferJobEntity> TransferJobs { get; set; }

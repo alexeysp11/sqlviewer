@@ -2,6 +2,7 @@
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using SqlViewer.Etl.Api.BusinessLogic;
+using SqlViewer.Etl.Api.Mappings;
 using SqlViewer.Shared.Dtos.Etl;
 
 namespace SqlViewer.Etl.Api.Services.Grpc;
@@ -23,6 +24,8 @@ public sealed class EtlGrpcService(
         {
             SourceConnectionString = request.SourceConnectionString,
             TargetConnectionString = request.TargetConnectionString,
+            SourceDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(request.SourceDatabaseType),
+            TargetDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(request.TargetDatabaseType),
             TableName = request.TableName,
             UserUid = request.UserUid
         };
@@ -68,8 +71,10 @@ public sealed class EtlGrpcService(
             response.Items.AddRange(history.Items.Select(item => new TransferJobGrpcDto
             {
                 CorrelationId = item.CorrelationId.ToString(),
-                Source = item.Source,
-                Target = item.Target,
+                SourceConnectionString = item.SourceConnectionString,
+                TargetConnectionString = item.TargetConnectionString,
+                SourceDatabaseType = EtlMapper.MapToDatabaseType(item.SourceDatabaseType),
+                TargetDatabaseType = EtlMapper.MapToDatabaseType(item.TargetDatabaseType),
                 Status = item.Status,
                 Time = Timestamp.FromDateTime(DateTime.SpecifyKind(item.Time, DateTimeKind.Utc))
             }));

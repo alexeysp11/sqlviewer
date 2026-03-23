@@ -108,6 +108,8 @@ public partial class DataTransferViewModel(
             {
                 SourceConnectionString = SourceConnectionString,
                 TargetConnectionString = TargetConnectionString,
+                SourceDatabaseType = SourceType,
+                TargetDatabaseType = TargetType,
                 TableName = SelectedTableName,
                 UserUid = userContext.CurrentUser.UserUid!.ToString(),
             };

@@ -79,8 +79,10 @@ namespace SqlViewer.Etl.Core.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserUid = table.Column<Guid>(type: "uuid", nullable: false),
-                    Source = table.Column<string>(type: "text", nullable: false),
-                    Target = table.Column<string>(type: "text", nullable: false),
+                    SourceConnectionString = table.Column<string>(type: "text", nullable: false),
+                    TargetConnectionString = table.Column<string>(type: "text", nullable: false),
+                    SourceDatabaseType = table.Column<int>(type: "integer", nullable: false),
+                    TargetDatabaseType = table.Column<int>(type: "integer", nullable: false),
                     CurrentStatus = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

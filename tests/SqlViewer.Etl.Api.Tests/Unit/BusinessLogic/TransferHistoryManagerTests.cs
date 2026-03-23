@@ -5,6 +5,7 @@ using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Etl.Core.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Dtos.Etl;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Etl.Api.Tests.Unit.BusinessLogic;
 
@@ -30,8 +31,10 @@ public sealed class TransferHistoryManagerTests
             {
                 CorrelationId = Guid.NewGuid(),
                 UserUid = userUid,
-                Source = "SourceDB",
-                Target = "TargetDB",
+                SourceConnectionString = "SourceDB",
+                TargetConnectionString = "TargetDB",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
                 CurrentStatus = TransferStatus.Completed,
                 CreatedAt = DateTime.UtcNow
             }
@@ -48,7 +51,7 @@ public sealed class TransferHistoryManagerTests
         result.Items.Should().HaveCount(1);
         TransferJobDto dto = result.Items.First();
         dto.CorrelationId.Should().Be(entities[0].CorrelationId);
-        dto.Source.Should().Be(entities[0].Source);
+        dto.SourceConnectionString.Should().Be(entities[0].SourceConnectionString);
         dto.Status.Should().Be(TransferStatus.Completed.ToString());
         dto.Time.Should().Be(entities[0].CreatedAt);
     }
@@ -61,10 +64,46 @@ public sealed class TransferHistoryManagerTests
         Guid lastGuid = Guid.NewGuid();
         List<TransferJobEntity> entities =
         [
-            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, Source = "S-01", Target = "T-01", CurrentStatus = TransferStatus.Failed },
-            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, Source = "S-02", Target = "T-02", CurrentStatus = TransferStatus.Started },
-            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, Source = "S-03", Target = "T-03", CurrentStatus = TransferStatus.Progress },
-            new() { CorrelationId = lastGuid, UserUid = userUid, Source = "S-04", Target = "T-04", CurrentStatus = TransferStatus.Completed }
+            new()
+            {
+                CorrelationId = Guid.NewGuid(),
+                UserUid = userUid,
+                SourceConnectionString = "S-01",
+                TargetConnectionString = "T-01",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                CurrentStatus = TransferStatus.Failed
+            },
+            new()
+            {
+                CorrelationId = Guid.NewGuid(),
+                UserUid = userUid,
+                SourceConnectionString = "S-02",
+                TargetConnectionString = "T-02",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                CurrentStatus = TransferStatus.Started
+            },
+            new()
+            {
+                CorrelationId = Guid.NewGuid(),
+                UserUid = userUid,
+                SourceConnectionString = "S-03",
+                TargetConnectionString = "T-03",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                CurrentStatus = TransferStatus.Progress
+            },
+            new()
+            {
+                CorrelationId = lastGuid,
+                UserUid = userUid,
+                SourceConnectionString = "S-04",
+                TargetConnectionString = "T-04",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                CurrentStatus = TransferStatus.Completed
+            }
         ];
 
         _repositoryMock

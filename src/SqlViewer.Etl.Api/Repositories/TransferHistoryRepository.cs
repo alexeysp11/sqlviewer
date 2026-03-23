@@ -24,7 +24,16 @@ WITH cursor_record AS (
     WHERE ""CorrelationId"" = @LastCorrelationId AND ""UserUid"" = @OwnerUserUid
     LIMIT 1
 )
-SELECT ""Id"", ""CorrelationId"", ""UserUid"", ""CurrentStatus"", ""Source"", ""Target"", ""CreatedAt""
+SELECT
+    ""Id"",
+    ""CorrelationId"",
+    ""UserUid"",
+    ""CurrentStatus"",
+    ""SourceConnectionString"",
+    ""TargetConnectionString"",
+    ""SourceDatabaseType"",
+    ""TargetDatabaseType"",
+    ""CreatedAt""
 FROM ""TransferJobs""
 WHERE
     ""UserUid"" = @OwnerUserUid
@@ -55,8 +64,10 @@ LIMIT @Limit;";
         {
             CorrelationId = correlationId,
             UserUid = userUid,
-            Source = requestDto.SourceConnectionString,
-            Target = requestDto.TargetConnectionString,
+            SourceConnectionString = requestDto.SourceConnectionString,
+            TargetConnectionString = requestDto.TargetConnectionString,
+            SourceDatabaseType = requestDto.SourceDatabaseType,
+            TargetDatabaseType = requestDto.TargetDatabaseType,
             CurrentStatus = TransferStatus.None,
         });
         await dbContext.SaveChangesAsync();

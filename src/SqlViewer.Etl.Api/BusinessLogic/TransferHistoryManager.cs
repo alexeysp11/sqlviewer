@@ -10,8 +10,10 @@ public sealed class TransferHistoryManager(ITransferHistoryRepository repository
         List<TransferJobDto> transferJobs = (await repository.GetHistoryAsync(userUid, correlationId, limit)).Select(e => new TransferJobDto
         {
             CorrelationId = e.CorrelationId,
-            Source = e.Source,
-            Target = e.Target,
+            SourceConnectionString = e.SourceConnectionString,
+            TargetConnectionString = e.TargetConnectionString,
+            SourceDatabaseType = e.SourceDatabaseType,
+            TargetDatabaseType = e.TargetDatabaseType,
             Status = e.CurrentStatus.ToString(),
             Time = e.CreatedAt
         }).ToList();

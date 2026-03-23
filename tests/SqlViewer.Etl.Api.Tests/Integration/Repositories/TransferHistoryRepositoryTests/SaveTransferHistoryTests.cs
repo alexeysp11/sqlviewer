@@ -5,6 +5,7 @@ using SqlViewer.Etl.Api.Tests.Integration.Infrastructure;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Dtos.Etl;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Etl.Api.Tests.Integration.Repositories.TransferHistoryRepositoryTests;
 
@@ -31,6 +32,8 @@ public sealed class SaveTransferHistoryTests(PostgresFixture fixture)
             UserUid = userUid.ToString(),
             SourceConnectionString = "src_conn",
             TargetConnectionString = "target_conn",
+            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+            TargetDatabaseType = VelocipedeDatabaseType.SQLite,
             TableName = "Test",
         };
 
@@ -41,7 +44,7 @@ public sealed class SaveTransferHistoryTests(PostgresFixture fixture)
         Core.Data.Entities.TransferJobEntity? saved = await context.TransferJobs.FirstOrDefaultAsync(x => x.CorrelationId == correlationId);
         saved.Should().NotBeNull();
         saved!.UserUid.Should().Be(userUid);
-        saved.Source.Should().Be("src_conn");
+        saved.SourceConnectionString.Should().Be("src_conn");
         saved.CurrentStatus.Should().Be(TransferStatus.None);
     }
 
@@ -59,6 +62,8 @@ public sealed class SaveTransferHistoryTests(PostgresFixture fixture)
             UserUid = invalidUid,
             SourceConnectionString = "src",
             TargetConnectionString = "target",
+            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+            TargetDatabaseType = VelocipedeDatabaseType.SQLite,
             TableName = "table"
         };
 

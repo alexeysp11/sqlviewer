@@ -76,13 +76,19 @@ namespace SqlViewer.Etl.Core.Migrations
                     b.Property<int>("CurrentStatus")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Source")
+                    b.Property<string>("SourceConnectionString")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Target")
+                    b.Property<int>("SourceDatabaseType")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("TargetConnectionString")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("TargetDatabaseType")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("UserUid")
                         .HasColumnType("uuid");

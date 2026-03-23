@@ -145,8 +145,10 @@
                                 IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Time" Binding="{Binding Time, StringFormat='yyyy-MM-dd HH:mm:ss'}" Width="150"/>
-                                <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="*"/>
-                                <DataGridTextColumn Header="Target" Binding="{Binding Target}" Width="*"/>
+                                <DataGridTextColumn Header="Source Connection" Binding="{Binding SourceConnectionString}" Width="*"/>
+                                <DataGridTextColumn Header="Source Database" Binding="{Binding SourceDatabaseType}" Width="*"/>
+                                <DataGridTextColumn Header="Target Connection" Binding="{Binding TargetConnectionString}" Width="*"/>
+                                <DataGridTextColumn Header="Target Database" Binding="{Binding TargetDatabaseType}" Width="*"/>
                                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>

@@ -4,6 +4,7 @@ using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Etl.Api.Tests.Integration.Infrastructure;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Etl.Api.Tests.Integration.Repositories.TransferHistoryRepositoryTests;
 
@@ -30,8 +31,10 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
             CorrelationId = Guid.NewGuid(),
             UserUid = userUid,
             CreatedAt = DateTime.UtcNow.AddMinutes(-1),
-            Source = "src",
-            Target = "dst"
+            SourceConnectionString = "src",
+            TargetConnectionString = "dst",
+            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+            TargetDatabaseType = VelocipedeDatabaseType.SQLite
         });
         await context.SaveChangesAsync();
 
@@ -52,8 +55,26 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
         Guid userUid = Guid.NewGuid();
 
         context.TransferJobs.AddRange(
-            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, CreatedAt = DateTime.UtcNow.AddMinutes(-10), Source = "s", Target = "t" },
-            new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, CreatedAt = DateTime.UtcNow.AddMinutes(-5), Source = "s", Target = "t" }
+            new()
+            {
+                CorrelationId = Guid.NewGuid(),
+                UserUid = userUid,
+                CreatedAt = DateTime.UtcNow.AddMinutes(-10),
+                SourceConnectionString = "s",
+                TargetConnectionString = "t",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite
+            },
+            new()
+            {
+                CorrelationId = Guid.NewGuid(),
+                UserUid = userUid,
+                CreatedAt = DateTime.UtcNow.AddMinutes(-5),
+                SourceConnectionString = "s",
+                TargetConnectionString = "t",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite
+            }
         );
         await context.SaveChangesAsync();
 
@@ -74,9 +95,36 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
         Guid userUid = Guid.NewGuid();
         Guid cursorId = Guid.NewGuid();
 
-        TransferJobEntity oldJob = new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, CreatedAt = DateTime.UtcNow.AddHours(-1), Source = "s", Target = "t" };
-        TransferJobEntity cursorJob = new() { CorrelationId = cursorId, UserUid = userUid, CreatedAt = DateTime.UtcNow, Source = "s", Target = "t" };
-        TransferJobEntity newJob = new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, CreatedAt = DateTime.UtcNow.AddHours(1), Source = "s", Target = "t" };
+        TransferJobEntity oldJob = new()
+        {
+            CorrelationId = Guid.NewGuid(),
+            UserUid = userUid,
+            CreatedAt = DateTime.UtcNow.AddHours(-1),
+            SourceConnectionString = "s",
+            TargetConnectionString = "t",
+            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+            TargetDatabaseType = VelocipedeDatabaseType.SQLite
+        };
+        TransferJobEntity cursorJob = new()
+        {
+            CorrelationId = cursorId,
+            UserUid = userUid,
+            CreatedAt = DateTime.UtcNow,
+            SourceConnectionString = "s",
+            TargetConnectionString = "t",
+            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+            TargetDatabaseType = VelocipedeDatabaseType.SQLite
+        };
+        TransferJobEntity newJob = new()
+        {
+            CorrelationId = Guid.NewGuid(),
+            UserUid = userUid,
+            CreatedAt = DateTime.UtcNow.AddHours(1),
+            SourceConnectionString = "s",
+            TargetConnectionString = "t",
+            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+            TargetDatabaseType = VelocipedeDatabaseType.SQLite
+        };
 
         context.TransferJobs.AddRange(oldJob, cursorJob, newJob);
         await context.SaveChangesAsync();
@@ -98,7 +146,17 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
         Guid userUid = Guid.NewGuid();
 
         for (int i = 0; i < 5; i++)
-            context.TransferJobs.Add(new() { CorrelationId = Guid.NewGuid(), UserUid = userUid, Source = "s", Target = "t" });
+        {
+            context.TransferJobs.Add(new()
+            {
+                CorrelationId = Guid.NewGuid(),
+                UserUid = userUid,
+                SourceConnectionString = "s",
+                TargetConnectionString = "t",
+                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+            });
+        }
         await context.SaveChangesAsync();
 
         // Act

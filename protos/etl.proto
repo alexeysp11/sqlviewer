@@ -6,12 +6,28 @@ option csharp_namespace = "SqlViewer.Etl";
 
 package etl;
 
+enum DatabaseType {
+  DATABASE_TYPE_NONE = 0;
+  DATABASE_TYPE_IN_MEMORY = 1;
+  DATABASE_TYPE_SQLITE = 2;
+  DATABASE_TYPE_POSTGRESQL = 3;
+  DATABASE_TYPE_MSSQL = 4;
+  DATABASE_TYPE_MYSQL = 5;
+  DATABASE_TYPE_MARIADB = 6;
+  DATABASE_TYPE_HSQLDB = 7;
+  DATABASE_TYPE_ORACLE = 8;
+  DATABASE_TYPE_CLICKHOUSE = 9;
+  DATABASE_TYPE_FIREBIRD = 10;
+}
+
 // --- Data transfer ---
 message StartTransferRequest {
   string source_connection_string = 1;
   string target_connection_string = 2;
   string table_name = 3;
   string user_uid = 4;
+  DatabaseType source_database_type = 5;
+  DatabaseType target_database_type = 6;
 }
 
 message StartTransferResponse {
@@ -29,10 +45,12 @@ message GetTransferHistoryRequest {
 
 message TransferJobGrpcDto {
   string correlation_id = 1;
-  string source = 2;
-  string target = 3;
+  string source_connection_string = 2;
+  string target_connection_string = 3;
   string status = 4;
   google.protobuf.Timestamp time = 5;
+  DatabaseType source_database_type = 6;
+  DatabaseType target_database_type = 7;
 }
 
 message GetTransferHistoryResponse {
