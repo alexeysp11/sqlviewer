@@ -53,14 +53,6 @@ public partial class DataTransferViewModel(
     [ObservableProperty]
     private bool _isLoadingHistory;
 
-    [ObservableProperty]
-    private bool _hasMoreHistory = true;
-
-    /// <summary>
-    /// Last received cursor for ths transfer jobs.
-    /// </summary>
-    private Guid? _cursorTransferJobId;
-
     /// <summary>
     /// Transfer job limit.
     /// </summary>
@@ -144,7 +136,8 @@ public partial class DataTransferViewModel(
     [RelayCommand]
     public async Task LoadMoreHistoryAsync()
     {
-        if (IsLoadingHistory || !HasMoreHistory) return;
+        if (IsLoadingHistory)
+            return;
 
         IsLoadingHistory = true;
         try
@@ -152,20 +145,15 @@ public partial class DataTransferViewModel(
             if (userContext?.CurrentUser?.UserUid is null)
                 throw new InvalidOperationException("Data transfer history is only available to authorized users.");
 
+            // TODO: Pass null as a cursor, since pagination does not work correctly on the backend.
             TransferHistoryResponseDto response = await etlService.GetHistoryAsync(
                 userUid: (Guid)userContext.CurrentUser.UserUid,
-                cursorTransferJobId: _cursorTransferJobId,
+                cursorTransferJobId: null,
                 limit: Limit);
 
-            if (response.Items.Count != 0)
-            {
-                foreach (TransferJobDto item in response.Items)
-                    TransferHistory.Add(item);
-
-                _cursorTransferJobId = response.CursorCorrelationId;
-            }
-
-            HasMoreHistory = _cursorTransferJobId.HasValue;
+            TransferHistory.Clear();
+            foreach (TransferJobDto item in response.Items)
+                TransferHistory.Add(item);
         }
         catch (Exception ex)
         {

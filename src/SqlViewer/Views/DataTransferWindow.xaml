@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SqlViewer.Views"
+        xmlns:sys="clr-namespace:System.Windows;assembly=PresentationFramework"
         mc:Ignorable="d"
         WindowStartupLocation="CenterOwner"
         Title="sqlviewer: ETL" Height="450" Width="800">
+
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Window.Resources>
 
     <Grid Margin="5">
         <TabControl>
@@ -150,21 +155,14 @@
                     <!-- History loading control button -->
                     <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
                         <ProgressBar IsIndeterminate="True" 
-                                    Width="100" Height="10" 
-                                    Margin="0,0,10,0"
-                                    Visibility="{Binding IsLoadingHistory}"/>
-                        
-                        <Button Content="Load More"
+                                Width="100" Height="10" 
+                                Margin="0,0,10,0"
+                                Visibility="{Binding IsLoadingHistory, Converter={StaticResource BoolToVis}}"/>
+
+                        <Button Content="Refresh"
                                 Command="{Binding LoadMoreHistoryCommand}"
                                 Padding="15,5"
-                                Margin="0,0,10,0"
-                                Visibility="{Binding HasMoreHistory}"/>
-                        
-                        <TextBlock Text="All records loaded" 
-                                Foreground="Gray"
-                                Margin="0,0,10,0"
-                                VerticalAlignment="Center"
-                                Visibility="{Binding HasMoreHistory}"/>
+                                Margin="0,0,10,0"/>
                     </StackPanel>
                 </Grid>
             </TabItem>
