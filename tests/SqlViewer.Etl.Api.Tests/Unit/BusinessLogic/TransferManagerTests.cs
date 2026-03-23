@@ -4,7 +4,7 @@ using SqlViewer.Etl.Api.BusinessLogic;
 using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Shared.Constants;
 
-namespace SqlViewer.Etl.Api.Tests.BusinessLogic;
+namespace SqlViewer.Etl.Api.Tests.Unit.BusinessLogic;
 
 public sealed class TransferManagerTests
 {

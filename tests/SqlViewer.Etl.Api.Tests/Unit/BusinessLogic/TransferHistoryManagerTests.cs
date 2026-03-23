@@ -6,7 +6,7 @@ using SqlViewer.Etl.Core.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Dtos.Etl;
 
-namespace SqlViewer.Etl.Api.Tests.BusinessLogic;
+namespace SqlViewer.Etl.Api.Tests.Unit.BusinessLogic;
 
 public sealed class TransferHistoryManagerTests
 {

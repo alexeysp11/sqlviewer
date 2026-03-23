@@ -24,7 +24,7 @@ WITH cursor_record AS (
     WHERE ""CorrelationId"" = @LastCorrelationId AND ""UserUid"" = @OwnerUserUid
     LIMIT 1
 )
-SELECT ""Id"", ""CorrelationId"", ""CurrentStatus"", ""Source"", ""Target"", ""CreatedAt""
+SELECT ""Id"", ""CorrelationId"", ""UserUid"", ""CurrentStatus"", ""Source"", ""Target"", ""CreatedAt""
 FROM ""TransferJobs""
 WHERE
     ""UserUid"" = @OwnerUserUid
@@ -48,14 +48,17 @@ LIMIT @Limit;";
 
     public async Task SaveTransferJobHistoryAsync(Guid correlationId, StartTransferRequestDto requestDto)
     {
+        if (!Guid.TryParse(requestDto.UserUid, out Guid userUid))
+            throw new InvalidOperationException($"Unable to save transfer job history, invalid user UID: {requestDto.UserUid}");
+
         await dbContext.TransferJobs.AddAsync(new()
         {
             CorrelationId = correlationId,
-            UserUid = Guid.Parse(requestDto.UserUid),
+            UserUid = userUid,
             Source = requestDto.SourceConnectionString,
             Target = requestDto.TargetConnectionString,
             CurrentStatus = TransferStatus.None,
         });
-        dbContext.SaveChanges();
+        await dbContext.SaveChangesAsync();
     }
 }
