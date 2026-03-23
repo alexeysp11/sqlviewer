@@ -87,6 +87,7 @@ public class DataTransferController(
                     TargetConnectionString = item.TargetConnectionString,
                     SourceDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(item.SourceDatabaseType),
                     TargetDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(item.TargetDatabaseType),
+                    TableName = item.TableName,
                     Status = item.Status,
                     Time = item.Time.ToDateTime() // Converting from google.protobuf.Timestamp
                 }).ToList()

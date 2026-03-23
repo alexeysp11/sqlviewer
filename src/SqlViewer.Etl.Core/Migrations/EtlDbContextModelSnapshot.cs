@@ -83,6 +83,10 @@ namespace SqlViewer.Etl.Core.Migrations
                     b.Property<int>("SourceDatabaseType")
                         .HasColumnType("integer");
 
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("TargetConnectionString")
                         .IsRequired()
                         .HasColumnType("text");

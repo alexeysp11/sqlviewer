@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoFixture;
+using FluentAssertions;
 using Moq;
 using SqlViewer.Etl.Api.BusinessLogic;
 using SqlViewer.Etl.Api.Repositories;
@@ -13,11 +14,13 @@ public sealed class TransferHistoryManagerTests
 {
     private readonly Mock<ITransferHistoryRepository> _repositoryMock;
     private readonly TransferHistoryManager _manager;
+    private readonly Fixture _autoFixture;
 
     public TransferHistoryManagerTests()
     {
         _repositoryMock = new Mock<ITransferHistoryRepository>();
         _manager = new TransferHistoryManager(_repositoryMock.Object);
+        _autoFixture = new Fixture();
     }
 
     [Fact]
@@ -31,10 +34,11 @@ public sealed class TransferHistoryManagerTests
             {
                 CorrelationId = Guid.NewGuid(),
                 UserUid = userUid,
-                SourceConnectionString = "SourceDB",
-                TargetConnectionString = "TargetDB",
-                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                SourceConnectionString = _autoFixture.Create<string>(),
+                TargetConnectionString = _autoFixture.Create<string>(),
+                SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TableName = _autoFixture.Create<string>(),
                 CurrentStatus = TransferStatus.Completed,
                 CreatedAt = DateTime.UtcNow
             }
@@ -68,40 +72,44 @@ public sealed class TransferHistoryManagerTests
             {
                 CorrelationId = Guid.NewGuid(),
                 UserUid = userUid,
-                SourceConnectionString = "S-01",
-                TargetConnectionString = "T-01",
-                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                SourceConnectionString = _autoFixture.Create<string>(),
+                TargetConnectionString = _autoFixture.Create<string>(),
+                SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TableName = _autoFixture.Create<string>(),
                 CurrentStatus = TransferStatus.Failed
             },
             new()
             {
                 CorrelationId = Guid.NewGuid(),
                 UserUid = userUid,
-                SourceConnectionString = "S-02",
-                TargetConnectionString = "T-02",
-                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                SourceConnectionString = _autoFixture.Create<string>(),
+                TargetConnectionString = _autoFixture.Create<string>(),
+                SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TableName = _autoFixture.Create<string>(),
                 CurrentStatus = TransferStatus.Started
             },
             new()
             {
                 CorrelationId = Guid.NewGuid(),
                 UserUid = userUid,
-                SourceConnectionString = "S-03",
-                TargetConnectionString = "T-03",
-                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                SourceConnectionString = _autoFixture.Create<string>(),
+                TargetConnectionString = _autoFixture.Create<string>(),
+                SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TableName = _autoFixture.Create<string>(),
                 CurrentStatus = TransferStatus.Progress
             },
             new()
             {
                 CorrelationId = lastGuid,
                 UserUid = userUid,
-                SourceConnectionString = "S-04",
-                TargetConnectionString = "T-04",
-                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                SourceConnectionString = _autoFixture.Create<string>(),
+                TargetConnectionString = _autoFixture.Create<string>(),
+                SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TableName = _autoFixture.Create<string>(),
                 CurrentStatus = TransferStatus.Completed
             }
         ];

@@ -12,6 +12,7 @@ public sealed class TransferJobEntity
     public required string TargetConnectionString { get; set; }
     public required VelocipedeDatabaseType SourceDatabaseType { get; init; }
     public required VelocipedeDatabaseType TargetDatabaseType { get; init; }
+    public required string TableName { get; set; }
     public TransferStatus CurrentStatus { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     public List<TransferStatusLogEntity> Logs { get; set; } = [];

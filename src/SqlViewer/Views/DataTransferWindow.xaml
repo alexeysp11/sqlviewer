@@ -140,8 +140,9 @@
                     </Grid.RowDefinitions>
 
                     <GroupBox Header="Transfer History" Grid.Row="0">
-                        <DataGrid ItemsSource="{Binding TransferHistory}" 
-                                AutoGenerateColumns="False" 
+                        <DataGrid ItemsSource="{Binding TransferHistory}"
+                                HorizontalScrollBarVisibility="Auto"
+                                AutoGenerateColumns="False"
                                 IsReadOnly="True">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Time" Binding="{Binding Time, StringFormat='yyyy-MM-dd HH:mm:ss'}" Width="150"/>
@@ -149,6 +150,7 @@
                                 <DataGridTextColumn Header="Source Database" Binding="{Binding SourceDatabaseType}" Width="*"/>
                                 <DataGridTextColumn Header="Target Connection" Binding="{Binding TargetConnectionString}" Width="*"/>
                                 <DataGridTextColumn Header="Target Database" Binding="{Binding TargetDatabaseType}" Width="*"/>
+                                <DataGridTextColumn Header="Table" Binding="{Binding TableName}" Width="*"/>
                                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>

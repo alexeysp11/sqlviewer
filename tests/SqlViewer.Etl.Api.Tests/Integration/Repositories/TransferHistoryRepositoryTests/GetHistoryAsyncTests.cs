@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using AutoFixture;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Etl.Api.Tests.Integration.Infrastructure;
@@ -11,6 +12,8 @@ namespace SqlViewer.Etl.Api.Tests.Integration.Repositories.TransferHistoryReposi
 [Collection(nameof(PostgresCollection))]
 public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
 {
+    private readonly Fixture _autoFixture = new();
+
     private async Task<EtlDbContext> CreateContextAsync()
     {
         EtlDbContext context = new(new DbContextOptionsBuilder<EtlDbContext>().UseNpgsql(fixture.ConnectionString).Options);
@@ -34,7 +37,8 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
             SourceConnectionString = "src",
             TargetConnectionString = "dst",
             SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-            TargetDatabaseType = VelocipedeDatabaseType.SQLite
+            TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+            TableName = _autoFixture.Create<string>()
         });
         await context.SaveChangesAsync();
 
@@ -63,7 +67,8 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
                 SourceConnectionString = "s",
                 TargetConnectionString = "t",
                 SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                TableName = _autoFixture.Create<string>()
             },
             new()
             {
@@ -73,7 +78,8 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
                 SourceConnectionString = "s",
                 TargetConnectionString = "t",
                 SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite
+                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                TableName = _autoFixture.Create<string>()
             }
         );
         await context.SaveChangesAsync();
@@ -100,30 +106,33 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
             CorrelationId = Guid.NewGuid(),
             UserUid = userUid,
             CreatedAt = DateTime.UtcNow.AddHours(-1),
-            SourceConnectionString = "s",
-            TargetConnectionString = "t",
-            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-            TargetDatabaseType = VelocipedeDatabaseType.SQLite
+            SourceConnectionString = _autoFixture.Create<string>(),
+            TargetConnectionString = _autoFixture.Create<string>(),
+            SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+            TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+            TableName = _autoFixture.Create<string>()
         };
         TransferJobEntity cursorJob = new()
         {
             CorrelationId = cursorId,
             UserUid = userUid,
             CreatedAt = DateTime.UtcNow,
-            SourceConnectionString = "s",
-            TargetConnectionString = "t",
-            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-            TargetDatabaseType = VelocipedeDatabaseType.SQLite
+            SourceConnectionString = _autoFixture.Create<string>(),
+            TargetConnectionString = _autoFixture.Create<string>(),
+            SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+            TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+            TableName = _autoFixture.Create<string>()
         };
         TransferJobEntity newJob = new()
         {
             CorrelationId = Guid.NewGuid(),
             UserUid = userUid,
             CreatedAt = DateTime.UtcNow.AddHours(1),
-            SourceConnectionString = "s",
-            TargetConnectionString = "t",
-            SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-            TargetDatabaseType = VelocipedeDatabaseType.SQLite
+            SourceConnectionString = _autoFixture.Create<string>(),
+            TargetConnectionString = _autoFixture.Create<string>(),
+            SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+            TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+            TableName = _autoFixture.Create<string>()
         };
 
         context.TransferJobs.AddRange(oldJob, cursorJob, newJob);
@@ -151,10 +160,11 @@ public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
             {
                 CorrelationId = Guid.NewGuid(),
                 UserUid = userUid,
-                SourceConnectionString = "s",
-                TargetConnectionString = "t",
-                SourceDatabaseType = VelocipedeDatabaseType.PostgreSQL,
-                TargetDatabaseType = VelocipedeDatabaseType.SQLite,
+                SourceConnectionString = _autoFixture.Create<string>(),
+                TargetConnectionString = _autoFixture.Create<string>(),
+                SourceDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TargetDatabaseType = _autoFixture.Create<VelocipedeDatabaseType>(),
+                TableName = _autoFixture.Create<string>()
             });
         }
         await context.SaveChangesAsync();

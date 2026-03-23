@@ -33,6 +33,7 @@ SELECT
     ""TargetConnectionString"",
     ""SourceDatabaseType"",
     ""TargetDatabaseType"",
+    ""TableName"",
     ""CreatedAt""
 FROM ""TransferJobs""
 WHERE
@@ -68,6 +69,7 @@ LIMIT @Limit;";
             TargetConnectionString = requestDto.TargetConnectionString,
             SourceDatabaseType = requestDto.SourceDatabaseType,
             TargetDatabaseType = requestDto.TargetDatabaseType,
+            TableName = requestDto.TableName,
             CurrentStatus = TransferStatus.None,
         });
         await dbContext.SaveChangesAsync();

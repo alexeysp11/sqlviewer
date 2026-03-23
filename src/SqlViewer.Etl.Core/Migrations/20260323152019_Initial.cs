@@ -83,6 +83,7 @@ namespace SqlViewer.Etl.Core.Migrations
                     TargetConnectionString = table.Column<string>(type: "text", nullable: false),
                     SourceDatabaseType = table.Column<int>(type: "integer", nullable: false),
                     TargetDatabaseType = table.Column<int>(type: "integer", nullable: false),
+                    TableName = table.Column<string>(type: "text", nullable: false),
                     CurrentStatus = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },

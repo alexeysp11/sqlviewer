@@ -9,6 +9,7 @@ public sealed record TransferJobDto
     public required string TargetConnectionString { get; init; }
     public required VelocipedeDatabaseType SourceDatabaseType { get; init; }
     public required VelocipedeDatabaseType TargetDatabaseType { get; init; }
+    public required string TableName { get; init; }
     public required string Status { get; init; }
     public DateTime Time { get; init; }
 }

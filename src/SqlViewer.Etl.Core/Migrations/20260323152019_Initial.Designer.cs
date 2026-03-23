@@ -12,7 +12,7 @@ using SqlViewer.Etl.Core.Data.DbContexts;
 namespace SqlViewer.Etl.Core.Migrations
 {
     [DbContext(typeof(EtlDbContext))]
-    [Migration("20260323121136_Initial")]
+    [Migration("20260323152019_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -85,6 +85,10 @@ namespace SqlViewer.Etl.Core.Migrations
 
                     b.Property<int>("SourceDatabaseType")
                         .HasColumnType("integer");
+
+                    b.Property<string>("TableName")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("TargetConnectionString")
                         .IsRequired()

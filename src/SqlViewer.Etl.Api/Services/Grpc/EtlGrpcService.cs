@@ -75,6 +75,7 @@ public sealed class EtlGrpcService(
                 TargetConnectionString = item.TargetConnectionString,
                 SourceDatabaseType = EtlMapper.MapToDatabaseType(item.SourceDatabaseType),
                 TargetDatabaseType = EtlMapper.MapToDatabaseType(item.TargetDatabaseType),
+                TableName = item.TableName,
                 Status = item.Status,
                 Time = Timestamp.FromDateTime(DateTime.SpecifyKind(item.Time, DateTimeKind.Utc))
             }));

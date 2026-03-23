@@ -51,6 +51,7 @@ message TransferJobGrpcDto {
   google.protobuf.Timestamp time = 5;
   DatabaseType source_database_type = 6;
   DatabaseType target_database_type = 7;
+  string table_name = 8;
 }
 
 message GetTransferHistoryResponse {

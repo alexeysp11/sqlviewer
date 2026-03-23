@@ -14,6 +14,7 @@ public sealed class TransferHistoryManager(ITransferHistoryRepository repository
             TargetConnectionString = e.TargetConnectionString,
             SourceDatabaseType = e.SourceDatabaseType,
             TargetDatabaseType = e.TargetDatabaseType,
+            TableName = e.TableName,
             Status = e.CurrentStatus.ToString(),
             Time = e.CreatedAt
         }).ToList();
