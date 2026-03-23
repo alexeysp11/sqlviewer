@@ -16,6 +16,7 @@ public partial class DataTransferViewModel(
     IUserContext userContext) : ObservableObject
 {
     public ObservableCollection<string> SourceTables { get; } = [];
+    public ObservableCollection<TransferJobDto> TransferHistory { get; } = [];
 
     public ObservableCollection<VelocipedeDatabaseType> DatabaseTypes { get; } =
     [
@@ -48,6 +49,22 @@ public partial class DataTransferViewModel(
 
     [ObservableProperty]
     private TransferTask _selectedTransfer;
+
+    [ObservableProperty]
+    private bool _isLoadingHistory;
+
+    [ObservableProperty]
+    private bool _hasMoreHistory = true;
+
+    /// <summary>
+    /// Last received cursor for ths transfer jobs.
+    /// </summary>
+    private Guid? _cursorTransferJobId;
+
+    /// <summary>
+    /// Transfer job limit.
+    /// </summary>
+    private const int Limit = 25;
 
     partial void OnSelectedTransferChanged(TransferTask value)
     {
@@ -121,6 +138,42 @@ public partial class DataTransferViewModel(
         catch (Exception ex)
         {
             ExecutionLogs.Insert(0, $"[Launch error]: {ex.Message}");
+        }
+    }
+
+    [RelayCommand]
+    public async Task LoadMoreHistoryAsync()
+    {
+        if (IsLoadingHistory || !HasMoreHistory) return;
+
+        IsLoadingHistory = true;
+        try
+        {
+            if (userContext?.CurrentUser?.UserUid is null)
+                throw new InvalidOperationException("Data transfer history is only available to authorized users.");
+
+            TransferHistoryResponseDto response = await etlService.GetHistoryAsync(
+                userUid: (Guid)userContext.CurrentUser.UserUid,
+                cursorTransferJobId: _cursorTransferJobId,
+                limit: Limit);
+
+            if (response.Items.Count != 0)
+            {
+                foreach (TransferJobDto item in response.Items)
+                    TransferHistory.Add(item);
+
+                _cursorTransferJobId = response.CursorCorrelationId;
+            }
+
+            HasMoreHistory = _cursorTransferJobId.HasValue;
+        }
+        catch (Exception ex)
+        {
+            ExecutionLogs.Insert(0, $"[History error]: {ex.Message}");
+        }
+        finally
+        {
+            IsLoadingHistory = false;
         }
     }
 

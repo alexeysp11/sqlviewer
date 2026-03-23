@@ -1,8 +1,10 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Specialized;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Web;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Converters;
 using SqlViewer.Shared.Dtos;
@@ -70,21 +72,26 @@ public sealed class EtlHttpHandler : HttpHandler, IEtlHttpHandler
            ?? throw new InvalidOperationException($"Failed to deserialize {nameof(TransferStatusResponseDto)}");
     }
 
-    public async Task<StartTransferResponseDto> GetHistoryAsync(StartTransferRequestDto requestDto)
+    public async Task<TransferHistoryResponseDto> GetTransferHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit)
     {
+        NameValueCollection query = HttpUtility.ParseQueryString(string.Empty);
+        if (cursorTransferJobId.HasValue)
+            query["correlationId"] = cursorTransferJobId.Value.ToString();
+        query["limit"] = limit.ToString();
+
         UriBuilder uriBuilder = new()
         {
             Scheme = App.AppSettings.ServerScheme,
             Host = App.AppSettings.ServerHost,
             Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.Etl.DataTransfer.GetHistory,
+            Path = RestApiPaths.Etl.DataTransfer.GetHistory.Replace("{userUid}", userUid.ToString(), StringComparison.Ordinal),
+            Query = query.ToString()
         };
         string url = uriBuilder.Uri.ToString();
 
         // Authorization.
-        using HttpRequestMessage requestMessage = new(HttpMethod.Post, url);
+        using HttpRequestMessage requestMessage = new(HttpMethod.Get, url);
         requestMessage.Headers.Authorization = new AuthenticationHeaderValue(_userContext.TokenType, _userContext.AccessToken);
-        requestMessage.Content = new StringContent(JsonSerializer.Serialize(requestDto), Encoding.UTF8, "application/json");
 
         // Request.
         HttpResponseMessage response = await _httpClient.SendAsync(requestMessage);
@@ -103,7 +110,7 @@ public sealed class EtlHttpHandler : HttpHandler, IEtlHttpHandler
             }
             throw new Exception(errorMessage);
         }
-        StartTransferResponseDto responseDto = JsonSerializer.Deserialize<StartTransferResponseDto>(jsonResponse, _jsonSerializerOptions);
+        TransferHistoryResponseDto responseDto = JsonSerializer.Deserialize<TransferHistoryResponseDto>(jsonResponse, _jsonSerializerOptions);
         return responseDto;
     }
 }

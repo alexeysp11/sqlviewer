@@ -6,4 +6,5 @@ public interface IEtlHttpHandler : IDisposable
 {
     Task<StartTransferResponseDto> PostStartTransferAsync(StartTransferRequestDto request);
     Task<TransferStatusResponseDto> GetTransferStatusAsync(Guid correlationId);
+    Task<TransferHistoryResponseDto> GetTransferHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit);
 }

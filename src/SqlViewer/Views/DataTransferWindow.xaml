@@ -129,16 +129,43 @@
             <!-- Tab 3: History -->
             <TabItem Header="History">
                 <Grid Margin="10">
-                    <GroupBox Header="Transfer History">
-                        <DataGrid ItemsSource="{Binding TransferHistory}" AutoGenerateColumns="False" IsReadOnly="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/> <!-- History loading control button -->
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Header="Transfer History" Grid.Row="0">
+                        <DataGrid ItemsSource="{Binding TransferHistory}" 
+                                AutoGenerateColumns="False" 
+                                IsReadOnly="True">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="Time" Binding="{Binding StartTime, StringFormat='HH:mm:ss'}"/>
-                                <DataGridTextColumn Header="Source" Binding="{Binding SourceDb}"/>
-                                <DataGridTextColumn Header="Target" Binding="{Binding TargetDb}"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}"/>
+                                <DataGridTextColumn Header="Time" Binding="{Binding Time, StringFormat='yyyy-MM-dd HH:mm:ss'}" Width="150"/>
+                                <DataGridTextColumn Header="Source" Binding="{Binding Source}" Width="*"/>
+                                <DataGridTextColumn Header="Target" Binding="{Binding Target}" Width="*"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
                             </DataGrid.Columns>
                         </DataGrid>
                     </GroupBox>
+
+                    <!-- History loading control button -->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,5,0,0">
+                        <ProgressBar IsIndeterminate="True" 
+                                    Width="100" Height="10" 
+                                    Margin="0,0,10,0"
+                                    Visibility="{Binding IsLoadingHistory}"/>
+                        
+                        <Button Content="Load More"
+                                Command="{Binding LoadMoreHistoryCommand}"
+                                Padding="15,5"
+                                Margin="0,0,10,0"
+                                Visibility="{Binding HasMoreHistory}"/>
+                        
+                        <TextBlock Text="All records loaded" 
+                                Foreground="Gray"
+                                Margin="0,0,10,0"
+                                VerticalAlignment="Center"
+                                Visibility="{Binding HasMoreHistory}"/>
+                    </StackPanel>
                 </Grid>
             </TabItem>
         </TabControl>

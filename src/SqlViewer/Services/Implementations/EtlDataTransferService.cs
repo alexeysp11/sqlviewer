@@ -14,9 +14,13 @@ public sealed class EtlDataTransferService(IEtlHttpHandler httpHandler) : IEtlDa
 
     public async Task<TransferStatusResponseDto> GetStatusAsync(Guid correlationId)
     {
-        // Querying Saga state via API Gateway
         return await httpHandler.GetTransferStatusAsync(correlationId)
             ?? throw new InvalidOperationException($"Unable to get status for task {correlationId}");
+    }
+
+    public async Task<TransferHistoryResponseDto> GetHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit)
+    {
+        return await httpHandler.GetTransferHistoryAsync(userUid, cursorTransferJobId, limit) ?? new();
     }
 
     public void Dispose() => httpHandler?.Dispose();
