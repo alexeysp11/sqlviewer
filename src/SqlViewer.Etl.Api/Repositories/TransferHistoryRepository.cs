@@ -4,6 +4,8 @@ using Dapper;
 using Microsoft.EntityFrameworkCore;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;
+using SqlViewer.Etl.Core.Enums;
+using SqlViewer.Shared.Dtos.Etl;
 
 namespace SqlViewer.Etl.Api.Repositories;
 
@@ -42,5 +44,18 @@ LIMIT @Limit;";
             LastCorrelationId = correlationId,
             Limit = limit
         });
+    }
+
+    public async Task SaveTransferJobHistoryAsync(Guid correlationId, StartTransferRequestDto requestDto)
+    {
+        await dbContext.TransferJobs.AddAsync(new()
+        {
+            CorrelationId = correlationId,
+            UserUid = Guid.Parse(requestDto.UserUid),
+            Source = requestDto.SourceConnectionString,
+            Target = requestDto.TargetConnectionString,
+            CurrentStatus = TransferStatus.None,
+        });
+        dbContext.SaveChanges();
     }
 }

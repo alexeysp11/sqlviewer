@@ -23,4 +23,7 @@ public sealed class TransferHistoryManager(ITransferHistoryRepository repository
             CursorCorrelationId = cursorCorrelationId
         };
     }
+
+    public Task SaveTransferJobHistoryAsync(Guid correlationId, StartTransferRequestDto requestDto) =>
+        repository.SaveTransferJobHistoryAsync(correlationId, requestDto);
 }

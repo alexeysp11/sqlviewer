@@ -1,4 +1,4 @@
-﻿using Google.Protobuf;
+﻿using System.Text.Json;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using SqlViewer.Etl.Api.BusinessLogic;
@@ -19,15 +19,20 @@ public sealed class EtlGrpcService(
             throw new InvalidOperationException("ETL transfer is available only to authorized users");
 
         Guid correlationId = Guid.NewGuid();
-
-        // Convert request to JSON.
-        JsonFormatter.Settings settings = new JsonFormatter.Settings(formatDefaultValues: true, typeRegistry: null)
-            .WithFormatEnumsAsIntegers(false);
-        JsonFormatter formatter = new(settings);
-        string requestJson = formatter.Format(request);
+        StartTransferRequestDto requestDto = new()
+        {
+            SourceConnectionString = request.SourceConnectionString,
+            TargetConnectionString = request.TargetConnectionString,
+            TableName = request.TableName,
+            UserUid = request.UserUid
+        };
 
         // Start transfer.
+        string requestJson = JsonSerializer.Serialize(requestDto);
         await transferManager.InitiateTransferAsync(userUid, requestJson);
+
+        // Save transfer job.
+        await transferHistoryManager.SaveTransferJobHistoryAsync(correlationId, requestDto);
 
         return new StartTransferResponse
         {
