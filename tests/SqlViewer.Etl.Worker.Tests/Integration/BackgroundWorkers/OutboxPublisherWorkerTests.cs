@@ -50,8 +50,8 @@ public sealed class OutboxPublisherWorkerTests
 
         _producerMock
             .Setup(p => p.ProduceAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
-            .ReturnsAsync(new DeliveryResult<string, string>()) // Мгновенный возврат мока
-            .Callback(() => tcs.SetResult(true)); // Сигнализируем тесту
+            .ReturnsAsync(new DeliveryResult<string, string>())
+            .Callback(() => tcs.SetResult(true));
 
         OutboxPublisherWorker worker = new(_scopeFactoryMock.Object, _producerMock.Object);
         using CancellationTokenSource cts = new();
@@ -67,7 +67,7 @@ public sealed class OutboxPublisherWorkerTests
         await runTask;
 
         // Assert
-        completedTask.Should().Be(tcs.Task, "Воркер должен был вызвать ProduceAsync");
+        completedTask.Should().Be(tcs.Task, "The worker should have called ProduceAsync");
 
         using EtlDbContext dbVerify = new(_dbOptions);
         dbVerify.OutboxMessages.Should().BeEmpty();
