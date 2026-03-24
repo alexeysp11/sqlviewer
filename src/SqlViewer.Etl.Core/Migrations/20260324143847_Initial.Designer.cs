@@ -12,7 +12,7 @@ using SqlViewer.Etl.Core.Data.DbContexts;
 namespace SqlViewer.Etl.Core.Migrations
 {
     [DbContext(typeof(EtlDbContext))]
-    [Migration("20260323152019_Initial")]
+    [Migration("20260324143847_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -172,6 +172,9 @@ namespace SqlViewer.Etl.Core.Migrations
                     b.Property<DateTime>("ReceivedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
+
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
@@ -210,6 +213,9 @@ namespace SqlViewer.Etl.Core.Migrations
 
                     b.Property<DateTime?>("ProcessedAt")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Topic")
                         .IsRequired()

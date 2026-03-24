@@ -44,7 +44,8 @@ namespace SqlViewer.Etl.Core.Migrations
                     Status = table.Column<int>(type: "integer", nullable: false),
                     ReceivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ProcessedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Error = table.Column<string>(type: "text", nullable: true)
+                    Error = table.Column<string>(type: "text", nullable: true),
+                    RetryCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -64,7 +65,8 @@ namespace SqlViewer.Etl.Core.Migrations
                     Payload = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ProcessedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Error = table.Column<string>(type: "text", nullable: true)
+                    Error = table.Column<string>(type: "text", nullable: true),
+                    RetryCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

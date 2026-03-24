@@ -29,8 +29,6 @@ public sealed class Program
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Etl))
         );
 
-        // Kafka.
-
         // OpenTelemetry.
         string serviceName = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.ServiceName)
             ?? throw new InvalidOperationException("Unable to get service name for observability");

@@ -3,6 +3,7 @@ using Confluent.Kafka;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Services.Kafka;
@@ -38,8 +39,8 @@ public sealed class OutboxPublisherWorkerTests
             Id = 1,
             CorrelationId = _autoFixture.Create<Guid>(),
             MessageType = _autoFixture.Create<string>(),
-            Topic = "test",
-            Payload = "{}",
+            Topic = _autoFixture.Create<string>(),
+            Payload = _autoFixture.Create<string>(),
             CreatedAt = DateTime.UtcNow
         });
         await db.SaveChangesAsync();
@@ -53,7 +54,7 @@ public sealed class OutboxPublisherWorkerTests
             .ReturnsAsync(new DeliveryResult<string, string>())
             .Callback(() => tcs.SetResult(true));
 
-        OutboxPublisherWorker worker = new(_scopeFactoryMock.Object, _producerMock.Object);
+        OutboxPublisherWorker worker = new(Mock.Of<ILogger<OutboxPublisherWorker>>(), _scopeFactoryMock.Object, _producerMock.Object);
         using CancellationTokenSource cts = new();
 
         // Act
@@ -83,8 +84,8 @@ public sealed class OutboxPublisherWorkerTests
             Id = 2,
             CorrelationId = _autoFixture.Create<Guid>(),
             MessageType = _autoFixture.Create<string>(),
-            Topic = "test",
-            Payload = "bad",
+            Topic = _autoFixture.Create<string>(),
+            Payload = _autoFixture.Create<string>(),
             RetryCount = 0
         };
         db.OutboxMessages.Add(msg);
@@ -96,12 +97,12 @@ public sealed class OutboxPublisherWorkerTests
             .Setup(p => p.ProduceAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .ThrowsAsync(new Exception("Kafka connection error"));
 
-        OutboxPublisherWorker worker = new(_scopeFactoryMock.Object, _producerMock.Object);
+        OutboxPublisherWorker worker = new(Mock.Of<ILogger<OutboxPublisherWorker>>(), _scopeFactoryMock.Object, _producerMock.Object);
         CancellationTokenSource cts = new();
 
         // Act
         Task runTask = worker.StartAsync(cts.Token);
-        await Task.Delay(OutboxPublisherWorker.DelayEmptyMessagesMs);
+        await Task.Delay(OutboxPublisherWorker.DefaultDelayMs);
         cts.Cancel();
         await runTask;
 
