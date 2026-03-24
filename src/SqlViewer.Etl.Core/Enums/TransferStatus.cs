@@ -31,5 +31,10 @@ public enum TransferStatus
     /// <summary>
     /// The data transfer process terminated prematurely due to a technical or business error.
     /// </summary>
-    Failed = 4
+    Failed = 4,
+
+    /// <summary>
+    /// The data transfer process terminated prematurely due to a duplicate.
+    /// </summary>
+    Duplicate = 5,
 }

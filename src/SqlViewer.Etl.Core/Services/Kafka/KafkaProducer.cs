@@ -2,7 +2,7 @@
 
 namespace SqlViewer.Etl.Core.Services.Kafka;
 
-public class KafkaProducer : IDisposable
+public sealed class KafkaProducer : IKafkaProducer
 {
     private readonly IProducer<string, string> _producer;
 

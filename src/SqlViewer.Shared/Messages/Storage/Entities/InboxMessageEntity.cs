@@ -51,4 +51,12 @@ public class InboxMessageEntity
     /// Contains error details if processing fails.
     /// </summary>
     public string? Error { get; set; }
+
+    /// <summary>
+    /// The number of failed attempts to get a message from the message broker.
+    /// Used to prevent endless processing of "poison messages".
+    /// When the value reaches the maximum allowed threshold, the message is excluded from automatic processing
+    /// for manual analysis of the cause of the error.
+    /// </summary>
+    public int RetryCount { get; set; }
 }

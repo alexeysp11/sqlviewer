@@ -35,6 +35,9 @@ public class OutboxMessageEntity
     /// </summary>
     public required string Payload { get; set; }
 
+    /// <summary>
+    /// Contains timestamp once created.
+    /// </summary>
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     /// <summary>
@@ -46,4 +49,12 @@ public class OutboxMessageEntity
     /// Details about delivery failures for troubleshooting.
     /// </summary>
     public string? Error { get; set; }
+
+    /// <summary>
+    /// The number of failed attempts to send a message to the message broker.
+    /// Used to prevent endless processing of "poison messages".
+    /// When the value reaches the maximum allowed threshold, the message is excluded from automatic processing
+    /// for manual analysis of the cause of the error.
+    /// </summary>
+    public int RetryCount { get; set; }
 }
