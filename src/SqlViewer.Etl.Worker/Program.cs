@@ -3,6 +3,7 @@ using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Prometheus;
 using Serilog;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Services.Kafka;
@@ -48,6 +49,7 @@ public sealed class Program
             .ConfigureResource(res => res.AddService(serviceName))
             .WithTracing(tracing => tracing
                 .AddSource(serviceName)
+                .AddEntityFrameworkCoreInstrumentation()
                 .AddOtlpExporter(opt => opt.Endpoint = new Uri(jaegerEndpoint)))
             .WithMetrics(metrics => metrics
                 .AddRuntimeInstrumentation()
@@ -59,6 +61,11 @@ public sealed class Program
         {
             options.IncludeFormattedMessage = true;
             options.AddOtlpExporter(opt => opt.Endpoint = new Uri(jaegerEndpoint));
+        });
+
+        builder.Services.AddMetricServer(options =>
+        {
+            options.Port = ushort.Parse(builder.Configuration[Services.Observability.WorkerMetricsPort]!);
         });
 
         IHost host = builder.Build();

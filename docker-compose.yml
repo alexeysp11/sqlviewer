@@ -213,6 +213,7 @@ services:
       - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
       
       - Services__Observability__ServiceName=etl-worker
+      - Services__Observability__WorkerMetricsPort=8080
       - Services__Observability__JaegerEndpoint=http://jaeger:4317
 
       - Services__Kafka__Url=kafka:9094
@@ -229,6 +230,8 @@ services:
     build:
       context: .
       dockerfile: src/SqlViewer.Etl.Worker/Dockerfile
+    ports:
+      - "5102:8080"
     depends_on:
       sqlviewer-db:
         condition: service_healthy

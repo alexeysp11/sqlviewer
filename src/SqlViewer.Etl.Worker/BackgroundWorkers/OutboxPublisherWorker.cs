@@ -1,8 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Npgsql;
+using Serilog.Context;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Services.Kafka;
 using SqlViewer.Shared.Messages.Storage.Entities;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Etl.Worker.BackgroundWorkers;
 
@@ -13,6 +16,7 @@ namespace SqlViewer.Etl.Worker.BackgroundWorkers;
 /// </summary>
 public sealed class OutboxPublisherWorker(
     ILogger<OutboxPublisherWorker> logger,
+    IConfiguration configuration,
     IServiceScopeFactory scopeFactory,
     IKafkaProducer producer) : BackgroundService
 {
@@ -22,11 +26,15 @@ public sealed class OutboxPublisherWorker(
     public const int DelayExceptionMs = 5000;
     public const int DelayPostgresExceptionMs = 15000;
 
+    private readonly ActivitySource Activity = new(configuration[Services.Observability.ServiceName]!);
+
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
         logger.LogInformation($"{nameof(OutboxPublisherWorker)} starting...");
         while (!cancellationToken.IsCancellationRequested)
         {
+            using Activity? activity = Activity.StartActivity("ProcessOutboxBatch");
+
             int delay = DefaultDelayMs;
             try
             {
@@ -67,7 +75,11 @@ public sealed class OutboxPublisherWorker(
         {
             try
             {
-                await producer.ProduceAsync(msg.Topic, msg.CorrelationId.ToString(), msg.Payload);
+                using (LogContext.PushProperty("CorrelationId", msg.CorrelationId))
+                {
+                    logger.LogInformation("Processing message for the job {CorrelationId}", msg.CorrelationId);
+                    await producer.ProduceAsync(msg.Topic, msg.CorrelationId.ToString(), msg.Payload);
+                }
                 return (Message: msg, Error: (string?)null);
             }
             catch (Exception ex)

@@ -2,6 +2,7 @@
 using Confluent.Kafka;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -9,6 +10,7 @@ using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Services.Kafka;
 using SqlViewer.Etl.Worker.BackgroundWorkers;
 using SqlViewer.Shared.Messages.Storage.Entities;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Etl.Worker.Tests.Integration.BackgroundWorkers;
 
@@ -33,6 +35,7 @@ public sealed class OutboxPublisherWorkerTests
     public async Task ExecuteAsync_ShouldProcessMessage()
     {
         // Arrange
+        // 1. DbContext.
         using EtlDbContext db = new(_dbOptions);
         db.OutboxMessages.Add(new()
         {
@@ -46,15 +49,25 @@ public sealed class OutboxPublisherWorkerTests
         await db.SaveChangesAsync();
         SetupScope(db);
 
-        // This object will allow us to signal: "The worker has finished work!"
+        // 2. Mocks.
+        // Kafka producer.
         TaskCompletionSource<bool> tcs = new();
-
         _producerMock
             .Setup(p => p.ProduceAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .ReturnsAsync(new DeliveryResult<string, string>())
             .Callback(() => tcs.SetResult(true));
 
-        OutboxPublisherWorker worker = new(Mock.Of<ILogger<OutboxPublisherWorker>>(), _scopeFactoryMock.Object, _producerMock.Object);
+        // Configurations.
+        Dictionary<string, string?> configurationDictionary = new()
+        {
+            {Services.Observability.ServiceName, _autoFixture.Create<string>()}
+        };
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(configurationDictionary)
+            .Build();
+
+        // 3. Worker.
+        OutboxPublisherWorker worker = new(Mock.Of<ILogger<OutboxPublisherWorker>>(), configuration, _scopeFactoryMock.Object, _producerMock.Object);
         using CancellationTokenSource cts = new();
 
         // Act
@@ -78,6 +91,7 @@ public sealed class OutboxPublisherWorkerTests
     public async Task ExecuteAsync_ShouldIncrementRetryCount_WhenKafkaFails()
     {
         // Arrange
+        // 1. DbContext.
         using EtlDbContext db = new(_dbOptions);
         OutboxMessageEntity msg = new()
         {
@@ -90,14 +104,25 @@ public sealed class OutboxPublisherWorkerTests
         };
         db.OutboxMessages.Add(msg);
         await db.SaveChangesAsync();
-
         SetupScope(db);
 
+        // 2. Mocks.
+        // Kafka producer.
         _producerMock
             .Setup(p => p.ProduceAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()))
             .ThrowsAsync(new Exception("Kafka connection error"));
 
-        OutboxPublisherWorker worker = new(Mock.Of<ILogger<OutboxPublisherWorker>>(), _scopeFactoryMock.Object, _producerMock.Object);
+        // Configurations.
+        Dictionary<string, string?> configurationDictionary = new()
+        {
+            {Services.Observability.ServiceName, _autoFixture.Create<string>()}
+        };
+        IConfiguration configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(configurationDictionary)
+            .Build();
+
+        // 3. Worker.
+        OutboxPublisherWorker worker = new(Mock.Of<ILogger<OutboxPublisherWorker>>(), configuration, _scopeFactoryMock.Object, _producerMock.Object);
         CancellationTokenSource cts = new();
 
         // Act

@@ -56,6 +56,7 @@ public static class ConfigurationKeys
             private const string Section = $"{Root}:Observability";
 
             public const string ServiceName = $"{Section}:ServiceName";
+            public const string WorkerMetricsPort = $"{Section}:WorkerMetricsPort";
             public const string JaegerEndpoint = $"{Section}:JaegerEndpoint";
         }
     }
