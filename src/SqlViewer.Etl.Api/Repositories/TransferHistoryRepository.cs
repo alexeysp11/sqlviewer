@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
-using SqlViewer.Shared.Dtos.Etl;
+using SqlViewer.Shared.Messages.Etl.Commands;
 
 namespace SqlViewer.Etl.Api.Repositories;
 
@@ -56,20 +56,20 @@ LIMIT @Limit;";
         });
     }
 
-    public async Task SaveTransferJobHistoryAsync(Guid correlationId, StartTransferRequestDto requestDto)
+    public async Task SaveTransferJobHistoryAsync(Guid correlationId, StartDataTransferCommand transferCommand)
     {
-        if (!Guid.TryParse(requestDto.UserUid, out Guid userUid))
-            throw new InvalidOperationException($"Unable to save transfer job history, invalid user UID: {requestDto.UserUid}");
+        if (!Guid.TryParse(transferCommand.UserUid, out Guid userUid))
+            throw new InvalidOperationException($"Unable to save transfer job history, invalid user UID: {transferCommand.UserUid}");
 
         await dbContext.TransferJobs.AddAsync(new()
         {
             CorrelationId = correlationId,
             UserUid = userUid,
-            SourceConnectionString = requestDto.SourceConnectionString,
-            TargetConnectionString = requestDto.TargetConnectionString,
-            SourceDatabaseType = requestDto.SourceDatabaseType,
-            TargetDatabaseType = requestDto.TargetDatabaseType,
-            TableName = requestDto.TableName,
+            SourceConnectionString = transferCommand.SourceConnectionString,
+            TargetConnectionString = transferCommand.TargetConnectionString,
+            SourceDatabaseType = transferCommand.SourceDatabaseType,
+            TargetDatabaseType = transferCommand.TargetDatabaseType,
+            TableName = transferCommand.TableName,
             CurrentStatus = TransferStatus.None,
         });
         await dbContext.SaveChangesAsync();

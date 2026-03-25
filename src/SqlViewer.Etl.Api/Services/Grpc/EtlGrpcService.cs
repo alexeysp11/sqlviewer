@@ -4,6 +4,7 @@ using Grpc.Core;
 using SqlViewer.Etl.Api.BusinessLogic;
 using SqlViewer.Etl.Api.Mappings;
 using SqlViewer.Shared.Dtos.Etl;
+using SqlViewer.Shared.Messages.Etl.Commands;
 
 namespace SqlViewer.Etl.Api.Services.Grpc;
 
@@ -20,22 +21,21 @@ public sealed class EtlGrpcService(
             throw new InvalidOperationException("ETL transfer is available only to authorized users");
 
         Guid correlationId = Guid.NewGuid();
-        StartTransferRequestDto requestDto = new()
-        {
-            SourceConnectionString = request.SourceConnectionString,
-            TargetConnectionString = request.TargetConnectionString,
-            SourceDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(request.SourceDatabaseType),
-            TargetDatabaseType = EtlMapper.MapToVelocipedeDatabaseType(request.TargetDatabaseType),
-            TableName = request.TableName,
-            UserUid = request.UserUid
-        };
+        StartDataTransferCommand transferCommand = new(
+            CorrelationId: correlationId,
+            SourceConnectionString: request.SourceConnectionString,
+            TargetConnectionString: request.TargetConnectionString,
+            SourceDatabaseType: EtlMapper.MapToVelocipedeDatabaseType(request.SourceDatabaseType),
+            TargetDatabaseType: EtlMapper.MapToVelocipedeDatabaseType(request.TargetDatabaseType),
+            TableName: request.TableName,
+            UserUid: request.UserUid);
 
         // Start transfer.
-        string requestJson = JsonSerializer.Serialize(requestDto);
+        string requestJson = JsonSerializer.Serialize(transferCommand);
         await transferManager.InitiateTransferAsync(correlationId, userUid, requestJson);
 
         // Save transfer job.
-        await transferHistoryManager.SaveTransferJobHistoryAsync(correlationId, requestDto);
+        await transferHistoryManager.SaveTransferJobHistoryAsync(correlationId, transferCommand);
 
         return new StartTransferResponse
         {

@@ -1,5 +1,6 @@
 ﻿using SqlViewer.Etl.Api.Repositories;
 using SqlViewer.Shared.Dtos.Etl;
+using SqlViewer.Shared.Messages.Etl.Commands;
 
 namespace SqlViewer.Etl.Api.BusinessLogic;
 
@@ -27,6 +28,6 @@ public sealed class TransferHistoryManager(ITransferHistoryRepository repository
         };
     }
 
-    public Task SaveTransferJobHistoryAsync(Guid correlationId, StartTransferRequestDto requestDto) =>
-        repository.SaveTransferJobHistoryAsync(correlationId, requestDto);
+    public Task SaveTransferJobHistoryAsync(Guid correlationId, StartDataTransferCommand transferCommand) =>
+        repository.SaveTransferJobHistoryAsync(correlationId, transferCommand);
 }

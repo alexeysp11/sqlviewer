@@ -1,8 +1,13 @@
-﻿namespace SqlViewer.Shared.Messages.Etl.Commands;
+﻿using VelocipedeUtils.Shared.DbOperations.Enums;
+
+namespace SqlViewer.Shared.Messages.Etl.Commands;
 
 public sealed record StartDataTransferCommand(
     Guid CorrelationId,
     string SourceConnectionString,
     string TargetConnectionString,
-    string TableName
+    VelocipedeDatabaseType SourceDatabaseType,
+    VelocipedeDatabaseType TargetDatabaseType,
+    string TableName,
+    string UserUid
 );
