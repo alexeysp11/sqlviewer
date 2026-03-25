@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using OpenTelemetry.Logs;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Serilog;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Services.Kafka;
@@ -35,24 +39,27 @@ public sealed class Program
         builder.Logging.ClearProviders();
         builder.Logging.AddSerilog();
 
-        //builder.Services.AddOpenTelemetry()
-        //    .WithTracing(tracing => tracing
-        //        .AddSource(serviceName)
-        //        .AddHttpClientInstrumentation() // Если ETL дергает внешние API
-        //        .AddEntityFrameworkCoreInstrumentation() // Видеть SQL запросы в Jaeger!
-        //        .AddOtlpExporter(opt => opt.Endpoint = new Uri(jaegerEndpoint)))
-        //    .WithMetrics(metrics => metrics
-        //        .AddRuntimeInstrumentation() // Метрики CPU, RAM, GC
-        //        .AddProcessInstrumentation()
-        //        .AddHttpClientInstrumentation()
-        //        .AddPrometheusExporter()); // Для Grafana
+        // OpenTelemetry.
+        string serviceName = builder.Configuration.GetValue<string>(Services.Observability.ServiceName)
+            ?? throw new InvalidOperationException("Unable to get service name for observability");
+        string jaegerEndpoint = builder.Configuration.GetValue<string>(Services.Observability.JaegerEndpoint)
+            ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(res => res.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddOtlpExporter(opt => opt.Endpoint = new Uri(jaegerEndpoint)))
+            .WithMetrics(metrics => metrics
+                .AddRuntimeInstrumentation()
+                .AddProcessInstrumentation()
+                .AddOtlpExporter(opt => opt.Endpoint = new Uri(jaegerEndpoint)));
 
-        //builder.Logging.AddOpenTelemetry(options =>
-        //{
-        //    options.IncludeFormattedMessage = true;
-        //    options.IncludeScopes = true;
-        //    options.AddOtlpExporter(opt => opt.Endpoint = new Uri(jaegerEndpoint));
-        //});
+        // Integrating Serilog logs into the overall OTel flow.
+        builder.Logging.AddOpenTelemetry(options =>
+        {
+            options.IncludeFormattedMessage = true;
+            options.AddOtlpExporter(opt => opt.Endpoint = new Uri(jaegerEndpoint));
+        });
 
         IHost host = builder.Build();
         host.Run();
