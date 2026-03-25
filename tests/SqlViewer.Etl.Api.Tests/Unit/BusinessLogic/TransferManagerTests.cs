@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using FluentAssertions;
+using Microsoft.Extensions.Configuration;
 using Moq;
 using SqlViewer.Etl.Api.BusinessLogic;
 using SqlViewer.Etl.Api.Repositories;
@@ -24,6 +25,7 @@ public sealed class TransferManagerTests
     {
         // Arrange.
         Guid userUid = Guid.NewGuid();
+        Guid correlationId = Guid.NewGuid();
         string expectedTopic = "test-transfer-topic";
         string requestJson = "{\"Id\": 123, \"Command\": \"Start\"}";
 
@@ -33,7 +35,7 @@ public sealed class TransferManagerTests
             .Returns(expectedTopic);
 
         // Act.
-        Guid correlationId = await _manager.InitiateTransferAsync(userUid, requestJson);
+        Guid resultCorrelationId = await _manager.InitiateTransferAsync(correlationId, userUid, requestJson);
 
         // Assert.
         // 1. Check that CorrelationId is not empty
@@ -45,7 +47,8 @@ public sealed class TransferManagerTests
             It.Is<Guid>(g => g == correlationId),
             expectedTopic,
             requestJson),
-       Times.Once);
+        Times.Once);
+        resultCorrelationId.Should().Be(correlationId);
     }
 
     [Fact]
@@ -53,6 +56,7 @@ public sealed class TransferManagerTests
     {
         // Arrange
         // Simulating the absence of a key in the config
+        Guid correlationId = Guid.NewGuid();
         Guid userUid = Guid.NewGuid();
         _configurationMock
             .Setup(c => c[ConfigurationKeys.Services.Kafka.Topics.DataTransferCommand])
@@ -60,6 +64,6 @@ public sealed class TransferManagerTests
 
         // Act & Assert
         await Assert.ThrowsAsync<InvalidOperationException>(() =>
-            _manager.InitiateTransferAsync(userUid, "{}"));
+            _manager.InitiateTransferAsync(correlationId, userUid, "{}"));
     }
 }

@@ -32,7 +32,7 @@ public sealed class EtlGrpcService(
 
         // Start transfer.
         string requestJson = JsonSerializer.Serialize(requestDto);
-        await transferManager.InitiateTransferAsync(userUid, requestJson);
+        await transferManager.InitiateTransferAsync(correlationId, userUid, requestJson);
 
         // Save transfer job.
         await transferHistoryManager.SaveTransferJobHistoryAsync(correlationId, requestDto);

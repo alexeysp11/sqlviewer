@@ -2,5 +2,5 @@
 
 public interface ITransferManager
 {
-    Task<Guid> InitiateTransferAsync(Guid userUid, string requestJson);
+    Task<Guid> InitiateTransferAsync(Guid correlationId, Guid userUid, string requestJson);
 }
