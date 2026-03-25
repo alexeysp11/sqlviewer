@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Controllers.Metadata;
+using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.Etl;
-using SqlViewer.Etl.Api.Mappings;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Dtos.Etl;
 

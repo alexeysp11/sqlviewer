@@ -1,6 +1,7 @@
-﻿using VelocipedeUtils.Shared.DbOperations.Enums;
+﻿using SqlViewer.Etl;
+using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Etl.Api.Mappings;
+namespace SqlViewer.ApiGateway.Mappings;
 
 public static class EtlMapper
 {
