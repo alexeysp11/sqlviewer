@@ -37,4 +37,9 @@ public enum TransferStatus
     /// The data transfer process terminated prematurely due to a duplicate.
     /// </summary>
     Duplicate = 5,
+
+    /// <summary>
+    /// The data transfer process has been queued.
+    /// </summary>
+    Queued = 6,
 }

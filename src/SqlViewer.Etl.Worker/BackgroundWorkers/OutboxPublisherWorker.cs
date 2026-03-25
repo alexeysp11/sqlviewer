@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 using Serilog.Context;
 using SqlViewer.Etl.Core.Data.DbContexts;
+using SqlViewer.Etl.Core.Data.Entities;
+using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Etl.Core.Services.Kafka;
 using SqlViewer.Shared.Messages.Storage.Entities;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
@@ -54,7 +56,7 @@ public sealed class OutboxPublisherWorker(
         }
     }
 
-    private async Task ProcessBatchAsync(CancellationToken cancellationToken)
+    public async Task ProcessBatchAsync(CancellationToken cancellationToken)
     {
         using IServiceScope scope = scopeFactory.CreateScope();
         EtlDbContext db = scope.ServiceProvider.GetRequiredService<EtlDbContext>();
@@ -90,18 +92,35 @@ public sealed class OutboxPublisherWorker(
 
         (OutboxMessageEntity Message, string? Error)[] results = await Task.WhenAll(tasks);
 
-        foreach ((OutboxMessageEntity Message, string? Error) res in results)
+        // Update failed messages.
+        foreach ((OutboxMessageEntity Message, string? Error) res in results.Where(r => r.Error != null))
         {
-            if (res.Error == null)
+            res.Message.Error = res.Error;
+            res.Message.RetryCount++;
+        }
+
+        // Update successful messages.
+        List<(OutboxMessageEntity Message, string? Error)> successfulResults = results.Where(r => r.Error == null).ToList();
+        if (successfulResults.Count != 0)
+        {
+            List<Guid> successfulIds = successfulResults.Select(r => r.Message.CorrelationId).ToList();
+            Dictionary<Guid, TransferJobEntity> jobsDict = await db.TransferJobs
+                .Where(j => successfulIds.Contains(j.CorrelationId))
+                .ToDictionaryAsync(j => j.CorrelationId, cancellationToken);
+
+            foreach ((OutboxMessageEntity Message, string? Error) res in successfulResults)
             {
-                // Delete successfully sent messages.
+                if (jobsDict.TryGetValue(res.Message.CorrelationId, out TransferJobEntity? job))
+                {
+                    job.CurrentStatus = TransferStatus.Queued;
+                    job.Logs.Add(new TransferStatusLogEntity
+                    {
+                        CorrelationId = res.Message.CorrelationId,
+                        Status = TransferStatus.Queued,
+                        Timestamp = DateTime.UtcNow
+                    });
+                }
                 db.OutboxMessages.Remove(res.Message);
-            }
-            else
-            {
-                // Specify the error for problematic messages.
-                res.Message.Error = res.Error;
-                res.Message.RetryCount++;
             }
         }
 
