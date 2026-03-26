@@ -5,10 +5,10 @@ using SqlViewer.Shared.Messages.Etl.Commands;
 using SqlViewer.Shared.Messages.Storage.Entities;
 using SqlViewer.Shared.Messages.Storage.Enums;
 
-namespace SqlViewer.DataTransfer.Worker.Consumers;
+namespace SqlViewer.DataTransfer.Worker.Hosting;
 
-public sealed class DataTransferCommandConsumer(
-    ILogger<DataTransferCommandConsumer> logger,
+public sealed class KafkaConsumerWorker(
+    ILogger<KafkaConsumerWorker> logger,
     IServiceScopeFactory scopeFactory,
     IConfiguration configuration) : BaseInboxConsumer<string, string>(
         logger,

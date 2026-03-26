@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.DataTransfer.Worker.Consumers;
 using SqlViewer.DataTransfer.Worker.Data.DbContexts;
-using SqlViewer.DataTransfer.Worker.Services;
+using SqlViewer.DataTransfer.Worker.Hosting;
+using SqlViewer.DataTransfer.Worker.Services.Implementations;
 using SqlViewer.Etl.Core.Services;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
@@ -13,8 +13,8 @@ public sealed class Program
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-        builder.Services.AddScoped<IInboxService, DataTransferInboxService>();
-        builder.Services.AddHostedService<DataTransferCommandConsumer>();
+        builder.Services.AddScoped<IInboxService, InboxService>();
+        builder.Services.AddHostedService<KafkaConsumerWorker>();
 
         builder.Services.AddDbContext<DataTransferDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.DataTransfer)));

@@ -4,19 +4,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SqlViewer.DataTransfer.Worker.Data.DbContexts;
-using SqlViewer.DataTransfer.Worker.Services;
+using SqlViewer.DataTransfer.Worker.Services.Implementations;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Services;
 
-public sealed class DataTransferInboxServiceTests : IDisposable
+public sealed class InboxServiceTests : IDisposable
 {
     private readonly DataTransferDbContext _db;
-    private readonly Mock<ILogger<DataTransferInboxService>> _loggerMock;
-    private readonly DataTransferInboxService _service;
+    private readonly Mock<ILogger<InboxService>> _loggerMock;
+    private readonly InboxService _service;
     private readonly Fixture _autoFixture;
 
-    public DataTransferInboxServiceTests()
+    public InboxServiceTests()
     {
         _autoFixture = new Fixture();
         _autoFixture.Behaviors.Add(new OmitOnRecursionBehavior());
@@ -25,8 +25,8 @@ public sealed class DataTransferInboxServiceTests : IDisposable
             .UseInMemoryDatabase(_autoFixture.Create<string>())
             .Options;
         _db = new DataTransferDbContext(options);
-        _loggerMock = new Mock<ILogger<DataTransferInboxService>>();
-        _service = new DataTransferInboxService(_db, _loggerMock.Object);
+        _loggerMock = new Mock<ILogger<InboxService>>();
+        _service = new InboxService(_db, _loggerMock.Object);
     }
 
     [Fact]

@@ -4,7 +4,7 @@ using SqlViewer.DataTransfer.Worker.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
-namespace SqlViewer.DataTransfer.Worker.BackgroundWorkers;
+namespace SqlViewer.DataTransfer.Worker.Hosting;
 
 /// <summary>
 /// Monitors active sagas and marks them as TimedOut if no updates are received within the threshold.

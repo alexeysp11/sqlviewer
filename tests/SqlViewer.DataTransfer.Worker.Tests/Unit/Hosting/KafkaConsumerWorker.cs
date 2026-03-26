@@ -5,20 +5,19 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
-using SqlViewer.DataTransfer.Worker.Consumers;
 using SqlViewer.Shared.Messages.Etl.Commands;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
-namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Consumers;
+namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Hosting;
 
-public sealed class DataTransferCommandConsumerTests
+public sealed class KafkaConsumerWorker
 {
-    private readonly Mock<ILogger<DataTransferCommandConsumer>> _loggerMock = new();
+    private readonly Mock<ILogger<Worker.Hosting.KafkaConsumerWorker>> _loggerMock = new();
     private readonly Mock<IServiceScopeFactory> _scopeFactoryMock = new();
     private readonly Mock<IConfiguration> _configMock = new();
     private readonly Fixture _autoFixture = new();
 
-    public DataTransferCommandConsumerTests()
+    public KafkaConsumerWorker()
     {
         _configMock.Setup(c => c[It.IsAny<string>()]).Returns(_autoFixture.Create<string>());
     }
@@ -29,7 +28,7 @@ public sealed class DataTransferCommandConsumerTests
         // Arrange
         Guid userUid = _autoFixture.Create<Guid>();
 
-        DataTransferCommandConsumer consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
+        Worker.Hosting.KafkaConsumerWorker consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
         StartDataTransferCommand command = _autoFixture.Build<StartDataTransferCommand>()
             .With(c => c.UserUid, userUid.ToString())
             .Create();
@@ -52,7 +51,7 @@ public sealed class DataTransferCommandConsumerTests
     public void CreateInboxEntity_WithInvalidUserUid_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        DataTransferCommandConsumer consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
+        Worker.Hosting.KafkaConsumerWorker consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
         var invalidCommand = new { CorrelationId = _autoFixture.Create<Guid>(), UserUid = "not-a-guid" };
         string json = JsonSerializer.Serialize(invalidCommand);
 

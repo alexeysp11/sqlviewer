@@ -3,9 +3,9 @@ using SqlViewer.DataTransfer.Worker.Data.DbContexts;
 using SqlViewer.Etl.Core.Services;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
-namespace SqlViewer.DataTransfer.Worker.Services;
+namespace SqlViewer.DataTransfer.Worker.Services.Implementations;
 
-public sealed class DataTransferInboxService(DataTransferDbContext db, ILogger<DataTransferInboxService> logger) : IInboxService
+public sealed class InboxService(DataTransferDbContext db, ILogger<InboxService> logger) : IInboxService
 {
     public async Task StoreMessageAsync(InboxMessageEntity message, CancellationToken ct)
     {
