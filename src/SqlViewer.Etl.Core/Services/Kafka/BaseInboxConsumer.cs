@@ -34,13 +34,15 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
             BootstrapServers = bootstrapServers,
             GroupId = groupId,
             AutoOffsetReset = AutoOffsetReset.Earliest,
-            EnableAutoCommit = false // Manual commit after saving to Inbox
+            EnableAutoCommit = true
         };
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        using var consumer = new ConsumerBuilder<TKey, TValue>(_config).Build();
+        using IConsumer<TKey, TValue> consumer = new ConsumerBuilder<TKey, TValue>(_config)
+            .SetErrorHandler((_, e) => _logger.LogError("Kafka error: {Reason}", e.Reason))
+            .Build();
         consumer.Subscribe(_topic);
 
         _logger.LogInformation("Started Kafka consumer for topic: {Topic}", _topic);
@@ -49,7 +51,7 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
         {
             try
             {
-                var result = consumer.Consume(stoppingToken);
+                ConsumeResult<TKey, TValue> result = consumer.Consume(stoppingToken);
                 if (result == null) continue;
 
                 _logger.LogDebug("Received message from Kafka. Key: {Key}", result.Message.Key);
@@ -70,7 +72,7 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
 
     private async Task SaveToInboxAsync(ConsumeResult<TKey, TValue> result, CancellationToken ct)
     {
-        using var scope = _scopeFactory.CreateScope();
+        using IServiceScope scope = _scopeFactory.CreateScope();
         // Here we need a way to get the generic DB context or a specific Inbox service.
         // For simplicity, let's assume a Service that handles Inbox logic.
         IInboxService inboxService = scope.ServiceProvider.GetRequiredService<IInboxService>();
@@ -79,11 +81,15 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
         // If TValue is a string (JSON), we can parse it partially.
         Guid correlationId = ExtractCorrelationId(result.Message.Value);
 
+        string payload = result.Message.Value is string stringValue
+            ? stringValue
+            : JsonSerializer.Serialize(result.Message.Value);
+
         await inboxService.StoreMessageAsync(new InboxMessageEntity
         {
             CorrelationId = correlationId,
             MessageType = typeof(TValue).Name,
-            Payload = JsonSerializer.Serialize(result.Message.Value),
+            Payload = payload,
             ReceivedAt = DateTime.UtcNow,
             Status = InboxStatus.Received
         }, ct);

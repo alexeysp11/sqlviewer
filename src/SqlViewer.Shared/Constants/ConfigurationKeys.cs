@@ -49,6 +49,13 @@ public static class ConfigurationKeys
 
                 public const string DataTransferCommand = $"{TopicsSection}:DataTransferCommand";
             }
+
+            public static class Groups
+            {
+                private const string GroupsSection = $"{Section}:Groups";
+
+                public const string DataTransferWorkerGroup = $"{GroupsSection}:DataTransferWorkerGroup";
+            }
         }
 
         public static class Observability
@@ -111,6 +118,7 @@ public static class ConfigurationKeys
         public const string Security = "SecurityConnection";
         public const string QueryExecution = "QueryExecutionConnection";
         public const string Etl = "EtlConnection";
+        public const string DataTransfer = "DataTransferConnection";
         public const string Sandbox = "SandboxConnection";
     }
 }
