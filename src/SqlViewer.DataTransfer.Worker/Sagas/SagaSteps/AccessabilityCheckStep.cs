@@ -1,8 +1,8 @@
 ﻿namespace SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 
-public sealed class AccessabilityCheckStep(ILogger<AccessabilityCheckStep> logger) : ISagaStep
+public class AccessabilityCheckStep(ILogger<AccessabilityCheckStep> logger) : ISagaStep
 {
-    public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
+    public virtual async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
         logger.LogInformation("[Saga {Id}] Step: Checking database accessibility...", correlationId);
 

@@ -1,8 +1,8 @@
 ﻿namespace SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 
-public sealed class CompensationStep(ILogger<CompensationStep> logger) : ISagaStep
+public class CompensationStep(ILogger<CompensationStep> logger) : ISagaStep
 {
-    public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
+    public virtual async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
         logger.LogWarning("[Saga {Id}] Step: Executing compensation logic (Cleanup)...", correlationId);
 

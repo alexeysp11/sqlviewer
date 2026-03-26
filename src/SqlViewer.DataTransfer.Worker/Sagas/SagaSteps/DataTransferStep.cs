@@ -1,15 +1,31 @@
-﻿namespace SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
+﻿using Microsoft.Extensions.Caching.Distributed;
 
-public sealed class DataTransferStep(ILogger<DataTransferStep> logger) : ISagaStep
+namespace SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
+
+public class DataTransferStep(
+    ILogger<DataTransferStep> logger,
+    IDistributedCache redis) : ISagaStep
 {
-    public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
+    public virtual async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
-        logger.LogInformation("[Saga {Id}] Step: Starting data transfer (Simulated)...", correlationId);
+        logger.LogInformation("[Saga {Id}] Starting data transfer loop...", correlationId);
 
-        // Stub: The main 'Task.Delay' representing long-running operation
-        // In real scenario, here we'll have a loop updating Redis progress
-        await Task.Delay(5000, ct);
+        int totalParts = 10;
+        for (int i = 1; i <= totalParts; i++)
+        {
+            ct.ThrowIfCancellationRequested();
 
-        logger.LogInformation("[Saga {Id}] Step: Data transfer completed successfully.", correlationId);
+            await Task.Delay(500, ct);
+
+            int progress = i * 10;
+
+            await redis.SetStringAsync(
+                $"transfer:progress:{correlationId}",
+                progress.ToString(),
+                new DistributedCacheEntryOptions { AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1) },
+                ct);
+
+            logger.LogDebug("[Saga {Id}] Progress: {Percent}%", correlationId, progress);
+        }
     }
 }

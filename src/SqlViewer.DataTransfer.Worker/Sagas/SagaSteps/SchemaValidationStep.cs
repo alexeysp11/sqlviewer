@@ -1,8 +1,8 @@
 ﻿namespace SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 
-public sealed class SchemaValidationStep(ILogger<SchemaValidationStep> logger) : ISagaStep
+public class SchemaValidationStep(ILogger<SchemaValidationStep> logger) : ISagaStep
 {
-    public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
+    public virtual async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
         logger.LogInformation("[Saga {Id}] Step: Validating schemas and creating target table...", correlationId);
 

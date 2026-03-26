@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Logging;
 using Moq;
 using SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 
@@ -7,9 +8,10 @@ namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Sagas.SagaSteps;
 public sealed class DataTransferStepTests
 {
     private readonly Mock<ILogger<DataTransferStep>> _loggerMock = new();
+    private readonly Mock<IDistributedCache> _redisMock = new();
     private readonly DataTransferStep _step;
 
-    public DataTransferStepTests() => _step = new DataTransferStep(_loggerMock.Object);
+    public DataTransferStepTests() => _step = new DataTransferStep(_loggerMock.Object, _redisMock.Object);
 
     [Fact]
     public async Task ExecuteAsync_ShouldLogTransferStartAndFinish()
