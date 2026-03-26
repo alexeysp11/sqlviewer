@@ -17,7 +17,7 @@ public sealed class DataTransferSagaOrchestrator(
     AccessabilityCheckStep accessStep,
     SchemaValidationStep schemaStep,
     DataTransferStep transferStep,
-    CompensationStep compensationStep)
+    CompensationStep compensationStep) : IDataTransferSagaOrchestrator
 {
     public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
