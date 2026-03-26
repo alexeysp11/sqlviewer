@@ -10,6 +10,8 @@ namespace SqlViewer.DataTransfer.Worker.Data.DbContexts;
 /// </summary>
 public sealed class DataTransferDbContext(DbContextOptions<DataTransferDbContext> options) : DbContext(options)
 {
+    public DbSet<DataTransferSagaStateEntity> DataTransferSagaStates { get; set; }
+
     /// <summary>
     /// Incoming messages from Kafka to be processed by the worker.
     /// </summary>

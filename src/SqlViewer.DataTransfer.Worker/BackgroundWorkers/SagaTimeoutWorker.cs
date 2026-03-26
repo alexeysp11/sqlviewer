@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Etl.Core.Data.DbContexts;
-using SqlViewer.Etl.Core.Data.Entities;
+using SqlViewer.DataTransfer.Worker.Data.DbContexts;
+using SqlViewer.DataTransfer.Worker.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
-namespace SqlViewer.Etl.Worker.BackgroundWorkers;
+namespace SqlViewer.DataTransfer.Worker.BackgroundWorkers;
 
 /// <summary>
 /// Monitors active sagas and marks them as TimedOut if no updates are received within the threshold.
@@ -18,15 +18,16 @@ public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTi
         while (!stoppingToken.IsCancellationRequested)
         {
             using IServiceScope scope = scopeFactory.CreateScope();
-            EtlDbContext db = scope.ServiceProvider.GetRequiredService<EtlDbContext>();
+            DataTransferDbContext db = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
 
             DateTime deadline = DateTime.UtcNow - _timeoutThreshold;
 
             // Находим саги, которые застряли в промежуточных состояниях
             List<DataTransferSagaStateEntity> stalledSagas = await db.DataTransferSagaStates
-                .Where(s => s.CurrentState != SagaStatus.Completed.ToString() &&
-                            s.CurrentState != SagaStatus.Faulted.ToString() &&
-                            s.CurrentState != SagaStatus.TimedOut.ToString() &&
+                .Where(s => s.CurrentState != TransferSagaStatus.Completed.ToString() &&
+                            s.CurrentState != TransferSagaStatus.Failed.ToString() &&
+                            s.CurrentState != TransferSagaStatus.TimedOut.ToString() &&
+                            s.CurrentState != TransferSagaStatus.Cancelled.ToString() &&
                             s.LastUpdatedAt < deadline)
                 .ToListAsync(stoppingToken);
 
@@ -34,7 +35,7 @@ public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTi
             {
                 logger.LogWarning("Saga {Id} timed out. Last update: {Time}", saga.CorrelationId, saga.LastUpdatedAt);
 
-                saga.CurrentState = SagaStatus.TimedOut.ToString();
+                saga.CurrentState = TransferSagaStatus.TimedOut.ToString();
                 saga.LastUpdatedAt = DateTime.UtcNow;
 
                 // Добавляем команду компенсации в Outbox (на всякий случай)

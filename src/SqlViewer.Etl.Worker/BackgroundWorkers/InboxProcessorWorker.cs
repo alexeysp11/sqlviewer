@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SqlViewer.Etl.Core.Data.DbContexts;
-using SqlViewer.Etl.Worker.Sagas;
 using SqlViewer.Shared.Messages.Storage.Entities;
 using SqlViewer.Shared.Messages.Storage.Enums;
 
@@ -18,7 +17,6 @@ public class InboxProcessorWorker(IServiceScopeFactory scopeFactory) : Backgroun
         {
             using IServiceScope scope = scopeFactory.CreateScope();
             EtlDbContext db = scope.ServiceProvider.GetRequiredService<EtlDbContext>();
-            DataTransferSagaOrchestrator orchestrator = scope.ServiceProvider.GetRequiredService<DataTransferSagaOrchestrator>();
 
             InboxMessageEntity? msg = await db.InboxMessages
                 .FirstOrDefaultAsync(m => m.Status == InboxStatus.Received, cancellationToken);
@@ -27,8 +25,6 @@ public class InboxProcessorWorker(IServiceScopeFactory scopeFactory) : Backgroun
                 // Десериализуем Payload в объект команды на основе MessageType
                 //object command = Deserialize(msg.Payload, msg.MessageType);
                 object command = new { Message = "Hello world" };
-
-                await orchestrator.HandleAsync(msg.CorrelationId, command);
 
                 msg.Status = InboxStatus.Completed;
                 msg.ProcessedAt = DateTime.UtcNow;

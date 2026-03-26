@@ -1,16 +1,16 @@
 ﻿using System.Text.Json;
-using SqlViewer.Etl.Core.Data.DbContexts;
-using SqlViewer.Etl.Core.Data.Entities;
+using SqlViewer.DataTransfer.Worker.Data.DbContexts;
+using SqlViewer.DataTransfer.Worker.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Messages.Etl.Events;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
-namespace SqlViewer.Etl.Worker.Sagas;
+namespace SqlViewer.DataTransfer.Worker.Sagas;
 
 /// <summary>
 /// Orchestrates state transitions based on incoming messages from the Inbox.
 /// </summary>
-public class DataTransferSagaOrchestrator(EtlDbContext db)
+public class DataTransferSagaOrchestrator(DataTransferDbContext db)
 {
     public async Task HandleAsync(Guid correlationId, object message)
     {
@@ -20,15 +20,15 @@ public class DataTransferSagaOrchestrator(EtlDbContext db)
         switch (message)
         {
             case DataTransferStarted started:
-                saga.CurrentState = SagaStatus.InProgress.ToString();
+                saga.CurrentState = TransferSagaStatus.Transferring.ToString();
                 saga.StartedAt = started.StartedAt;
                 break;
             case DataTransferCompleted completed:
-                saga.CurrentState = SagaStatus.Completed.ToString();
+                saga.CurrentState = TransferSagaStatus.Completed.ToString();
                 saga.RowsProcessed = completed.TotalRows;
                 break;
             case DataTransferFailed:
-                saga.CurrentState = SagaStatus.Faulted.ToString();
+                saga.CurrentState = TransferSagaStatus.Failed.ToString();
                 // ЛОГИКА КОМПЕНСАЦИИ:
                 // Создаем команду очистки для Worker и кладем ее в Outbox
                 db.OutboxMessages.Add(new OutboxMessageEntity

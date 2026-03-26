@@ -2,7 +2,7 @@
 
 /// <summary>
 /// Represents the fine-grained execution status of a data transfer process.
-/// Unlike <see cref="SagaStatus"/>, which tracks the high-level orchestration state, 
+/// Unlike <see cref="TransferSagaStatus"/>, which tracks the high-level orchestration state, 
 /// <see cref="TransferStatus"/> is used for logging historical events, reporting real-time progress 
 /// to the UI, and performing post-transfer analytics.
 /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.Etl.Core.Data.Entities;
+﻿namespace SqlViewer.DataTransfer.Worker.Data.Entities;
 
 /// <summary>
 /// Persistent state of the Data Transfer Saga.
