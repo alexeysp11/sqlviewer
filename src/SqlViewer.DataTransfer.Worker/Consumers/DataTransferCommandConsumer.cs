@@ -22,7 +22,7 @@ public sealed class DataTransferCommandConsumer(
     /// <summary>
     /// Create the inbox entity.
     /// </summary>
-    protected override InboxMessageEntity CreateInboxEntity(string jsonCommand)
+    public override InboxMessageEntity CreateInboxEntity(string jsonCommand)
     {
         StartDataTransferCommand command = JsonSerializer.Deserialize<StartDataTransferCommand>(jsonCommand)
             ?? throw new InvalidOperationException($"Failed to deserialize {nameof(StartDataTransferCommand)}");

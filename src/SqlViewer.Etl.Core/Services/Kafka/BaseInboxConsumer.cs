@@ -82,5 +82,5 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
     /// <summary>
     /// Logic to extract CorrelationId from the message payload or headers.
     /// </summary>
-    protected abstract InboxMessageEntity CreateInboxEntity(TValue value);
+    public abstract InboxMessageEntity CreateInboxEntity(TValue value);
 }
