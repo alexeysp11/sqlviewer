@@ -68,7 +68,7 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
         }
     }
 
-    private async Task SaveToInboxAsync(ConsumeResult<TKey, TValue> result, CancellationToken ct)
+    public async Task SaveToInboxAsync(ConsumeResult<TKey, TValue> result, CancellationToken ct)
     {
         using IServiceScope scope = _scopeFactory.CreateScope();
 
