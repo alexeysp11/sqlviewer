@@ -11,7 +11,7 @@ namespace SqlViewer.DataTransfer.Worker.Hosting;
 /// </summary>
 public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTimeoutWorker> logger) : BackgroundService
 {
-    private readonly TimeSpan _timeoutThreshold = TimeSpan.FromMinutes(30);
+    private readonly TimeSpan _timeoutThreshold = TimeSpan.FromMinutes(60);
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -22,7 +22,7 @@ public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTi
 
             DateTime deadline = DateTime.UtcNow - _timeoutThreshold;
 
-            // Находим саги, которые застряли в промежуточных состояниях
+            // Find sagas that are stuck in intermediate states
             List<DataTransferSagaStateEntity> stalledSagas = await db.DataTransferSagaStates
                 .Where(s => s.CurrentState != TransferSagaStatus.Completed.ToString() &&
                             s.CurrentState != TransferSagaStatus.Failed.ToString() &&
@@ -38,7 +38,7 @@ public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTi
                 saga.CurrentState = TransferSagaStatus.TimedOut.ToString();
                 saga.LastUpdatedAt = DateTime.UtcNow;
 
-                // Добавляем команду компенсации в Outbox (на всякий случай)
+                // Adding a compensation command to Outbox.
                 db.OutboxMessages.Add(new OutboxMessageEntity
                 {
                     CorrelationId = saga.CorrelationId,
