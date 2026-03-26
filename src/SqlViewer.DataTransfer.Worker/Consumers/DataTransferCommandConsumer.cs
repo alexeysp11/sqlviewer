@@ -2,6 +2,8 @@
 using SqlViewer.Etl.Core.Services.Kafka;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Messages.Etl.Commands;
+using SqlViewer.Shared.Messages.Storage.Entities;
+using SqlViewer.Shared.Messages.Storage.Enums;
 
 namespace SqlViewer.DataTransfer.Worker.Consumers;
 
@@ -15,13 +17,27 @@ public sealed class DataTransferCommandConsumer(
         bootstrapServers: configuration[ConfigurationKeys.Services.Kafka.Url]!,
         groupId: configuration[ConfigurationKeys.Services.Kafka.Groups.DataTransferWorkerGroup]!)
 {
+    private const string CommandName = nameof(StartDataTransferCommand);
+
     /// <summary>
-    /// Extracts the CorrelationId directly from the strongly-typed command.
+    /// Create the inbox entity.
     /// </summary>
-    protected override Guid ExtractCorrelationId(string jsonCommand)
+    protected override InboxMessageEntity CreateInboxEntity(string jsonCommand)
     {
         StartDataTransferCommand command = JsonSerializer.Deserialize<StartDataTransferCommand>(jsonCommand)
-            ?? throw new InvalidOperationException($"Unable to parse JSON to get {nameof(StartDataTransferCommand)}");
-        return command.CorrelationId;
+            ?? throw new InvalidOperationException($"Failed to deserialize {nameof(StartDataTransferCommand)}");
+
+        if (!Guid.TryParse(command.UserUid, out Guid userUid))
+            throw new InvalidOperationException($"Unable to get {CommandName}");
+
+        return new InboxMessageEntity
+        {
+            CorrelationId = command.CorrelationId,
+            UserUid = userUid,
+            MessageType = CommandName,
+            Payload = jsonCommand,
+            ReceivedAt = DateTime.UtcNow,
+            Status = InboxStatus.Received
+        };
     }
 }

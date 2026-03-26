@@ -1,10 +1,8 @@
-﻿using System.Text.Json;
-using Confluent.Kafka;
+﻿using Confluent.Kafka;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SqlViewer.Shared.Messages.Storage.Entities;
-using SqlViewer.Shared.Messages.Storage.Enums;
 
 namespace SqlViewer.Etl.Core.Services.Kafka;
 
@@ -34,7 +32,7 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
             BootstrapServers = bootstrapServers,
             GroupId = groupId,
             AutoOffsetReset = AutoOffsetReset.Earliest,
-            EnableAutoCommit = true
+            EnableAutoCommit = false
         };
     }
 
@@ -73,30 +71,16 @@ public abstract class BaseInboxConsumer<TKey, TValue> : BackgroundService
     private async Task SaveToInboxAsync(ConsumeResult<TKey, TValue> result, CancellationToken ct)
     {
         using IServiceScope scope = _scopeFactory.CreateScope();
+
+        InboxMessageEntity inboxMessage = CreateInboxEntity(result.Message.Value);
+
         // Here we need a way to get the generic DB context or a specific Inbox service.
-        // For simplicity, let's assume a Service that handles Inbox logic.
         IInboxService inboxService = scope.ServiceProvider.GetRequiredService<IInboxService>();
-
-        // We extract CorrelationId from the message. 
-        // If TValue is a string (JSON), we can parse it partially.
-        Guid correlationId = ExtractCorrelationId(result.Message.Value);
-
-        string payload = result.Message.Value is string stringValue
-            ? stringValue
-            : JsonSerializer.Serialize(result.Message.Value);
-
-        await inboxService.StoreMessageAsync(new InboxMessageEntity
-        {
-            CorrelationId = correlationId,
-            MessageType = typeof(TValue).Name,
-            Payload = payload,
-            ReceivedAt = DateTime.UtcNow,
-            Status = InboxStatus.Received
-        }, ct);
+        await inboxService.StoreMessageAsync(inboxMessage, ct);
     }
 
     /// <summary>
     /// Logic to extract CorrelationId from the message payload or headers.
     /// </summary>
-    protected abstract Guid ExtractCorrelationId(TValue value);
+    protected abstract InboxMessageEntity CreateInboxEntity(TValue value);
 }
