@@ -3,7 +3,7 @@ using SqlViewer.DataTransfer.Worker.Data.DbContexts;
 using SqlViewer.Etl.Core.Services;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
-namespace SqlViewer.DataTransfer.Worker.Services.Implementations;
+namespace SqlViewer.DataTransfer.Worker.Services;
 
 /// <summary>
 /// Provides an inplementation for storing incoming messages in the Inbox table.

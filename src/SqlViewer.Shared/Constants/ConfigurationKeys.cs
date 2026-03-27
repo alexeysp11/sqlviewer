@@ -120,5 +120,6 @@ public static class ConfigurationKeys
         public const string Etl = "EtlConnection";
         public const string DataTransfer = "DataTransferConnection";
         public const string Sandbox = "SandboxConnection";
+        public const string Redis = "RedisConnection";
     }
 }

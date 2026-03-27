@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Moq;
 using SqlViewer.DataTransfer.Worker.Data.DbContexts;
-using SqlViewer.DataTransfer.Worker.Services.Implementations;
+using SqlViewer.DataTransfer.Worker.Services;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Services;

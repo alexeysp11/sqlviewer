@@ -8,8 +8,7 @@ namespace SqlViewer.DataTransfer.Worker.Hosting;
 
 public sealed class InboxProcessorWorker(
     ILogger<InboxProcessorWorker> logger,
-    IServiceScopeFactory scopeFactory,
-    IDataTransferSagaOrchestrator orchestrator) : BackgroundService
+    IServiceScopeFactory scopeFactory) : BackgroundService
 {
     private const int PollingDelayMs = 5000;
     private const int MessageBatchSize = 10;
@@ -35,11 +34,9 @@ public sealed class InboxProcessorWorker(
 
     public async Task ProcessPendingMessagesAsync(CancellationToken ct)
     {
-        using IServiceScope scope = scopeFactory.CreateScope();
-        DataTransferDbContext db = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
+        using IServiceScope rootScope = scopeFactory.CreateScope();
+        DataTransferDbContext db = rootScope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
 
-        // 1. Take messages in the Received (or Pending) status that haven't yet been processed.
-        // Use OrderBy to maintain the order of receipt.
         List<InboxMessageEntity> messages = await db.InboxMessages
             .Where(m => m.Status == InboxStatus.Received)
             .OrderBy(m => m.ReceivedAt)
@@ -50,19 +47,20 @@ public sealed class InboxProcessorWorker(
 
         logger.LogInformation("Found {Count} new messages in Inbox.", messages.Count);
 
-        foreach (InboxMessageEntity message in messages)
+        IEnumerable<Task> tasks = messages.Select(async message =>
         {
+            using IServiceScope scope = scopeFactory.CreateScope();
+            DataTransferDbContext scopedDb = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
+            IDataTransferSagaOrchestrator scopedOrchestrator = scope.ServiceProvider.GetRequiredService<IDataTransferSagaOrchestrator>();
+
             try
             {
-                // 2. Mark the message as being processed so that other workers don't take it.
+                scopedDb.Attach(message);
                 message.Status = InboxStatus.InProgress;
-                await db.SaveChangesAsync(ct);
+                await scopedDb.SaveChangesAsync(ct);
 
-                // 3. Launching Saga via Orchestrator
-                // Important: Saga automatically updates statuses and writes to Outlook.
-                await orchestrator.ExecuteAsync(message.CorrelationId, ct);
+                await scopedOrchestrator.ExecuteAsync(message.CorrelationId, ct);
 
-                // 4. Mark as successfully completed
                 message.Status = InboxStatus.Completed;
                 message.ProcessedAt = DateTime.UtcNow;
             }
@@ -74,7 +72,9 @@ public sealed class InboxProcessorWorker(
                 message.RetryCount++;
             }
 
-            await db.SaveChangesAsync(ct);
-        }
+            await scopedDb.SaveChangesAsync(ct);
+        });
+
+        await Task.WhenAll(tasks);
     }
 }

@@ -38,8 +38,9 @@ public sealed class InboxProcessorWorkerTests : IDisposable
         _scopeFactoryMock.Setup(x => x.CreateScope()).Returns(scopeMock.Object);
         scopeMock.Setup(x => x.ServiceProvider).Returns(serviceProviderMock.Object);
         serviceProviderMock.Setup(x => x.GetService(typeof(DataTransferDbContext))).Returns(_db);
+        serviceProviderMock.Setup(x => x.GetService(typeof(IDataTransferSagaOrchestrator))).Returns(_orchestratorMock.Object);
 
-        _worker = new InboxProcessorWorker(_loggerMock.Object, _scopeFactoryMock.Object, _orchestratorMock.Object);
+        _worker = new InboxProcessorWorker(_loggerMock.Object, _scopeFactoryMock.Object);
     }
 
     [Fact]
