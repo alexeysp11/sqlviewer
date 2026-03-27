@@ -48,6 +48,7 @@ public static class ConfigurationKeys
                 private const string TopicsSection = $"{Section}:Topics";
 
                 public const string DataTransferCommand = $"{TopicsSection}:DataTransferCommand";
+                public const string DataTransferStatusUpdates = $"{TopicsSection}:DataTransferStatusUpdates";
             }
 
             public static class Groups

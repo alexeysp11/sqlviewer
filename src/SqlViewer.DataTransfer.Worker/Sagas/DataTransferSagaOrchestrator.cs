@@ -4,6 +4,7 @@ using SqlViewer.DataTransfer.Worker.Data.DbContexts;
 using SqlViewer.DataTransfer.Worker.Data.Entities;
 using SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 using SqlViewer.Etl.Core.Enums;
+using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Sagas;
@@ -19,6 +20,8 @@ public sealed class DataTransferSagaOrchestrator(
     DataTransferStep transferStep,
     CompensationStep compensationStep) : IDataTransferSagaOrchestrator
 {
+    private const string SagaStatusUpdatedMessageType = "SagaStatusUpdated";
+
     public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
         try
@@ -64,6 +67,7 @@ public sealed class DataTransferSagaOrchestrator(
     {
         using IServiceScope scope = scopeFactory.CreateScope();
         DataTransferDbContext db = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
+        IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
         // Update SagaState
         DataTransferSagaStateEntity? state = await db.DataTransferSagaStates
@@ -86,8 +90,8 @@ public sealed class DataTransferSagaOrchestrator(
         db.OutboxMessages.Add(new OutboxMessageEntity
         {
             CorrelationId = correlationId,
-            MessageType = "SagaStatusUpdated",
-            Topic = "data-transfer-status-updates",
+            MessageType = SagaStatusUpdatedMessageType,
+            Topic = configuration[ConfigurationKeys.Services.Kafka.Topics.DataTransferStatusUpdates]!,
             Payload = JsonSerializer.Serialize(new
             {
                 CorrelationId = correlationId,

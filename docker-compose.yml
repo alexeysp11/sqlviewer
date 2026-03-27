@@ -240,6 +240,34 @@ services:
       etl-api:
         condition: service_started
 
+  data-transfer-worker:
+    container_name: data-transfer-worker
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+
+      - ConnectionStrings__DataTransferConnection=Server=sqlviewer-db;Port=5432;Database=sqlviewer-data-transfer;Username=postgres;Password=postgres;
+      - ConnectionStrings__RedisConnection=redis:6379,abortConnect=false
+      
+      - Services__Observability__ServiceName=data-transfer
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
+      
+      - Services__Kafka__Url=kafka:9094
+      - Services__Kafka__Topics__DataTransferCommand=data-transfer-commands
+      - Services__Kafka__Topics__DataTransferStatusUpdates=data-transfer-status-updates
+      - Services__Kafka__Groups__DataTransferWorkerGroup=data-transfer-worker-groups
+    build:
+      context: .
+      dockerfile: src/SqlViewer.DataTransfer.Worker/Dockerfile
+    depends_on:
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      etl-api:
+        condition: service_started
+
   kafka:
     image: apache/kafka:latest
     container_name: sqlviewer-kafka
