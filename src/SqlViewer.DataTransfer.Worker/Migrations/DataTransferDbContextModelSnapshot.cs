@@ -22,6 +22,43 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("SqlViewer.DataTransfer.Worker.Data.Entities.DataTransferSagaStateEntity", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<Guid>("CorrelationId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CurrentState")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("RowsProcessed")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SourceDb")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("StartedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("TargetDb")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("DataTransferSagaStates");
+                });
+
             modelBuilder.Entity("SqlViewer.DataTransfer.Worker.Data.Entities.TransferExecutionEntity", b =>
                 {
                     b.Property<long>("Id")

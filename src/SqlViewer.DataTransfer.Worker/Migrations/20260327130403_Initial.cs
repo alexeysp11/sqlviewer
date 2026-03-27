@@ -12,6 +12,25 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "DataTransferSagaStates",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CurrentState = table.Column<string>(type: "text", nullable: false),
+                    SourceDb = table.Column<string>(type: "text", nullable: false),
+                    TargetDb = table.Column<string>(type: "text", nullable: false),
+                    RowsProcessed = table.Column<int>(type: "integer", nullable: false),
+                    StartedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    LastUpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DataTransferSagaStates", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "InboxMessages",
                 columns: table => new
                 {
@@ -95,6 +114,9 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "DataTransferSagaStates");
+
             migrationBuilder.DropTable(
                 name: "InboxMessages");
 

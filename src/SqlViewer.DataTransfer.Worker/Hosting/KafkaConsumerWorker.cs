@@ -7,6 +7,10 @@ using SqlViewer.Shared.Messages.Storage.Enums;
 
 namespace SqlViewer.DataTransfer.Worker.Hosting;
 
+/// <summary>
+/// Data transfer class for Kafka consumers that implements the Inbox pattern.
+/// Persists incoming messages to the database before processing.
+/// </summary>
 public sealed class KafkaConsumerWorker(
     ILogger<KafkaConsumerWorker> logger,
     IServiceScopeFactory scopeFactory,
@@ -19,9 +23,7 @@ public sealed class KafkaConsumerWorker(
 {
     private const string CommandName = nameof(StartDataTransferCommand);
 
-    /// <summary>
-    /// Create the inbox entity.
-    /// </summary>
+    /// <inheritdoc/>
     public override InboxMessageEntity CreateInboxEntity(string jsonCommand)
     {
         StartDataTransferCommand command = JsonSerializer.Deserialize<StartDataTransferCommand>(jsonCommand)

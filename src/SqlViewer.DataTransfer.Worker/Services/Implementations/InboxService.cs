@@ -5,6 +5,10 @@ using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Services.Implementations;
 
+/// <summary>
+/// Provides an inplementation for storing incoming messages in the Inbox table.
+/// This helps to decouple the Kafka Consumer from specific Database Contexts.
+/// </summary>
 public sealed class InboxService(DataTransferDbContext db, ILogger<InboxService> logger) : IInboxService
 {
     public async Task StoreMessageAsync(InboxMessageEntity message, CancellationToken ct)
