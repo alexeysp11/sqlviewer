@@ -61,8 +61,7 @@ public sealed class InboxProcessorWorker(
 
                 await scopedOrchestrator.ExecuteAsync(message.CorrelationId, ct);
 
-                message.Status = InboxStatus.Completed;
-                message.ProcessedAt = DateTime.UtcNow;
+                scopedDb.Remove(message);
             }
             catch (Exception ex)
             {

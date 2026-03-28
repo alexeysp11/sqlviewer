@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -18,9 +19,13 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CurrentState = table.Column<string>(type: "text", nullable: false),
-                    SourceDb = table.Column<string>(type: "text", nullable: false),
-                    TargetDb = table.Column<string>(type: "text", nullable: false),
+                    CurrentState = table.Column<int>(type: "integer", nullable: false),
+                    SourceConnectionString = table.Column<string>(type: "text", nullable: false),
+                    TargetConnectionString = table.Column<string>(type: "text", nullable: false),
+                    SourceDatabaseType = table.Column<int>(type: "integer", nullable: false),
+                    TargetDatabaseType = table.Column<int>(type: "integer", nullable: false),
+                    TableName = table.Column<string>(type: "text", nullable: false),
+                    UserUid = table.Column<string>(type: "text", nullable: false),
                     RowsProcessed = table.Column<int>(type: "integer", nullable: false),
                     StartedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     LastUpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)

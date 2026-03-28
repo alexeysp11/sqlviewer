@@ -98,9 +98,8 @@ public sealed class InboxProcessorWorkerTests : IDisposable
         await _worker.ProcessPendingMessagesAsync(CancellationToken.None);
 
         // Assert
-        InboxMessageEntity message = await _db.InboxMessages.FirstAsync(x => x.CorrelationId == correlationId);
-        message.Status.Should().Be(InboxStatus.Completed);
-        message.ProcessedAt.Should().NotBeNull();
+        InboxMessageEntity? message = await _db.InboxMessages.FirstOrDefaultAsync(x => x.CorrelationId == correlationId);
+        message.Should().BeNull();
     }
 
     [Fact]

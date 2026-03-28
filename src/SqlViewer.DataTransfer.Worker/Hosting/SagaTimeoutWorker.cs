@@ -9,7 +9,7 @@ namespace SqlViewer.DataTransfer.Worker.Hosting;
 /// <summary>
 /// Monitors active sagas and marks them as TimedOut if no updates are received within the threshold.
 /// </summary>
-public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTimeoutWorker> logger) : BackgroundService
+public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTimeoutWorker> logger) : BackgroundService
 {
     private readonly TimeSpan _timeoutThreshold = TimeSpan.FromMinutes(60);
 
@@ -24,10 +24,10 @@ public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTi
 
             // Find sagas that are stuck in intermediate states
             List<DataTransferSagaStateEntity> stalledSagas = await db.DataTransferSagaStates
-                .Where(s => s.CurrentState != TransferSagaStatus.Completed.ToString() &&
-                            s.CurrentState != TransferSagaStatus.Failed.ToString() &&
-                            s.CurrentState != TransferSagaStatus.TimedOut.ToString() &&
-                            s.CurrentState != TransferSagaStatus.Cancelled.ToString() &&
+                .Where(s => s.CurrentState != TransferSagaStatus.Completed &&
+                            s.CurrentState != TransferSagaStatus.Failed &&
+                            s.CurrentState != TransferSagaStatus.TimedOut &&
+                            s.CurrentState != TransferSagaStatus.Cancelled &&
                             s.LastUpdatedAt < deadline)
                 .ToListAsync(stoppingToken);
 
@@ -35,7 +35,7 @@ public class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger<SagaTi
             {
                 logger.LogWarning("Saga {Id} timed out. Last update: {Time}", saga.CorrelationId, saga.LastUpdatedAt);
 
-                saga.CurrentState = TransferSagaStatus.TimedOut.ToString();
+                saga.CurrentState = TransferSagaStatus.TimedOut;
                 saga.LastUpdatedAt = DateTime.UtcNow;
 
                 // Adding a compensation command to Outbox.

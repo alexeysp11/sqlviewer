@@ -5,6 +5,7 @@ using SqlViewer.DataTransfer.Worker.Data.Entities;
 using SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Messages.Etl.Commands;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Sagas;
@@ -24,6 +25,9 @@ public sealed class DataTransferSagaOrchestrator(
 
     public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
+        // Initializing the saga state in the database.
+        await InitializeSagaStateAsync(correlationId, ct);
+
         try
         {
             // 1. Initial -> Accessibility
@@ -48,6 +52,42 @@ public sealed class DataTransferSagaOrchestrator(
             logger.LogError(ex, "Saga {Id} failed. Starting compensation...", correlationId);
             await compensationStep.ExecuteAsync(correlationId, ct);
             await FinalizeSagaAsync(correlationId, TransferSagaStatus.Failed, ex.Message, ct);
+        }
+    }
+
+    public async Task InitializeSagaStateAsync(Guid correlationId, CancellationToken ct)
+    {
+        using IServiceScope scope = scopeFactory.CreateScope();
+        DataTransferDbContext dbContext = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
+
+        // Inbox message.
+        InboxMessageEntity? message = await dbContext.InboxMessages.FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct)
+            ?? throw new InvalidOperationException($"Unable to find inbox message by CorrelationId: {correlationId}");
+        StartDataTransferCommand transferCommand = JsonSerializer.Deserialize<StartDataTransferCommand>(message.Payload)
+            ?? throw new InvalidOperationException($"Unable to deserialize {nameof(StartDataTransferCommand)} from inbox message by CorrelationId: {correlationId}");
+
+        // Check if there's already a similar saga (protection against duplicates from Inbox)
+        DataTransferSagaStateEntity? existingSagaState = await dbContext.DataTransferSagaStates
+            .FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct);
+
+        if (existingSagaState == null)
+        {
+            DataTransferSagaStateEntity newSageState = new()
+            {
+                CorrelationId = correlationId,
+                CurrentState = TransferSagaStatus.Initial,
+                SourceConnectionString = transferCommand.SourceConnectionString,
+                TargetConnectionString = transferCommand.TargetConnectionString,
+                SourceDatabaseType = transferCommand.SourceDatabaseType,
+                TargetDatabaseType = transferCommand.TargetDatabaseType,
+                TableName = transferCommand.TableName,
+                UserUid = transferCommand.UserUid,
+                LastUpdatedAt = DateTime.UtcNow
+            };
+
+            dbContext.DataTransferSagaStates.Add(newSageState);
+            await dbContext.SaveChangesAsync(ct);
+            logger.LogInformation("Saga {Id} initialized in DB", correlationId);
         }
     }
 
@@ -76,7 +116,7 @@ public sealed class DataTransferSagaOrchestrator(
         if (state != null)
         {
             // Map enum to string for the CurrentState column
-            state.CurrentState = status.ToString();
+            state.CurrentState = status;
             state.LastUpdatedAt = DateTime.UtcNow;
 
             // If this is the first step after Initial, we record the start time
