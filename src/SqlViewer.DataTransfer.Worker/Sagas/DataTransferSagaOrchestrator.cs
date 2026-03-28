@@ -6,6 +6,7 @@ using SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Messages.Etl.Commands;
+using SqlViewer.Shared.Messages.Etl.Events;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Sagas;
@@ -21,8 +22,6 @@ public sealed class DataTransferSagaOrchestrator(
     DataTransferStep transferStep,
     CompensationStep compensationStep) : IDataTransferSagaOrchestrator
 {
-    private const string SagaStatusUpdatedMessageType = "SagaStatusUpdated";
-
     public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
         // Initializing the saga state in the database.
@@ -109,35 +108,31 @@ public sealed class DataTransferSagaOrchestrator(
         DataTransferDbContext db = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
         IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
-        // Update SagaState
-        DataTransferSagaEntity? saga = await db.DataTransferSagas
-            .FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct);
+        // Update saga state.
+        DataTransferSagaEntity saga = await db.DataTransferSagas.FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct)
+            ?? throw new InvalidOperationException($"Unable to update saga status, saga not found for CorrelationId {correlationId}");
+        saga.CurrentState = status;
+        saga.LastUpdatedAt = DateTime.UtcNow;
 
-        if (saga != null)
+        // If this is the first step after Initial, update the start time.
+        if (status == TransferSagaStatus.AccessabilityCheck)
         {
-            // Map enum to string for the CurrentState column
-            saga.CurrentState = status;
-            saga.LastUpdatedAt = DateTime.UtcNow;
-
-            // If this is the first step after Initial, we record the start time
-            if (status == TransferSagaStatus.AccessabilityCheck)
-            {
-                saga.StartedAt = DateTime.UtcNow;
-            }
+            saga.StartedAt = DateTime.UtcNow;
         }
 
         // Write to Outbox
         db.OutboxMessages.Add(new OutboxMessageEntity
         {
             CorrelationId = correlationId,
-            MessageType = SagaStatusUpdatedMessageType,
+            MessageType = nameof(DataTransferStatusUpdated),
             Topic = configuration[ConfigurationKeys.Services.Kafka.Topics.DataTransferStatusUpdates]!,
-            Payload = JsonSerializer.Serialize(new
-            {
-                CorrelationId = correlationId,
-                Status = status.ToString(),
-                ErrorMessage = error
-            }),
+            UserUid = Guid.TryParse(saga.UserUid, out Guid userUid) ? userUid : null,
+            Payload = JsonSerializer.Serialize(new DataTransferStatusUpdated(
+                CorrelationId: correlationId,
+                TransferStatus: status.ToTransferStatus().ToString(),
+                InternalStatus: status.ToString(),
+                Timestamp: DateTime.UtcNow,
+                ErrorMessage: error)),
             CreatedAt = DateTime.UtcNow,
             Error = error
         });

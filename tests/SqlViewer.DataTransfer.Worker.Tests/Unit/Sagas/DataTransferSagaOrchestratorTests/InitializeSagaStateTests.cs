@@ -16,7 +16,7 @@ using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Sagas.DataTransferSagaOrchestratorTests;
 
-public sealed class InitializeSagaState : IDisposable
+public sealed class InitializeSagaStateTests : IDisposable
 {
     private readonly Mock<IServiceScopeFactory> _scopeFactoryMock;
     private readonly Mock<IServiceScope> _scopeMock;
@@ -31,7 +31,7 @@ public sealed class InitializeSagaState : IDisposable
     private readonly DataTransferSagaOrchestrator _orchestrator;
     private readonly Fixture _fixture = new();
 
-    public InitializeSagaState()
+    public InitializeSagaStateTests()
     {
         // Setting up an In-Memory database
         DbContextOptions<DataTransferDbContext> options = new DbContextOptionsBuilder<DataTransferDbContext>()

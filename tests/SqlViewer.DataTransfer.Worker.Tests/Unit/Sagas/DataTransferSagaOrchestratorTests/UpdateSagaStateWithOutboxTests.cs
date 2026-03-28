@@ -12,10 +12,12 @@ using SqlViewer.Shared.Messages.Storage.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Caching.Distributed;
+using System.Text.Json;
+using SqlViewer.Shared.Messages.Etl.Events;
 
 namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Sagas.DataTransferSagaOrchestratorTests;
 
-public sealed class UpdateSagaStateWithOutbox : IDisposable
+public sealed class UpdateSagaStateWithOutboxTests : IDisposable
 {
     private readonly DataTransferDbContext _db;
     private readonly Mock<IServiceScopeFactory> _scopeFactoryMock = new();
@@ -30,7 +32,7 @@ public sealed class UpdateSagaStateWithOutbox : IDisposable
     private readonly DataTransferSagaOrchestrator _orchestrator;
     private readonly Fixture _fixture = new();
 
-    public UpdateSagaStateWithOutbox()
+    public UpdateSagaStateWithOutboxTests()
     {
         // In-Memory database.
         DbContextOptions<DataTransferDbContext> options = new DbContextOptionsBuilder<DataTransferDbContext>()
@@ -69,15 +71,30 @@ public sealed class UpdateSagaStateWithOutbox : IDisposable
     {
         // Arrange
         Guid correlationId = _fixture.Create<Guid>();
+        string userUid = _fixture.Create<string>();
+
         DataTransferSagaEntity saga = _fixture.Build<DataTransferSagaEntity>()
             .With(x => x.CorrelationId, correlationId)
             .With(x => x.CurrentState, TransferSagaStatus.Initial)
+            .With(x => x.UserUid, userUid)
             .Create();
         _db.DataTransferSagas.Add(saga);
         await _db.SaveChangesAsync();
 
+        DataTransferStatusUpdated expectedEvent = new(
+            CorrelationId: correlationId,
+            TransferStatus: TransferStatus.Progress.ToString(),
+            InternalStatus: TransferSagaStatus.Transferring.ToString(),
+            Timestamp: DateTime.UtcNow,
+            ErrorMessage: "Error"
+        );
+
         // Act
-        await _orchestrator.UpdateSagaStateWithOutboxAsync(correlationId, TransferSagaStatus.Transferring, "Error", CancellationToken.None);
+        await _orchestrator.UpdateSagaStateWithOutboxAsync(
+            correlationId: correlationId,
+            status: TransferSagaStatus.Transferring,
+            error: "Error",
+            ct: CancellationToken.None);
 
         // Assert
         DataTransferSagaEntity updatedSaga = await _db.DataTransferSagas.FirstAsync(x => x.CorrelationId == correlationId);
@@ -85,8 +102,14 @@ public sealed class UpdateSagaStateWithOutbox : IDisposable
 
         OutboxMessageEntity? outboxMessage = await _db.OutboxMessages.FirstOrDefaultAsync(x => x.CorrelationId == correlationId);
         outboxMessage.Should().NotBeNull();
-        outboxMessage!.MessageType.Should().Be("SagaStatusUpdated");
-        outboxMessage.Payload.Should().Contain("Transferring");
+        outboxMessage.CorrelationId.Should().Be(correlationId);
+        outboxMessage.MessageType.Should().Be(nameof(DataTransferStatusUpdated));
+        outboxMessage.UserUid.Should().Be(userUid);
+
+        DataTransferStatusUpdated transferCommand = JsonSerializer.Deserialize<DataTransferStatusUpdated>(outboxMessage.Payload)!;
+        transferCommand.Should().BeEquivalentTo(expectedEvent, options => options
+            .Excluding(x => x.Timestamp)    // Exclude time, since it is generated inside the method.
+            .WithStrictOrdering());
     }
 
     public void Dispose() => _db.Dispose();
