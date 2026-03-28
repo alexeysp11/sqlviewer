@@ -5,6 +5,7 @@ using SqlViewer.DataTransfer.Worker.Sagas;
 using SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 using SqlViewer.DataTransfer.Worker.Services;
 using SqlViewer.Etl.Core.Services;
+using StackExchange.Redis;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.DataTransfer.Worker;
@@ -15,9 +16,8 @@ public sealed class Program
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
-        builder.Services.AddStackExchangeRedisCache(options => {
-            options.Configuration = builder.Configuration.GetConnectionString(ConnectionStrings.Redis);
-        });
+        builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+            ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString(ConnectionStrings.Redis)!));
 
         // Saga orchestrator
         builder.Services.AddSingleton<IDataTransferSagaOrchestrator, DataTransferSagaOrchestrator>();

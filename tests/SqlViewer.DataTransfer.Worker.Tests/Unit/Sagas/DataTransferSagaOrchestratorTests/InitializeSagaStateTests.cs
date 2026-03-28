@@ -2,7 +2,6 @@
 using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -13,6 +12,7 @@ using SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Messages.Etl.Commands;
 using SqlViewer.Shared.Messages.Storage.Entities;
+using StackExchange.Redis;
 
 namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Sagas.DataTransferSagaOrchestratorTests;
 
@@ -52,7 +52,7 @@ public sealed class InitializeSagaStateTests : IDisposable
         _loggerMock = new Mock<ILogger<DataTransferSagaOrchestrator>>();
         _accessStepMock = new Mock<AccessabilityCheckStep>(new Mock<ILogger<AccessabilityCheckStep>>().Object);
         _schemaStepMock = new Mock<SchemaValidationStep>(new Mock<ILogger<SchemaValidationStep>>().Object);
-        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, new Mock<IDistributedCache>().Object);
+        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, new Mock<IConnectionMultiplexer>().Object);
         _compensationStepMock = new Mock<CompensationStep>(new Mock<ILogger<CompensationStep>>().Object);
 
         // Create an orchestrator (steps can be mocked, as they are not involved in this method)

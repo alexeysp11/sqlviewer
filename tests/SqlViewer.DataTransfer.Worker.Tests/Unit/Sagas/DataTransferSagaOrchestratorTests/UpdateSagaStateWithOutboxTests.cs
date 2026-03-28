@@ -11,9 +11,9 @@ using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Messages.Storage.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using SqlViewer.Shared.Messages.Etl.Events;
+using StackExchange.Redis;
 
 namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Sagas.DataTransferSagaOrchestratorTests;
 
@@ -45,7 +45,7 @@ public sealed class UpdateSagaStateWithOutboxTests : IDisposable
         // Mocks.
         _accessStepMock = new Mock<AccessabilityCheckStep>(new Mock<ILogger<AccessabilityCheckStep>>().Object);
         _schemaStepMock = new Mock<SchemaValidationStep>(new Mock<ILogger<SchemaValidationStep>>().Object);
-        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, new Mock<IDistributedCache>().Object);
+        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, new Mock<IConnectionMultiplexer>().Object);
         _compensationStepMock = new Mock<CompensationStep>(new Mock<ILogger<CompensationStep>>().Object);
 
         // DI Scope.
