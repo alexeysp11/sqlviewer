@@ -23,7 +23,7 @@ public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger
             DateTime deadline = DateTime.UtcNow - _timeoutThreshold;
 
             // Find sagas that are stuck in intermediate states
-            List<DataTransferSagaStateEntity> stalledSagas = await db.DataTransferSagaStates
+            List<DataTransferSagaEntity> stalledSagas = await db.DataTransferSagas
                 .Where(s => s.CurrentState != TransferSagaStatus.Completed &&
                             s.CurrentState != TransferSagaStatus.Failed &&
                             s.CurrentState != TransferSagaStatus.TimedOut &&
@@ -31,7 +31,7 @@ public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger
                             s.LastUpdatedAt < deadline)
                 .ToListAsync(stoppingToken);
 
-            foreach (DataTransferSagaStateEntity saga in stalledSagas)
+            foreach (DataTransferSagaEntity saga in stalledSagas)
             {
                 logger.LogWarning("Saga {Id} timed out. Last update: {Time}", saga.CorrelationId, saga.LastUpdatedAt);
 

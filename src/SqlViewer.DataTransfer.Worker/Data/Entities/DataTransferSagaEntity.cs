@@ -6,7 +6,7 @@ namespace SqlViewer.DataTransfer.Worker.Data.Entities;
 /// <summary>
 /// Persistent state of the Data Transfer Saga.
 /// </summary>
-public class DataTransferSagaStateEntity
+public class DataTransferSagaEntity
 {
     public long Id { get; set; }
     public required Guid CorrelationId { get; set; }

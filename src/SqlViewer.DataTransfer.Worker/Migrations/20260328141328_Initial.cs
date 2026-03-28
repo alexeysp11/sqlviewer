@@ -13,7 +13,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DataTransferSagaStates",
+                name: "DataTransferSagas",
                 columns: table => new
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
@@ -120,7 +120,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DataTransferSagaStates");
+                name: "DataTransferSagas");
 
             migrationBuilder.DropTable(
                 name: "InboxMessages");

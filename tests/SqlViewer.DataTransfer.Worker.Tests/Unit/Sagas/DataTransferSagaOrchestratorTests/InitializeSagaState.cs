@@ -86,10 +86,10 @@ public sealed class InitializeSagaState : IDisposable
         await _orchestrator.InitializeSagaStateAsync(correlationId, CancellationToken.None);
 
         // Assert
-        DataTransferSagaStateEntity? state = await _dbContext.DataTransferSagaStates.FirstOrDefaultAsync(x => x.CorrelationId == correlationId);
-        state.Should().NotBeNull();
-        state.TableName.Should().Be(tableName);
-        state.CurrentState.Should().Be(TransferSagaStatus.Initial);
+        DataTransferSagaEntity? saga = await _dbContext.DataTransferSagas.FirstOrDefaultAsync(x => x.CorrelationId == correlationId);
+        saga.Should().NotBeNull();
+        saga.TableName.Should().Be(tableName);
+        saga.CurrentState.Should().Be(TransferSagaStatus.Initial);
     }
 
     [Fact]
@@ -116,23 +116,23 @@ public sealed class InitializeSagaState : IDisposable
             .With(x => x.CorrelationId, correlationId)
             .With(x => x.Payload, JsonSerializer.Serialize(command))
             .Create();
-        DataTransferSagaStateEntity transferState = _fixture.Build<DataTransferSagaStateEntity>()
+        DataTransferSagaEntity saga = _fixture.Build<DataTransferSagaEntity>()
             .With(x => x.CorrelationId, correlationId)
             .With(x => x.TableName, oldTableName)
             .Create();
         _dbContext.InboxMessages.Add(inboxMessage);
-        _dbContext.DataTransferSagaStates.Add(transferState);
+        _dbContext.DataTransferSagas.Add(saga);
         await _dbContext.SaveChangesAsync();
 
         // Act
         await _orchestrator.InitializeSagaStateAsync(correlationId, CancellationToken.None);
 
         // Assert
-        List<DataTransferSagaStateEntity> states = await _dbContext.DataTransferSagaStates
+        List<DataTransferSagaEntity> sagas = await _dbContext.DataTransferSagas
             .Where(x => x.CorrelationId == correlationId)
             .ToListAsync();
-        states.Should().HaveCount(1, because: "There should be only one entry left");
-        states[0].TableName.Should().Be(oldTableName, because: "The new entry should not overwrite the old one in this method.");
+        sagas.Should().HaveCount(1, because: "There should be only one entry left");
+        sagas[0].TableName.Should().Be(oldTableName, because: "The new entry should not overwrite the old one in this method.");
     }
 
     public void Dispose() => _dbContext.Dispose();

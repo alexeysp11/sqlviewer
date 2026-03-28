@@ -69,19 +69,19 @@ public sealed class UpdateSagaStateWithOutbox : IDisposable
     {
         // Arrange
         Guid correlationId = _fixture.Create<Guid>();
-        DataTransferSagaStateEntity sagaState = _fixture.Build<DataTransferSagaStateEntity>()
+        DataTransferSagaEntity saga = _fixture.Build<DataTransferSagaEntity>()
             .With(x => x.CorrelationId, correlationId)
             .With(x => x.CurrentState, TransferSagaStatus.Initial)
             .Create();
-        _db.DataTransferSagaStates.Add(sagaState);
+        _db.DataTransferSagas.Add(saga);
         await _db.SaveChangesAsync();
 
         // Act
         await _orchestrator.UpdateSagaStateWithOutboxAsync(correlationId, TransferSagaStatus.Transferring, "Error", CancellationToken.None);
 
         // Assert
-        DataTransferSagaStateEntity updatedState = await _db.DataTransferSagaStates.FirstAsync(x => x.CorrelationId == correlationId);
-        updatedState.CurrentState.Should().Be(TransferSagaStatus.Transferring);
+        DataTransferSagaEntity updatedSaga = await _db.DataTransferSagas.FirstAsync(x => x.CorrelationId == correlationId);
+        updatedSaga.CurrentState.Should().Be(TransferSagaStatus.Transferring);
 
         OutboxMessageEntity? outboxMessage = await _db.OutboxMessages.FirstOrDefaultAsync(x => x.CorrelationId == correlationId);
         outboxMessage.Should().NotBeNull();

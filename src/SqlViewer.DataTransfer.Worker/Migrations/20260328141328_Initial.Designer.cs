@@ -25,7 +25,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("SqlViewer.DataTransfer.Worker.Data.Entities.DataTransferSagaStateEntity", b =>
+            modelBuilder.Entity("SqlViewer.DataTransfer.Worker.Data.Entities.DataTransferSagaEntity", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,7 +72,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DataTransferSagaStates");
+                    b.ToTable("DataTransferSagas");
                 });
 
             modelBuilder.Entity("SqlViewer.DataTransfer.Worker.Data.Entities.TransferExecutionEntity", b =>

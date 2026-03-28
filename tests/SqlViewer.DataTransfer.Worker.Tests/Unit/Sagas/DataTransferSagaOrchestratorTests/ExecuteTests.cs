@@ -95,8 +95,8 @@ public sealed class ExecuteTests : IDisposable
         _compensationStepMock.Verify(x => x.ExecuteAsync(correlationId, It.IsAny<CancellationToken>()), Times.Once);
 
         // 2. Checking the status in the database.
-        DataTransferSagaStateEntity updatedState = await _db.DataTransferSagaStates.FirstAsync(x => x.CorrelationId == correlationId);
-        updatedState.CurrentState.Should().Be(TransferSagaStatus.Failed);
+        DataTransferSagaEntity updatedSaga = await _db.DataTransferSagas.FirstAsync(x => x.CorrelationId == correlationId);
+        updatedSaga.CurrentState.Should().Be(TransferSagaStatus.Failed);
     }
 
     public void Dispose() => _db.Dispose();

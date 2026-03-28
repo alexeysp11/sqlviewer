@@ -67,12 +67,12 @@ public sealed class DataTransferSagaOrchestrator(
             ?? throw new InvalidOperationException($"Unable to deserialize {nameof(StartDataTransferCommand)} from inbox message by CorrelationId: {correlationId}");
 
         // Check if there's already a similar saga (protection against duplicates from Inbox)
-        DataTransferSagaStateEntity? existingSagaState = await dbContext.DataTransferSagaStates
+        DataTransferSagaEntity? existingSaga = await dbContext.DataTransferSagas
             .FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct);
 
-        if (existingSagaState == null)
+        if (existingSaga == null)
         {
-            DataTransferSagaStateEntity newSageState = new()
+            DataTransferSagaEntity newSaga = new()
             {
                 CorrelationId = correlationId,
                 CurrentState = TransferSagaStatus.Initial,
@@ -85,7 +85,7 @@ public sealed class DataTransferSagaOrchestrator(
                 LastUpdatedAt = DateTime.UtcNow
             };
 
-            dbContext.DataTransferSagaStates.Add(newSageState);
+            dbContext.DataTransferSagas.Add(newSaga);
             await dbContext.SaveChangesAsync(ct);
             logger.LogInformation("Saga {Id} initialized in DB", correlationId);
         }
@@ -110,19 +110,19 @@ public sealed class DataTransferSagaOrchestrator(
         IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
         // Update SagaState
-        DataTransferSagaStateEntity? state = await db.DataTransferSagaStates
+        DataTransferSagaEntity? saga = await db.DataTransferSagas
             .FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct);
 
-        if (state != null)
+        if (saga != null)
         {
             // Map enum to string for the CurrentState column
-            state.CurrentState = status;
-            state.LastUpdatedAt = DateTime.UtcNow;
+            saga.CurrentState = status;
+            saga.LastUpdatedAt = DateTime.UtcNow;
 
             // If this is the first step after Initial, we record the start time
             if (status == TransferSagaStatus.AccessabilityCheck)
             {
-                state.StartedAt = DateTime.UtcNow;
+                saga.StartedAt = DateTime.UtcNow;
             }
         }
 
