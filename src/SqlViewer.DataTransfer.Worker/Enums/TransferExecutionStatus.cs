@@ -43,5 +43,10 @@ public enum TransferExecutionStatus
     /// <summary>
     /// Terminated due to cancelation.
     /// </summary>
-    Cancelled = 7
+    Cancelled = 7,
+
+    /// <summary>
+    /// Terminated due to timeout.
+    /// </summary>
+    TimedOut = 8
 }

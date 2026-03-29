@@ -44,6 +44,7 @@ public sealed class Program
         builder.Services.AddHostedService<KafkaConsumerWorker>();
         builder.Services.AddHostedService<InboxProcessorWorker>();
         builder.Services.AddHostedService<OutboxPublisherWorker>();
+        builder.Services.AddHostedService<SagaTimeoutWorker>();
 
         builder.Services.AddDbContext<DataTransferDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.DataTransfer)));

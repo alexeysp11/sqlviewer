@@ -42,4 +42,14 @@ public enum TransferStatus
     /// The data transfer process has been queued.
     /// </summary>
     Queued = 6,
+
+    /// <summary>
+    /// The data transfer process has been cancelled.
+    /// </summary>
+    Cancelled = 7,
+
+    /// <summary>
+    /// The data transfer process has been failed due to timeout.
+    /// </summary>
+    TimedOut = 8,
 }
