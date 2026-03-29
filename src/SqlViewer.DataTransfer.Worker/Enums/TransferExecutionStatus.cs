@@ -38,5 +38,10 @@ public enum TransferExecutionStatus
     /// <summary>
     /// Terminated due to an unrecoverable error.
     /// </summary>
-    Failed = 6
+    Failed = 6,
+
+    /// <summary>
+    /// Terminated due to cancelation.
+    /// </summary>
+    Cancelled = 7
 }

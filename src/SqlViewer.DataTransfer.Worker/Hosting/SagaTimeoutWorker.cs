@@ -48,6 +48,8 @@ public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger
                 });
             }
 
+            // TODO: find stalled transfer executions.
+
             await db.SaveChangesAsync(stoppingToken);
             await Task.Delay(TimeSpan.FromMinutes(1), stoppingToken);
         }

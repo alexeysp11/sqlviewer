@@ -42,12 +42,6 @@ public sealed class UpdateSagaStateWithOutboxTests : IDisposable
 
         _configMock.Setup(c => c[It.IsAny<string>()]).Returns(_fixture.Create<string>());
 
-        // Mocks.
-        _accessStepMock = new Mock<AccessabilityCheckStep>(new Mock<ILogger<AccessabilityCheckStep>>().Object);
-        _schemaStepMock = new Mock<SchemaValidationStep>(new Mock<ILogger<SchemaValidationStep>>().Object);
-        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, new Mock<IConnectionMultiplexer>().Object);
-        _compensationStepMock = new Mock<CompensationStep>(new Mock<ILogger<CompensationStep>>().Object);
-
         // DI Scope.
         Mock<IServiceScope> scopeMock = new();
         Mock<IServiceProvider> serviceProviderMock = new();
@@ -56,6 +50,12 @@ public sealed class UpdateSagaStateWithOutboxTests : IDisposable
         scopeMock.Setup(x => x.ServiceProvider).Returns(serviceProviderMock.Object);
         serviceProviderMock.Setup(x => x.GetService(typeof(DataTransferDbContext))).Returns(_db);
         serviceProviderMock.Setup(x => x.GetService(typeof(IConfiguration))).Returns(_configMock.Object);
+
+        // Mocks.
+        _accessStepMock = new Mock<AccessabilityCheckStep>(new Mock<ILogger<AccessabilityCheckStep>>().Object);
+        _schemaStepMock = new Mock<SchemaValidationStep>(new Mock<ILogger<SchemaValidationStep>>().Object);
+        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, _scopeFactoryMock.Object, new Mock<IConnectionMultiplexer>().Object);
+        _compensationStepMock = new Mock<CompensationStep>(new Mock<ILogger<CompensationStep>>().Object);
 
         _orchestrator = new DataTransferSagaOrchestrator(
             _scopeFactoryMock.Object,
@@ -91,7 +91,7 @@ public sealed class UpdateSagaStateWithOutboxTests : IDisposable
 
         // Act
         await _orchestrator.UpdateSagaStateWithOutboxAsync(
-            correlationId: correlationId,
+            saga: saga,
             status: TransferSagaStatus.Transferring,
             error: "Error",
             ct: CancellationToken.None);

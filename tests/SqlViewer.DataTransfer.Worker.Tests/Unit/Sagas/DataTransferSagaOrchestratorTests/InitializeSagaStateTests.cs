@@ -52,7 +52,7 @@ public sealed class InitializeSagaStateTests : IDisposable
         _loggerMock = new Mock<ILogger<DataTransferSagaOrchestrator>>();
         _accessStepMock = new Mock<AccessabilityCheckStep>(new Mock<ILogger<AccessabilityCheckStep>>().Object);
         _schemaStepMock = new Mock<SchemaValidationStep>(new Mock<ILogger<SchemaValidationStep>>().Object);
-        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, new Mock<IConnectionMultiplexer>().Object);
+        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, _scopeFactoryMock.Object, new Mock<IConnectionMultiplexer>().Object);
         _compensationStepMock = new Mock<CompensationStep>(new Mock<ILogger<CompensationStep>>().Object);
 
         // Create an orchestrator (steps can be mocked, as they are not involved in this method)
@@ -83,11 +83,11 @@ public sealed class InitializeSagaStateTests : IDisposable
         await _dbContext.SaveChangesAsync();
 
         // Act
-        await _orchestrator.InitializeSagaStateAsync(correlationId, CancellationToken.None);
+        DataTransferSagaEntity createdSaga = await _orchestrator.InitializeSagaStateAsync(correlationId, CancellationToken.None);
 
         // Assert
         DataTransferSagaEntity? saga = await _dbContext.DataTransferSagas.FirstOrDefaultAsync(x => x.CorrelationId == correlationId);
-        saga.Should().NotBeNull();
+        saga.Should().NotBeNull().And.BeEquivalentTo(createdSaga);
         saga.TableName.Should().Be(tableName);
         saga.CurrentState.Should().Be(TransferSagaStatus.Initial);
     }

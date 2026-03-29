@@ -45,17 +45,12 @@ public sealed class TransferExecutionEntity
     public string? LastErrorMessage { get; set; }
 
     /// <summary>
-    /// Timestamp when the execution was initiated.
+    /// Timestamp.
     /// </summary>
-    public DateTime StartedAt { get; set; } = DateTime.UtcNow;
-
-    /// <summary>
-    /// Timestamp when the execution reached a terminal state (Completed or Failed).
-    /// </summary>
-    public DateTime? FinishedAt { get; set; }
+    public DateTime Timestamp { get; set; } = DateTime.UtcNow;
 
     /// <summary>
     /// Name of the database table being processed.
     /// </summary>
-    public string TableName { get; set; } = string.Empty;
+    public required string TableName { get; set; }
 }

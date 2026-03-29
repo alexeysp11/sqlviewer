@@ -42,12 +42,6 @@ public sealed class ExecuteTests : IDisposable
 
         _configMock.Setup(c => c[It.IsAny<string>()]).Returns(_fixture.Create<string>());
 
-        // Mocks.
-        _accessStepMock = new Mock<AccessabilityCheckStep>(new Mock<ILogger<AccessabilityCheckStep>>().Object);
-        _schemaStepMock = new Mock<SchemaValidationStep>(new Mock<ILogger<SchemaValidationStep>>().Object);
-        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, new Mock<IConnectionMultiplexer>().Object);
-        _compensationStepMock = new Mock<CompensationStep>(new Mock<ILogger<CompensationStep>>().Object);
-
         // DI Scope.
         Mock<IServiceScope> scopeMock = new();
         Mock<IServiceProvider> serviceProviderMock = new();
@@ -56,6 +50,12 @@ public sealed class ExecuteTests : IDisposable
         scopeMock.Setup(x => x.ServiceProvider).Returns(serviceProviderMock.Object);
         serviceProviderMock.Setup(x => x.GetService(typeof(DataTransferDbContext))).Returns(_db);
         serviceProviderMock.Setup(x => x.GetService(typeof(IConfiguration))).Returns(_configMock.Object);
+
+        // Mocks.
+        _accessStepMock = new Mock<AccessabilityCheckStep>(new Mock<ILogger<AccessabilityCheckStep>>().Object);
+        _schemaStepMock = new Mock<SchemaValidationStep>(new Mock<ILogger<SchemaValidationStep>>().Object);
+        _transferStepMock = new Mock<DataTransferStep>(new Mock<ILogger<DataTransferStep>>().Object, _scopeFactoryMock.Object, new Mock<IConnectionMultiplexer>().Object);
+        _compensationStepMock = new Mock<CompensationStep>(new Mock<ILogger<CompensationStep>>().Object);
 
         _orchestrator = new DataTransferSagaOrchestrator(
             _scopeFactoryMock.Object,
@@ -78,13 +78,17 @@ public sealed class ExecuteTests : IDisposable
             .With(x => x.CorrelationId, correlationId)
             .With(x => x.Payload, JsonSerializer.Serialize(transferCommand))
             .Create();
+        DataTransferSagaEntity transferSaga = _fixture.Build<DataTransferSagaEntity>()
+            .With(x => x.CorrelationId, correlationId)
+            .Create();
         _db.InboxMessages.Add(inboxMessage);
+        _db.DataTransferSagas.Add(transferSaga);
         await _db.SaveChangesAsync();
 
         // Simulate an error in the second step.
-        _accessStepMock.Setup(x => x.ExecuteAsync(correlationId, It.IsAny<CancellationToken>()))
+        _accessStepMock.Setup(x => x.ExecuteAsync(transferSaga, It.IsAny<CancellationToken>()))
             .Returns(Task.CompletedTask);
-        _schemaStepMock.Setup(x => x.ExecuteAsync(correlationId, It.IsAny<CancellationToken>()))
+        _schemaStepMock.Setup(x => x.ExecuteAsync(transferSaga, It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("DB Error"));
 
         // Act
@@ -92,7 +96,7 @@ public sealed class ExecuteTests : IDisposable
 
         // Assert
         // 1. Checking the compensation call.
-        _compensationStepMock.Verify(x => x.ExecuteAsync(correlationId, It.IsAny<CancellationToken>()), Times.Once);
+        _compensationStepMock.Verify(x => x.ExecuteAsync(transferSaga, It.IsAny<CancellationToken>()), Times.Once);
 
         // 2. Checking the status in the database.
         DataTransferSagaEntity updatedSaga = await _db.DataTransferSagas.FirstAsync(x => x.CorrelationId == correlationId);

@@ -83,9 +83,6 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     b.Property<Guid>("CorrelationId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("FinishedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("LastErrorMessage")
                         .HasColumnType("text");
 
@@ -97,9 +94,6 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     b.Property<int>("RowsProcessed")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("StartedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
@@ -108,13 +102,15 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)");
 
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<int>("TotalRows")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CorrelationId")
-                        .IsUnique();
+                    b.HasIndex("CorrelationId");
 
                     b.ToTable("TransferExecutions");
                 });

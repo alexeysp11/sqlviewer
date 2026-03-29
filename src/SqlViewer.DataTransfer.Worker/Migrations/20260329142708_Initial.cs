@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -31,7 +32,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DataTransferSagaStates", x => x.Id);
+                    table.PrimaryKey("PK_DataTransferSagas", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -88,8 +89,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     RowsProcessed = table.Column<int>(type: "integer", nullable: false),
                     TotalRows = table.Column<int>(type: "integer", nullable: false),
                     LastErrorMessage = table.Column<string>(type: "text", nullable: true),
-                    StartedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    FinishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     TableName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false)
                 },
                 constraints: table =>
@@ -111,8 +111,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_TransferExecutions_CorrelationId",
                 table: "TransferExecutions",
-                column: "CorrelationId",
-                unique: true);
+                column: "CorrelationId");
         }
 
         /// <inheritdoc />

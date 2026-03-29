@@ -42,7 +42,7 @@ public sealed class DataTransferDbContext(DbContextOptions<DataTransferDbContext
         modelBuilder.Entity<TransferExecutionEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
-            entity.HasIndex(e => e.CorrelationId).IsUnique();
+            entity.HasIndex(e => e.CorrelationId).IsUnique(false);
             entity.Property(e => e.Progress)
                 .HasDefaultValue(0.0);
             entity.Property(e => e.TableName)

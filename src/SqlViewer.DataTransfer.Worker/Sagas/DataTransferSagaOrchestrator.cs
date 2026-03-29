@@ -25,36 +25,36 @@ public sealed class DataTransferSagaOrchestrator(
     public async Task ExecuteAsync(Guid correlationId, CancellationToken ct)
     {
         // Initializing the saga state in the database.
-        await InitializeSagaStateAsync(correlationId, ct);
+        DataTransferSagaEntity saga = await InitializeSagaStateAsync(correlationId, ct);
 
         try
         {
             // 1. Initial -> Accessibility
-            await ExecuteStepAsync(correlationId, TransferSagaStatus.AccessabilityCheck, accessStep, ct);
+            await ExecuteStepAsync(saga, TransferSagaStatus.AccessabilityCheck, accessStep, ct);
 
             // 2. Accessibility -> SchemaValidation
-            await ExecuteStepAsync(correlationId, TransferSagaStatus.SchemaValidation, schemaStep, ct);
+            await ExecuteStepAsync(saga, TransferSagaStatus.SchemaValidation, schemaStep, ct);
 
             // 3. SchemaValidation -> Transferring
-            await ExecuteStepAsync(correlationId, TransferSagaStatus.Transferring, transferStep, ct);
+            await ExecuteStepAsync(saga, TransferSagaStatus.Transferring, transferStep, ct);
 
             // 4. Final Success
-            await FinalizeSagaAsync(correlationId, TransferSagaStatus.Completed, null, ct);
+            await FinalizeSagaAsync(saga, TransferSagaStatus.Completed, null, ct);
         }
         catch (OperationCanceledException)
         {
             logger.LogWarning("Saga {Id} was cancelled", correlationId);
-            await FinalizeSagaAsync(correlationId, TransferSagaStatus.Cancelled, "Operation cancelled", ct);
+            await FinalizeSagaAsync(saga, TransferSagaStatus.Cancelled, "Operation cancelled", ct);
         }
         catch (Exception ex)
         {
             logger.LogError(ex, "Saga {Id} failed. Starting compensation...", correlationId);
-            await compensationStep.ExecuteAsync(correlationId, ct);
-            await FinalizeSagaAsync(correlationId, TransferSagaStatus.Failed, ex.Message, ct);
+            await compensationStep.ExecuteAsync(saga, ct);
+            await FinalizeSagaAsync(saga, TransferSagaStatus.Failed, ex.Message, ct);
         }
     }
 
-    public async Task InitializeSagaStateAsync(Guid correlationId, CancellationToken ct)
+    public async Task<DataTransferSagaEntity> InitializeSagaStateAsync(Guid correlationId, CancellationToken ct)
     {
         using IServiceScope scope = scopeFactory.CreateScope();
         DataTransferDbContext dbContext = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
@@ -66,12 +66,12 @@ public sealed class DataTransferSagaOrchestrator(
             ?? throw new InvalidOperationException($"Unable to deserialize {nameof(StartDataTransferCommand)} from inbox message by CorrelationId: {correlationId}");
 
         // Check if there's already a similar saga (protection against duplicates from Inbox)
-        DataTransferSagaEntity? existingSaga = await dbContext.DataTransferSagas
+        DataTransferSagaEntity? saga = await dbContext.DataTransferSagas
             .FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct);
 
-        if (existingSaga == null)
+        if (saga is null)
         {
-            DataTransferSagaEntity newSaga = new()
+            saga = new DataTransferSagaEntity
             {
                 CorrelationId = correlationId,
                 CurrentState = TransferSagaStatus.Initial,
@@ -84,33 +84,37 @@ public sealed class DataTransferSagaOrchestrator(
                 LastUpdatedAt = DateTime.UtcNow
             };
 
-            dbContext.DataTransferSagas.Add(newSaga);
+            dbContext.DataTransferSagas.Add(saga);
             await dbContext.SaveChangesAsync(ct);
             logger.LogInformation("Saga {Id} initialized in DB", correlationId);
         }
+        return saga;
     }
 
-    private async Task ExecuteStepAsync(Guid correlationId, TransferSagaStatus status, ISagaStep step, CancellationToken ct)
+    private async Task ExecuteStepAsync(DataTransferSagaEntity saga, TransferSagaStatus status, ISagaStep step, CancellationToken ct)
     {
-        await UpdateSagaStateWithOutboxAsync(correlationId, status, null, ct);
-        await step.ExecuteAsync(correlationId, ct);
+        await UpdateSagaStateWithOutboxAsync(saga, status, null, ct);
+        await step.ExecuteAsync(saga, ct);
     }
 
-    private async Task FinalizeSagaAsync(Guid correlationId, TransferSagaStatus status, string? error, CancellationToken ct)
+    private async Task FinalizeSagaAsync(DataTransferSagaEntity saga, TransferSagaStatus status, string? error, CancellationToken ct)
     {
-        await UpdateSagaStateWithOutboxAsync(correlationId, status, error, ct);
-        logger.LogInformation("Saga {Id} finalized with status {Status}", correlationId, status);
+        await UpdateSagaStateWithOutboxAsync(saga, status, error, ct);
+        logger.LogInformation("Saga {Id} finalized with status {Status}", saga.CorrelationId, status);
     }
 
-    public async Task UpdateSagaStateWithOutboxAsync(Guid correlationId, TransferSagaStatus status, string? error, CancellationToken ct)
+    public async Task UpdateSagaStateWithOutboxAsync(
+        DataTransferSagaEntity saga,
+        TransferSagaStatus status,
+        string? error,
+        CancellationToken ct)
     {
         using IServiceScope scope = scopeFactory.CreateScope();
         DataTransferDbContext db = scope.ServiceProvider.GetRequiredService<DataTransferDbContext>();
         IConfiguration configuration = scope.ServiceProvider.GetRequiredService<IConfiguration>();
 
         // Update saga state.
-        DataTransferSagaEntity saga = await db.DataTransferSagas.FirstOrDefaultAsync(x => x.CorrelationId == correlationId, ct)
-            ?? throw new InvalidOperationException($"Unable to update saga status, saga not found for CorrelationId {correlationId}");
+        db.Attach(saga);
         saga.CurrentState = status;
         saga.LastUpdatedAt = DateTime.UtcNow;
 
@@ -121,6 +125,7 @@ public sealed class DataTransferSagaOrchestrator(
         }
 
         // Write to Outbox
+        Guid correlationId = saga.CorrelationId;
         db.OutboxMessages.Add(new OutboxMessageEntity
         {
             CorrelationId = correlationId,
