@@ -5,6 +5,8 @@ using SqlViewer.DataTransfer.Worker.Sagas;
 using SqlViewer.DataTransfer.Worker.Sagas.SagaSteps;
 using SqlViewer.DataTransfer.Worker.Services;
 using SqlViewer.Etl.Core.Services;
+using SqlViewer.Etl.Core.Services.Kafka;
+using SqlViewer.Shared.Constants;
 using StackExchange.Redis;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
@@ -16,8 +18,17 @@ public sealed class Program
     {
         HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 
+        // Redis.
         builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
             ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString(ConnectionStrings.Redis)!));
+
+        // Kafka.
+        builder.Services.AddSingleton<IKafkaProducer>(sp =>
+        {
+            string kafkaEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Kafka.Url)
+                ?? throw new InvalidOperationException("Unable to get Kafka URL");
+            return new KafkaProducer(kafkaEndpoint);
+        });
 
         // Saga orchestrator
         builder.Services.AddSingleton<IDataTransferSagaOrchestrator, DataTransferSagaOrchestrator>();
@@ -29,9 +40,10 @@ public sealed class Program
         builder.Services.AddTransient<CompensationStep>();
 
         builder.Services.AddScoped<IInboxService, InboxService>();
-        
+
         builder.Services.AddHostedService<KafkaConsumerWorker>();
         builder.Services.AddHostedService<InboxProcessorWorker>();
+        builder.Services.AddHostedService<OutboxPublisherWorker>();
 
         builder.Services.AddDbContext<DataTransferDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.DataTransfer)));
