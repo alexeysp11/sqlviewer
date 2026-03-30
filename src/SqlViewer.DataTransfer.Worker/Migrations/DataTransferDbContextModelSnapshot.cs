@@ -129,6 +129,9 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("MessageType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -155,6 +158,9 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CorrelationId")
+                        .IsUnique();
+
+                    b.HasIndex("MessageId")
                         .IsUnique();
 
                     b.HasIndex("Status");

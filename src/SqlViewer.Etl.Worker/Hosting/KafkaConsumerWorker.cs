@@ -13,11 +13,10 @@ public sealed class KafkaConsumerWorker(
     IConfiguration configuration) : BaseInboxConsumer<string, string>(
         logger,
         scopeFactory,
-        topic: configuration[ConfigurationKeys.Services.Kafka.Topics.DataTransferCommand]!,
+        topic: configuration[ConfigurationKeys.Services.Kafka.Topics.DataTransferStatusUpdates]!,
         bootstrapServers: configuration[ConfigurationKeys.Services.Kafka.Url]!,
-        groupId: configuration[ConfigurationKeys.Services.Kafka.Groups.DataTransferWorkerGroup]!)
+        groupId: configuration[ConfigurationKeys.Services.Kafka.Groups.EtlWorkerGroup]!)
 {
-
     /// <inheritdoc/>
     public override InboxMessageEntity CreateInboxEntity(string value)
     {

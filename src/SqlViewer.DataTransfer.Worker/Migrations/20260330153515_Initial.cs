@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -41,6 +42,7 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserUid = table.Column<Guid>(type: "uuid", nullable: true),
+                    MessageId = table.Column<Guid>(type: "uuid", nullable: false),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
                     MessageType = table.Column<string>(type: "text", nullable: false),
                     Payload = table.Column<string>(type: "jsonb", nullable: false),
@@ -100,6 +102,12 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                 name: "IX_InboxMessages_CorrelationId",
                 table: "InboxMessages",
                 column: "CorrelationId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InboxMessages_MessageId",
+                table: "InboxMessages",
+                column: "MessageId",
                 unique: true);
 
             migrationBuilder.CreateIndex(

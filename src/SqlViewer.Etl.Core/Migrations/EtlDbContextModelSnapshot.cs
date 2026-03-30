@@ -62,11 +62,6 @@ namespace SqlViewer.Etl.Core.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CorrelationId")
-                        .HasDatabaseName("IX_TransferJobs_CorrelationId");
-
-                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CorrelationId"), "hash");
-
                     b.HasIndex("CreatedAt", "Id")
                         .IsDescending()
                         .HasDatabaseName("IX_TransferJobs_CreatedAt_Id");
@@ -118,6 +113,9 @@ namespace SqlViewer.Etl.Core.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("MessageType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -142,6 +140,15 @@ namespace SqlViewer.Etl.Core.Migrations
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CorrelationId")
+                        .HasDatabaseName("IX_InboxMessages_CorrelationId_Hash");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("CorrelationId"), "hash");
+
+                    b.HasIndex("MessageId")
+                        .IsUnique()
+                        .HasDatabaseName("UX_InboxMessages_MessageId");
 
                     b.ToTable("InboxMessages");
                 });

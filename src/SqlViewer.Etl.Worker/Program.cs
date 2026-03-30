@@ -6,8 +6,10 @@ using OpenTelemetry.Trace;
 using Prometheus;
 using Serilog;
 using SqlViewer.Etl.Core.Data.DbContexts;
+using SqlViewer.Etl.Core.Services;
 using SqlViewer.Etl.Core.Services.Kafka;
 using SqlViewer.Etl.Worker.Hosting;
+using SqlViewer.Etl.Worker.Services;
 using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.Etl.Worker;
@@ -30,8 +32,12 @@ public sealed class Program
         builder.Services.AddDbContext<EtlDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConfigurationKeys.ConnectionStrings.Etl)));
 
+        // Services.
+        builder.Services.AddScoped<IInboxService, InboxService>();
+
         // Workers.
         builder.Services.AddHostedService<OutboxPublisherWorker>();
+        builder.Services.AddHostedService<KafkaConsumerWorker>();
 
         // Serilog.
         Log.Logger = new LoggerConfiguration()

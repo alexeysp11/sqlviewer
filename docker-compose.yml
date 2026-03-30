@@ -218,6 +218,8 @@ services:
 
       - Services__Kafka__Url=kafka:9094
       - Services__Kafka__Topics__DataTransferCommand=data-transfer-commands
+      - Services__Kafka__Topics__DataTransferStatusUpdates=data-transfer-status-updates
+      - Services__Kafka__Groups__EtlWorkerGroup=etl-worker-groups
 
       - Serilog__MinimumLevel__Default=Information
       - Serilog__MinimumLevel__Override__Microsoft=Warning

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -18,6 +19,7 @@ namespace SqlViewer.Etl.Core.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     UserUid = table.Column<Guid>(type: "uuid", nullable: true),
+                    MessageId = table.Column<Guid>(type: "uuid", nullable: false),
                     CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
                     MessageType = table.Column<string>(type: "text", nullable: false),
                     Payload = table.Column<string>(type: "text", nullable: false),
@@ -97,10 +99,16 @@ namespace SqlViewer.Etl.Core.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_TransferJobs_CorrelationId",
-                table: "TransferJobs",
+                name: "IX_InboxMessages_CorrelationId_Hash",
+                table: "InboxMessages",
                 column: "CorrelationId")
                 .Annotation("Npgsql:IndexMethod", "hash");
+
+            migrationBuilder.CreateIndex(
+                name: "UX_InboxMessages_MessageId",
+                table: "InboxMessages",
+                column: "MessageId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransferJobs_CreatedAt_Id",

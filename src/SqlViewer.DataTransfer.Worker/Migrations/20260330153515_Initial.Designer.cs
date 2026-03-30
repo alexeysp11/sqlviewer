@@ -12,7 +12,7 @@ using SqlViewer.DataTransfer.Worker.Data.DbContexts;
 namespace SqlViewer.DataTransfer.Worker.Migrations
 {
     [DbContext(typeof(DataTransferDbContext))]
-    [Migration("20260329142708_Initial")]
+    [Migration("20260330153515_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -132,6 +132,9 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     b.Property<string>("Error")
                         .HasColumnType("text");
 
+                    b.Property<Guid>("MessageId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("MessageType")
                         .IsRequired()
                         .HasColumnType("text");
@@ -158,6 +161,9 @@ namespace SqlViewer.DataTransfer.Worker.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CorrelationId")
+                        .IsUnique();
+
+                    b.HasIndex("MessageId")
                         .IsUnique();
 
                     b.HasIndex("Status");
