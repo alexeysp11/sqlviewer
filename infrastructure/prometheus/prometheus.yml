@@ -4,4 +4,4 @@ global:
 scrape_configs:
   - job_name: 'dotnet-apps'
     static_configs:
-      - targets: ['api-gateway:8080', 'security:8080', 'metadata:8080', 'query:8080', 'etl-api:8080', 'etl-worker:8080']
+      - targets: ['api-gateway:8080', 'security:8080', 'metadata:8080', 'query:8080', 'etl-api:8080', 'etl-worker:8080', 'data-transfer-worker:8080']

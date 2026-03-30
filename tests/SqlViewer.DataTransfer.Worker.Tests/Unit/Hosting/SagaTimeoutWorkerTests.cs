@@ -120,35 +120,6 @@ public sealed class SagaTimeoutWorkerTests : IDisposable
         outboxMessage!.UserUid.Should().BeNull();
     }
 
-    [Fact]
-    public async Task ProcessStalledMessages_ShouldUpdateOrphanExecutions_WhenNoSagaAssociated()
-    {
-        // Arrange
-        DateTime deadline = DateTime.UtcNow.AddMinutes(-61);
-
-        // Create an orphan execution (status Transferring, but no active saga processing it)
-        TransferExecutionEntity orphanExecution = new()
-        {
-            CorrelationId = Guid.NewGuid(),
-            Status = TransferExecutionStatus.Transferring,
-            TableName = "OrphanTable",
-            Timestamp = deadline
-        };
-
-        _db.TransferExecutions.Add(orphanExecution);
-        await _db.SaveChangesAsync();
-
-        // Act
-        await _worker.ProcessStalledMessages(CancellationToken.None);
-
-        // Assert
-        TransferExecutionEntity updatedExecution = await _db.TransferExecutions
-            .FirstAsync(e => e.CorrelationId == orphanExecution.CorrelationId);
-
-        updatedExecution.Status.Should().Be(TransferExecutionStatus.TimedOut);
-        updatedExecution.LastErrorMessage.Should().Be($"Terminated by {nameof(SagaTimeoutWorker)} due to inactivity.");
-    }
-
     public void Dispose()
     {
         _db.Dispose();

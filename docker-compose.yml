@@ -239,6 +239,8 @@ services:
         condition: service_started
       etl-api:
         condition: service_started
+      kafka:
+        condition: service_started
 
   data-transfer-worker:
     container_name: data-transfer-worker
@@ -246,26 +248,42 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
 
       - ConnectionStrings__DataTransferConnection=Server=sqlviewer-db;Port=5432;Database=sqlviewer-data-transfer;Username=postgres;Password=postgres;
       - ConnectionStrings__RedisConnection=redis:6379,abortConnect=false
       
-      - Services__Observability__ServiceName=data-transfer
+      - Services__Observability__ServiceName=data-transfer-worker
+      - Services__Observability__WorkerMetricsPort=8080
       - Services__Observability__JaegerEndpoint=http://jaeger:4317
       
       - Services__Kafka__Url=kafka:9094
       - Services__Kafka__Topics__DataTransferCommand=data-transfer-commands
       - Services__Kafka__Topics__DataTransferStatusUpdates=data-transfer-status-updates
       - Services__Kafka__Groups__DataTransferWorkerGroup=data-transfer-worker-groups
+      
+      - Serilog__MinimumLevel__Default=Information
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
+      - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore=Fatal
+      - Serilog__WriteTo__0__Name=Console
+      - Serilog__WriteTo__1__Name=File
+      - Serilog__WriteTo__1__Args__path=/app/logs/log.txt
+      - Serilog__WriteTo__1__Args__rollingInterval=Day
+      - Serilog__WriteTo__1__Args__outputTemplate={Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}
     build:
       context: .
       dockerfile: src/SqlViewer.DataTransfer.Worker/Dockerfile
+    ports:
+      - "5103:8080"
     depends_on:
       sqlviewer-db:
         condition: service_healthy
       redis:
         condition: service_started
       etl-api:
+        condition: service_started
+      kafka:
         condition: service_started
 
   kafka:

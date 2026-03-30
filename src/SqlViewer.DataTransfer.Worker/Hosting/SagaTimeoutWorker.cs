@@ -95,16 +95,6 @@ public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger
 
         logger.LogInformation($"{nameof(SagaTimeoutWorker)}: processed {{Count}} stalled sagas.", stalledSagas.Count);
 
-        // Find stalled transfer executions that might not have a saga (orphans)
-        List<TransferExecutionEntity> stalledExecutions = await db.TransferExecutions
-            .Where(e => e.Status == TransferExecutionStatus.Transferring && e.Timestamp < deadline)
-            .ToListAsync(stoppingToken);
-        foreach (TransferExecutionEntity execution in stalledExecutions)
-        {
-            execution.Status = TransferExecutionStatus.TimedOut;
-            execution.LastErrorMessage = $"Terminated by {nameof(SagaTimeoutWorker)} due to inactivity.";
-        }
-
         await db.SaveChangesAsync(stoppingToken);
     }
 }

@@ -111,6 +111,9 @@ Used for gathering and storing performance metrics from all your services.
 - **Check:** Navigate to `Status` -> `Targets`.
 - **Expected Result:** All services (`api-gateway`, `security`, `metadata`, etc.) should have an **UP** status. This confirms Prometheus is successfully scraping data from the `:8080/metrics` endpoints.
 
+> **🔐 Security Note (Production-ready):**  
+> For this PET project, metrics ports (e.g., `:5103`, `:8080`) are forwarded externally in `docker-compose.yml` to facilitate manual inspection of the `/metrics` endpoints from a browser. In a real production environment, these ports should be closed to external access and accessible only within the Docker virtual network for Prometheus itself.
+
 #### 2. Jaeger (Distributed Tracing)
 Allows you to visualize the request lifecycle across microservices (from API Gateway to DB).
 - **URL:** [http://localhost:16686](http://localhost:16686)
