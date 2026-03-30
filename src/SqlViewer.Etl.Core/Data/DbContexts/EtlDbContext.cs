@@ -19,10 +19,18 @@ public sealed class EtlDbContext(DbContextOptions<EtlDbContext> options) : DbCon
             .HasDatabaseName("IX_TransferJobs_CreatedAt_Id")
             .IsDescending(true, true);
 
-        // Hash index on CorrelationId (Postgres only).
-        modelBuilder.Entity<TransferJobEntity>()
-            .HasIndex(j => j.CorrelationId)
-            .HasDatabaseName("IX_TransferJobs_CorrelationId")
-            .HasMethod("hash");
+        modelBuilder.Entity<InboxMessageEntity>(entity =>
+        {
+            // Unique constraint is mandatory for the Idempotent Consumer pattern.
+            // It prevents race conditions at the database level.
+            entity.HasIndex(m => m.MessageId)
+                .IsUnique()
+                .HasDatabaseName("UX_InboxMessages_MessageId");
+
+            // Hash index for fast lookups by CorrelationId (Postgres-specific).
+            entity.HasIndex(m => m.CorrelationId)
+                .HasMethod("hash")
+                .HasDatabaseName("IX_InboxMessages_CorrelationId_Hash");
+        });
     }
 }

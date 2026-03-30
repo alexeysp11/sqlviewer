@@ -281,8 +281,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_started
-      etl-api:
-        condition: service_started
       kafka:
         condition: service_started
 

@@ -18,7 +18,12 @@ public class InboxMessageEntity
     public Guid? UserUid { get; set; }
 
     /// <summary>
-    /// Unique identifier for the business operation to ensure "exactly-once" processing.
+    /// Unique identifier for the specific message/event to ensure idempotency
+    /// </summary>
+    public required Guid MessageId { get; set; }
+
+    /// <summary>
+    /// Unique identifier for the business operation (e.g. data transfering).
     /// </summary>
     public required Guid CorrelationId { get; set; }
 

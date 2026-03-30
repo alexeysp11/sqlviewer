@@ -30,10 +30,13 @@ public sealed class KafkaConsumerWorker(
             ?? throw new InvalidOperationException($"Failed to deserialize {nameof(StartDataTransferCommand)}");
 
         if (!Guid.TryParse(command.UserUid, out Guid userUid))
-            throw new InvalidOperationException($"Unable to get {CommandName}");
+            throw new InvalidOperationException($"Unable to parse UserUid for {CommandName}");
 
         return new InboxMessageEntity
         {
+            // For the initial command, using CorrelationId as MessageId is acceptable 
+            // to ensure the entire transfer process is triggered only once.
+            MessageId = command.CorrelationId,
             CorrelationId = command.CorrelationId,
             UserUid = userUid,
             MessageType = CommandName,

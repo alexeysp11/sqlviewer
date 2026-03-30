@@ -133,6 +133,7 @@ public sealed class DataTransferSagaOrchestrator(
             Topic = configuration[ConfigurationKeys.Services.Kafka.Topics.DataTransferStatusUpdates]!,
             UserUid = Guid.TryParse(saga.UserUid, out Guid userUid) ? userUid : null,
             Payload = JsonSerializer.Serialize(new DataTransferStatusUpdated(
+                MessageId: Guid.NewGuid(),
                 CorrelationId: correlationId,
                 TransferStatus: status.ToTransferStatus().ToString(),
                 InternalStatus: status.ToString(),

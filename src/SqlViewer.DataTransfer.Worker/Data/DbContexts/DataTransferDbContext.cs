@@ -34,6 +34,7 @@ public sealed class DataTransferDbContext(DbContextOptions<DataTransferDbContext
         modelBuilder.Entity<InboxMessageEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
+            entity.HasIndex(e => e.MessageId).IsUnique();
             entity.HasIndex(e => e.CorrelationId).IsUnique();
             entity.HasIndex(e => e.Status);
             entity.Property(e => e.Payload).HasColumnType("jsonb");

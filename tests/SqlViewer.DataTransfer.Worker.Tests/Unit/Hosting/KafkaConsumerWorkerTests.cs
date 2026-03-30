@@ -5,19 +5,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Moq;
+using SqlViewer.DataTransfer.Worker.Hosting;
 using SqlViewer.Shared.Messages.Etl.Commands;
 using SqlViewer.Shared.Messages.Storage.Entities;
 
 namespace SqlViewer.DataTransfer.Worker.Tests.Unit.Hosting;
 
-public sealed class KafkaConsumerWorker
+public sealed class KafkaConsumerWorkerTests
 {
-    private readonly Mock<ILogger<Worker.Hosting.KafkaConsumerWorker>> _loggerMock = new();
+    private readonly Mock<ILogger<KafkaConsumerWorker>> _loggerMock = new();
     private readonly Mock<IServiceScopeFactory> _scopeFactoryMock = new();
     private readonly Mock<IConfiguration> _configMock = new();
     private readonly Fixture _autoFixture = new();
 
-    public KafkaConsumerWorker()
+    public KafkaConsumerWorkerTests()
     {
         _configMock.Setup(c => c[It.IsAny<string>()]).Returns(_autoFixture.Create<string>());
     }
@@ -28,7 +29,7 @@ public sealed class KafkaConsumerWorker
         // Arrange
         Guid userUid = _autoFixture.Create<Guid>();
 
-        Worker.Hosting.KafkaConsumerWorker consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
+        KafkaConsumerWorker consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
         StartDataTransferCommand command = _autoFixture.Build<StartDataTransferCommand>()
             .With(c => c.UserUid, userUid.ToString())
             .Create();
@@ -51,7 +52,7 @@ public sealed class KafkaConsumerWorker
     public void CreateInboxEntity_WithInvalidUserUid_ShouldThrowInvalidOperationException()
     {
         // Arrange
-        Worker.Hosting.KafkaConsumerWorker consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
+        KafkaConsumerWorker consumer = new(_loggerMock.Object, _scopeFactoryMock.Object, _configMock.Object);
         var invalidCommand = new { CorrelationId = _autoFixture.Create<Guid>(), UserUid = "not-a-guid" };
         string json = JsonSerializer.Serialize(invalidCommand);
 
@@ -60,6 +61,6 @@ public sealed class KafkaConsumerWorker
 
         // Assert
         act.Should().Throw<InvalidOperationException>()
-           .WithMessage("*Unable to get StartDataTransferCommand*");
+           .WithMessage($"Unable to parse UserUid for {nameof(StartDataTransferCommand)}");
     }
 }

@@ -6,10 +6,10 @@ using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Etl.Core.Services.Kafka;
+using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Messages.Storage.Entities;
-using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
-namespace SqlViewer.Etl.Worker.BackgroundWorkers;
+namespace SqlViewer.Etl.Worker.Hosting;
 
 /// <summary>
 /// A background service for reliably transmitting messages from a local Outbox table to Kafka.
@@ -28,7 +28,7 @@ public sealed class OutboxPublisherWorker(
     public const int DelayExceptionMs = 5000;
     public const int DelayPostgresExceptionMs = 15000;
 
-    private readonly ActivitySource Activity = new(configuration[Services.Observability.ServiceName]!);
+    private readonly ActivitySource Activity = new(configuration[ConfigurationKeys.Services.Observability.ServiceName]!);
 
     protected override async Task ExecuteAsync(CancellationToken cancellationToken)
     {
@@ -82,7 +82,7 @@ public sealed class OutboxPublisherWorker(
                     logger.LogInformation("Processing message for the job {CorrelationId}", msg.CorrelationId);
                     await producer.ProduceAsync(msg.Topic, msg.CorrelationId.ToString(), msg.Payload);
                 }
-                return (Message: msg, Error: (string?)null);
+                return (Message: msg, Error: null);
             }
             catch (Exception ex)
             {

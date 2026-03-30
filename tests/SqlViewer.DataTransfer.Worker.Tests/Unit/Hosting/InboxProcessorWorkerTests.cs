@@ -53,6 +53,7 @@ public sealed class InboxProcessorWorkerTests : IDisposable
         _db.InboxMessages.AddRange(
             new InboxMessageEntity
             {
+                MessageId = receivedId,
                 CorrelationId = receivedId,
                 Status = InboxStatus.Received,
                 Payload = _fixture.Create<string>(),
@@ -60,6 +61,7 @@ public sealed class InboxProcessorWorkerTests : IDisposable
             },
             new InboxMessageEntity
             {
+                MessageId = receivedId,
                 CorrelationId = processingId,
                 Status = InboxStatus.InProgress,
                 Payload = _fixture.Create<string>(),
@@ -84,6 +86,7 @@ public sealed class InboxProcessorWorkerTests : IDisposable
         Guid correlationId = _fixture.Create<Guid>();
         _db.InboxMessages.Add(new InboxMessageEntity
         {
+            MessageId = correlationId,
             CorrelationId = correlationId,
             Status = InboxStatus.Received,
             Payload = _fixture.Create<string>(),
@@ -109,6 +112,7 @@ public sealed class InboxProcessorWorkerTests : IDisposable
         Guid correlationId = _fixture.Create<Guid>();
         _db.InboxMessages.Add(new InboxMessageEntity
         {
+            MessageId = correlationId,
             CorrelationId = correlationId,
             Status = InboxStatus.Received,
             Payload = _fixture.Create<string>(),

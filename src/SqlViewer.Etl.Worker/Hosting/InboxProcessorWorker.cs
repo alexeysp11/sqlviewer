@@ -3,7 +3,7 @@ using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Shared.Messages.Storage.Entities;
 using SqlViewer.Shared.Messages.Storage.Enums;
 
-namespace SqlViewer.Etl.Worker.BackgroundWorkers;
+namespace SqlViewer.Etl.Worker.Hosting;
 
 /// <summary>
 /// Из Inbox в Сагу.

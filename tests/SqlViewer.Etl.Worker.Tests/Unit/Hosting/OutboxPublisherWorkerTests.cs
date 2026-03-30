@@ -10,12 +10,12 @@ using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Etl.Core.Services.Kafka;
-using SqlViewer.Etl.Worker.BackgroundWorkers;
+using SqlViewer.Etl.Worker.Hosting;
+using SqlViewer.Shared.Constants;
 using SqlViewer.Shared.Messages.Storage.Entities;
 using VelocipedeUtils.Shared.DbOperations.Enums;
-using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
-namespace SqlViewer.Etl.Worker.Tests.Integration.BackgroundWorkers;
+namespace SqlViewer.Etl.Worker.Tests.Unit.Hosting;
 
 public sealed class OutboxPublisherWorkerTests
 {
@@ -76,7 +76,7 @@ public sealed class OutboxPublisherWorkerTests
         // Configurations.
         Dictionary<string, string?> configurationDictionary = new()
         {
-            {Services.Observability.ServiceName, _autoFixture.Create<string>()}
+            {ConfigurationKeys.Services.Observability.ServiceName, _autoFixture.Create<string>()}
         };
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationDictionary)
@@ -139,7 +139,7 @@ public sealed class OutboxPublisherWorkerTests
         // Configurations.
         Dictionary<string, string?> configurationDictionary = new()
         {
-            {Services.Observability.ServiceName, _autoFixture.Create<string>()}
+            {ConfigurationKeys.Services.Observability.ServiceName, _autoFixture.Create<string>()}
         };
         IConfiguration configuration = new ConfigurationBuilder()
             .AddInMemoryCollection(configurationDictionary)

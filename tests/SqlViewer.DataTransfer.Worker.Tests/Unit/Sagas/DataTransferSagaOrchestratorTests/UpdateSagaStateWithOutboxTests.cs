@@ -82,6 +82,7 @@ public sealed class UpdateSagaStateWithOutboxTests : IDisposable
         await _db.SaveChangesAsync();
 
         DataTransferStatusUpdated expectedEvent = new(
+            MessageId: Guid.NewGuid(),
             CorrelationId: correlationId,
             TransferStatus: TransferStatus.Progress.ToString(),
             InternalStatus: TransferSagaStatus.Transferring.ToString(),
@@ -108,6 +109,7 @@ public sealed class UpdateSagaStateWithOutboxTests : IDisposable
 
         DataTransferStatusUpdated transferCommand = JsonSerializer.Deserialize<DataTransferStatusUpdated>(outboxMessage.Payload)!;
         transferCommand.Should().BeEquivalentTo(expectedEvent, options => options
+            .Excluding(x => x.MessageId)    // Exclude message ID, since it is generated inside the method.
             .Excluding(x => x.Timestamp)    // Exclude time, since it is generated inside the method.
             .WithStrictOrdering());
     }

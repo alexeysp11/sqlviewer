@@ -7,8 +7,8 @@ using Prometheus;
 using Serilog;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Services.Kafka;
-using SqlViewer.Etl.Worker.BackgroundWorkers;
-using static SqlViewer.Shared.Constants.ConfigurationKeys;
+using SqlViewer.Etl.Worker.Hosting;
+using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.Etl.Worker;
 
@@ -21,14 +21,14 @@ public sealed class Program
         // Kafka.
         builder.Services.AddSingleton<IKafkaProducer>(sp =>
         {
-            string kafkaEndpoint = builder.Configuration.GetValue<string>(Services.Kafka.Url)
+            string kafkaEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Kafka.Url)
                 ?? throw new InvalidOperationException("Unable to get Kafka URL");
             return new KafkaProducer(kafkaEndpoint);
         });
 
         // Database.
         builder.Services.AddDbContext<EtlDbContext>(options =>
-            options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Etl)));
+            options.UseNpgsql(builder.Configuration.GetConnectionString(ConfigurationKeys.ConnectionStrings.Etl)));
 
         // Workers.
         builder.Services.AddHostedService<OutboxPublisherWorker>();
@@ -41,9 +41,9 @@ public sealed class Program
         builder.Logging.AddSerilog();
 
         // OpenTelemetry.
-        string serviceName = builder.Configuration.GetValue<string>(Services.Observability.ServiceName)
+        string serviceName = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.ServiceName)
             ?? throw new InvalidOperationException("Unable to get service name for observability");
-        string jaegerEndpoint = builder.Configuration.GetValue<string>(Services.Observability.JaegerEndpoint)
+        string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
             ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
         builder.Services.AddOpenTelemetry()
             .ConfigureResource(res => res.AddService(serviceName))
@@ -65,7 +65,7 @@ public sealed class Program
 
         builder.Services.AddMetricServer(options =>
         {
-            options.Port = ushort.Parse(builder.Configuration[Services.Observability.WorkerMetricsPort]!);
+            options.Port = ushort.Parse(builder.Configuration[ConfigurationKeys.Services.Observability.WorkerMetricsPort]!);
         });
 
         IHost host = builder.Build();

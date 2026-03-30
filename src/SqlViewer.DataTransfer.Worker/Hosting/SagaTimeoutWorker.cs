@@ -83,6 +83,7 @@ public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger
                 Topic = configuration[ConfigurationKeys.Services.Kafka.Topics.DataTransferStatusUpdates]!,
                 UserUid = Guid.TryParse(saga.UserUid, out Guid userUid) ? userUid : null,
                 Payload = JsonSerializer.Serialize(new DataTransferStatusUpdated(
+                    MessageId: Guid.NewGuid(),
                     CorrelationId: saga.CorrelationId,
                     TransferStatus: TransferStatus.TimedOut.ToString(),
                     InternalStatus: TransferSagaStatus.TimedOut.ToString(),

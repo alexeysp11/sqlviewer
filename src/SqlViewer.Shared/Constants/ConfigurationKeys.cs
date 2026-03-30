@@ -56,6 +56,7 @@ public static class ConfigurationKeys
                 private const string GroupsSection = $"{Section}:Groups";
 
                 public const string DataTransferWorkerGroup = $"{GroupsSection}:DataTransferWorkerGroup";
+                public const string EtlWorkerGroup = $"{GroupsSection}:EtlWorkerGroup";
             }
         }
 
