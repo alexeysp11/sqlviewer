@@ -17,6 +17,7 @@ public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger
 {
     private readonly TimeSpan _timeoutThreshold = TimeSpan.FromMinutes(60);
     private readonly TimeSpan _delay = TimeSpan.FromMinutes(1);
+    private const int BatchSize = 25;
 
     private string ErrorMessageTimeout
         => $"Data tranfser timed out after {_timeoutThreshold.TotalMinutes} minutes of inactivity.";
@@ -52,6 +53,7 @@ public sealed class SagaTimeoutWorker(IServiceScopeFactory scopeFactory, ILogger
                         s.CurrentState != TransferSagaStatus.TimedOut &&
                         s.CurrentState != TransferSagaStatus.Cancelled &&
                         s.LastUpdatedAt < deadline)
+            .Take(BatchSize)
             .ToListAsync(stoppingToken);
 
         // Update stalled sagas
