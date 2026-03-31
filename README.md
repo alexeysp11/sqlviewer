@@ -112,7 +112,7 @@ Used for gathering and storing performance metrics from all your services.
 - **Expected Result:** All services (`api-gateway`, `security`, `metadata`, etc.) should have an **UP** status. This confirms Prometheus is successfully scraping data from the `:8080/metrics` endpoints.
 
 > **🔐 Security Note (Production-ready):**  
-> For this PET project, metrics ports (e.g., `:5103`, `:8080`) are forwarded externally in `docker-compose.yml` to facilitate manual inspection of the `/metrics` endpoints from a browser. In a real production environment, these ports should be closed to external access and accessible only within the Docker virtual network for Prometheus itself.
+> For this pet project, metrics ports (e.g., `:5103`, `:8080`) are forwarded externally in `docker-compose.yml` to facilitate manual inspection of the `/metrics` endpoints from a browser. In a real production environment, these ports should be closed to external access and accessible only within the Docker virtual network for Prometheus itself.
 
 #### 2. Jaeger (Distributed Tracing)
 Allows you to visualize the request lifecycle across microservices (from API Gateway to DB).
@@ -145,3 +145,20 @@ For deep analysis of ASP.NET Core services, it is highly recommended to use the 
 *   **Request Duration:** API response latency.
 *   **HTTP Error Rate:** Percentage of `4xx`/`5xx` errors.
 *   **Resource Usage:** CPU and RAM consumption per microservice.
+
+## 🛠️ Known Issues / Future Improvements
+
+This section outlines technical debt and architectural considerations identified during the current development phase. These points are planned for future iterations to enhance system resilience and scalability.
+
+### 1. Thundering Herd Problem in Polling
+Currently, multiple desktop clients might synchronize their status polling requests, potentially leading to significant spikes in load on the API Gateway and ETL Service (the "Thundering Herd" effect).
+* **Proposed Solution:** Implement **Jitter** (adding a small random delay to each request) to distribute the load more evenly over time.
+* **Error Handling:** Implement **Exponential Backoff** to increase the delay between retries if the server returns 5xx errors or rate-limit responses (429).
+
+### 2. Client-Side Resource Optimization
+The current background worker for active operations maintains a constant polling interval regardless of the application's state.
+* **Proposed Solution:** Implement an adaptive polling strategy. The interval should increase (e.g., from 2s to 30s) if the application window is **minimized**, reducing unnecessary network traffic and CPU usage on both the client and server sides.
+
+### 3. Distributed Tracing Continuity (Jaeger)
+Due to batch processing in the ETL Worker and Data Transfer Worker, the `CorrelationId` trace context may occasionally break when messages are grouped.
+* **Proposed Solution:** Manually propagate the `SpanContext` by extracting trace headers from individual messages within a batch and creating child spans for each processing task.
