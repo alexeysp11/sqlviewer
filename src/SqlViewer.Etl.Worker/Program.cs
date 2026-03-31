@@ -34,8 +34,10 @@ public sealed class Program
 
         // Services.
         builder.Services.AddScoped<IInboxService, InboxService>();
+        builder.Services.AddScoped<ITransferStatusService, TransferStatusService>();
 
         // Workers.
+        builder.Services.AddHostedService<InboxProcessorWorker>();
         builder.Services.AddHostedService<OutboxPublisherWorker>();
         builder.Services.AddHostedService<KafkaConsumerWorker>();
 
