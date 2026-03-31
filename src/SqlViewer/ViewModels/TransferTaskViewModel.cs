@@ -1,6 +1,7 @@
 ﻿namespace SqlViewer.ViewModels;
 
 using CommunityToolkit.Mvvm.ComponentModel;
+using SqlViewer.Shared.Dtos.Etl;
 
 public partial class TransferTaskViewModel : ObservableObject
 {
@@ -15,4 +16,14 @@ public partial class TransferTaskViewModel : ObservableObject
 
     [ObservableProperty]
     private bool _isCompleted;
+
+    /// <summary>
+    /// Updates the view model state from the DTO.
+    /// </summary>
+    public void ApplyChanges(TransferStatusResponseDto dto)
+    {
+        Progress = dto.Progress;
+        Status = dto.StatusMessage;
+        IsCompleted = dto.IsFinalState;
+    }
 }

@@ -1,116 +1,49 @@
 ﻿using System.Collections.Specialized;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
-using System.Text;
-using System.Text.Json;
 using System.Web;
+using SqlViewer.ApiHandlers.Abstractions;
 using SqlViewer.Shared.Constants;
-using SqlViewer.Shared.Converters;
-using SqlViewer.Shared.Dtos;
 using SqlViewer.Shared.Dtos.Etl;
-using SqlViewer.StorageContexts;
+using SqlViewer.StorageContexts.Abstractions;
 
 namespace SqlViewer.ApiHandlers.Implementations;
 
-public sealed class EtlHttpHandler : HttpHandler, IEtlHttpHandler
+#nullable enable
+
+public sealed class EtlHttpHandler(IUserContext userContext, IHttpClientFactory httpClientFactory)
+    : HttpHandler(userContext, httpClientFactory), IEtlHttpHandler
 {
-    private readonly IUserContext _userContext;
-    private readonly JsonSerializerOptions _jsonSerializerOptions;
-
-    public EtlHttpHandler(IUserContext userContext) : base()
+    public async Task<List<TransferStatusResponseDto>> GetBatchTransferStatusesAsync(IEnumerable<Guid> correlationIds, CancellationToken ct)
     {
-        _userContext = userContext;
-        _jsonSerializerOptions = new()
-        {
-            PropertyNameCaseInsensitive = true,
-            Converters = { new DynamicObjectConverter() }
-        };
+        string url = BuildUrl(RestApiPaths.Etl.DataTransfer.GetStatus);
+
+        using HttpRequestMessage request = CreateRequest(HttpMethod.Post, url);
+        request.Content = JsonContent.Create(correlationIds, options: _jsonSerializerOptions);
+
+        return await SendRequestAsync<List<TransferStatusResponseDto>>(request, ct);
     }
 
-    public async Task<StartTransferResponseDto> PostStartTransferAsync(StartTransferRequestDto requestDto)
+    public async Task<StartTransferResponseDto> PostStartTransferAsync(StartTransferRequestDto requestDto, CancellationToken ct)
     {
-        UriBuilder uriBuilder = new()
-        {
-            Scheme = App.AppSettings.ServerScheme,
-            Host = App.AppSettings.ServerHost,
-            Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.Etl.DataTransfer.Start,
-        };
-        string url = uriBuilder.Uri.ToString();
+        string url = BuildUrl(RestApiPaths.Etl.DataTransfer.Start);
 
-        // Authorization.
-        using HttpRequestMessage requestMessage = new(HttpMethod.Post, url);
-        requestMessage.Headers.Authorization = new AuthenticationHeaderValue(_userContext.TokenType, _userContext.AccessToken);
-        requestMessage.Content = new StringContent(JsonSerializer.Serialize(requestDto), Encoding.UTF8, "application/json");
+        using HttpRequestMessage request = CreateRequest(HttpMethod.Post, url);
+        request.Content = JsonContent.Create(requestDto, options: _jsonSerializerOptions);
 
-        // Request.
-        HttpResponseMessage response = await _httpClient.SendAsync(requestMessage);
-        string jsonResponse = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode)
-        {
-            string errorMessage;
-            try
-            {
-                ProblemDetailsResponseDto problem = JsonSerializer.Deserialize<ProblemDetailsResponseDto>(jsonResponse, _jsonSerializerOptions);
-                errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
-            }
-            catch
-            {
-                errorMessage = string.IsNullOrEmpty(jsonResponse) ? $"Status code: {response.StatusCode}" : jsonResponse;
-            }
-            throw new Exception(errorMessage);
-        }
-        StartTransferResponseDto responseDto = JsonSerializer.Deserialize<StartTransferResponseDto>(jsonResponse, _jsonSerializerOptions);
-        return responseDto;
+        return await SendRequestAsync<StartTransferResponseDto>(request, ct);
     }
 
-    public async Task<TransferStatusResponseDto> GetTransferStatusAsync(Guid correlationId)
-    {
-        // Sending a GET request to retrieve the status of a specific saga
-        return await _httpClient.GetFromJsonAsync<TransferStatusResponseDto>($"api/etl/status/{correlationId}")
-           ?? throw new InvalidOperationException($"Failed to deserialize {nameof(TransferStatusResponseDto)}");
-    }
-
-    public async Task<TransferHistoryResponseDto> GetTransferHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit)
+    public async Task<TransferHistoryResponseDto> GetTransferHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit, CancellationToken ct)
     {
         NameValueCollection query = HttpUtility.ParseQueryString(string.Empty);
-        if (cursorTransferJobId.HasValue)
-            query["correlationId"] = cursorTransferJobId.Value.ToString();
+        if (cursorTransferJobId.HasValue) query["correlationId"] = cursorTransferJobId.Value.ToString();
         query["limit"] = limit.ToString();
 
-        UriBuilder uriBuilder = new()
-        {
-            Scheme = App.AppSettings.ServerScheme,
-            Host = App.AppSettings.ServerHost,
-            Port = App.AppSettings.ServerPort,
-            Path = RestApiPaths.Etl.DataTransfer.GetHistory.Replace("{userUid}", userUid.ToString(), StringComparison.Ordinal),
-            Query = query.ToString()
-        };
-        string url = uriBuilder.Uri.ToString();
+        string path = RestApiPaths.Etl.DataTransfer.GetHistory.Replace("{userUid}", userUid.ToString(), StringComparison.Ordinal);
+        string url = BuildUrl(path, query.ToString());
 
-        // Authorization.
-        using HttpRequestMessage requestMessage = new(HttpMethod.Get, url);
-        requestMessage.Headers.Authorization = new AuthenticationHeaderValue(_userContext.TokenType, _userContext.AccessToken);
-
-        // Request.
-        HttpResponseMessage response = await _httpClient.SendAsync(requestMessage);
-        string jsonResponse = await response.Content.ReadAsStringAsync();
-        if (!response.IsSuccessStatusCode)
-        {
-            string errorMessage;
-            try
-            {
-                ProblemDetailsResponseDto problem = JsonSerializer.Deserialize<ProblemDetailsResponseDto>(jsonResponse, _jsonSerializerOptions);
-                errorMessage = problem?.Detail ?? problem?.Title ?? jsonResponse;
-            }
-            catch
-            {
-                errorMessage = string.IsNullOrEmpty(jsonResponse) ? $"Status code: {response.StatusCode}" : jsonResponse;
-            }
-            throw new Exception(errorMessage);
-        }
-        TransferHistoryResponseDto responseDto = JsonSerializer.Deserialize<TransferHistoryResponseDto>(jsonResponse, _jsonSerializerOptions);
-        return responseDto;
+        using HttpRequestMessage request = CreateRequest(HttpMethod.Get, url);
+        return await SendRequestAsync<TransferHistoryResponseDto>(request, ct);
     }
 }

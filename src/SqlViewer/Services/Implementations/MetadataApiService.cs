@@ -1,4 +1,5 @@
-﻿using SqlViewer.ApiHandlers;
+﻿using SqlViewer.ApiHandlers.Abstractions;
+using SqlViewer.Services.Abstractions;
 using SqlViewer.Shared.Dtos.Metadata;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
@@ -19,7 +20,7 @@ public sealed class MetadataApiService(IMetadataHttpHandler httpHandler) : IMeta
             ConnectionString = connectionString,
             TableName = tableName
         };
-        MetadataColumnsResponseDto responseDto = await _httpHandler.GetColumnsAsync(requestDto);
+        MetadataColumnsResponseDto responseDto = await _httpHandler.GetColumnsAsync(requestDto, default);
         return responseDto.Columns ?? [];
     }
 
@@ -30,9 +31,7 @@ public sealed class MetadataApiService(IMetadataHttpHandler httpHandler) : IMeta
             DatabaseType = databaseType,
             ConnectionString = connectionString,
         };
-        MetadataTablesResponseDto responseDto = await _httpHandler.GetTables(requestDto);
+        MetadataTablesResponseDto responseDto = await _httpHandler.GetTables(requestDto, default);
         return responseDto.Tables ?? [];
     }
-
-    public void Dispose() => _httpHandler?.Dispose();
 }

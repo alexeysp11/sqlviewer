@@ -1,7 +1,8 @@
-﻿using SqlViewer.ApiHandlers;
+﻿using SqlViewer.ApiHandlers.Abstractions;
+using SqlViewer.Services.Abstractions;
 using SqlViewer.Shared.Dtos.Auth;
 using SqlViewer.Shared.Enums;
-using SqlViewer.StorageContexts;
+using SqlViewer.StorageContexts.Abstractions;
 
 namespace SqlViewer.Services.Implementations;
 
@@ -16,7 +17,7 @@ public sealed class AuthApiService(IAuthHttpHandler httpHandler, IUserContext us
             Password = password
         };
 
-        LoginResponseDto responseDto = await httpHandler.VerifyUserByPasswordAsync(requestDto)
+        LoginResponseDto responseDto = await httpHandler.VerifyUserByPasswordAsync(requestDto, CancellationToken.None)
             ?? throw new InvalidOperationException("Unable to get response DTO");
 
         if (string.IsNullOrEmpty(responseDto.AccessToken))
@@ -30,7 +31,7 @@ public sealed class AuthApiService(IAuthHttpHandler httpHandler, IUserContext us
 
     public async Task<bool> GuestLoginAsync()
     {
-        LoginResponseDto responseDto = await httpHandler.GuestLoginAsync()
+        LoginResponseDto responseDto = await httpHandler.GuestLoginAsync(CancellationToken.None)
             ?? throw new InvalidOperationException("Unable to get response DTO");
 
         if (string.IsNullOrEmpty(responseDto.AccessToken))
@@ -41,6 +42,4 @@ public sealed class AuthApiService(IAuthHttpHandler httpHandler, IUserContext us
         userContext.CurrentUser = responseDto;
         return true;
     }
-
-    public void Dispose() => httpHandler?.Dispose();
 }

@@ -5,13 +5,13 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SqlViewer.Constants;
 using SqlViewer.Helpers;
-using SqlViewer.Services;
-using SqlViewer.StorageContexts;
+using SqlViewer.Services.Abstractions;
+using SqlViewer.StorageContexts.Abstractions;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
 
-public partial class MainViewModel : ObservableObject, IDisposable
+public partial class MainViewModel : ObservableObject
 {
     [ObservableProperty]
     [NotifyCanExecuteChangedFor(nameof(QuerySqlCommand))]
@@ -209,6 +209,4 @@ public partial class MainViewModel : ObservableObject, IDisposable
 
     private bool CanExecuteSql() => !string.IsNullOrWhiteSpace(SqlQuery) && !string.IsNullOrWhiteSpace(ConnectionString);
     private bool CanExecuteConnect() => !string.IsNullOrWhiteSpace(ConnectionString);
-
-    public void Dispose() => _sqlApiService?.Dispose();
 }

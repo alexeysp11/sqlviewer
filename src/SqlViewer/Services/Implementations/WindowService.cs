@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using SqlViewer.Services.Abstractions;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
 using VelocipedeUtils.Shared.DbOperations.Enums;

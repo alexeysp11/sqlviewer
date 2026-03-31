@@ -1,9 +1,9 @@
 ﻿using SqlViewer.Shared.Dtos.Metadata;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Services;
+namespace SqlViewer.Services.Abstractions;
 
-public interface IMetadataApiService : IDisposable
+public interface IMetadataApiService
 {
     Task<IEnumerable<ColumnInfoResponseDto>> GetColumnsAsync(
         VelocipedeDatabaseType databaseType,

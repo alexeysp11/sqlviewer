@@ -13,6 +13,10 @@ public partial class DataTransferWindow : Window
         _etlViewModel = etlViewModel;
         DataContext = _etlViewModel;
 
+        // Start polling when window is ready
+        Loaded += (s, e) => _etlViewModel.OnViewLoaded();
+        Closed += (s, e) => _etlViewModel.Dispose();
+
         InitializeComponent();
     }
 }

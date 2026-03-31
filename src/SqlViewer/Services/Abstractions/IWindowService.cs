@@ -1,6 +1,6 @@
 ﻿using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Services;
+namespace SqlViewer.Services.Abstractions;
 
 public interface IWindowService
 {

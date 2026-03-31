@@ -2,13 +2,8 @@
 
 public sealed record TransferStatusResponseDto
 {
-    public Guid CorrelationId { get; set; }
-    public double Progress { get; set; }
-    public string? StatusMessage { get; set; }
-    public bool IsFinalState { get; set; }
-
-    /// <summary>
-    /// For filling ExecutionLogs.
-    /// </summary>
-    public List<string>? StepLogs { get; set; }
+    public Guid CorrelationId { get; init; }
+    public double Progress { get; init; }
+    public string? StatusMessage { get; init; }
+    public bool IsFinalState { get; init; }
 }

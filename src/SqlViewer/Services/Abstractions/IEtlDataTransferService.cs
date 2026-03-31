@@ -1,10 +1,10 @@
 ﻿using SqlViewer.Shared.Dtos.Etl;
 
-namespace SqlViewer.Services;
+namespace SqlViewer.Services.Abstractions;
 
-public interface IEtlDataTransferService : IDisposable
+public interface IEtlDataTransferService
 {
     Task<Guid> StartTransferAsync(StartTransferRequestDto request);
-    Task<TransferStatusResponseDto> GetStatusAsync(Guid correlationId);
+    Task<List<TransferStatusResponseDto>> GetStatusesAsync(IEnumerable<Guid> correlationIds, CancellationToken ct);
     Task<TransferHistoryResponseDto> GetHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit);
 }

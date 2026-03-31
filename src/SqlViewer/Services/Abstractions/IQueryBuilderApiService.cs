@@ -1,9 +1,9 @@
 ﻿using SqlViewer.Shared.Dtos.Metadata;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Services;
+namespace SqlViewer.Services.Abstractions;
 
-public interface IQueryBuilderApiService : IDisposable
+public interface IQueryBuilderApiService
 {
     Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,

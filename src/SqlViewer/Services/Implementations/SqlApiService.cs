@@ -1,5 +1,6 @@
 ﻿using System.Data;
-using SqlViewer.ApiHandlers;
+using SqlViewer.ApiHandlers.Abstractions;
+using SqlViewer.Services.Abstractions;
 using SqlViewer.Shared.Dtos.SqlQueries;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;
@@ -16,10 +17,8 @@ public sealed class SqlApiService(ISqlHttpHandler httpHandler) : ISqlApiService
             ConnectionString = connectionString,
             Query = query
         };
-        SqlQueryResponseDto responseDto = await httpHandler.ExecuteQueryAsync(requestDto)
+        SqlQueryResponseDto responseDto = await httpHandler.ExecuteQueryAsync(requestDto, default)
             ?? throw new InvalidOperationException("Unable to get response DTO");
         return responseDto.QueryResult.ToDataTable();
     }
-
-    public void Dispose() => httpHandler?.Dispose();
 }

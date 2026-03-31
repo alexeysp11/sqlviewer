@@ -59,7 +59,24 @@ message GetTransferHistoryResponse {
   optional string cursor_correlation_id = 2;
 }
 
+message GetStatusesRequest {
+    string user_uid = 1;
+    repeated string correlation_ids = 2; // IDs we are currently watching
+}
+
+message GetStatusesResponse {
+    repeated JobStatusItem items = 1;
+}
+
+message JobStatusItem {
+    string correlation_id = 1;
+    double progress = 2;
+    string status_message = 3;
+    bool is_final_state = 4;
+}
+
 service EtlTransferService {
   rpc StartTransfer (StartTransferRequest) returns (StartTransferResponse);
   rpc GetTransferHistory (GetTransferHistoryRequest) returns (GetTransferHistoryResponse);
+  rpc GetStatuses (GetStatusesRequest) returns (GetStatusesResponse);
 }

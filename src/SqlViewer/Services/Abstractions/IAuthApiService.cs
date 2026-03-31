@@ -1,7 +1,6 @@
-﻿
-namespace SqlViewer.Services;
+﻿namespace SqlViewer.Services.Abstractions;
 
-public interface IAuthApiService : IDisposable
+public interface IAuthApiService
 {
     Task<bool> VerifyUserByPasswordAsync(string username, string password);
     Task<bool> GuestLoginAsync();

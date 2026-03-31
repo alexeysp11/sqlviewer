@@ -3,17 +3,18 @@ using System.Windows;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SqlViewer.Models;
-using SqlViewer.Services;
+using SqlViewer.Services.Abstractions;
 using SqlViewer.Shared.Dtos.Etl;
-using SqlViewer.StorageContexts;
+using SqlViewer.StorageContexts.Abstractions;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ViewModels;
 
 public partial class DataTransferViewModel(
     IEtlDataTransferService etlService,
+    IStatusPollingService pollingService,
     IMetadataApiService metadataService,
-    IUserContext userContext) : ObservableObject
+    IUserContext userContext) : ObservableObject, IDisposable
 {
     public ObservableCollection<string> SourceTables { get; } = [];
     public ObservableCollection<TransferJobDto> TransferHistory { get; } = [];
@@ -57,15 +58,6 @@ public partial class DataTransferViewModel(
     /// Transfer job limit.
     /// </summary>
     private const int Limit = 25;
-
-    partial void OnSelectedTransferChanged(TransferTask value)
-    {
-        if (value is not null)
-        {
-            // Download logs for a specific saga.
-            //LoadLogsForCorrelationId(value.CorrelationId);
-        }
-    }
 
     [RelayCommand]
     private async Task LoadSourceTables()
@@ -126,8 +118,6 @@ public partial class DataTransferViewModel(
 
             ActiveTransfers.Add(task);
             ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Task created. ID: {correlationId}");
-
-            _ = PollStatus(task);
         }
         catch (Exception ex)
         {
@@ -167,36 +157,14 @@ public partial class DataTransferViewModel(
         }
     }
 
-    private async Task PollStatus(TransferTaskViewModel task)
+    public void OnViewLoaded()
     {
-        try
-        {
-            while (!task.IsCompleted)
-            {
-                await Task.Delay(2000);
+        pollingService.StartPolling(ActiveTransfers);
+    }
 
-                // Receive up-to-date data from the service
-                TransferStatusResponseDto result = await etlService.GetStatusAsync(task.CorrelationId);
-
-                // Updating task properties
-                task.Progress = result.Progress;
-                task.Status = result.StatusMessage;
-
-                // Key point: we set IsCompleted from the DTO,
-                // which came from the Saga State Machine via the API Gateway
-                task.IsCompleted = result.IsFinalState;
-                if (task.Status.Contains("Failed", StringComparison.OrdinalIgnoreCase))
-                {
-                    task.IsCompleted = true; // Forcefully terminate the survey on error
-                }
-
-                if (task.IsCompleted) break;
-            }
-        }
-        catch (Exception ex)
-        {
-            task.Status = $"Error: {ex.Message}";
-            task.IsCompleted = true;
-        }
+    public void Dispose()
+    {
+        pollingService.StopPolling();
+        pollingService.Dispose();
     }
 }

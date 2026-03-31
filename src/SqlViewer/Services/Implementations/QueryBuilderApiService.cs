@@ -1,4 +1,5 @@
-﻿using SqlViewer.ApiHandlers;
+﻿using SqlViewer.ApiHandlers.Abstractions;
+using SqlViewer.Services.Abstractions;
 using SqlViewer.Shared.Dtos.Metadata;
 using SqlViewer.Shared.Dtos.QueryBuilder;
 using SqlViewer.Shared.Dtos.SqlQueries;
@@ -21,11 +22,9 @@ public sealed class QueryBuilderApiService(IQueryBuilderHttpHandler httpHandler)
             Columns = columnInfos
         };
 
-        QueryBuilderResponseDto responseDto = await httpHandler.GetCreateTableQueryAsync(requestDto);
+        QueryBuilderResponseDto responseDto = await httpHandler.GetCreateTableQueryAsync(requestDto, default);
         if (string.IsNullOrEmpty(responseDto.Query))
             throw new InvalidOperationException("Generated query could not be null or empty");
         return responseDto.Query;
     }
-
-    public void Dispose() => httpHandler?.Dispose();
 }
