@@ -1,21 +1,29 @@
-﻿using SqlViewer.Services.Abstractions;
-using SqlViewer.Shared.Dtos.Etl;
-using SqlViewer.ViewModels;
+﻿using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using SqlViewer.Services.Abstractions;
+using SqlViewer.Shared.Dtos.Etl;
+using SqlViewer.StorageContexts.Abstractions;
+using SqlViewer.ViewModels;
 
 namespace SqlViewer.Services.Implementations;
 
 #nullable enable
 
-public sealed class StatusPollingService(IEtlDataTransferService etlApiService) : IStatusPollingService
+public sealed class StatusPollingService(IEtlDataTransferService etlApiService, IUserContext userContext) : IStatusPollingService
 {
     private CancellationTokenSource? _cts;
     private Task? _pollingTask;
     private bool _isDisposed;
+    private Guid _userUid;
 
     public void StartPolling(ObservableCollection<TransferTaskViewModel> tasks)
     {
-        if (_pollingTask != null) return;
+        if (_pollingTask != null)
+            return;
+
+        if (userContext.CurrentUser?.UserUid is null)
+            throw new InvalidOperationException("Unable to run data transfer status polling for unauthorized users");
+        _userUid = (Guid)userContext.CurrentUser.UserUid;
 
         _cts = new CancellationTokenSource();
         _pollingTask = RunPollingAsync(tasks, _cts.Token);
@@ -37,9 +45,13 @@ public sealed class StatusPollingService(IEtlDataTransferService etlApiService) 
                 {
                     try
                     {
-                        IEnumerable<Guid> ids = activeJobs.Select(j => j.CorrelationId);
-                        List<TransferStatusResponseDto> results = await etlApiService.GetStatusesAsync(ids, ct);
-                        foreach (TransferStatusResponseDto result in results)
+                        BatchTransferStatusesRequestDto requestDto = new()
+                        {
+                            CorrelationIds = activeJobs.Select(j => j.CorrelationId).ToImmutableList(),
+                            UserUid = _userUid
+                        };
+                        BatchTransferStatusesResponseDto responseDto = await etlApiService.GetStatusesAsync(requestDto, ct);
+                        foreach (TransferStatusResponseDto result in responseDto.Items)
                         {
                             TransferTaskViewModel? job = activeJobs.FirstOrDefault(j => j.CorrelationId == result.CorrelationId);
                             job?.ApplyChanges(result);

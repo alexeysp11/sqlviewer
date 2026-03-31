@@ -14,14 +14,16 @@ namespace SqlViewer.ApiHandlers.Implementations;
 public sealed class EtlHttpHandler(IUserContext userContext, IHttpClientFactory httpClientFactory)
     : HttpHandler(userContext, httpClientFactory), IEtlHttpHandler
 {
-    public async Task<List<TransferStatusResponseDto>> GetBatchTransferStatusesAsync(IEnumerable<Guid> correlationIds, CancellationToken ct)
+    public async Task<BatchTransferStatusesResponseDto> GetBatchTransferStatusesAsync(
+        BatchTransferStatusesRequestDto requestDto,
+        CancellationToken ct)
     {
         string url = BuildUrl(RestApiPaths.Etl.DataTransfer.GetStatus);
 
         using HttpRequestMessage request = CreateRequest(HttpMethod.Post, url);
-        request.Content = JsonContent.Create(correlationIds, options: _jsonSerializerOptions);
+        request.Content = JsonContent.Create(requestDto, options: _jsonSerializerOptions);
 
-        return await SendRequestAsync<List<TransferStatusResponseDto>>(request, ct);
+        return await SendRequestAsync<BatchTransferStatusesResponseDto>(request, ct);
     }
 
     public async Task<StartTransferResponseDto> PostStartTransferAsync(StartTransferRequestDto requestDto, CancellationToken ct)
@@ -34,7 +36,11 @@ public sealed class EtlHttpHandler(IUserContext userContext, IHttpClientFactory 
         return await SendRequestAsync<StartTransferResponseDto>(request, ct);
     }
 
-    public async Task<TransferHistoryResponseDto> GetTransferHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit, CancellationToken ct)
+    public async Task<TransferHistoryResponseDto> GetTransferHistoryAsync(
+        Guid userUid,
+        Guid? cursorTransferJobId,
+        int limit,
+        CancellationToken ct)
     {
         NameValueCollection query = HttpUtility.ParseQueryString(string.Empty);
         if (cursorTransferJobId.HasValue) query["correlationId"] = cursorTransferJobId.Value.ToString();

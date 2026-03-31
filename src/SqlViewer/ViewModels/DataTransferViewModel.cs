@@ -159,7 +159,14 @@ public partial class DataTransferViewModel(
 
     public void OnViewLoaded()
     {
-        pollingService.StartPolling(ActiveTransfers);
+        try
+        {
+            pollingService.StartPolling(ActiveTransfers);
+        }
+        catch (Exception ex)
+        {
+            ExecutionLogs.Insert(0, $"[Initialization error]: {ex.Message}");
+        }
     }
 
     public void Dispose()

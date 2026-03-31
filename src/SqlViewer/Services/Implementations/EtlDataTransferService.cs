@@ -15,15 +15,13 @@ public sealed class EtlDataTransferService(IEtlHttpHandler httpHandler) : IEtlDa
             ?? throw new InvalidOperationException("Failed to receive response from ETL Gateway")).CorrelationId;
     }
 
-    public async Task<List<TransferStatusResponseDto>> GetStatusesAsync(IEnumerable<Guid> correlationIds, CancellationToken ct)
+    public async Task<BatchTransferStatusesResponseDto> GetStatusesAsync(BatchTransferStatusesRequestDto requestDto, CancellationToken ct)
     {
         // If the list is empty, don't even call the network
-        if (!correlationIds.Any()) return [];
+        if (requestDto.CorrelationIds.Count == 0)
+            return new();
 
-        // Assuming httpHandler will be updated to accept a list of IDs
-        List<TransferStatusResponseDto>? results = await httpHandler.GetBatchTransferStatusesAsync(correlationIds, ct);
-
-        return results ?? [];
+        return await httpHandler.GetBatchTransferStatusesAsync(requestDto, ct) ?? new();
     }
 
     public async Task<TransferHistoryResponseDto> GetHistoryAsync(Guid userUid, Guid? cursorTransferJobId, int limit)

@@ -40,7 +40,7 @@ public static class RestApiPaths
             private const string DataTransferBase = $"{Base}/data-transfer";
 
             public const string Start = $"{DataTransferBase}/start";
-            public const string GetStatus = $"{DataTransferBase}/status/{{userUid}}";
+            public const string GetStatus = $"{DataTransferBase}/status";
             public const string GetHistory = $"{DataTransferBase}/history/{{userUid}}";
         }
     }

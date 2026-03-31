@@ -49,11 +49,11 @@ public class DataTransferController(
     }
 
     [HttpGet(RestApiPaths.Etl.DataTransfer.GetStatus)]
-    public async Task<IActionResult> GetStatus(Guid userUid)
+    public async Task<ActionResult<BatchTransferStatusesResponseDto>> GetStatus(BatchTransferStatusesRequestDto requestDto)
     {
         //var status = await grpcClient.GetTransferStatusAsync(new { Id = userUid });
         //return Ok(status);
-        return Ok($"ok: {userUid}");
+        return Ok($"ok: {requestDto.UserUid}");
     }
 
     [HttpGet(RestApiPaths.Etl.DataTransfer.GetHistory)]
