@@ -24,13 +24,20 @@ public sealed class TransferStatusService(
             .FirstOrDefaultAsync(j => j.CorrelationId == message.CorrelationId, ct)
             ?? throw new InvalidOperationException($"TransferJob with CorrelationId {message.CorrelationId} not found.");
 
-        // Map status from message to domain status
-        TransferStatus newStatus = Enum.Parse<TransferStatus>(payload.TransferStatus);
+        if (!Enum.TryParse(payload.TransferStatus, true, out TransferStatus newStatus)) return;
 
-        // 1. Update the job status
-        job.CurrentStatus = newStatus;
+        // Update only if the new status is more important than the current one.
+        if (TransferStatusExtensions.GetStatusRank(newStatus) > TransferStatusExtensions.GetStatusRank(job.CurrentStatus))
+        {
+            job.CurrentStatus = newStatus;
+            logger.LogInformation("Job {CorrelationId} status updated to {Status}", message.CorrelationId, newStatus);
+        }
+        else
+        {
+            logger.LogWarning("Job {CorrelationId} current status {Current} is more significant than incoming {Incoming}. Main status not changed.",
+                message.CorrelationId, job.CurrentStatus, newStatus);
+        }
 
-        // 2. Add a new log entry
         TransferStatusLogEntity logEntry = new()
         {
             CorrelationId = message.CorrelationId,
@@ -38,11 +45,8 @@ public sealed class TransferStatusService(
             MetadataJson = message.Payload,
             Timestamp = payload.Timestamp
         };
-
         dbContext.TransferStatusLogs.Add(logEntry);
 
         await dbContext.SaveChangesAsync(ct);
-
-        logger.LogInformation("Updated job {CorrelationId} status to {Status}", message.CorrelationId, newStatus);
     }
 }

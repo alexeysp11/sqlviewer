@@ -113,4 +113,103 @@ public sealed class TransferStatusServiceTests
         // Assert
         await act.Should().ThrowAsync<JsonException>();
     }
+
+    [Fact]
+    public async Task ProcessAsync_ShouldNotUpdateJobStatus_WhenIncomingStatusHasLowerRank()
+    {
+        // Arrange
+        DbContextOptions<EtlDbContext> options = new DbContextOptionsBuilder<EtlDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+        using EtlDbContext db = new(options);
+        TransferStatusService handler = new(db, _loggerMock.Object);
+
+        Guid correlationId = Guid.NewGuid();
+
+        // Initial state: Job is already Completed
+        TransferJobEntity job = _fixture.Build<TransferJobEntity>()
+            .With(j => j.CorrelationId, correlationId)
+            .With(j => j.CurrentStatus, TransferStatus.Completed)
+            .Create();
+
+        db.TransferJobs.Add(job);
+        await db.SaveChangesAsync();
+
+        // Incoming message: Progress (lower rank than Completed)
+        DataTransferStatusUpdated payload = _fixture.Build<DataTransferStatusUpdated>()
+            .With(x => x.TransferStatus, TransferStatus.Progress.ToString())
+            .With(x => x.Timestamp, DateTime.UtcNow)
+            .Create();
+
+        InboxMessageEntity message = _fixture.Build<InboxMessageEntity>()
+            .With(m => m.CorrelationId, correlationId)
+            .With(m => m.Payload, JsonSerializer.Serialize(payload))
+            .Create();
+
+        // Act
+        await handler.ProcessAsync(message, CancellationToken.None);
+
+        // Assert
+        TransferJobEntity updatedJob = await db.TransferJobs.FirstAsync(j => j.CorrelationId == correlationId);
+
+        // Job status should remain Completed
+        updatedJob.CurrentStatus.Should().Be(TransferStatus.Completed);
+
+        // But log must be added anyway
+        db.TransferStatusLogs.Should().ContainSingle(l =>
+            l.CorrelationId == correlationId && l.Status == TransferStatus.Progress);
+    }
+
+    [Fact]
+    public async Task ProcessAsync_ShouldHandleOutOfOrderMessages_MaintainingHighestRank()
+    {
+        // Arrange
+        DbContextOptions<EtlDbContext> options = new DbContextOptionsBuilder<EtlDbContext>()
+            .UseInMemoryDatabase(Guid.NewGuid().ToString()).Options;
+        using EtlDbContext db = new(options);
+        TransferStatusService handler = new(db, _loggerMock.Object);
+
+        Guid correlationId = Guid.NewGuid();
+        TransferJobEntity job = _fixture.Build<TransferJobEntity>()
+            .With(j => j.CorrelationId, correlationId)
+            .With(j => j.CurrentStatus, TransferStatus.Queued)
+            .Create();
+
+        db.TransferJobs.Add(job);
+        await db.SaveChangesAsync();
+
+        // Prepare two messages: Progress and Completed
+        string completedPayload = JsonSerializer.Serialize(_fixture.Build<DataTransferStatusUpdated>()
+            .With(x => x.TransferStatus, TransferStatus.Completed.ToString())
+            .Create());
+        string progressPayload = JsonSerializer.Serialize(_fixture.Build<DataTransferStatusUpdated>()
+            .With(x => x.TransferStatus, TransferStatus.Progress.ToString())
+            .Create());
+
+        InboxMessageEntity msgCompleted = _fixture.Build<InboxMessageEntity>()
+            .With(m => m.CorrelationId, correlationId)
+            .With(m => m.Payload, completedPayload).Create();
+
+        InboxMessageEntity msgProgress = _fixture.Build<InboxMessageEntity>()
+            .With(m => m.CorrelationId, correlationId)
+            .With(m => m.Payload, progressPayload).Create();
+
+        // Act: Process Completed first, then Progress (Out of order)
+        await handler.ProcessAsync(msgCompleted, CancellationToken.None);
+        await handler.ProcessAsync(msgProgress, CancellationToken.None);
+
+        // Assert
+        TransferJobEntity finalJob = await db.TransferJobs.FirstAsync(j => j.CorrelationId == correlationId);
+
+        // Final status must be Completed
+        finalJob.CurrentStatus.Should().Be(TransferStatus.Completed);
+
+        // Verify both logs exist
+        List<TransferStatusLogEntity> logs = await db.TransferStatusLogs
+            .Where(l => l.CorrelationId == correlationId)
+            .ToListAsync();
+
+        logs.Should().HaveCount(2);
+        logs.Should().Contain(l => l.Status == TransferStatus.Completed);
+        logs.Should().Contain(l => l.Status == TransferStatus.Progress);
+    }
 }

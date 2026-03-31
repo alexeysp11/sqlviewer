@@ -73,4 +73,33 @@ public sealed class TransferStatusExtensionsTests
                 $"because saga state {state} should be perceived as Failure by the user");
         }
     }
+
+    [Theory]
+    [InlineData(TransferStatus.None, 0)]
+    [InlineData(TransferStatus.Queued, 1)]
+    [InlineData(TransferStatus.Started, 2)]
+    [InlineData(TransferStatus.Progress, 3)]
+    [InlineData(TransferStatus.Completed, 4)]
+    [InlineData(TransferStatus.Failed, 5)]
+    [InlineData(TransferStatus.Cancelled, 5)]
+    [InlineData(TransferStatus.TimedOut, 5)]
+    public void GetStatusRank_ShouldReturnCorrectPriority(TransferStatus status, int expectedRank)
+    {
+        // Act
+        int actualRank = TransferStatusExtensions.GetStatusRank(status);
+
+        // Assert
+        actualRank.Should().Be(expectedRank, because: $"Status {status} must have rank {expectedRank}");
+    }
+
+    [Fact]
+    public void GetStatusRank_ShouldEnsureProgressIsLowerThanCompleted()
+    {
+        // Arrange & Act
+        int progressRank = TransferStatusExtensions.GetStatusRank(TransferStatus.Progress);
+        int completedRank = TransferStatusExtensions.GetStatusRank(TransferStatus.Completed);
+
+        // Assert
+        progressRank.Should().BeLessThan(completedRank);
+    }
 }

@@ -45,4 +45,27 @@ public static class TransferStatusExtensions
             _ => TransferSagaStatus.Initial
         };
     }
+
+    /// <summary>
+    /// Returns a numerical rank for the given <see cref="TransferStatus"/>.
+    /// </summary>
+    /// <param name="status">The transfer status to evaluate.</param>
+    /// <returns>
+    /// An integer representing the priority of the status. 
+    /// Higher values indicate a more significant or final state in the business process lifecycle.
+    /// </returns>
+    /// <remarks>
+    /// This rank is used to prevent "stale" or out-of-order messages from reverting 
+    /// the job status to an earlier stage (e.g., preventing <c>Progress</c> from overwriting <c>Completed</c>).
+    /// Default rank for final states (<c>Failed</c>, <c>Duplicate</c>, <c>Cancelled</c>, <c>TimedOut</c>) is <c>5</c>.
+    /// </remarks>
+    public static int GetStatusRank(TransferStatus status) => status switch
+    {
+        TransferStatus.None => 0,
+        TransferStatus.Queued => 1,
+        TransferStatus.Started => 2,
+        TransferStatus.Progress => 3,
+        TransferStatus.Completed => 4,
+        _ => 5
+    };
 }
