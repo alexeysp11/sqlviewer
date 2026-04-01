@@ -4,5 +4,5 @@ namespace SqlViewer.Services.Abstractions;
 
 public interface IDocsApiService
 {
-    Task<string> GetDbProviderDocs(VelocipedeDatabaseType databaseType);
+    Task<string> GetDbProviderDocs(VelocipedeDatabaseType databaseType, CancellationToken ct = default);
 }

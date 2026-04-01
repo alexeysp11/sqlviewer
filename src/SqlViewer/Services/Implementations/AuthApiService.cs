@@ -8,7 +8,7 @@ namespace SqlViewer.Services.Implementations;
 
 public sealed class AuthApiService(IAuthHttpHandler httpHandler, IUserContext userContext) : IAuthApiService
 {
-    public async Task<bool> VerifyUserByPasswordAsync(string username, string password)
+    public async Task<bool> VerifyUserByPasswordAsync(string username, string password, CancellationToken ct = default)
     {
         LoginRequestDto requestDto = new()
         {
@@ -17,7 +17,7 @@ public sealed class AuthApiService(IAuthHttpHandler httpHandler, IUserContext us
             Password = password
         };
 
-        LoginResponseDto responseDto = await httpHandler.VerifyUserByPasswordAsync(requestDto, CancellationToken.None)
+        LoginResponseDto responseDto = await httpHandler.VerifyUserByPasswordAsync(requestDto, ct)
             ?? throw new InvalidOperationException("Unable to get response DTO");
 
         if (string.IsNullOrEmpty(responseDto.AccessToken))
@@ -29,9 +29,9 @@ public sealed class AuthApiService(IAuthHttpHandler httpHandler, IUserContext us
         return true;
     }
 
-    public async Task<bool> GuestLoginAsync()
+    public async Task<bool> GuestLoginAsync(CancellationToken ct = default)
     {
-        LoginResponseDto responseDto = await httpHandler.GuestLoginAsync(CancellationToken.None)
+        LoginResponseDto responseDto = await httpHandler.GuestLoginAsync(ct)
             ?? throw new InvalidOperationException("Unable to get response DTO");
 
         if (string.IsNullOrEmpty(responseDto.AccessToken))

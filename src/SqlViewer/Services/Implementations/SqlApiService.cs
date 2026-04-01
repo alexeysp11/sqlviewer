@@ -9,7 +9,7 @@ namespace SqlViewer.Services.Implementations;
 
 public sealed class SqlApiService(ISqlHttpHandler httpHandler) : ISqlApiService
 {
-    public async Task<DataTable> QueryAsync(VelocipedeDatabaseType databaseType, string connectionString, string query)
+    public async Task<DataTable> QueryAsync(VelocipedeDatabaseType databaseType, string connectionString, string query, CancellationToken ct = default)
     {
         SqlQueryRequestDto requestDto = new()
         {
@@ -17,7 +17,7 @@ public sealed class SqlApiService(ISqlHttpHandler httpHandler) : ISqlApiService
             ConnectionString = connectionString,
             Query = query
         };
-        SqlQueryResponseDto responseDto = await httpHandler.ExecuteQueryAsync(requestDto, default)
+        SqlQueryResponseDto responseDto = await httpHandler.ExecuteQueryAsync(requestDto, ct)
             ?? throw new InvalidOperationException("Unable to get response DTO");
         return responseDto.QueryResult.ToDataTable();
     }

@@ -8,5 +8,6 @@ public interface IQueryBuilderApiService
     Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
         string tableName,
-        IEnumerable<ColumnInfoDto> columnInfos);
+        IEnumerable<ColumnInfoDto> columnInfos,
+        CancellationToken ct = default);
 }

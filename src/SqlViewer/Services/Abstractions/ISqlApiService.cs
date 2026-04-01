@@ -5,5 +5,5 @@ namespace SqlViewer.Services.Abstractions;
 
 public interface ISqlApiService
 {
-    Task<DataTable> QueryAsync(VelocipedeDatabaseType databaseType, string connectionString, string query);
+    Task<DataTable> QueryAsync(VelocipedeDatabaseType databaseType, string connectionString, string query, CancellationToken ct = default);
 }

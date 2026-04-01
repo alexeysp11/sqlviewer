@@ -12,7 +12,8 @@ public sealed class QueryBuilderApiService(IQueryBuilderHttpHandler httpHandler)
     public async Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
         string tableName,
-        IEnumerable<ColumnInfoDto> columnInfos)
+        IEnumerable<ColumnInfoDto> columnInfos,
+        CancellationToken ct = default)
     {
         CreateTableRequestDto requestDto = new()
         {
@@ -22,7 +23,7 @@ public sealed class QueryBuilderApiService(IQueryBuilderHttpHandler httpHandler)
             Columns = columnInfos
         };
 
-        QueryBuilderResponseDto responseDto = await httpHandler.GetCreateTableQueryAsync(requestDto, default);
+        QueryBuilderResponseDto responseDto = await httpHandler.GetCreateTableQueryAsync(requestDto, ct);
         if (string.IsNullOrEmpty(responseDto.Query))
             throw new InvalidOperationException("Generated query could not be null or empty");
         return responseDto.Query;

@@ -8,9 +8,11 @@ public interface IMetadataApiService
     Task<IEnumerable<ColumnInfoResponseDto>> GetColumnsAsync(
         VelocipedeDatabaseType databaseType,
         string connectionString,
-        string tableName);
+        string tableName,
+        CancellationToken ct = default);
 
     Task<IEnumerable<string>> GetTablesAsync(
         VelocipedeDatabaseType databaseType,
-        string connectionString);
+        string connectionString,
+        CancellationToken ct = default);
 }

@@ -2,6 +2,6 @@
 
 public interface IAuthApiService
 {
-    Task<bool> VerifyUserByPasswordAsync(string username, string password);
-    Task<bool> GuestLoginAsync();
+    Task<bool> VerifyUserByPasswordAsync(string username, string password, CancellationToken ct = default);
+    Task<bool> GuestLoginAsync(CancellationToken ct = default);
 }
