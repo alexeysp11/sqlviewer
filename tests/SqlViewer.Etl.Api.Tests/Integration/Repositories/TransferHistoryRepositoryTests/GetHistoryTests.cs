@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.Etl.Api.Repositories;
+using SqlViewer.Etl.Api.Repositories.Implementations;
 using SqlViewer.Etl.Api.Tests.Integration.Infrastructure;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;
@@ -10,7 +10,7 @@ using VelocipedeUtils.Shared.DbOperations.Enums;
 namespace SqlViewer.Etl.Api.Tests.Integration.Repositories.TransferHistoryRepositoryTests;
 
 [Collection(nameof(PostgresCollection))]
-public sealed class GetHistoryAsyncTests(PostgresFixture fixture)
+public sealed class GetHistoryTests(PostgresFixture fixture)
 {
     private readonly Fixture _autoFixture = new();
 

@@ -1,7 +1,7 @@
 [*.cs]
 
 # IDE0001: Simplify Names
-dotnet_diagnostic.IDE0001.severity = warning
+dotnet_diagnostic.IDE0001.severity = error
 
 # IDE0003: Remove qualification
 dotnet_diagnostic.IDE0003.severity = warning
@@ -16,7 +16,10 @@ dotnet_diagnostic.IDE0008.severity = error
 dotnet_diagnostic.IDE0017.severity = warning
 
 # IDE0028: Simplify collection initialization
-dotnet_diagnostic.IDE0028.severity = warning
+dotnet_diagnostic.IDE0028.severity = error
+
+# IDE0300: Simplify collection initialization
+dotnet_diagnostic.IDE0300.severity = error
 
 # IDE0040: Add accessibility modifiers
 dotnet_diagnostic.IDE0040.severity = error

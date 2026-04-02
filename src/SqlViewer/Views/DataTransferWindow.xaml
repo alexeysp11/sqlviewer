@@ -92,10 +92,10 @@
 
                                                     <StackPanel VerticalAlignment="Center">
                                                         <TextBlock Text="{Binding TableName}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/>
-                                                        <TextBlock Text="{Binding StatusMessage}" FontSize="9" Foreground="Gray"/>
+                                                        <TextBlock Text="{Binding Status}" FontSize="9" Foreground="Gray"/>
                                                     </StackPanel>
 
-                                                    <ProgressBar Grid.Column="1" Value="{Binding ProgressPercentage}" Height="12" Margin="10,0" VerticalAlignment="Center"/>
+                                                    <ProgressBar Grid.Column="1" Value="{Binding Progress}" Height="12" Margin="10,0" VerticalAlignment="Center"/>
                                                     <Button Grid.Column="2" Content="Stop" Command="{Binding CancelCommand}" FontSize="11" Background="#FFF0F0" Foreground="DarkRed"/>
                                                 </Grid>
                                             </Border>

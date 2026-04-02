@@ -1,7 +1,8 @@
-﻿using SqlViewer.Etl.Core.Data.DbContexts;
+﻿using SqlViewer.Etl.Api.Repositories.Abstractions;
+using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Shared.Messages.Etl.Commands;
 
-namespace SqlViewer.Etl.Api.Repositories;
+namespace SqlViewer.Etl.Api.Repositories.Implementations;
 
 public sealed class OutboxRepository(EtlDbContext dbContext) : IOutboxRepository
 {

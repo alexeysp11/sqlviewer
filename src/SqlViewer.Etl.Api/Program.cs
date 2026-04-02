@@ -2,11 +2,14 @@ using Microsoft.EntityFrameworkCore;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using SqlViewer.Etl.Api.BusinessLogic;
-using SqlViewer.Etl.Api.Repositories;
+using SqlViewer.Etl.Api.BusinessLogic.Abstractions;
+using SqlViewer.Etl.Api.BusinessLogic.Implementations;
+using SqlViewer.Etl.Api.Repositories.Abstractions;
+using SqlViewer.Etl.Api.Repositories.Implementations;
 using SqlViewer.Etl.Api.Services.Grpc;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Shared.Constants;
+using StackExchange.Redis;
 using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Etl.Api;
@@ -16,6 +19,10 @@ public sealed class Program
     public static async Task Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+
+        // Redis.
+        builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+            ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString(ConnectionStrings.Redis)!));
 
         // Add services to the container.
         builder.Services.AddScoped<ITransferManager, TransferManager>();

@@ -112,8 +112,8 @@ namespace SqlViewer.Etl.Core.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_TransferJobs_CreatedAt_Id",
                 table: "TransferJobs",
-                columns: new[] { "CreatedAt", "Id" },
-                descending: new bool[0]);
+                columns: ["CreatedAt", "Id"],
+                descending: []);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TransferStatusLogs_TransferJobEntityId",

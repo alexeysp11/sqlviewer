@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.Etl.Api.Repositories;
+﻿namespace SqlViewer.Etl.Api.Repositories.Abstractions;
 
 public interface IOutboxRepository
 {

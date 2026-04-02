@@ -1,25 +1,26 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using Moq;
-using SqlViewer.Etl.Api.BusinessLogic;
-using SqlViewer.Etl.Api.Repositories;
+using SqlViewer.Etl.Api.BusinessLogic.Implementations;
+using SqlViewer.Etl.Api.Repositories.Abstractions;
 using SqlViewer.Etl.Core.Data.Entities;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Dtos.Etl;
+using StackExchange.Redis;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
-namespace SqlViewer.Etl.Api.Tests.Unit.BusinessLogic;
+namespace SqlViewer.Etl.Api.Tests.Unit.BusinessLogic.TransferHistoryManagerTests;
 
-public sealed class TransferHistoryManagerTests
+public sealed class GetHistoryTests
 {
     private readonly Mock<ITransferHistoryRepository> _repositoryMock;
     private readonly TransferHistoryManager _manager;
     private readonly Fixture _autoFixture;
 
-    public TransferHistoryManagerTests()
+    public GetHistoryTests()
     {
         _repositoryMock = new Mock<ITransferHistoryRepository>();
-        _manager = new TransferHistoryManager(_repositoryMock.Object);
+        _manager = new TransferHistoryManager(_repositoryMock.Object, Mock.Of<IConnectionMultiplexer>());
         _autoFixture = new Fixture();
     }
 

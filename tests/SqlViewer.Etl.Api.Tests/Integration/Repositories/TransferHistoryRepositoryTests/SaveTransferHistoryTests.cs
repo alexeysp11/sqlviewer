@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.Etl.Api.Repositories;
+using SqlViewer.Etl.Api.Repositories.Implementations;
 using SqlViewer.Etl.Api.Tests.Integration.Infrastructure;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;

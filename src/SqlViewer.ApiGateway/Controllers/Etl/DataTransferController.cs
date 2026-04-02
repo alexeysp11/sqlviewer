@@ -51,19 +51,34 @@ public class DataTransferController(
     [HttpPost(RestApiPaths.Etl.DataTransfer.GetStatus)]
     public async Task<ActionResult<BatchTransferStatusesResponseDto>> GetStatus(BatchTransferStatusesRequestDto requestDto)
     {
-        //var status = await grpcClient.GetTransferStatusAsync(new { Id = userUid });
-        //return Ok(status);
-
-        Guid correlationId = requestDto.CorrelationIds.Count == 0 ? Guid.NewGuid() : requestDto.CorrelationIds.First();
-
-        BatchTransferStatusesResponseDto result = new()
+        try
         {
-            Items =
-            [
-                new() { CorrelationId = correlationId },
-            ]
-        };
-        return Ok(result);
+            GetStatusesRequest grpcRequest = new()
+            {
+                UserUid = requestDto.UserUid.ToString(),
+                CorrelationIds = { requestDto.CorrelationIds.Select(g => g.ToString()) }
+            };
+
+            GetStatusesResponse response = await grpcClient.GetStatusesAsync(grpcRequest);
+
+            BatchTransferStatusesResponseDto responseDto = new()
+            {
+                Items = response.Items.Select(item => new TransferStatusResponseDto
+                {
+                    CorrelationId = Guid.Parse(item.CorrelationId),
+                    Progress = item.Progress,
+                    StatusMessage = item.StatusMessage,
+                    IsFinalState = item.IsFinalState
+                }).ToList()
+            };
+
+            return Ok(responseDto);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Unable to get transfer statuses: {Message}", ex.Message);
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        }
     }
 
     [HttpGet(RestApiPaths.Etl.DataTransfer.GetHistory)]

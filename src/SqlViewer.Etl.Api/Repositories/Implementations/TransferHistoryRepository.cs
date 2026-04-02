@@ -2,12 +2,14 @@
 using System.Data.Common;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
+using SqlViewer.Etl.Api.Repositories.Abstractions;
 using SqlViewer.Etl.Core.Data.DbContexts;
 using SqlViewer.Etl.Core.Data.Entities;
+using SqlViewer.Etl.Core.Data.Projections;
 using SqlViewer.Etl.Core.Enums;
 using SqlViewer.Shared.Messages.Etl.Commands;
 
-namespace SqlViewer.Etl.Api.Repositories;
+namespace SqlViewer.Etl.Api.Repositories.Implementations;
 
 public sealed class TransferHistoryRepository(EtlDbContext dbContext) : ITransferHistoryRepository
 {
@@ -54,6 +56,38 @@ LIMIT @Limit;";
             LastCorrelationId = correlationId,
             Limit = limit
         });
+    }
+
+    public async Task<IReadOnlyList<TransferJobDbProjection>> GetStatusesAsync(
+        Guid userUid,
+        IEnumerable<Guid> correlationIds,
+        CancellationToken ct)
+    {
+        DbConnection connection = dbContext.Database.GetDbConnection();
+
+        string sql = @"
+SELECT 
+    ""CorrelationId"",
+    ""CurrentStatus"",
+    CASE 
+        WHEN ""CurrentStatus"" IN (3, 4, 5, 7, 8) THEN TRUE 
+        ELSE FALSE 
+    END AS ""IsFinalState""
+FROM ""TransferJobs""
+WHERE ""UserUid"" = @OwnerUserUid 
+    AND ""CorrelationId"" = ANY(@CorrelationIds);";
+
+        var parameters = new
+        {
+            OwnerUserUid = userUid,
+            CorrelationIds = correlationIds.ToArray()
+        };
+
+        IEnumerable<TransferJobDbProjection> result = await connection.QueryAsync<TransferJobDbProjection>(
+            new CommandDefinition(sql, parameters, cancellationToken: ct)
+        );
+
+        return result.ToList();
     }
 
     public async Task SaveTransferJobHistoryAsync(Guid correlationId, StartDataTransferCommand transferCommand)

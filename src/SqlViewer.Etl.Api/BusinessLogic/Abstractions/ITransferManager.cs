@@ -1,4 +1,4 @@
-﻿namespace SqlViewer.Etl.Api.BusinessLogic;
+﻿namespace SqlViewer.Etl.Api.BusinessLogic.Abstractions;
 
 public interface ITransferManager
 {

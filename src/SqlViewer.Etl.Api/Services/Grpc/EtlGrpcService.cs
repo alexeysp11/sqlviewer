@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
-using SqlViewer.Etl.Api.BusinessLogic;
+using SqlViewer.Etl.Api.BusinessLogic.Abstractions;
 using SqlViewer.Etl.Api.Mappings;
 using SqlViewer.Shared.Dtos.Etl;
 using SqlViewer.Shared.Messages.Etl.Commands;
@@ -79,6 +79,43 @@ public sealed class EtlGrpcService(
                 Status = item.Status,
                 Time = Timestamp.FromDateTime(DateTime.SpecifyKind(item.Time, DateTimeKind.Utc))
             }));
+            return response;
+        }
+        catch (RpcException) { throw; }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "Error while fetching transfer history for user {UserUid}", request.UserUid);
+            throw new RpcException(new Status(StatusCode.Internal, ex.Message));
+        }
+    }
+
+    public override async Task<GetStatusesResponse> GetStatuses(
+        GetStatusesRequest request,
+        ServerCallContext context)
+    {
+        try
+        {
+            if (!Guid.TryParse(request.UserUid, out Guid userUid))
+            {
+                throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid user UID format"));
+            }
+
+            IEnumerable<Guid> correlationIds = request.CorrelationIds.Select(g => Guid.Parse(g));
+
+            BatchTransferStatusesResponseDto statusesDto = await transferHistoryManager.GetStatusesAsync(userUid, correlationIds);
+            GetStatusesResponse response = new()
+            {
+                Items =
+                {
+                    statusesDto.Items.Select(x => new JobStatusItem
+                    {
+                        CorrelationId = x.CorrelationId.ToString(),
+                        Progress = x.Progress,
+                        StatusMessage = x.StatusMessage,
+                        IsFinalState = x.IsFinalState,
+                    })
+                }
+            };
             return response;
         }
         catch (RpcException) { throw; }

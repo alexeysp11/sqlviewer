@@ -184,6 +184,7 @@ services:
       - Kestrel__Endpoints__Grpc__Protocols=Http2
 
       - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__RedisConnection=redis:6379,abortConnect=false
 
       - Services__Observability__ServiceName=etl-api
       - Services__Observability__JaegerEndpoint=http://jaeger:4317

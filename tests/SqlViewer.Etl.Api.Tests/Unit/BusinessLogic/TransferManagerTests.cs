@@ -1,8 +1,8 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.Configuration;
 using Moq;
-using SqlViewer.Etl.Api.BusinessLogic;
-using SqlViewer.Etl.Api.Repositories;
+using SqlViewer.Etl.Api.BusinessLogic.Implementations;
+using SqlViewer.Etl.Api.Repositories.Abstractions;
 using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.Etl.Api.Tests.Unit.BusinessLogic;
