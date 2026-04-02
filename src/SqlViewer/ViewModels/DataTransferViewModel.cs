@@ -84,13 +84,13 @@ public partial class DataTransferViewModel(
             string.IsNullOrWhiteSpace(TargetConnectionString) ||
             string.IsNullOrWhiteSpace(SelectedTableName))
         {
-            ExecutionLogs.Insert(0, "[Error]: Connection strings and table name are required.");
+            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] [Error]: Connection strings and table name are required.");
             return;
         }
 
         if (userContext.CurrentUser.UserUid is null)
         {
-            ExecutionLogs.Insert(0, "[Error]: ETL transfer is only available to authorized users.");
+            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] [Error]: ETL transfer is only available to authorized users.");
             return;
         }
 
@@ -117,11 +117,11 @@ public partial class DataTransferViewModel(
             };
 
             ActiveTransfers.Add(task);
-            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] Task created. ID: {correlationId}");
+            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] [Start transfer] Task created: {correlationId}");
         }
         catch (Exception ex)
         {
-            ExecutionLogs.Insert(0, $"[Launch error]: {ex.Message}");
+            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] [Launch error]: {ex.Message}");
         }
     }
 
@@ -149,7 +149,7 @@ public partial class DataTransferViewModel(
         }
         catch (Exception ex)
         {
-            ExecutionLogs.Insert(0, $"[History error]: {ex.Message}");
+            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] [History error]: {ex.Message}");
         }
         finally
         {
@@ -161,11 +161,11 @@ public partial class DataTransferViewModel(
     {
         try
         {
-            pollingService.StartPolling(ActiveTransfers);
+            pollingService.StartPolling(ActiveTransfers, ExecutionLogs);
         }
         catch (Exception ex)
         {
-            ExecutionLogs.Insert(0, $"[Initialization error]: {ex.Message}");
+            ExecutionLogs.Insert(0, $"[{DateTime.Now:HH:mm:ss}] [Initialization error]: {ex.Message}");
         }
     }
 

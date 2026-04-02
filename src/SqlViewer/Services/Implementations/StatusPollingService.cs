@@ -16,7 +16,7 @@ public sealed class StatusPollingService(IEtlDataTransferService etlApiService, 
     private bool _isDisposed;
     private Guid _userUid;
 
-    public void StartPolling(ObservableCollection<TransferTaskViewModel> tasks)
+    public void StartPolling(ObservableCollection<TransferTaskViewModel> tasks, ObservableCollection<string> executionLogs)
     {
         if (_pollingTask != null)
             return;
@@ -26,7 +26,7 @@ public sealed class StatusPollingService(IEtlDataTransferService etlApiService, 
         _userUid = (Guid)userContext.CurrentUser.UserUid;
 
         _cts = new CancellationTokenSource();
-        _pollingTask = RunPollingAsync(tasks, _cts.Token);
+        _pollingTask = RunPollingAsync(tasks, executionLogs, _cts.Token);
     }
 
     public void StopPolling()
@@ -34,7 +34,10 @@ public sealed class StatusPollingService(IEtlDataTransferService etlApiService, 
         _cts?.Cancel();
     }
 
-    private async Task RunPollingAsync(ObservableCollection<TransferTaskViewModel> tasks, CancellationToken ct)
+    private async Task RunPollingAsync(
+        ObservableCollection<TransferTaskViewModel> tasks,
+        ObservableCollection<string> executionLogs,
+        CancellationToken ct)
     {
         try
         {
@@ -59,7 +62,7 @@ public sealed class StatusPollingService(IEtlDataTransferService etlApiService, 
                     }
                     catch (Exception ex) when (ex is not OperationCanceledException)
                     {
-                        //logger.LogError(ex, "Error during batch status polling.");
+                        executionLogs.Add($"[{DateTime.Now:HH:mm:ss}] [Transfer status polling]: {ex.Message}");
                     }
                 }
 
@@ -68,7 +71,7 @@ public sealed class StatusPollingService(IEtlDataTransferService etlApiService, 
         }
         catch (OperationCanceledException)
         {
-            //logger.LogInformation("Polling was cancelled.");
+            executionLogs.Add($"[{DateTime.Now:HH:mm:ss}] [Transfer status polling]: Polling was cancelled.");
         }
     }
 

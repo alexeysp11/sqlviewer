@@ -5,6 +5,6 @@ namespace SqlViewer.Services.Abstractions;
 
 public interface IStatusPollingService : IDisposable
 {
-    void StartPolling(ObservableCollection<TransferTaskViewModel> tasks);
+    void StartPolling(ObservableCollection<TransferTaskViewModel> tasks, ObservableCollection<string> executionLogs);
     void StopPolling();
 }
