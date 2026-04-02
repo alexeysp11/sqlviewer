@@ -82,7 +82,7 @@ public sealed class OutboxPublisherWorker(
                     logger.LogInformation("Processing message for the job {CorrelationId}", msg.CorrelationId);
                     await producer.ProduceAsync(msg.Topic, msg.CorrelationId.ToString(), msg.Payload);
                 }
-                return (Message: msg, Error: null);
+                return (Message: msg, Error: (string?)null);
             }
             catch (Exception ex)
             {
