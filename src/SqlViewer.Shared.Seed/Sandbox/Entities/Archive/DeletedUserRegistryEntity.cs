@@ -1,0 +1,20 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SqlViewer.Shared.Seed.Sandbox.Entities.Archive;
+
+[Table("Deleted Users Registry", Schema = "archive")]
+public class DeletedUserRegistryEntity
+{
+    [Key, Column("user id")]
+    public int UserId { get; set; }
+
+    [Column("profile snapshot", TypeName = "jsonb")]
+    public string? ProfileSnapshot { get; set; }
+
+    [Column("deletion reason")]
+    public string? DeletionReason { get; set; }
+
+    [Column("deleted at")]
+    public DateOnly? DeletedAt { get; set; }
+}

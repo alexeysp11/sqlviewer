@@ -1,9 +1,9 @@
 ﻿using System.Data;
 using FluentAssertions;
 using Moq;
-using SqlViewer.ApiHandlers;
-using SqlViewer.Common.Dtos.SqlQueries;
+using SqlViewer.ApiHandlers.Abstractions;
 using SqlViewer.Services.Implementations;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using SqlViewer.Tests.Infrastructure.Models;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models;
@@ -45,11 +45,11 @@ public sealed class QueryTests
         SqlQueryResponseDto? responseDto = null;
         Mock<ISqlHttpHandler> mockClient = new();
         mockClient
-            .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
+            .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(responseDto);
 
         SqlApiService service = new(mockClient.Object);
-        var act = async () => await service.QueryAsync(VelocipedeDatabaseType.PostgreSQL, "conn_string", "SELECT 1");
+        Func<Task<DataTable>> act = async () => await service.QueryAsync(VelocipedeDatabaseType.PostgreSQL, "conn_string", "SELECT 1");
 
         // Act & Assert
         await act
@@ -64,11 +64,11 @@ public sealed class QueryTests
         // Arrange
         Mock<ISqlHttpHandler> mockClient = new();
         mockClient
-            .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
+            .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new Exception("Database error"));
 
         SqlApiService service = new(mockClient.Object);
-        var act = async () => await service.QueryAsync(VelocipedeDatabaseType.PostgreSQL, "conn_string", "SELECT 1");
+        Func<Task<DataTable>> act = async () => await service.QueryAsync(VelocipedeDatabaseType.PostgreSQL, "conn_string", "SELECT 1");
 
         // Act & Assert
         await act
@@ -84,7 +84,7 @@ public sealed class QueryTests
         // Arrange.
         Mock<ISqlHttpHandler> mockClient = new();
         mockClient
-            .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>()))
+            .Setup(x => x.ExecuteQueryAsync(It.IsAny<SqlQueryRequestDto>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(responseDto);
 
         DataTable expected = responseDto.QueryResult?.ToDataTable() ?? new DataTable();

@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Services;
 using SqlViewer.QueryExecution.Data.DbContexts;
 using SqlViewer.QueryExecution.Data.Entities;
 using SqlViewer.QueryExecution.Enums;
 using SqlViewer.QueryExecution.Mappings;
-using SqlViewer.Shared.Seed.Constants;
-using SqlViewer.Shared.Seed.Models;
-using SqlViewer.Shared.Seed.Registries;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
+using SqlViewer.Shared.Seed.System.Constants;
+using SqlViewer.Shared.Seed.System.Models;
+using SqlViewer.Shared.Seed.System.Registries;
+using SqlViewer.Shared.Services;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.QueryExecution.Data.DataSeeding;
 
@@ -61,6 +61,8 @@ public sealed class QueryExecutionDataSeeder(
                     SeedIdentifiers.DataSource.Name.Metadata => config.GetConnectionString(ConnectionStrings.Metadata),
                     SeedIdentifiers.DataSource.Name.Security => config.GetConnectionString(ConnectionStrings.Security),
                     SeedIdentifiers.DataSource.Name.QueryExecution => config.GetConnectionString(ConnectionStrings.QueryExecution),
+                    SeedIdentifiers.DataSource.Name.Etl => config.GetConnectionString(ConnectionStrings.Etl),
+                    SeedIdentifiers.DataSource.Name.Sandbox => config.GetConnectionString(ConnectionStrings.Sandbox),
                     _ => dataSource.EncryptedConnectionString
                 };
                 if (!string.IsNullOrEmpty(connectionString))

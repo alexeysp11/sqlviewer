@@ -1,16 +1,20 @@
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Services.Implementations;
-using SqlViewer.Common.Services;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SqlViewer.QueryExecution.Data.DataSeeding;
-using SqlViewer.QueryExecution.Mappings;
 using SqlViewer.QueryExecution.Data.DbContexts;
 using SqlViewer.QueryExecution.Domain.SqlQuery;
-using SqlViewer.Common.Factories;
-using SqlViewer.Common.Factories.Implementations;
-using SqlViewer.Common.Repositories;
+using SqlViewer.QueryExecution.Mappings;
 using SqlViewer.QueryExecution.Repositories.Implementations;
 using SqlViewer.QueryExecution.Services.Grpc;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Factories;
+using SqlViewer.Shared.Factories.Implementations;
+using SqlViewer.Shared.Repositories;
+using SqlViewer.Shared.Services;
+using SqlViewer.Shared.Services.Implementations;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.QueryExecution;
 
@@ -36,12 +40,33 @@ public sealed class Program
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.QueryExecution))
         );
 
+        // OpenTelemetry.
+        string serviceName = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.ServiceName)
+            ?? throw new InvalidOperationException("Unable to get service name for observability");
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
+                .AddOtlpExporter(opt =>
+                {
+                    // Send traces to Jaeger (the service name in Docker Compose)
+                    string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
+                        ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
+                    opt.Endpoint = new Uri(jaegerEndpoint);
+                }))
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)
+                .AddPrometheusExporter());
+
         WebApplication app = builder.Build();
+
+        // Creates the /metrics page
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())
         {
-            QueryExecutionDbContext db = scope.ServiceProvider.GetRequiredService<QueryExecutionDbContext>();
             IQueryExecutionDataSeeder dataSeeder = scope.ServiceProvider.GetRequiredService<IQueryExecutionDataSeeder>();
             await dataSeeder.InitializeAsync();
         }

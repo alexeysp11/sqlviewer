@@ -1,0 +1,67 @@
+﻿using SqlViewer.Shared.Messages.Storage.Enums;
+
+namespace SqlViewer.Shared.Messages.Storage.Entities;
+
+/// <summary>
+/// Represents a message received from a message broker, stored for idempotent processing.
+/// </summary>
+public class InboxMessageEntity
+{
+    /// <summary>
+    /// Unique identifier for the record.
+    /// </summary>
+    public long Id { get; set; }
+
+    /// <summary>
+    /// User UID.
+    /// </summary>
+    public Guid? UserUid { get; set; }
+
+    /// <summary>
+    /// Unique identifier for the specific message/event to ensure idempotency
+    /// </summary>
+    public required Guid MessageId { get; set; }
+
+    /// <summary>
+    /// Unique identifier for the business operation (e.g. data transfering).
+    /// </summary>
+    public required Guid CorrelationId { get; set; }
+
+    /// <summary>
+    /// The name of the message type (e.g., "StartDataTransferCommand") for deserialization.
+    /// </summary>
+    public required string MessageType { get; set; }
+
+    /// <summary>
+    /// The serialized message content (JSON).
+    /// </summary>
+    public required string Payload { get; set; }
+
+    /// <summary>
+    /// The current processing status within this service.
+    /// </summary>
+    public InboxStatus Status { get; set; } = InboxStatus.Received;
+
+    /// <summary>
+    /// When the message was initially inserted into the database.
+    /// </summary>
+    public DateTime ReceivedAt { get; set; } = DateTime.UtcNow;
+
+    /// <summary>
+    /// When the message was successfully processed.
+    /// </summary>
+    public DateTime? ProcessedAt { get; set; }
+
+    /// <summary>
+    /// Contains error details if processing fails.
+    /// </summary>
+    public string? Error { get; set; }
+
+    /// <summary>
+    /// The number of failed attempts to get a message from the message broker.
+    /// Used to prevent endless processing of "poison messages".
+    /// When the value reaches the maximum allowed threshold, the message is excluded from automatic processing
+    /// for manual analysis of the cause of the error.
+    /// </summary>
+    public int RetryCount { get; set; }
+}

@@ -1,5 +1,6 @@
-﻿using SqlViewer.ApiHandlers;
-using SqlViewer.Common.Dtos.Metadata;
+﻿using SqlViewer.ApiHandlers.Abstractions;
+using SqlViewer.Services.Abstractions;
+using SqlViewer.Shared.Dtos.Metadata;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;
@@ -11,7 +12,8 @@ public sealed class MetadataApiService(IMetadataHttpHandler httpHandler) : IMeta
     public async Task<IEnumerable<ColumnInfoResponseDto>> GetColumnsAsync(
         VelocipedeDatabaseType databaseType,
         string connectionString,
-        string tableName)
+        string tableName,
+        CancellationToken ct = default)
     {
         MetadataRequestDto requestDto = new()
         {
@@ -19,20 +21,18 @@ public sealed class MetadataApiService(IMetadataHttpHandler httpHandler) : IMeta
             ConnectionString = connectionString,
             TableName = tableName
         };
-        MetadataColumnsResponseDto responseDto = await _httpHandler.GetColumnsAsync(requestDto);
+        MetadataColumnsResponseDto responseDto = await _httpHandler.GetColumnsAsync(requestDto, ct);
         return responseDto.Columns ?? [];
     }
 
-    public async Task<IEnumerable<string>> GetTablesAsync(VelocipedeDatabaseType databaseType, string connectionString)
+    public async Task<IEnumerable<string>> GetTablesAsync(VelocipedeDatabaseType databaseType, string connectionString, CancellationToken ct = default)
     {
         MetadataRequestDto requestDto = new()
         {
             DatabaseType = databaseType,
             ConnectionString = connectionString,
         };
-        MetadataTablesResponseDto responseDto = await _httpHandler.GetTables(requestDto);
+        MetadataTablesResponseDto responseDto = await _httpHandler.GetTables(requestDto, ct);
         return responseDto.Tables ?? [];
     }
-
-    public void Dispose() => _httpHandler?.Dispose();
 }

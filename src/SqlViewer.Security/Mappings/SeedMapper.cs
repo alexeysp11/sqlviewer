@@ -1,7 +1,7 @@
 ﻿using Riok.Mapperly.Abstractions;
 using SqlViewer.Security.Data.Entities;
-using SqlViewer.Shared.Seed.Constants;
-using SqlViewer.Shared.Seed.Models;
+using SqlViewer.Shared.Seed.System.Constants;
+using SqlViewer.Shared.Seed.System.Models;
 
 namespace SqlViewer.Security.Mappings;
 

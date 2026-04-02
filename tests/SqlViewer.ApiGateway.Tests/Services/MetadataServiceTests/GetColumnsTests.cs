@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services.Implementations;
-using SqlViewer.Common.Factories;
+using SqlViewer.Shared.Factories;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 using VelocipedeUtils.Shared.DbOperations.Models.Metadata;
@@ -27,7 +27,7 @@ public sealed class GetColumnsTests
         result.AddRange(GetTestCases(connectionString: null, tableName: null));
         result.AddRange(GetTestCases(connectionString: null, tableName: ""));
         result.AddRange(GetTestCases(connectionString: null, tableName: "AnyTableName"));
-        
+
         result.AddRange(GetTestCases(connectionString: "", tableName: ""));
         result.AddRange(GetTestCases(connectionString: "", tableName: null));
         result.AddRange(GetTestCases(connectionString: "", tableName: "AnyTableName"));

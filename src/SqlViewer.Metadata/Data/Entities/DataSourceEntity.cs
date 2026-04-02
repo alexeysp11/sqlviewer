@@ -16,7 +16,7 @@ public sealed record DataSourceEntity
     public string? Description { get; set; }
 
     public VelocipedeDatabaseType DbType { get; set; }
-    
+
     [MaxLength(2000)]
     public required string EncryptedConnectionString { get; set; }
 

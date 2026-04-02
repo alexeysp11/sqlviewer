@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using System.Net.Http.Headers;
+﻿using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authentication;
 
 namespace SqlViewer.ApiGateway.DelegatingHandlers;
 

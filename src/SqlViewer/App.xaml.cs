@@ -1,12 +1,12 @@
 ﻿using System.Windows;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using SqlViewer.ApiHandlers;
+using SqlViewer.ApiHandlers.Abstractions;
 using SqlViewer.ApiHandlers.Implementations;
 using SqlViewer.Models;
-using SqlViewer.Services;
+using SqlViewer.Services.Abstractions;
 using SqlViewer.Services.Implementations;
-using SqlViewer.StorageContexts;
+using SqlViewer.StorageContexts.Abstractions;
 using SqlViewer.StorageContexts.Implementations;
 using SqlViewer.ViewModels;
 using SqlViewer.Views;
@@ -15,6 +15,8 @@ namespace SqlViewer;
 
 public partial class App : Application
 {
+    public const string HttpClientName = "SqlViewerApi";
+
     public static AppSettings AppSettings { get; private set; }
     public static IServiceProvider Services { get; private set; }
 
@@ -39,6 +41,8 @@ public partial class App : Application
         services.AddSingleton<IQueryBuilderApiService, QueryBuilderApiService>();
         services.AddSingleton<ISqlApiService, SqlApiService>();
         services.AddSingleton<IWindowService, WindowService>();
+        services.AddTransient<IEtlDataTransferService, EtlDataTransferService>();
+        services.AddTransient<IStatusPollingService, StatusPollingService>();
 
         // 2. HTTP handlers.
         services.AddSingleton<IAuthHttpHandler, AuthHttpHandler>();
@@ -46,24 +50,26 @@ public partial class App : Application
         services.AddSingleton<IMetadataHttpHandler, MetadataHttpHandler>();
         services.AddSingleton<IQueryBuilderHttpHandler, QueryBuilderHttpHandler>();
         services.AddSingleton<ISqlHttpHandler, SqlHttpHandler>();
+        services.AddSingleton<IEtlHttpHandler, EtlHttpHandler>();
+        services.AddHttpClient(HttpClientName, client =>
+        {
+            client.Timeout = TimeSpan.FromSeconds(AppSettings.HttpClientTimeoutSeconds);
+        });
 
         // 3. Storage contexts.
         services.AddSingleton<IUserContext, UserContext>();
 
-        // Register HttpClient with base address.
-        //services.AddHttpClient("MyApi", client => {
-        //    client.BaseAddress = new Uri("https://api.example.com/");
-        //});
-
         // 4. ViewModels.
         services.AddTransient<LoginViewModel>();
         services.AddSingleton<MainViewModel>();
-        services.AddTransient<EtlViewModel>();
+        services.AddTransient<TableStructureViewModel>();
+        services.AddTransient<DataTransferViewModel>();
 
         // 5. Views.
         services.AddTransient<LoginWindow>();
         services.AddSingleton<MainWindow>();
-        services.AddTransient<EtlWizardWindow>();
+        services.AddTransient<TableStructureWindow>();
+        services.AddTransient<DataTransferWindow>();
 
         return services.BuildServiceProvider();
     }
@@ -85,7 +91,7 @@ public partial class App : Application
 
                 MainWindow = mainWindow;
                 ShutdownMode = ShutdownMode.OnMainWindowClose;
-                
+
                 loginWindow.Close();
             }
             else

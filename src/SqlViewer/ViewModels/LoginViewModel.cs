@@ -1,11 +1,11 @@
 ﻿using System.Windows.Controls;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using SqlViewer.Services;
+using SqlViewer.Services.Abstractions;
 
 namespace SqlViewer.ViewModels;
 
-public partial class LoginViewModel(IAuthApiService authApiService) : ObservableObject, IDisposable
+public partial class LoginViewModel(IAuthApiService authApiService) : ObservableObject
 {
     public event Action<bool> LoginResultRequested;
     public event Action<string> ShowErrorRequested;
@@ -71,6 +71,4 @@ public partial class LoginViewModel(IAuthApiService authApiService) : Observable
             IsBusy = false;
         }
     }
-
-    public void Dispose() => authApiService?.Dispose();
 }

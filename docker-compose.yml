@@ -1,5 +1,5 @@
 services:
-  webapi:
+  api-gateway:
     container_name: api-gateway
     env_file:
       - .env
@@ -9,16 +9,22 @@ services:
       - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+
       - EncryptionSettings__Key=${ENCRYPTION_KEY}
+      
       - Jwt__Key=${JWT_KEY}
       - Jwt__ExpiryLifetimeMinutes=${JWT_LIFETIME_MINUTES}
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
-      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
-      - Services__Grpc__Security=http://${GRPC_SECURITY_HOST}:${GRPC_SECURITY_PORT}
-      - Services__Grpc__Metadata=http://${GRPC_METADATA_HOST}:${GRPC_METADATA_PORT}
-      - Services__Grpc__QueryExecution=http://${GRPC_QUERYEXECUTION_HOST}:${GRPC_QUERYEXECUTION_PORT}
+
+      - Services__Grpc__Security=http://security:8082
+      - Services__Grpc__Metadata=http://metadata:8082
+      - Services__Grpc__QueryExecution=http://query:8082
+      - Services__Grpc__Etl=http://etl-api:8082
+
+      - Services__Observability__ServiceName=api-gateway
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.ApiGateway/Dockerfile
@@ -28,8 +34,10 @@ services:
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   security:
     container_name: security
@@ -37,28 +45,42 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+      
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+      
       - EncryptionSettings__Key=${ENCRYPTION_KEY}
+      
       - Jwt__Key=${JWT_KEY}
       - Jwt__ExpiryLifetimeMinutes=${JWT_LIFETIME_MINUTES}
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
-      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
+
+      - ConnectionStrings__SecurityConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-security;Port=5432;Password=${DB_PASSWORD};
+      
+      - Services__Observability__ServiceName=api-security
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.Security/Dockerfile
     ports:
       - "5274:8080"
-      - "7128:8081"
+      - "5275:8082"
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   metadata:
     container_name: metadata
@@ -66,30 +88,44 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
-      - EncryptionSettings__Key=${ENCRYPTION_KEY}
+
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+      
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+
       - Jwt__Key=${JWT_KEY}
       - Jwt__ExpiryLifetimeMinutes=${JWT_LIFETIME_MINUTES}
       - Jwt__Issuer=${JWT_ISSUER}
       - Jwt__Audience=${JWT_AUDIENCE}
       - Jwt__IssuerSigningKey=${JWT_ISSUER_KEY}
-      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
+
+      - ConnectionStrings__SecurityConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-security;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__MetadataConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-metadata;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__QueryExecutionConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-query;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__SandboxConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-sandbox;Port=5432;Password=${DB_PASSWORD};
+      
+      - Services__Observability__ServiceName=metadata
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.Metadata/Dockerfile
     ports:
       - "5100:8080"
-      - "7026:8081"
+      - "5101:8082"
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   query:
     container_name: query
@@ -97,25 +133,226 @@ services:
       - .env
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
-      - EncryptionSettings__Key=${ENCRYPTION_KEY}
-      - ConnectionStrings__SecurityConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-security;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__MetadataConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-metadata;Port=54321;Password=${DB_PASSWORD};
-      - ConnectionStrings__QueryExecutionConnection=Server=${DB_HOST};Username=postgres;Database=sqlviewer-query;Port=54321;Password=${DB_PASSWORD};
+
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+      
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+
+      - ConnectionStrings__SecurityConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-security;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__MetadataConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-metadata;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__QueryExecutionConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-query;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__SandboxConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-sandbox;Port=5432;Password=${DB_PASSWORD};
+
+      - Services__Observability__ServiceName=query-execution
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
     build:
       context: .
       dockerfile: src/SqlViewer.QueryExecution/Dockerfile
     ports:
       - "5249:8080"
-      - "7091:8081"
+      - "5250:8082"
     volumes:
       - ${HOST_CERT_PATH:-./certs}:/https:ro
     depends_on:
-      - redis
-      - postgres
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  etl-api:
+    container_name: etl-api
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+
+      # Endpoint for metrics and regular HTTP (Prometheus sends requests here)
+      - Kestrel__Endpoints__Http__Url=http://+:8080
+      - Kestrel__Endpoints__Http__Protocols=Http1
+
+      # Endpoint for gRPC (API Gateway sends requests here)
+      - Kestrel__Endpoints__Grpc__Url=http://+:8082
+      - Kestrel__Endpoints__Grpc__Protocols=Http2
+
+      - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
+      - ConnectionStrings__RedisConnection=redis:6379,abortConnect=false
+
+      - Services__Observability__ServiceName=etl-api
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
+    build:
+      context: .
+      dockerfile: src/SqlViewer.Etl.Api/Dockerfile
+    ports:
+      - "5209:8080"
+      - "5210:8082"
+    volumes:
+      - ${HOST_CERT_PATH:-./certs}:/https:ro
+    depends_on:
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+
+  etl-worker:
+    container_name: etl-worker
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+      
+      - ConnectionStrings__EtlConnection=Server=sqlviewer-db;Username=postgres;Database=sqlviewer-etl;Port=5432;Password=${DB_PASSWORD};
+      
+      - Services__Observability__ServiceName=etl-worker
+      - Services__Observability__WorkerMetricsPort=8080
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
+
+      - Services__Kafka__Url=kafka:9094
+      - Services__Kafka__Topics__DataTransferCommand=data-transfer-commands
+      - Services__Kafka__Topics__DataTransferStatusUpdates=data-transfer-status-updates
+      - Services__Kafka__Groups__EtlWorkerGroup=etl-worker-groups
+
+      - Serilog__MinimumLevel__Default=Information
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
+      - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore=Fatal
+      - Serilog__WriteTo__0__Name=Console
+      - Serilog__WriteTo__1__Name=File
+      - Serilog__WriteTo__1__Args__path=/app/logs/log.txt
+      - Serilog__WriteTo__1__Args__rollingInterval=Day
+      - Serilog__WriteTo__1__Args__outputTemplate={Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}
+    build:
+      context: .
+      dockerfile: src/SqlViewer.Etl.Worker/Dockerfile
+    ports:
+      - "5102:8080"
+    depends_on:
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      etl-api:
+        condition: service_started
+      kafka:
+        condition: service_started
+
+  data-transfer-worker:
+    container_name: data-transfer-worker
+    env_file:
+      - .env
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=${CERT_PASSWORD}
+
+      - ConnectionStrings__DataTransferConnection=Server=sqlviewer-db;Port=5432;Database=sqlviewer-data-transfer;Username=postgres;Password=postgres;
+      - ConnectionStrings__RedisConnection=redis:6379,abortConnect=false
+      
+      - Services__Observability__ServiceName=data-transfer-worker
+      - Services__Observability__WorkerMetricsPort=8080
+      - Services__Observability__JaegerEndpoint=http://jaeger:4317
+      
+      - Services__Kafka__Url=kafka:9094
+      - Services__Kafka__Topics__DataTransferCommand=data-transfer-commands
+      - Services__Kafka__Topics__DataTransferStatusUpdates=data-transfer-status-updates
+      - Services__Kafka__Groups__DataTransferWorkerGroup=data-transfer-worker-groups
+      
+      - Serilog__MinimumLevel__Default=Information
+      - Serilog__MinimumLevel__Override__Microsoft=Warning
+      - Serilog__MinimumLevel__Override__Microsoft.EntityFrameworkCore=Fatal
+      - Serilog__WriteTo__0__Name=Console
+      - Serilog__WriteTo__1__Name=File
+      - Serilog__WriteTo__1__Args__path=/app/logs/log.txt
+      - Serilog__WriteTo__1__Args__rollingInterval=Day
+      - Serilog__WriteTo__1__Args__outputTemplate={Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level:u3}] [{SourceContext}] {Message:lj}{NewLine}{Exception}
+    build:
+      context: .
+      dockerfile: src/SqlViewer.DataTransfer.Worker/Dockerfile
+    ports:
+      - "5103:8080"
+    depends_on:
+      sqlviewer-db:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      kafka:
+        condition: service_started
+
+  kafka:
+    image: apache/kafka:latest
+    container_name: sqlviewer-kafka
+    ports:
+      - "9092:9092"
+    environment:
+      # JVM memory settings
+      KAFKA_HEAP_OPTS: "-Xmx512M -Xms512M"
+      
+      # Roles (KRaft mode without Zookeeper)
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      
+      # Setting up networks
+      # 9092 - for external clients (localhost)
+      # 9094 - for internal clients inside Docker (service name)
+      KAFKA_LISTENERS: PLAINTEXT://:9094,EXTERNAL://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9094,EXTERNAL://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: sqlviewer-kafka-ui
+    ports:
+      - "8080:8080"
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-cluster
+      # Сonnect via the internal name and port
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:9094
+    depends_on:
+      - kafka
+
+  # Metrics collector
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: sqlviewer-prometheus
+    volumes:
+      - ./infrastructure/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+
+  # Visualization (default login/password: admin/admin)
+  grafana:
+    image: grafana/grafana:latest
+    container_name: sqlviewer-grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+
+  # Request tracing
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: sqlviewer-jaeger
+    ports:
+      - "16686:16686" # UI interface (see tracing graphs)
+      - "4317:4317"   # OTLP gRPC (for receiving data from .NET)
+    environment:
+      - COLLECTOR_OTLP_ENABLED=true
 
   redis:
     image: redis:alpine
@@ -123,12 +360,17 @@ services:
     ports:
       - "6379:6379"
 
-  postgres:
+  sqlviewer-db:
     image: postgres
     container_name: sqlviewer-db
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     volumes:
       - ./infrastructure/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:

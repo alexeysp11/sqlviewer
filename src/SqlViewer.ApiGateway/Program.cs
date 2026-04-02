@@ -1,17 +1,21 @@
-﻿using FluentValidation;
+﻿using System.Text;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SqlViewer.ApiGateway.DelegatingHandlers;
 using SqlViewer.ApiGateway.Dtos.FluentValidation;
 using SqlViewer.ApiGateway.Mappings;
 using SqlViewer.ApiGateway.Middleware;
-using SqlViewer.Common.Constants;
+using SqlViewer.Etl;
 using SqlViewer.Metadata;
 using SqlViewer.QueryBuilder;
 using SqlViewer.QueryExecution;
 using SqlViewer.Security;
-using System.Text;
+using SqlViewer.Shared.Constants;
 
 namespace SqlViewer.ApiGateway;
 
@@ -43,6 +47,10 @@ public sealed class Program
         {
             o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.QueryExecution]!);
         }).AddHttpMessageHandler<TokenPropagationHandler>();
+        builder.Services.AddGrpcClient<EtlTransferService.EtlTransferServiceClient>(o =>
+        {
+            o.Address = new Uri(builder.Configuration[ConfigurationKeys.Services.Grpc.Etl]!);
+        }).AddHttpMessageHandler<TokenPropagationHandler>();
 
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddValidatorsFromAssemblyContaining<CreateTableRequestValidator>();
@@ -51,7 +59,8 @@ public sealed class Program
         string issuerSigningKey = builder.Configuration.GetValue<string>(ConfigurationKeys.Jwt.Key)
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
@@ -59,9 +68,9 @@ public sealed class Program
 
                     ValidateAudience = true,
                     ValidAudience = builder.Configuration[ConfigurationKeys.Jwt.Audience],
-                    
+
                     ValidateLifetime = true,
-                    
+
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(issuerSigningKey))
                 };
@@ -71,6 +80,25 @@ public sealed class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        // OpenTelemetry.
+        string serviceName = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.ServiceName)
+            ?? throw new InvalidOperationException("Unable to get service name for observability");
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
+                .AddOtlpExporter(opt =>
+                {
+                    // Send traces to Jaeger (the service name in Docker Compose)
+                    string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
+                        ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
+                    opt.Endpoint = new Uri(jaegerEndpoint);
+                }))
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)
+                .AddPrometheusExporter());
+
         WebApplication app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -79,6 +107,9 @@ public sealed class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        // Creates the /metrics page
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         app.UseHttpsRedirection();
         app.UseAuthentication();

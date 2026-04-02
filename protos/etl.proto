@@ -1,0 +1,82 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "SqlViewer.Etl";
+
+package etl;
+
+enum DatabaseType {
+  DATABASE_TYPE_NONE = 0;
+  DATABASE_TYPE_IN_MEMORY = 1;
+  DATABASE_TYPE_SQLITE = 2;
+  DATABASE_TYPE_POSTGRESQL = 3;
+  DATABASE_TYPE_MSSQL = 4;
+  DATABASE_TYPE_MYSQL = 5;
+  DATABASE_TYPE_MARIADB = 6;
+  DATABASE_TYPE_HSQLDB = 7;
+  DATABASE_TYPE_ORACLE = 8;
+  DATABASE_TYPE_CLICKHOUSE = 9;
+  DATABASE_TYPE_FIREBIRD = 10;
+}
+
+// --- Data transfer ---
+message StartTransferRequest {
+  string source_connection_string = 1;
+  string target_connection_string = 2;
+  string table_name = 3;
+  string user_uid = 4;
+  DatabaseType source_database_type = 5;
+  DatabaseType target_database_type = 6;
+}
+
+message StartTransferResponse {
+  string correlation_id = 1;
+  google.protobuf.Timestamp created_at = 2;
+  string message = 3;
+}
+
+// --- Transfer history ---
+message GetTransferHistoryRequest {
+  string user_uid = 1;
+  optional string cursor_correlation_id = 2;
+  int32 limit = 3;
+}
+
+message TransferJobGrpcDto {
+  string correlation_id = 1;
+  string source_connection_string = 2;
+  string target_connection_string = 3;
+  string status = 4;
+  google.protobuf.Timestamp time = 5;
+  DatabaseType source_database_type = 6;
+  DatabaseType target_database_type = 7;
+  string table_name = 8;
+}
+
+message GetTransferHistoryResponse {
+  repeated TransferJobGrpcDto items = 1;
+  optional string cursor_correlation_id = 2;
+}
+
+message GetStatusesRequest {
+    string user_uid = 1;
+    repeated string correlation_ids = 2; // IDs we are currently watching
+}
+
+message GetStatusesResponse {
+    repeated JobStatusItem items = 1;
+}
+
+message JobStatusItem {
+    string correlation_id = 1;
+    double progress = 2;
+    string status_message = 3;
+    bool is_final_state = 4;
+}
+
+service EtlTransferService {
+  rpc StartTransfer (StartTransferRequest) returns (StartTransferResponse);
+  rpc GetTransferHistory (GetTransferHistoryRequest) returns (GetTransferHistoryResponse);
+  rpc GetStatuses (GetStatusesRequest) returns (GetStatusesResponse);
+}

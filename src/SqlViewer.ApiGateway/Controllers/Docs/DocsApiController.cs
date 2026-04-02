@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.Docs;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.Docs;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.ApiGateway.Controllers.Docs;

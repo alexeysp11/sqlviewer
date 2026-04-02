@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.Auth;
-using SqlViewer.Common.Enums;
 using SqlViewer.Security.Data.DbContexts;
 using SqlViewer.Security.Data.Entities;
 using SqlViewer.Security.Domain.Tokens;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.Auth;
+using SqlViewer.Shared.Enums;
 
 namespace SqlViewer.Security.Domain.Identities;
 
@@ -50,6 +50,7 @@ public sealed class IdentityManager(
             AccessToken = accessToken,
             RefreshToken = refreshToken,
             Username = user.Username,
+            UserUid = user.Uid,
             Role = user.Role,
             ExpiresInSeconds = Convert.ToDouble(config[ConfigurationKeys.Jwt.ExpiryLifetimeMinutes]) * 60
         };

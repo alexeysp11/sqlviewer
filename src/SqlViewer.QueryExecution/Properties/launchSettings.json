@@ -3,25 +3,23 @@
     "http": {
       "commandName": "Project",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Kestrel__Endpoints__Http__Url": "http://localhost:5249",
+        "Kestrel__Endpoints__Http__Protocols": "Http1",
+        "Kestrel__Endpoints__Grpc__Url": "http://localhost:5250",
+        "Kestrel__Endpoints__Grpc__Protocols": "Http2"
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5249"
-    },
-    "https": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7091;http://localhost:5249"
+      "applicationUrl": "http://localhost:5249,http://localhost:5250"
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/metrics",
       "environmentVariables": {
-        "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080"
+        "Kestrel__Endpoints__Http__Url": "http://+:8080",
+        "Kestrel__Endpoints__Http__Protocols": "Http1",
+        "Kestrel__Endpoints__Grpc__Url": "http://+:8082",
+        "Kestrel__Endpoints__Grpc__Protocols": "Http2"
       },
       "publishAllPorts": true,
       "useSSL": true

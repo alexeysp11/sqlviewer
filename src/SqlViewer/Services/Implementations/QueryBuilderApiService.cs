@@ -1,7 +1,8 @@
-﻿using SqlViewer.ApiHandlers;
-using SqlViewer.Common.Dtos.Metadata;
-using SqlViewer.Common.Dtos.QueryBuilder;
-using SqlViewer.Common.Dtos.SqlQueries;
+﻿using SqlViewer.ApiHandlers.Abstractions;
+using SqlViewer.Services.Abstractions;
+using SqlViewer.Shared.Dtos.Metadata;
+using SqlViewer.Shared.Dtos.QueryBuilder;
+using SqlViewer.Shared.Dtos.SqlQueries;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 
 namespace SqlViewer.Services.Implementations;
@@ -11,7 +12,8 @@ public sealed class QueryBuilderApiService(IQueryBuilderHttpHandler httpHandler)
     public async Task<string> GetCreateTableQueryAsync(
         VelocipedeDatabaseType databaseType,
         string tableName,
-        IEnumerable<ColumnInfoDto> columnInfos)
+        IEnumerable<ColumnInfoDto> columnInfos,
+        CancellationToken ct = default)
     {
         CreateTableRequestDto requestDto = new()
         {
@@ -21,11 +23,9 @@ public sealed class QueryBuilderApiService(IQueryBuilderHttpHandler httpHandler)
             Columns = columnInfos
         };
 
-        QueryBuilderResponseDto responseDto = await httpHandler.GetCreateTableQueryAsync(requestDto);
+        QueryBuilderResponseDto responseDto = await httpHandler.GetCreateTableQueryAsync(requestDto, ct);
         if (string.IsNullOrEmpty(responseDto.Query))
             throw new InvalidOperationException("Generated query could not be null or empty");
         return responseDto.Query;
     }
-
-    public void Dispose() => httpHandler?.Dispose();
 }

@@ -4,6 +4,10 @@
       "commandName": "Project",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
+        "Kestrel__Endpoints__Http__Url": "http://localhost:5274",
+        "Kestrel__Endpoints__Http__Protocols": "Http1",
+        "Kestrel__Endpoints__Grpc__Url": "http://localhost:5275",
+        "Kestrel__Endpoints__Grpc__Protocols": "Http2",
         "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
         "Jwt__ExpiryLifetimeMinutes": "90",
         "Jwt__Issuer": "sqlviewer/security",
@@ -11,27 +15,16 @@
         "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
       },
       "dotnetRunMessages": true,
-      "applicationUrl": "http://localhost:5274"
-    },
-    "https": {
-      "commandName": "Project",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
-        "Jwt__ExpiryLifetimeMinutes": "90",
-        "Jwt__Issuer": "sqlviewer/security",
-        "Jwt__Audience": "sqlviewer/api-gateway",
-        "Jwt__IssuerSigningKey": "iZSSPdC53bxc301eVH/bN6eTjzmXkMIhvMbxfcn0q8k="
-      },
-      "dotnetRunMessages": true,
-      "applicationUrl": "https://localhost:7128;http://localhost:5274"
+      "applicationUrl": "http://localhost:5274,http://localhost:5275"
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/metrics",
       "environmentVariables": {
-        "ASPNETCORE_HTTPS_PORTS": "8081",
-        "ASPNETCORE_HTTP_PORTS": "8080",
+        "Kestrel__Endpoints__Http__Url": "http://+:8080",
+        "Kestrel__Endpoints__Http__Protocols": "Http1",
+        "Kestrel__Endpoints__Grpc__Url": "http://+:8082",
+        "Kestrel__Endpoints__Grpc__Protocols": "Http2",
         "Jwt__Key": "TMbQYRKQfN5kG+LfcDocF6ezcs8HL/EK4pBZ5V9UZwo=",
         "Jwt__ExpiryLifetimeMinutes": "90",
         "Jwt__Issuer": "sqlviewer/security",

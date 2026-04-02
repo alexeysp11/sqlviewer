@@ -1,0 +1,140 @@
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
+#nullable disable
+
+namespace SqlViewer.Etl.Core.Migrations
+{
+    /// <inheritdoc />
+    public partial class Initial : Migration
+    {
+        /// <inheritdoc />
+        protected override void Up(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.CreateTable(
+                name: "InboxMessages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserUid = table.Column<Guid>(type: "uuid", nullable: true),
+                    MessageId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MessageType = table.Column<string>(type: "text", nullable: false),
+                    Payload = table.Column<string>(type: "text", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    ReceivedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Error = table.Column<string>(type: "text", nullable: true),
+                    RetryCount = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_InboxMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "OutboxMessages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserUid = table.Column<Guid>(type: "uuid", nullable: true),
+                    CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Topic = table.Column<string>(type: "text", nullable: false),
+                    MessageType = table.Column<string>(type: "text", nullable: false),
+                    Payload = table.Column<string>(type: "text", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ProcessedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Error = table.Column<string>(type: "text", nullable: true),
+                    RetryCount = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OutboxMessages", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransferJobs",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserUid = table.Column<Guid>(type: "uuid", nullable: false),
+                    SourceConnectionString = table.Column<string>(type: "text", nullable: false),
+                    TargetConnectionString = table.Column<string>(type: "text", nullable: false),
+                    SourceDatabaseType = table.Column<int>(type: "integer", nullable: false),
+                    TargetDatabaseType = table.Column<int>(type: "integer", nullable: false),
+                    TableName = table.Column<string>(type: "text", nullable: false),
+                    CurrentStatus = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransferJobs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TransferStatusLogs",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    MetadataJson = table.Column<string>(type: "text", nullable: true),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    TransferJobEntityId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TransferStatusLogs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_TransferStatusLogs_TransferJobs_TransferJobEntityId",
+                        column: x => x.TransferJobEntityId,
+                        principalTable: "TransferJobs",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_InboxMessages_CorrelationId_Hash",
+                table: "InboxMessages",
+                column: "CorrelationId")
+                .Annotation("Npgsql:IndexMethod", "hash");
+
+            migrationBuilder.CreateIndex(
+                name: "UX_InboxMessages_MessageId",
+                table: "InboxMessages",
+                column: "MessageId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransferJobs_CreatedAt_Id",
+                table: "TransferJobs",
+                columns: ["CreatedAt", "Id"],
+                descending: []);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TransferStatusLogs_TransferJobEntityId",
+                table: "TransferStatusLogs",
+                column: "TransferJobEntityId");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
+            migrationBuilder.DropTable(
+                name: "InboxMessages");
+
+            migrationBuilder.DropTable(
+                name: "OutboxMessages");
+
+            migrationBuilder.DropTable(
+                name: "TransferStatusLogs");
+
+            migrationBuilder.DropTable(
+                name: "TransferJobs");
+        }
+    }
+}

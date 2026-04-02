@@ -14,6 +14,7 @@
     <Protobuf Include="..\..\protos\metadata.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\protos\query_builder.proto" GrpcServices="Client" />
     <Protobuf Include="..\..\protos\query_execution.proto" GrpcServices="Client" />
+    <Protobuf Include="..\..\protos\etl.proto" GrpcServices="Client" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +23,10 @@
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.23" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.15.0" />
+    <PackageReference Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.15.0-beta.1" />
+    <PackageReference Include="OpenTelemetry.Extensions.Hosting" Version="1.15.0" />
+    <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.15.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
     <PackageReference Include="Riok.Mapperly" Version="4.3.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.11" />
@@ -30,7 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SqlViewer.Common\SqlViewer.Common.csproj" />
+    <ProjectReference Include="..\SqlViewer.Shared\SqlViewer.Shared.csproj" />
   </ItemGroup>
 
 </Project>

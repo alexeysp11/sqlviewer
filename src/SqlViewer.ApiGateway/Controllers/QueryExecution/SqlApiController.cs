@@ -2,10 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SqlViewer.ApiGateway.Extensions;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Dtos.SqlQueries;
 using SqlViewer.Metadata;
 using SqlViewer.QueryExecution;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Dtos.SqlQueries;
 
 namespace SqlViewer.ApiGateway.Controllers.QueryExecution;
 
@@ -29,7 +29,8 @@ public sealed class SqlApiController(
                 Query = request.Query
             });
 
-            List<dynamic> dynamicResult = protoResponse.QueryResult.Select(row => {
+            List<dynamic> dynamicResult = protoResponse.QueryResult.Select(row =>
+            {
                 IDictionary<string, object?> expando = new ExpandoObject();
                 foreach (KeyValuePair<string, Google.Protobuf.WellKnownTypes.Value> field in row.Fields)
                 {

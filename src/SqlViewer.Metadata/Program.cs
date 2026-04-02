@@ -1,21 +1,24 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using SqlViewer.Common.Constants;
-using SqlViewer.Common.Factories;
-using SqlViewer.Common.Factories.Implementations;
-using SqlViewer.Common.Repositories;
-using SqlViewer.Common.Services;
-using SqlViewer.Common.Services.Implementations;
+using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using SqlViewer.Metadata.Data.DataSeeding;
 using SqlViewer.Metadata.Data.DbContexts;
 using SqlViewer.Metadata.Domain.MetadataRegistries;
+using SqlViewer.Metadata.Domain.QueryBuilders;
 using SqlViewer.Metadata.Mappings;
 using SqlViewer.Metadata.Repositories.Implementations;
 using SqlViewer.Metadata.Services.Grpc;
-using static SqlViewer.Common.Constants.ConfigurationKeys;
-using SqlViewer.Metadata.Domain.QueryBuilders;
+using SqlViewer.Shared.Constants;
+using SqlViewer.Shared.Factories;
+using SqlViewer.Shared.Factories.Implementations;
+using SqlViewer.Shared.Repositories;
+using SqlViewer.Shared.Services;
+using SqlViewer.Shared.Services.Implementations;
+using static SqlViewer.Shared.Constants.ConfigurationKeys;
 
 namespace SqlViewer.Metadata;
 
@@ -28,6 +31,7 @@ public sealed class Program
         // Add services to the container.
         builder.Services.AddScoped<SeedMapper>();
         builder.Services.AddScoped<IMetadataDataSeeder, MetadataDataSeeder>();
+        builder.Services.AddScoped<ISandboxDataSeeder, SandboxDataSeeder>();
         builder.Services.AddScoped<IEncryptionService, EncryptionService>();
         builder.Services.AddScoped<IMetadataRegistry, MetadataRegistry>();
         builder.Services.AddScoped<IQueryBuilderManager, QueryBuilderManager>();
@@ -38,14 +42,19 @@ public sealed class Program
 
         builder.Services.AddGrpc();
 
+        // DbContexts.
         builder.Services.AddDbContext<MetadataDbContext>(options =>
             options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Metadata))
+        );
+        builder.Services.AddDbContext<SandboxDbContext>(options =>
+            options.UseNpgsql(builder.Configuration.GetConnectionString(ConnectionStrings.Sandbox))
         );
 
         string issuerSigningKey = builder.Configuration.GetValue<string>(ConfigurationKeys.Jwt.Key)
             ?? throw new InvalidOperationException("Unable to get issuer signing key from configurations");
         builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options => {
+            .AddJwtBearer(options =>
+            {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
@@ -62,14 +71,40 @@ public sealed class Program
             });
         builder.Services.AddAuthorization();
 
+        // OpenTelemetry.
+        string serviceName = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.ServiceName)
+            ?? throw new InvalidOperationException("Unable to get service name for observability");
+        builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource.AddService(serviceName))
+            .WithTracing(tracing => tracing
+                .AddSource(serviceName)
+                .AddAspNetCoreInstrumentation() // Automatically catches all incoming HTTP requests
+                .AddOtlpExporter(opt =>
+                {
+                    // Send traces to Jaeger (the service name in Docker Compose)
+                    string jaegerEndpoint = builder.Configuration.GetValue<string>(ConfigurationKeys.Services.Observability.JaegerEndpoint)
+                        ?? throw new InvalidOperationException("Unable to get Jaeger endpoint for observability");
+                    opt.Endpoint = new Uri(jaegerEndpoint);
+                }))
+            .WithMetrics(metrics => metrics
+                .AddAspNetCoreInstrumentation() // Collects standard metrics (number of requests, etc.)
+                .AddPrometheusExporter());
+
         WebApplication app = builder.Build();
+
+        // Creates the /metrics page
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
 
         // Initialization and seeding the database.
         using (IServiceScope scope = app.Services.CreateScope())
         {
-            MetadataDbContext db = scope.ServiceProvider.GetRequiredService<MetadataDbContext>();
-            IMetadataDataSeeder dataSeeder = scope.ServiceProvider.GetRequiredService<IMetadataDataSeeder>();
-            await dataSeeder.InitializeAsync();
+            // Metadata.
+            IMetadataDataSeeder metadataSeeder = scope.ServiceProvider.GetRequiredService<IMetadataDataSeeder>();
+            await metadataSeeder.InitializeAsync();
+
+            // Sandbox.
+            ISandboxDataSeeder sandboxSeeder = scope.ServiceProvider.GetRequiredService<ISandboxDataSeeder>();
+            await sandboxSeeder.SeedAsync();
         }
 
         app.UseAuthentication();

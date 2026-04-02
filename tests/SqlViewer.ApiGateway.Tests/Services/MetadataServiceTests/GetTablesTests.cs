@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using Moq;
 using SqlViewer.ApiGateway.VerticalSlices.Metadata.Services.Implementations;
-using SqlViewer.Common.Factories;
+using SqlViewer.Shared.Factories;
 using VelocipedeUtils.Shared.DbOperations.DbConnections;
 using VelocipedeUtils.Shared.DbOperations.Enums;
 

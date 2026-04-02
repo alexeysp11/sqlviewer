@@ -1,0 +1,6 @@
+﻿namespace SqlViewer.Shared.Repositories;
+
+public interface IDataSourceRepository
+{
+    Task<string> GetRealConnectionStringAsync(int? dataSourceId, string? dataSourceName);
+}
