@@ -2,6 +2,9 @@
 
 [English](README.md) | [Русский](README.ru.md)
 
+> **⚠️ Status: Prototype / Infrastructure PoC. Development paused.**  
+> This repository is a technical proof-of-concept focused on microservice setup, docker, and basic observability. The data transfer engine and tracing layers are not fully implemented.
+
 A distributed system for managing heterogeneous data sources.
 
 ## 📖 General description
